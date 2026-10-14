@@ -1,0 +1,41 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = "Share It Studio | Amazon Listing Optimization & E-commerce Content",
+  description = "Turn product traffic into stronger conversion with strategic Amazon listing content. Explore Share It Studio’s approach.",
+  canonical = Astro.url.href,
+  noindex = false
+} = Astro.props;
+
+const robotsContent = noindex 
+  ? "noindex, nofollow" 
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robotsContent} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+   <!--  <meta property="og:image" content={new URL("/og-image.jpg", Astro.site)} /> -->
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
