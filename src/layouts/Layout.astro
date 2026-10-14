@@ -1,16 +1,19 @@
 ---
+import SchemaOrg from '../components/SchemaOrg.astro';
 interface Props {
   title?: string;
   description?: string;
   canonical?: string;
   noindex?: boolean;
+  schema?: Record<string, any> | Record<string, any>[];
 }
 
 const {
   title = "Share It Studio | Amazon Listing Optimization & E-commerce Content",
   description = "Turn product traffic into stronger conversion with strategic Amazon listing content. Explore Share It Studio’s approach.",
   canonical = Astro.url.href,
-  noindex = false
+  noindex = false,
+  schema
 } = Astro.props;
 
 const robotsContent = noindex 
@@ -25,6 +28,9 @@ const robotsContent = noindex
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+	{schema && <SchemaOrg schema={schema} />}
+
     <link rel="canonical" href={canonical} />
     <meta name="robots" content={robotsContent} />
 

@@ -1,0 +1,6 @@
+
+User-agent: *
+Disallow: /?s=
+Allow: /
+
+Sitemap: https://shareitstudio.com/sitemap.xml

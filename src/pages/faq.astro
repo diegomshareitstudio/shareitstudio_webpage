@@ -5,6 +5,7 @@ import faqs from '../data/faqs.json';
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": "https://shareitstudio.com/faq#faq",
   "mainEntity": faqs.map(faq => ({
     "@type": "Question",
     "name": faq.question,
@@ -17,8 +18,9 @@ const faqSchema = {
 ---
 
 <Layout 
-  title="Preguntas Frecuentes (FAQ) | Share It Studio" 
-  description="Encuentra respuestas a las dudas más comunes sobre nuestros servicios, productos y funcionamiento."
+  title="Frequently Asked Questions | Share It Studio" 
+  description="Find answers to common questions about Share It Studio's services, processes, and more. Get the information you need to make informed decisions."
+  schema={faqSchema}
 >
   <!-- Inyección de Schema.org para SEO -->
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
