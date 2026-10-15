@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://shareitstudio.com/case-studies/vizayo#article",
+  "headline": "Vizayo Case Study | Share It Studio",
+  "description": "Elevating Vizayo’s Amazon Listing with High-Quality Product Videos",
+  "author": {
+    "@type": "Organization",
+    "name": "Share It Studio"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Share It Studio",
+    // Optional: Add a logo if available
+    // "logo": {
+    //   "@type": "ImageObject",
+    //   "url": "https://shareitstudio.com/logo.png"
+    // }
+  }
+};
+
+const breadcrumbListSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://shareitstudio.com/case-studies/vizayo#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://shareitstudio.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Case Studies",
+      "item": "https://shareitstudio.com/case-studies"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "vizayo Case Study",
+      "item": "https://shareitstudio.com/case-studies/vizayo"
+    }
+  ]
+};
+
+const combinedSchema = [articleSchema, breadcrumbListSchema];
+---
+
+<Layout 
+  title="Vizayo Case Study | Share It Studio" 
+  description="Elevating Vizayo’s Amazon Listing with High-Quality Product Videos"
+  schema={combinedSchema}
+>
+<h1> Vizayo</h1>
+</Layout>

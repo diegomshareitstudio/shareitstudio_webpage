@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://shareitstudio.com/case-studies/pink-miracle#article",
+  "headline": "Pink Miracle Case Study | Share It Studio",
+  "description": "Turning Pink Miracle’s Loss into a $112K Win",
+  "author": {
+    "@type": "Organization",
+    "name": "Share It Studio"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Share It Studio",
+    // Optional: Add a logo if available
+    // "logo": {
+    //   "@type": "ImageObject",
+    //   "url": "https://shareitstudio.com/logo.png"
+    // }
+  }
+};
+
+const breadcrumbListSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://shareitstudio.com/case-studies/pink-miracle#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://shareitstudio.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Case Studies",
+      "item": "https://shareitstudio.com/case-studies"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pink Miracle Case Study",
+      "item": "https://shareitstudio.com/case-studies/pink-miracle"
+    }
+  ]
+};
+
+const combinedSchema = [articleSchema, breadcrumbListSchema];
+---
+
+<Layout 
+  title="Pink Miracle Case Study | Share It Studio" 
+  description="Turning Pink Miracle’s Loss into a $112K Win"
+  schema={combinedSchema}
+>
+<h1> GOLA</h1>
+</Layout>

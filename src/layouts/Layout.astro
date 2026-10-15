@@ -1,5 +1,8 @@
 ---
 import SchemaOrg from '../components/SchemaOrg.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -42,6 +45,8 @@ const robotsContent = noindex
    <!--  <meta property="og:image" content={new URL("/og-image.jpg", Astro.site)} /> -->
   </head>
   <body>
+	<Header></Header>
     <slot />
+	<Footer></Footer>
   </body>
 </html>
