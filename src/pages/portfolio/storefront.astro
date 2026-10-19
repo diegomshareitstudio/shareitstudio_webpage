@@ -1,0 +1,29 @@
+---
+import PortfolioPage from '../../components/PortfolioPage.astro';
+
+const benefits = [
+  {
+    "title": "No competitor ads",
+    "text": "Shoppers browse only your products."
+  },
+  {
+    "title": "Clear navigation",
+    "text": "Category pages built around how your customers shop."
+  },
+  {
+    "title": "Ad-ready",
+    "text": "A strong landing page for Sponsored Brands campaigns."
+  }
+];
+---
+
+<PortfolioPage
+  title="Amazon Storefront"
+  metaTitle="Amazon Storefront Portfolio | Share It Studio"
+  description="Your own branded shop inside Amazon. Explore Share It Studio’s Amazon Storefront portfolio for Amazon sellers."
+  subtitle="Your own branded shop inside Amazon."
+  intro="A Storefront gives your brand a dedicated, multi-page destination on Amazon. We design the structure, banners and tiles so shoppers can browse your full catalog without competitor distractions."
+  items={["Homepage hero banner", "Category navigation", "Best-sellers section", "Seasonal campaign page", "Brand video tile", "Bundle & gift page"]}
+  aspect="wide"
+  benefits={benefits}
+/>

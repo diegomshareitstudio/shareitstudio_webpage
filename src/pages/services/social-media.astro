@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+
+const plans = [
+  {
+    name: 'Starter',
+    text: 'For brands starting their social presence.',
+    features: ['1 platform', '8 posts / month', '2 short videos / month', 'Monthly report'],
+  },
+  {
+    name: 'Growth',
+    text: 'For brands ready to drive traffic to Amazon.',
+    features: ['2 platforms', '12 posts / month', '6 short videos / month', 'Community management', 'Bi-weekly report'],
+    featured: true,
+  },
+  {
+    name: 'Scale',
+    text: 'Full-service content engine with creators.',
+    features: ['3 platforms', '20 posts / month', '10 videos incl. UGC', 'Influencer outreach', 'Weekly report'],
+  },
+];
+
+const pillars = [
+  { title: 'Content creation', text: 'Reels, TikToks, carousels and stories designed for each platform.' },
+  { title: 'UGC & creators', text: 'Authentic videos from creators who match your audience.' },
+  { title: 'Amazon attribution', text: 'Track how social traffic converts on Amazon with attribution links.' },
+];
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Social Media for Amazon Brands',
+  provider: { '@id': 'https://shareitstudio.com/#organization' },
+  description: 'Social media content and management that builds your brand and drives external traffic to Amazon.',
+};
+---
+
+<Layout title="Social Media Services | Share It Studio" description="Social media content and management for Amazon brands — Reels, TikToks and UGC that drive external traffic." schema={serviceSchema}>
+  <PageHero
+    eyebrow="Services"
+    title="Social Media for Amazon Brands"
+    subtitle="Build a brand people follow — and send them straight to your listing."
+    ctaLabel="Schedule a Call"
+    ctaHref="/call"
+    secondaryLabel="See our videos"
+    secondaryHref="/portfolio/videos/social-media-videos"
+  />
+
+  <section class="container-x py-16 md:py-20">
+    <SectionHeading eyebrow="What we do" title="Social that sells, not just entertains" text="We connect your social channels to your Amazon goals so every post has a job." />
+    <div class="grid gap-6 md:grid-cols-3">
+      {pillars.map((p) => (
+        <div class="rounded-2xl border border-black/5 p-7 shadow-sm">
+          <div class="placeholder mb-5 aspect-[9/16] max-h-64 w-full">Vertical video</div>
+          <h3 class="text-xl font-bold text-brand-green">{p.title}</h3>
+          <p class="mt-2 text-brand-ink/70">{p.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-brand-cream py-16 md:py-20">
+    <div class="container-x">
+      <SectionHeading eyebrow="Plans" title="Pick the pace that fits your brand" text="Placeholder plans — pricing on request." />
+      <div class="grid gap-6 md:grid-cols-3">
+        {plans.map((p) => (
+          <div class:list={['flex flex-col rounded-3xl p-8', p.featured ? 'bg-brand-green text-white shadow-xl md:-translate-y-3' : 'bg-white shadow-sm']}>
+            {p.featured && <span class="mb-4 self-start rounded-full bg-brand-yellow px-3 py-1 text-xs font-bold text-brand-green">Most popular</span>}
+            <h3 class:list={['text-2xl font-bold', p.featured ? 'text-brand-yellow' : 'text-brand-green']}>{p.name}</h3>
+            <p class:list={['mt-2', p.featured ? 'text-white/75' : 'text-brand-ink/70']}>{p.text}</p>
+            <ul class="mt-6 flex-1 space-y-2 text-sm">
+              {p.features.map((f) => <li class="flex gap-2"><span class="text-brand-yellow">●</span>{f}</li>)}
+            </ul>
+            <a href="/contact" class:list={['mt-8', p.featured ? 'btn-primary' : 'btn-orange']}>Request pricing</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+
+const agenda = [
+  { title: 'Listing review', text: 'We look at your current images, A+ Content and copy together.' },
+  { title: 'Quick wins', text: 'You leave with 3 concrete improvements you can apply right away.' },
+  { title: 'Next steps', text: 'If it’s a fit, we’ll outline a plan and a quote — no pressure.' },
+];
+---
+
+<Layout title="Schedule a Call | Share It Studio" description="Book a free 30-minute strategy call with Share It Studio to review your Amazon listing.">
+  <PageHero eyebrow="Free strategy call" title="Schedule a Call" subtitle="30 minutes with our team. <span class='font-bold text-brand-yellow'>A free listing review included.</span>" />
+
+  <section class="container-x grid gap-12 py-16 md:grid-cols-[1fr_1.5fr] md:py-20">
+    <div>
+      <h2 class="text-3xl font-bold text-brand-green">What we’ll cover</h2>
+      <ol class="mt-8 space-y-6">
+        {agenda.map((a, i) => (
+          <li class="flex gap-4">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-yellow font-bold text-brand-green">{i + 1}</span>
+            <div>
+              <h3 class="font-bold text-brand-green">{a.title}</h3>
+              <p class="text-brand-ink/70">{a.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-10 rounded-2xl bg-brand-cream p-6 text-sm text-brand-ink/75">
+        <p class="font-bold text-brand-green">Before the call</p>
+        <p class="mt-1">Have your ASIN or listing link ready so we can review it live.</p>
+      </div>
+    </div>
+
+    <div class="placeholder min-h-[560px] flex-col gap-3 bg-white shadow-lg">
+      <span class="text-4xl">📅</span>
+      <p class="text-base font-bold text-brand-green">Booking calendar embed</p>
+      <p class="max-w-xs">Replace this block with your Calendly / HubSpot scheduling widget.</p>
+    </div>
+  </section>
+</Layout>

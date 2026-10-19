@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Amazon CVR Calculator',
+  url: 'https://shareitstudio.com/cvr-calculator',
+  applicationCategory: 'BusinessApplication',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const input = 'mt-1 w-full rounded-lg border border-black/15 px-4 py-3 text-lg outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-yellow/60';
+---
+
+<Layout title="Amazon Conversion Rate (CVR) Calculator | Share It Studio" description="Free Amazon conversion rate calculator. See your CVR and how much revenue a better listing could add." schema={appSchema}>
+  <PageHero eyebrow="Free tool" title="Amazon CVR Calculator" subtitle="Find your conversion rate — and see what a better listing could be worth." />
+
+  <section class="container-x grid gap-8 py-16 md:grid-cols-2 md:py-20">
+    <form id="cvr-form" class="rounded-3xl border border-black/5 bg-white p-7 shadow-lg md:p-9">
+      <h2 class="text-2xl font-bold text-brand-green">Your numbers</h2>
+      <p class="mt-1 text-sm text-brand-ink/60">Find them in Seller Central → Business Reports.</p>
+      <div class="mt-6 space-y-5">
+        <label class="block text-sm font-medium">Sessions (last 30 days)<input id="sessions" type="number" min="0" value="10000" class={input} /></label>
+        <label class="block text-sm font-medium">Units ordered<input id="orders" type="number" min="0" value="1000" class={input} /></label>
+        <label class="block text-sm font-medium">Average price ($)<input id="price" type="number" min="0" step="0.01" value="29.99" class={input} /></label>
+        <label class="block text-sm font-medium">
+          Expected CVR improvement: <span id="lift-label" class="font-bold text-brand-orange">20%</span>
+          <input id="lift" type="range" min="5" max="60" step="5" value="20" class="mt-3 w-full accent-brand-orange" />
+        </label>
+      </div>
+    </form>
+
+    <div class="flex flex-col rounded-3xl bg-brand-green p-7 text-white md:p-9" aria-live="polite">
+      <p class="text-sm uppercase tracking-widest text-white/60">Your conversion rate</p>
+      <p id="cvr" class="mt-2 text-7xl font-bold text-brand-yellow">10.0%</p>
+      <p id="verdict" class="mt-3 text-white/80"></p>
+
+      <div class="mt-8 grid grid-cols-2 gap-4">
+        <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+          <p class="text-xs uppercase tracking-wider text-white/60">Monthly revenue</p>
+          <p id="revenue" class="mt-1 text-2xl font-bold"></p>
+        </div>
+        <div class="rounded-2xl bg-brand-yellow p-5 text-brand-green">
+          <p class="text-xs uppercase tracking-wider">Potential extra / month</p>
+          <p id="extra" class="mt-1 text-2xl font-bold"></p>
+        </div>
+      </div>
+      <p class="mt-auto pt-8 text-xs text-white/50">Estimates only. Typical Amazon CVR ranges from 10% to 15% depending on category.</p>
+    </div>
+  </section>
+
+  <CtaBanner title="Want to actually reach that number?" text="We’ll show you which images and modules are costing you conversions." ctaLabel="Get a Free Audit" />
+</Layout>
+
+<script>
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+  function update() {
+    const sessions = Number($('sessions').value) || 0;
+    const orders = Number($('orders').value) || 0;
+    const price = Number($('price').value) || 0;
+    const lift = Number($('lift').value) / 100;
+
+    const cvr = sessions > 0 ? (orders / sessions) * 100 : 0;
+    const revenue = orders * price;
+
+    $('lift-label').textContent = `${Math.round(lift * 100)}%`;
+    $('cvr').textContent = `${cvr.toFixed(1)}%`;
+    $('revenue').textContent = money.format(revenue);
+    $('extra').textContent = `+${money.format(revenue * lift)}`;
+    $('verdict').textContent =
+      cvr < 10 ? 'Below the typical range — your listing likely has room to improve.' :
+      cvr < 15 ? 'Around average. Better visuals could push you ahead of competitors.' :
+      'Above average — great work! Keep testing to stay ahead.';
+  }
+
+  document.getElementById('cvr-form')?.addEventListener('input', update);
+  update();
+</script>

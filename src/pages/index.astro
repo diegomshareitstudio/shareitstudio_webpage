@@ -1,6 +1,8 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
 
 	const organizationSchema = {
 	"@context": "https://schema.org",
@@ -23,13 +25,100 @@ import Layout from '../layouts/Layout.astro';
 	"name": "Share It Studio",
 	"url": "https://shareitstudio.com",
 	"publisher": {
-		"@id": "https://shareitstudio.com/#organization"  
+		"@id": "https://shareitstudio.com/#organization"
 		}
 	};
 
 const combinedSchema = [organizationSchema, websiteSchema];
+
+const offerings = [
+  { title: 'Listing Images', text: 'Hero, infographics and lifestyles that win the click.', href: '/portfolio/listing-images/hero-images' },
+  { title: 'A+ Content', text: 'Below-the-fold storytelling that lifts conversion.', href: '/portfolio/a-content' },
+  { title: 'Videos', text: 'Demos, ads and UGC for Amazon and social.', href: '/portfolio/videos/listing-videos' },
+  { title: 'Storefront', text: 'A branded shop with zero competitor ads.', href: '/portfolio/storefront' },
+];
+
+const cases = [
+  { name: 'ROSSM', text: 'Minimalist wallets that set out to beat the category leader.', stat: '+45.5% sales', href: '/case-studies/rossm' },
+  { name: 'Vizayo', text: 'Premium product videos for a tabletop fire pit bowl.', stat: '+49% CVR', href: '/case-studies/vizayo' },
+  { name: 'Pink Miracle', text: 'Listing and video ad optimization that turned a loss around.', stat: '$112K win', href: '/case-studies/pink-miracle' },
+];
 ---
 
 <Layout schema={combinedSchema}>
-	<Welcome />
+  <PageHero
+    size="lg"
+    title="Turn visitors into buyers with data-driven Amazon content"
+    subtitle="We’re Share It Studio, Amazon marketing experts specializing in visual content <span class='font-bold text-brand-yellow'>for sellers obsessed with data.</span>"
+    ctaLabel="Schedule a Call"
+    ctaHref="/call"
+    secondaryLabel="See our work"
+    secondaryHref="/portfolio"
+  >
+    <div class="placeholder mx-auto mt-16 aspect-video max-w-4xl border-white/20 bg-white/5 text-white/50">▶ Welcome video placeholder</div>
+  </PageHero>
+
+  <section class="border-b border-black/5 py-10">
+    <div class="container-x flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-xl font-bold text-brand-green/30">
+      <span>ROSSM</span><span>VIZAYO</span><span>PINK MIRACLE</span><span>CLIENT LOGO</span><span>CLIENT LOGO</span>
+    </div>
+  </section>
+
+  <section class="container-x py-16 md:py-24">
+    <SectionHeading eyebrow="What we create" title="Every touchpoint of your listing, designed to convert" />
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {offerings.map((o) => (
+        <a href={o.href} class="group rounded-2xl border border-black/5 p-6 transition hover:-translate-y-1 hover:border-brand-yellow hover:shadow-lg">
+          <div class="placeholder mb-5 aspect-square">{o.title}</div>
+          <h3 class="text-lg font-bold text-brand-green">{o.title}</h3>
+          <p class="mt-1 text-sm text-brand-ink/70">{o.text}</p>
+        </a>
+      ))}
+    </div>
+    <div class="mt-10 text-center"><a href="/services" class="font-bold text-brand-orange hover:underline">Explore all services →</a></div>
+  </section>
+
+  <section class="bg-brand-green py-16 text-white md:py-24">
+    <div class="container-x grid items-center gap-12 md:grid-cols-2">
+      <div>
+        <p class="eyebrow mb-3 text-brand-yellow">Why Share It Studio</p>
+        <h2 class="text-3xl font-bold leading-tight md:text-5xl">Pretty images don’t sell. <span class="text-brand-yellow">Strategic ones do.</span></h2>
+        <p class="mt-6 text-lg text-white/80">
+          Every project starts with research: competitor listings, thousands of customer reviews and your own sales data. Then we design content that answers exactly what your buyers need to hear.
+        </p>
+        <a href="/call" class="btn-primary mt-8">Get a Free Listing Audit</a>
+      </div>
+      <dl class="grid grid-cols-2 gap-4">
+        {[
+          { n: '+45.5%', l: 'Sales lift for ROSSM' },
+          { n: '+55.7%', l: 'Traffic increase for ROSSM' },
+          { n: '9', l: 'Image slots planned as one story' },
+          { n: '30 min', l: 'Free strategy call' },
+        ].map((s) => (
+          <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+            <dt class="text-4xl font-bold text-brand-yellow">{s.n}</dt>
+            <dd class="mt-2 text-sm text-white/70">{s.l}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="container-x py-16 md:py-24">
+    <SectionHeading eyebrow="Case studies" title="Real brands, measurable results" />
+    <div class="grid gap-6 md:grid-cols-3">
+      {cases.map((c) => (
+        <a href={c.href} class="group overflow-hidden rounded-2xl border border-black/5 shadow-sm transition hover:shadow-xl">
+          <div class="placeholder aspect-[4/3] rounded-none border-0">{c.name} listing</div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-brand-green">{c.name}</h3>
+            <p class="mt-1 text-sm text-brand-ink/70">{c.text}</p>
+            <p class="mt-4 font-bold text-brand-orange group-hover:underline">{c.stat} →</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CtaBanner />
 </Layout>

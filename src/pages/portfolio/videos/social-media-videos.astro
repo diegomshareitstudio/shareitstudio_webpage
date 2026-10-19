@@ -1,0 +1,29 @@
+---
+import PortfolioPage from '../../../components/PortfolioPage.astro';
+
+const benefits = [
+  {
+    "title": "Platform-native",
+    "text": "Edited for the pacing and trends of each platform."
+  },
+  {
+    "title": "Traffic that ranks",
+    "text": "External sales signals can help organic Amazon rank."
+  },
+  {
+    "title": "Content calendar",
+    "text": "Consistent output planned month by month."
+  }
+];
+---
+
+<PortfolioPage
+  title="Social Media Videos"
+  metaTitle="Social Media Videos Portfolio | Share It Studio"
+  description="Reels and TikToks that drive external traffic to Amazon. Explore Share It Studio’s Social Media Videos portfolio for Amazon sellers."
+  subtitle="Reels and TikToks that drive external traffic to Amazon."
+  intro="External traffic can support your Amazon ranking. We produce vertical videos designed for Reels, TikTok and Shorts that grow your audience and send buyers to your listing."
+  items={["Trend-based reel", "Product teaser", "Tips & tricks", "Behind the brand"]}
+  aspect="vertical"
+  benefits={benefits}
+/>

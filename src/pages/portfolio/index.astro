@@ -1,6 +1,75 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+
+const groups = [
+  {
+    name: 'Listing Images',
+    text: 'Main images, infographics and lifestyles that win the click and the sale.',
+    links: [
+      { label: 'Hero Images', href: '/portfolio/listing-images/hero-images' },
+      { label: 'Infographics', href: '/portfolio/listing-images/infographics' },
+      { label: 'Lifestyles', href: '/portfolio/listing-images/lifestyles' },
+    ],
+  },
+  {
+    name: 'A+ & Brand Content',
+    text: 'Below-the-fold storytelling that builds trust and lifts conversion.',
+    links: [
+      { label: 'A+ Content', href: '/portfolio/a-content' },
+      { label: 'Premium A+ Content', href: '/portfolio/premium-a-content' },
+      { label: 'Brand Story', href: '/portfolio/brand-story' },
+      { label: 'Storefront', href: '/portfolio/storefront' },
+    ],
+  },
+  {
+    name: 'Videos',
+    text: 'Product demos, ads and creator content for Amazon and social.',
+    links: [
+      { label: 'Listing Videos', href: '/portfolio/videos/listing-videos' },
+      { label: 'Sponsored Ads', href: '/portfolio/videos/sponsored-ads' },
+      { label: 'UGC Videos', href: '/portfolio/videos/ugc-videos' },
+      { label: 'Social Media Videos', href: '/portfolio/videos/social-media-videos' },
+    ],
+  },
+  {
+    name: 'Branding',
+    text: 'Logos, packaging and identity systems designed for e-commerce.',
+    links: [{ label: 'Branding', href: '/portfolio/branding' }],
+  },
+];
 ---
-<layout title = "Portfolio | Share It Studio">
-    portfolio index
-</layout>
+
+<Layout title="Portfolio | Share It Studio" description="Browse Share It Studio’s portfolio of Amazon listing images, A+ Content, Storefronts, videos and branding.">
+  <PageHero
+    eyebrow="Our work"
+    title="Portfolio"
+    subtitle="Visual content built on data — explore what we create for Amazon sellers."
+  />
+
+  <section class="container-x py-16 md:py-20">
+    <div class="grid gap-8 md:grid-cols-2">
+      {groups.map((g) => (
+        <article class="group overflow-hidden rounded-3xl border border-black/5 bg-white shadow-sm transition hover:shadow-xl">
+          <div class="placeholder aspect-[16/9] rounded-none border-0 border-b-2">{g.name} preview</div>
+          <div class="p-7">
+            <h2 class="text-2xl font-bold text-brand-green">{g.name}</h2>
+            <p class="mt-2 text-brand-ink/70">{g.text}</p>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {g.links.map((l) => (
+                <li>
+                  <a href={l.href} class="inline-block rounded-full bg-brand-cream px-4 py-1.5 text-sm font-medium text-brand-green transition hover:bg-brand-yellow">
+                    {l.label} →
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CtaBanner title="Like what you see?" text="Let’s talk about the content your listing needs to convert better." />
+</Layout>

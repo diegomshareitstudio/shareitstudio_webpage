@@ -1,0 +1,29 @@
+---
+import PortfolioPage from '../../components/PortfolioPage.astro';
+
+const benefits = [
+  {
+    "title": "Catalog-wide reach",
+    "text": "One design appears across every product you sell."
+  },
+  {
+    "title": "Builds loyalty",
+    "text": "Shoppers buy from brands, not just products."
+  },
+  {
+    "title": "Drives Storefront traffic",
+    "text": "Strategic links move shoppers deeper into your catalog."
+  }
+];
+---
+
+<PortfolioPage
+  title="Brand Story"
+  metaTitle="Brand Story Portfolio | Share It Studio"
+  description="Introduce who you are and why shoppers should trust you. Explore Share It Studio’s Brand Story portfolio for Amazon sellers."
+  subtitle="Introduce who you are and why shoppers should trust you."
+  intro="The Brand Story carousel appears on every ASIN in your catalog. We design it to communicate your mission, showcase your product range and send shoppers to your Storefront."
+  items={["Brand mission card", "Founder story card", "Product range card", "Values & certifications", "Storefront link card", "Customer promise card"]}
+  aspect="wide"
+  benefits={benefits}
+/>

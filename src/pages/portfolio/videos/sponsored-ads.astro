@@ -1,0 +1,29 @@
+---
+import PortfolioPage from '../../../components/PortfolioPage.astro';
+
+const benefits = [
+  {
+    "title": "2-second hook",
+    "text": "Openers designed to stop the scroll in search results."
+  },
+  {
+    "title": "Ad-spec compliant",
+    "text": "Built to Amazon video ad requirements from day one."
+  },
+  {
+    "title": "Test-ready variants",
+    "text": "Multiple cuts so your PPC team can A/B test."
+  }
+];
+---
+
+<PortfolioPage
+  title="Sponsored Ads Videos"
+  metaTitle="Sponsored Ads Videos Portfolio | Share It Studio"
+  description="Short, punchy videos made for Sponsored Brands placements. Explore Share It Studio’s Sponsored Ads Videos portfolio for Amazon sellers."
+  subtitle="Short, punchy videos made for Sponsored Brands placements."
+  intro="Sponsored Brands Video ads autoplay in search results. We create 15–30 second spots that hook in the first two seconds and drive clicks with clear benefits."
+  items={["15s product hook", "30s benefit story", "Seasonal promo", "Problem / solution spot"]}
+  aspect="video"
+  benefits={benefits}
+/>

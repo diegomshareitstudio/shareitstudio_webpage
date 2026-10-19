@@ -1,0 +1,29 @@
+---
+import PortfolioPage from '../../../components/PortfolioPage.astro';
+
+const benefits = [
+  {
+    "title": "Real people",
+    "text": "Creators chosen to match your buyer persona."
+  },
+  {
+    "title": "Multi-channel",
+    "text": "Use on Amazon, TikTok, Instagram and ads."
+  },
+  {
+    "title": "Social proof",
+    "text": "Authentic content that reduces purchase anxiety."
+  }
+];
+---
+
+<PortfolioPage
+  title="UGC Videos"
+  metaTitle="UGC Videos Portfolio | Share It Studio"
+  description="Authentic creator content that builds trust. Explore Share It Studio’s UGC Videos portfolio for Amazon sellers."
+  subtitle="Authentic creator content that builds trust."
+  intro="User-generated style videos feel like a recommendation from a friend. We match your product with creators who fit your audience and deliver natural, believable content."
+  items={["Creator review", "Day-in-the-life", "Before & after", "Honest unboxing"]}
+  aspect="vertical"
+  benefits={benefits}
+/>

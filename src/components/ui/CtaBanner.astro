@@ -1,0 +1,26 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  title = 'Ready to turn more visitors into buyers?',
+  text = 'Book a free 30-minute strategy call and we’ll review your listing with you — no strings attached.',
+  ctaLabel = 'Schedule a Call',
+  ctaHref = '/call',
+} = Astro.props;
+---
+
+<section class="container-x py-16">
+  <div class="relative overflow-hidden rounded-3xl bg-brand-yellow px-6 py-12 text-center md:px-16 md:py-16">
+    <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/20"></div>
+    <h2 class="relative text-3xl font-bold text-brand-green md:text-4xl">{title}</h2>
+    <p class="relative mx-auto mt-4 max-w-xl text-brand-green/80">{text}</p>
+    <a href={ctaHref} class="relative mt-8 inline-flex rounded-lg bg-brand-green px-7 py-3 font-bold text-white transition hover:bg-brand-green-dark">
+      {ctaLabel}
+    </a>
+  </div>
+</section>
