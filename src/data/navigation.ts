@@ -37,10 +37,10 @@ export const mainNav: NavLink[] = [
     href: '/portfolio',
     children: [
       { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Case Studies', href: '/case-studies' },
       ...portfolioNav,
     ],
   },
-  { label: 'Case Studies', href: '/case-studies' },
   {
     label: 'Resources',
     href: '/blog',
@@ -54,7 +54,7 @@ export const mainNav: NavLink[] = [
     ],
   },
   {
-    label: 'About',
+    label: 'About Us',
     href: '/about-us',
     children: [
       { label: 'About Us', href: '/about-us' },

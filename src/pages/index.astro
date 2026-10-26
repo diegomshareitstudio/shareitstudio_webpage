@@ -1,156 +1,217 @@
 ---
 /**
- * Homepage (blueprint P01 v1.2) — 10 sections; booking CTAs → /book-a-call:
- * Hero → Brands → Reviews → Services (name-only strip + THREE main cards) → Case studies → Methodology → Portfolio → Resources → FAQ → Final CTA.
- * Items marked TODO are PENDING in the blueprint (permissions, evidence, sign-off).
+ * Homepage, copy V3 (hybrid). Editorial draft: not approved for publication.
+ * Flow: Hero → Results up front → Two ways we help → The question behind the creative → Selected work →
+ * How we work → Where we fit → Resources → FAQ → Final CTA.
+ * Primary CTA "Talk to a Human" → /book-a-call (Calendly scheduling lives there). Secondary CTA "See Our Work" → /portfolio.
+ * TODO: the 90-day social case has no case-study page yet; its CTA points to the case-studies hub until it exists.
+ * TODO: the work cards use placeholder visuals until approved assets are available.
  */
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
-import CaseStudyList from '../components/ui/CaseStudyList.astro';
-import Marquee from '../components/ui/Marquee.astro';
 import Badge from '../components/ui/Badge.astro';
 import TextMarquee from '../components/ui/TextMarquee.astro';
-import { listedCaseStudies } from '../data/caseStudies';
-import { getService } from '../data/services';
 import { getPost, postHref } from '../data/posts';
-import { homepageFaqs } from '../data/faqs';
+import type { Faq } from '../data/faqs';
 
-const title = 'Share It Studio | Amazon Listing & Ecommerce Social Media';
+const title = 'Share It Studio | Amazon Listing Optimization & Social Media Management';
 const description =
-  'Explore Share It Studio’s social media, Amazon listing optimization and content performance services. See our work and book a call.';
+  'Amazon listing images, A+ Content, video and copy that help shoppers understand your product, plus social media management for ecommerce brands. Talk to our team.';
 
-// 02 — TODO: only authorized client logos (D02); label partners separately. No stats until audited.
-const logoCount = 6;
+const bookHref = '/book-a-call';
 
-// 03 — TODO: replace with approved, verbatim client reviews (D03). Never ship placeholders.
-const testimonials = [
+// 02 — two proof points. Individual project results in different reporting periods.
+const results = [
   {
-    quote: 'Testimonial about the clarity of the process and the quality of the deliverables.',
-    name: 'Client name',
-    brand: 'Brand',
+    label: 'Social Media | Organic Discovery',
+    stat: '3M+',
+    statLabel: 'organic views in 90 days',
+    detail: '3,057,772 views · $0 in reported paid ad spend',
+    text: 'A new Instagram account used audience-led content themes and a repeatable publishing approach. During its February 4–May 4, 2026 reporting window, it recorded more than three million views without reported paid promotion.',
+    cta: 'Explore the 90-Day Social Case',
+    href: '/case-studies', // TODO: dedicated case-study page
+    tone: 'dark',
   },
   {
-    quote: 'Testimonial about collaboration and how the team executed a specific creative vision.',
-    name: 'Client name',
-    brand: 'Brand',
-  },
-  {
-    quote: 'Testimonial about the strategy and the content delivered for the brand.',
-    name: 'Client name',
-    brand: 'Brand',
+    label: 'Amazon | YUNGPRIME',
+    stat: '+28.3%',
+    statLabel: 'organic Amazon sales',
+    detail: '$16,432 → $21,077 · May to June',
+    text: 'A coordinated content transformation brought listing images, A+ Content, Brand Story, Storefront, video, and copy into a more consistent product story. The case study also documents this increase in reported monthly organic sales.',
+    cta: 'See YUNGPRIME’s Transformation',
+    href: '/case-studies/yungprime',
+    tone: 'yellow',
   },
 ];
 
-// 04A — name-only service strip: the ten labels, one row, no descriptions or media.
-// "Content Performance Pillars" has no link until its name, scope and URL are approved (D14/D15): never a dead link.
-const strip = [
-  ...[
-    'social-media-management',
-    'amazon-listing-optimization',
-    'amazon-a-plus-content',
-    'amazon-listing-images',
-    'amazon-product-photography',
-    'amazon-product-video-production',
-    'amazon-storefront-design',
-    'amazon-brand-story-design',
-    'amazon-listing-copywriting',
-  ].map((id) => {
-    const sv = getService(id);
-    return { name: sv.title, href: sv.href as string | undefined };
-  }),
-  { name: 'Content Performance Management', href: undefined },
-];
-
-// 04B — exactly three main services, equal weight, fixed order. Copy is draft (D01, D14).
-// The third card links to /book-a-call until its own service page exists.
-const featured = [
+// 03 — the two services
+const services = [
   {
-    title: 'Social Media Management',
-    text: 'Content planning, creation and management for ecommerce brands. Channels and inclusions are confirmed in your proposal.',
+    label: 'Social Media Management',
+    title: 'Build an audience before you need the sale.',
+    text: 'Your audience needs a reason to pay attention—and another reason to come back. We turn customer interests, brand knowledge, and product stories into content people want to spend time with. Our monthly plans bring together strategy and creative execution, with scripting, production, editing, and publishing according to the plan you choose.',
+    note: 'For ecommerce brands, on Amazon or beyond.',
     cta: 'Explore Social Media Management',
-    href: getService('social-media-management').href,
+    href: '/services/social-media-management',
   },
   {
-    title: 'Amazon Listing Optimization',
-    text: 'Research-informed listing content that helps shoppers understand products through images, A+, video and copy, scoped to your need.',
+    label: 'Amazon Listing Optimization',
+    title: 'Your product might be better. Does your listing make that obvious?',
+    text: 'Shoppers can’t ask your listing what they would ask a salesperson. We use product knowledge, buyer questions, reviews, and competitor research to decide what your images, infographics, A+ Content, Brand Story, videos, and copy should explain—and what deserves the most attention.',
+    note: 'Need one deliverable? Start there. Need several assets working together? We’ll build a custom scope around your product, goals, and budget.',
     cta: 'Explore Amazon Listing Optimization',
-    href: getService('amazon-listing-optimization').href,
-  },
-  {
-    title: 'Content Performance Management',
-    text: 'Continued improvement of content after launch through measurement and creative iteration. Tracking, testing and cadence are agreed per project.',
-    cta: 'Discuss Content Performance Management',
-    href: '/book-a-call',
+    href: '/services/amazon-listing-optimization',
   },
 ];
 
-// 05 — TODO: show 2–3 cases only once metrics, baseline and period are audited (D04)
-const cases = listedCaseStudies.slice(0, 3);
-
-// 06 — methodology (TODO: Founder/Delivery sign-off, D09). Scope varies per engagement.
-const steps = [
+// 04 — the questions behind the creative
+const questions = [
   {
-    t: 'Discover & Research',
-    d: 'We study your product, customers, reviews and competing content to find what the content needs to say.',
+    q: 'Will this work for me?',
+    a: 'Show the product in use, at the right scale, and in a context the buyer recognizes.',
   },
-  { t: 'Strategic Direction', d: 'We turn the research into a clear creative direction tied to your business goals.' },
-  { t: 'Create & Produce', d: 'We design, write and produce the content defined in the scope of your project.' },
-  { t: 'Review & Refine', d: 'We review the work with you and iterate so it gets closer to your brand’s goals.' },
+  {
+    q: 'Why should I choose this one?',
+    a: 'Make the benefits, materials, differences, and proof easier to understand.',
+  },
+  {
+    q: 'Why should I follow this brand?',
+    a: 'Create useful, recognizable content themes that give people a reason to watch again.',
+  },
 ];
 
-// 07 — four categories, one teaser each, each linking to its own portfolio page
+// 05 — selected work
 const work = [
   {
-    cat: 'Listing Images',
-    label: 'Hero, lifestyle and infographic images',
-    href: '/portfolio/hero-images',
-    cta: 'View listing image work',
+    cat: 'Pink Miracle',
+    title: 'Rethinking the creative for an established product',
+    text: 'An established product can have strong market recognition and still leave value unexplained. Rather than treating new images as a cosmetic refresh, we explored alternative creative directions informed by shopper preferences and feedback.',
+    cta: 'Explore the Before and After',
+    href: '/case-studies/pink-miracle',
   },
   {
-    cat: 'A+ Content',
-    label: 'Desktop and mobile A+ modules',
-    href: '/portfolio/a-plus-content',
-    cta: 'View A+ Content designs',
-  },
-  {
-    cat: 'Product Videos',
-    label: 'Listing and Sponsored Brands videos',
-    href: '/portfolio/video-production',
-    cta: 'See product videos',
+    cat: 'Super Ninja',
+    title: 'One product category. Different markets. Different questions.',
+    text: 'The same product benefit may need a different explanation in a different country. Local competitor research, reviews, and buying objections informed market-specific creative decisions.',
+    cta: 'See the Market-Specific Work',
+    href: '/case-studies/super-ninja',
   },
   {
     cat: 'Social Media',
-    label: 'Reels, carousels and campaigns',
+    title: 'Creating reasons to come back',
+    text: 'An organic content strategy built around audience interests and recurring themes gave a new account a clearer editorial direction than a feed made up only of product promotions.',
+    cta: 'See the Social Content',
     href: '/portfolio/social-media',
-    cta: 'See social media work',
   },
 ];
 
-// 08 — three live guides: Amazon images, A+ Content, creative
-// TODO: swap the third card for a video / social article once one exists (D08)
+// 06 — how we work
+const steps = [
+  {
+    t: 'Get clear on the goal',
+    d: 'We align on your product, audience, existing content, priorities, and project scope. When research is part of the engagement, we dig into competitors, reviews, and buying questions.',
+  },
+  {
+    t: 'Decide what matters',
+    d: 'We identify which details need explaining, which benefits need proving, and what each piece of content needs to accomplish.',
+  },
+  {
+    t: 'Bring it to life',
+    d: 'Our team turns the direction into the right deliverables—Amazon images, A+ Content, copy, video, or recurring social content.',
+  },
+  {
+    t: 'Review, deliver, and improve',
+    d: 'We work through the agreed review and delivery process. For ongoing engagements, reporting and feedback can guide the next round of creative decisions.',
+  },
+];
+
+// 07 — where we fit
+const fits = [
+  {
+    t: 'Launching something new?',
+    d: 'Help people understand the product, how it works, and why it deserves a closer look.',
+    tone: 'bg-brand-yellow-soft text-brand-green',
+  },
+  {
+    t: 'Already selling on Amazon?',
+    d: 'Make the value clearer across the content shoppers use to compare and decide.',
+    tone: 'bg-brand-cream text-brand-green',
+  },
+  {
+    t: 'Building a stronger social presence?',
+    d: 'Turn disconnected posting into a more intentional, consistently managed content plan.',
+    tone: 'bg-brand-green text-white',
+  },
+];
+
+// 08 — resources (existing guides; the card copy is new)
 const resources = [
-  getPost('amazon-images-requirements'),
-  getPost('a-plus-content-templates'),
-  getPost('amazon-product-images-best-practices'),
+  {
+    post: getPost('a-plus-content-templates'),
+    title: 'A+ Content Templates',
+    text: 'Explore ways to structure the content shoppers see below the product listing.',
+    cta: 'Explore Templates',
+  },
+  {
+    post: getPost('amazon-a-plus-content-examples'),
+    title: 'Amazon A+ Content Examples',
+    text: 'See how different brands communicate benefits through their A+ Content.',
+    cta: 'See Examples',
+  },
+  {
+    post: getPost('amazon-images-requirements'),
+    title: 'Amazon Image Requirements',
+    text: 'Understand the requirements behind Amazon product imagery before creating or updating your listing.',
+    cta: 'Read the Guide',
+  },
+];
+
+// 09 — FAQ
+const faqs: Faq[] = [
+  {
+    q: 'Can I hire you for just A+ Content, listing images, or another Amazon deliverable?',
+    a: 'Yes. Amazon creative services can be hired individually or combined into a custom project based on your priorities and budget.',
+  },
+  {
+    q: 'Do you manage social media for brands that don’t sell on Amazon?',
+    a: 'Yes. We work with ecommerce brands beyond Amazon. Deliverables, channels, and publishing cadence depend on the monthly plan.',
+  },
+  {
+    q: 'How is pricing structured?',
+    a: 'Amazon projects are quoted around the services and deliverables you need. Social Media Management is offered through monthly plans with different scopes.',
+  },
+  {
+    q: 'Can you work alongside our existing marketing or PPC team?',
+    a: 'We can coordinate creative direction with existing partners when it’s part of the project. Amazon advertising or account operations aren’t automatically included in listing creative work.',
+  },
+  {
+    q: 'Is everything created with AI?',
+    a: 'No. The production approach depends on the product and the agreed scope. It may involve real photography, video, existing brand assets, or AI-assisted techniques, with human creative direction and review.',
+  },
+  {
+    q: 'How do you evaluate whether the content is working?',
+    a: 'It depends on the engagement and the data available. Reach, engagement, and traffic can inform social media decisions; on Amazon, CTR, conversion, and sales can provide context. We look at the relevant signals without assuming every change was caused by creative alone.',
+  },
 ];
 ---
 
 <Layout title={title} description={description}>
-  <!-- 01 — Hero / three main service directions (no ten-service list) -->
+  <!-- 01 — Hero -->
   <PageHero
     size="lg"
-    eyebrow="Share It Studio"
-    title="Ecommerce Content That Connects, Converts and Improves"
-    highlight="Connects, Converts and Improves"
-    subtitle="Share It Studio supports ecommerce brands through social media management, Amazon listing optimization and continued content-performance improvement, with specialist creative services available separately."
-    ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
-    secondaryLabel="Explore Services"
-    secondaryHref="#services"
+    eyebrow="Amazon Listing Optimization + Social Media Management"
+    title="Amazon listings that show the difference. Social content worth following."
+    highlight="show the difference"
+    subtitle="We create Amazon listing images, A+ Content, video, and copy that help shoppers understand what makes your product worth choosing. We also plan, produce, and manage social media for ecommerce brands—whether they sell on Amazon or not."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    secondaryLabel="See Our Work"
+    secondaryHref="/portfolio"
   >
+    <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team.</p>
     <!-- TODO: HERO-01 — replace placeholders with approved client work (D12) -->
     <div slot="visual" class="relative">
       <Badge id="hero-badge" class="absolute -bottom-8 -left-4 z-10 h-32 w-32 -rotate-12 text-brand-orange lg:-left-12" />
@@ -164,120 +225,137 @@ const resources = [
     </div>
   </PageHero>
 
-  <!-- 02 — Brands & relationships -->
-  <section class="container-x pb-6 pt-10" aria-labelledby="brands-heading">
-    <h2 id="brands-heading" class="eyebrow mb-6 text-center">Brands We’ve Worked With</h2>
-  </section>
-  <div class="pb-10">
-    <div class="marquee" data-reverse style="--marquee-duration:30s">
-      <div class="marquee-track">
-        {[false, true].map((dupe) => (
-          <ul class="marquee-list" aria-hidden={dupe || undefined} style="gap:1rem;padding-right:1rem">
-            {Array.from({ length: logoCount * 2 }).map((_, i) => (
-              <li class="placeholder h-14 w-36 shrink-0 rounded-xl text-xs">Logo {(i % logoCount) + 1}</li>
-            ))}
-          </ul>
-        ))}
-      </div>
-    </div>
-  </div>
-
-  <TextMarquee words={['Social media', 'Amazon listings', 'A+ content', 'Video', 'Photography']} />
-
-  <!-- 03 — Client reviews -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="reviews-heading">
+  <!-- 02 — Results, up front -->
+  <section class="py-16 md:py-24" aria-labelledby="results-heading">
     <div class="container-x">
-      <SectionHeading
-        id="reviews-heading"
-        title="Client Reviews"
-        text="What the brands we work with say about collaborating with us."
-      />
-      <ul class="grid gap-4 md:grid-cols-3">
-        {testimonials.map((t) => (
+      <SectionHeading eyebrow="Results, up front" id="results-heading" title="Creative you can see. Results you can examine." />
+      <ul class="grid gap-5 md:grid-cols-2">
+        {results.map((r) => (
           <li class="flex">
-            <figure class="flex w-full flex-col rounded-[1.75rem] bg-white p-7 shadow-sm">
-              <blockquote class="flex-1 text-lg text-brand-ink/75">“{t.quote}”</blockquote>
-              <figcaption class="mt-6 flex items-center gap-3">
-                <span class="h-10 w-10 rounded-full bg-brand-cream" aria-hidden="true"></span>
-                <span class="text-sm">
-                  <span class="block font-bold text-brand-green">{t.name}</span>
-                  <span class="text-brand-ink/55">{t.brand}</span>
-                </span>
-              </figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
-      <a href="/case-studies" class="btn-outline mt-8">Read client stories</a>
-    </div>
-  </section>
-
-  <!-- 04 — Our services: name-only strip above exactly three main cards -->
-  <section id="services" class="scroll-mt-24 py-16 md:py-24" aria-labelledby="services-heading">
-    <div class="container-x">
-      <SectionHeading
-        id="services-heading"
-        title="Our Services"
-        text="Pick one of our three main services, or jump straight to a specialist service."
-      />
-
-      <nav aria-label="All services">
-        <Marquee items={strip} duration={45} />
-      </nav>
-
-      <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {featured.map((f) => (
-          <li class="flex">
-            <article class="flex w-full flex-col rounded-[2rem] bg-brand-cream p-7 md:p-8">
-              <h3 class="text-2xl font-extrabold text-brand-green">{f.title}</h3>
-              <p class="mt-3 flex-1 text-brand-ink/70">{f.text}</p>
-              <a href={f.href} class="btn-dark mt-6 self-start">{f.cta}</a>
+            <article
+              class:list={[
+                'flex w-full flex-col rounded-[2rem] p-8 md:p-10',
+                r.tone === 'dark' ? 'bg-brand-green text-white' : 'bg-brand-yellow text-brand-green',
+              ]}
+            >
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] opacity-70">{r.label}</p>
+              <p data-count class="mt-6 font-display text-7xl font-extrabold leading-none md:text-8xl">{r.stat}</p>
+              <p class="mt-2 text-2xl font-extrabold">{r.statLabel}</p>
+              <p class:list={['mt-2 text-sm font-semibold', r.tone === 'dark' ? 'text-brand-yellow' : 'text-brand-green/70']}>
+                {r.detail}
+              </p>
+              <p class:list={['mt-5 flex-1', r.tone === 'dark' ? 'text-white/75' : 'text-brand-green/80']}>{r.text}</p>
+              <a href={r.href} class:list={['mt-7 self-start', r.tone === 'dark' ? 'btn-primary' : 'btn-dark']}>{r.cta}</a>
             </article>
           </li>
         ))}
       </ul>
-
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/services" class="btn-outline">View All Services</a>
-        <a href="/book-a-call" class="btn-primary">Book a Call</a>
-      </div>
+      <p class="mt-5 text-xs text-brand-ink/50">
+        Individual project results in different reporting periods. Performance can be influenced by factors beyond creative
+        work.
+      </p>
     </div>
   </section>
 
-  <TextMarquee dark reverse duration={40} words={['Connect', 'Convert', 'Improve', 'Repeat']} />
+  <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
 
-  <!-- 05 — Results / case study highlights -->
-  <section class="container-x pb-16 md:pb-24" aria-labelledby="cases-heading">
-    <SectionHeading
-      id="cases-heading"
-      title="Selected Case Studies"
-      text="The challenge, the work we delivered and what changed for specific brands."
-    />
-    <CaseStudyList items={cases} />
-    <p class="mt-4 text-xs text-brand-ink/50">
-      Results are specific to each brand and time period, and are not a guarantee of future performance.
-    </p>
-    <a href="/case-studies" class="btn-outline mt-6">View Case Studies</a>
+  <!-- 03 — Two ways we help -->
+  <section class="py-16 md:py-24" aria-labelledby="services-heading" id="services">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Two ways we help"
+        id="services-heading"
+        title="Different needs. Creative built around the people you’re trying to reach."
+      />
+      <ul class="grid gap-5 md:grid-cols-2">
+        {services.map((s) => (
+          <li class="flex">
+            <article class="flex w-full flex-col rounded-[2rem] bg-brand-cream p-8 md:p-10">
+              <p class="eyebrow">{s.label}</p>
+              <h3 class="mt-5 text-3xl font-extrabold leading-tight text-brand-green">{s.title}</h3>
+              <p class="mt-4 text-brand-ink/70">{s.text}</p>
+              <p class="mt-4 flex-1 text-sm font-semibold text-brand-green">{s.note}</p>
+              <a href={s.href} class="btn-dark mt-7 self-start">{s.cta}</a>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
-  <!-- 06 — Why Share It Studio / methodology -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="why-heading">
+  <!-- 04 — The question behind the creative -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="question-heading">
+    <div class="container-x">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="eyebrow mb-4">The question behind the creative</p>
+        <h2 id="question-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
+          What does your customer still need to see, know, or believe?
+        </h2>
+        <p class="scrub-text mt-6 text-lg text-brand-ink/70">
+          Sometimes the most important product detail is missing from the images. Sometimes the difference between two
+          competing products is hard to understand. And sometimes a brand keeps publishing without giving anyone a reason
+          to return.
+        </p>
+      </div>
+      <ul class="mt-12 grid gap-5 md:grid-cols-3">
+        {questions.map((q) => (
+          <li class="flex">
+            <article class="flex w-full flex-col rounded-[2rem] bg-white p-8">
+              <p class="font-display text-3xl font-extrabold leading-tight text-brand-green">“{q.q}”</p>
+              <p class="mt-4 text-brand-ink/70">{q.a}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-12 text-center font-display text-2xl font-extrabold text-brand-green">
+        The question shapes the <span class="marker">creative</span>—not the other way around.
+      </p>
+    </div>
+  </section>
+
+  <TextMarquee dark reverse duration={40} words={['Ask the right question', 'Make it clear', 'Give a reason to return']} />
+
+  <!-- 05 — Selected work -->
+  <section class="py-16 md:py-24" aria-labelledby="work-heading">
+    <div class="container-x">
+      <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at why." />
+      <ul class="grid gap-6 md:grid-cols-3">
+        {work.map((w) => (
+          <li class="flex">
+            <a href={w.href} class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3">
+              <div class="placeholder aspect-[4/3] rounded-[1.6rem] bg-white">{w.cat}</div>
+              <div class="flex flex-1 flex-col p-5">
+                <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
+                <h3 class="mt-2 text-2xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
+                <p class="mt-3 flex-1 text-sm text-brand-ink/70">{w.text}</p>
+                <span class="mt-5 text-sm font-semibold text-brand-green">{w.cta} →</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/portfolio" class="btn-outline mt-10">Explore Our Work</a>
+    </div>
+  </section>
+
+  <!-- 06 — How we work -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="how-heading">
     <div class="container-x grid gap-12 md:grid-cols-2">
       <div class="md:sticky md:top-28 md:self-start">
-        <p class="eyebrow mb-4">Our approach</p>
-        <h2 id="why-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
-          Why <span class="marker">Share It Studio?</span>
+        <p class="eyebrow mb-4">How we work</p>
+        <h2 id="how-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
+          From the right question to the <span class="marker">right creative.</span>
         </h2>
         <p class="scrub-text mt-5 text-lg text-brand-ink/65">
-          We examine the market, buyer concerns and content gaps first, then create with intent. The exact scope
-          depends on the project you hire.
+          You know what we’re creating, why it belongs in the project, and what to expect from the agreed scope.
         </p>
-        <a href="/about-us" class="btn-outline mt-8">Learn more about Share It Studio</a>
       </div>
       <ol class="stack-cards space-y-4">
         {steps.map((s, i) => (
           <li class="flex gap-5 rounded-[1.75rem] bg-white p-6 md:min-h-[11rem]" style={`--i:${i}`}>
-            <span class="step-num font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
+            <span class="step-num font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
             <div>
               <h3 class="text-xl font-extrabold text-brand-green">{s.t}</h3>
               <p class="mt-1 text-brand-ink/65">{s.d}</p>
@@ -288,86 +366,76 @@ const resources = [
     </div>
   </section>
 
-  <!-- 07 — Selected portfolio work -->
-  <section class="py-16 md:py-24" aria-labelledby="portfolio-heading">
+  <!-- 07 — Where we fit -->
+  <section class="py-16 md:py-24" aria-labelledby="fit-heading">
     <div class="container-x">
-      <SectionHeading
-        id="portfolio-heading"
-        title="Explore Our Portfolio"
-        text="Samples of what we create, grouped by the type of content you need. A sample is not a measured result."
-      />
-      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {work.map((w) => (
-          <li>
-            <a href={w.href} class="group block">
-              <div class="placeholder aspect-square bg-brand-cream transition group-hover:border-brand-yellow group-hover:bg-brand-yellow-soft">
-                Image placeholder
-              </div>
-              <h3 class="mt-3 text-lg font-extrabold text-brand-green">{w.cat}</h3>
-              <p class="text-sm text-brand-ink/65">{w.label}</p>
-              <span class="mt-2 inline-block text-sm font-semibold text-brand-green">{w.cta} →</span>
-            </a>
+      <SectionHeading eyebrow="Where we fit" id="fit-heading" title="Start with what your brand actually needs." />
+      <ul class="grid gap-5 md:grid-cols-3">
+        {fits.map((f) => (
+          <li class="flex">
+            <article class:list={['flex w-full flex-col rounded-[2rem] p-8', f.tone]}>
+              <h3 class="text-2xl font-extrabold leading-snug">{f.t}</h3>
+              <p class="mt-3 opacity-80">{f.d}</p>
+            </article>
           </li>
         ))}
       </ul>
-      <a href="/portfolio" class="btn-outline mt-10">Explore the portfolio</a>
+      <p class="mt-8 max-w-3xl text-brand-ink/70">
+        Amazon services are available individually or in custom combinations. Social Media Management runs through monthly
+        plans. If your brand needs both, we can connect the creative direction across touchpoints—but neither service
+        requires the other.
+      </p>
     </div>
   </section>
 
-  <!-- 08 — Resources / insights -->
+  <!-- 08 — Resources -->
   <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="resources-heading">
     <div class="container-x">
       <SectionHeading
+        eyebrow="Resources"
         id="resources-heading"
-        title="Resources"
-        text="Practical guides on Amazon creative content and listing decisions, from our team."
+        title="Useful answers, whether or not we’re working together yet."
       />
       <ul class="grid gap-6 md:grid-cols-3">
-        {resources.map((p) => (
+        {resources.map((r) => (
           <li class="flex">
             <a
-              href={postHref(p)}
-              class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
+              href={postHref(r.post)}
+              class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:bg-brand-yellow-soft"
             >
               <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-brand-cream">Article image</div>
               <div class="flex flex-1 flex-col p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">
-                  {p.category} · {p.readTime}
-                </p>
-                <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{p.title}</h3>
-                <p class="mt-2 flex-1 text-sm text-brand-ink/65">{p.excerpt}</p>
-                <span class="mt-5 text-sm font-semibold text-brand-green">Read the guide →</span>
+                <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{r.title}</h3>
+                <p class="mt-2 flex-1 text-sm text-brand-ink/65">{r.text}</p>
+                <span class="mt-5 text-sm font-semibold text-brand-green">{r.cta} →</span>
               </div>
             </a>
           </li>
         ))}
       </ul>
-      <a href="/blog" class="btn-outline mt-8">Read all resources</a>
+      <a href="/blog" class="btn-outline mt-8">Explore All Resources</a>
     </div>
   </section>
 
-  <!-- 09 — Quick FAQ (no FAQPage markup: not needed for eligibility, see blueprint 09) -->
+  <!-- 09 — FAQ (no FAQPage markup: not needed for eligibility) -->
   <section class="py-16 md:py-24" aria-labelledby="faq-heading">
     <div class="container-x grid gap-12 md:grid-cols-[1fr_1.6fr]">
       <div>
         <p class="eyebrow mb-4">FAQ</p>
         <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">
-          Frequently Asked Questions
+          A few things worth knowing before we talk.
         </h2>
-        <a href="/faqs" class="btn-outline mt-8">View all FAQs</a>
       </div>
-      <FaqList faqs={homepageFaqs} variant="cream" />
+      <FaqList faqs={faqs} variant="cream" />
     </div>
   </section>
 
-  <!-- 10 — Final consultation CTA -->
+  <!-- 10 — Final CTA -->
   <CtaBanner
-    title="Let’s Discuss Your Brand"
-    text="Book a call to talk through your goals and the creative or social support your brand needs. If there’s a fit, we’ll prepare a tailored proposal."
-    ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
-    altLabel="General questions? Contact Share It Studio"
-    altHref="/contact-us"
-    note="We only use your details to reply to your request."
+    title="Tell us what you’re working on."
+    text="A product launch. An Amazon listing that could explain more. A social presence ready for a clearer direction. Whatever your starting point, let’s talk through the creative work that makes sense for your brand."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    note="Choose a time to speak directly with our team."
   />
 </Layout>
