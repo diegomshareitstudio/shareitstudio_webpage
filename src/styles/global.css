@@ -1,8 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Share It Studio brand tokens */
 @theme {
-  --font-sans: "Ubuntu", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-green: #1c3a3a;
   --color-brand-green-dark: #132a2a;
@@ -21,26 +22,240 @@
   body {
     @apply bg-white font-sans text-brand-ink antialiased;
   }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
 }
 
 @layer components {
+  /* Pill buttons with a trailing arrow */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-yellow px-6 py-3 font-bold text-brand-green shadow-md transition hover:-translate-y-0.5 hover:shadow-lg;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-yellow py-3 pl-6 pr-5 font-semibold text-brand-green transition hover:bg-brand-orange hover:text-white;
   }
-  .btn-orange {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110;
+  .btn-primary::after,
+  .btn-dark::after {
+    content: '→';
+    @apply transition-transform;
+  }
+  .btn-primary:hover::after,
+  .btn-dark:hover::after {
+    @apply translate-x-1;
+  }
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-green py-2.5 pl-5 pr-4 text-sm font-semibold text-white transition hover:bg-brand-green-light;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand-yellow px-6 py-3 font-bold text-brand-yellow transition hover:bg-brand-yellow hover:text-brand-green;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-brand-green/25 px-6 py-3 font-semibold text-brand-green transition hover:border-brand-green hover:bg-white;
   }
+  /* Small label with a yellow dash before it */
   .eyebrow {
-    @apply text-sm font-bold uppercase tracking-widest text-brand-orange;
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-green/70;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply h-0.5 w-6 rounded-full bg-brand-orange;
+  }
+  /* Highlighter-marker effect for key words */
+  .marker {
+    background: linear-gradient(
+      transparent 58%,
+      var(--color-brand-yellow) 58%,
+      var(--color-brand-yellow) 92%,
+      transparent 92%
+    );
+    @apply px-1;
   }
   .container-x {
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
   }
   /* Placeholder block used where real images/videos will go */
   .placeholder {
-    @apply flex items-center justify-center rounded-2xl border-2 border-dashed border-brand-green/20 bg-brand-cream text-center text-sm font-medium text-brand-green/50;
+    @apply flex items-center justify-center rounded-[1.75rem] border-2 border-dashed border-brand-green/15 bg-brand-cream text-center text-sm font-medium text-brand-green/50;
+  }
+}
+
+/* Long-form content (case studies and blog posts) */
+@layer components {
+  .prose-sis {
+    @apply text-[1.05rem] leading-[1.8] text-brand-ink/80;
+  }
+  .prose-sis > .article-body > header p {
+    @apply mb-5 text-xl leading-relaxed text-brand-ink;
+  }
+  .prose-sis section {
+    @apply scroll-mt-28;
+  }
+  .prose-sis h2 {
+    @apply mb-5 mt-16 scroll-mt-28 text-3xl font-extrabold leading-tight text-brand-green md:text-[2.1rem];
+  }
+  .prose-sis h2::before {
+    content: '';
+    @apply mb-4 block h-1.5 w-10 rounded-full bg-brand-yellow;
+  }
+  .prose-sis h3 {
+    @apply mb-3 mt-10 text-xl font-extrabold text-brand-green;
+  }
+  .prose-sis h4 {
+    @apply mb-2 mt-8 font-display text-sm font-semibold uppercase tracking-wider text-brand-green/60;
+  }
+  .prose-sis p {
+    @apply mb-5;
+  }
+  .prose-sis strong {
+    @apply font-semibold text-brand-ink;
+  }
+  .prose-sis a {
+    @apply font-medium text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange;
+  }
+  .prose-sis code {
+    @apply rounded-md bg-brand-cream px-1.5 py-0.5 text-[0.9em] text-brand-green;
+  }
+  .prose-sis ul {
+    @apply mb-6 space-y-3;
+  }
+  .prose-sis ul > li {
+    @apply relative pl-7;
+  }
+  .prose-sis ul > li::before {
+    content: '';
+    @apply absolute left-0 top-[0.7em] h-2.5 w-2.5 rounded-full bg-brand-orange;
+  }
+  .prose-sis ul ul {
+    @apply mt-3;
+  }
+  .prose-sis ul ul > li::before {
+    @apply bg-transparent ring-2 ring-brand-green/30;
+  }
+  .prose-sis ol {
+    @apply mb-6 space-y-3;
+    counter-reset: item;
+  }
+  .prose-sis ol > li {
+    @apply relative pl-12;
+    counter-increment: item;
+  }
+  .prose-sis ol > li::before {
+    content: counter(item);
+    @apply absolute left-0 top-0.5 grid h-8 w-8 place-items-center rounded-full bg-brand-green font-display text-sm font-extrabold text-brand-yellow;
+  }
+  /* Step-by-step lists become cards */
+  .prose-sis ol.steps-list > li {
+    @apply rounded-[1.75rem] bg-brand-cream p-6 pl-20;
+  }
+  .prose-sis ol.steps-list > li::before {
+    @apply left-6 top-6 h-10 w-10 bg-brand-yellow text-base text-brand-green;
+  }
+  .prose-sis ol.steps-list h3 {
+    @apply mt-1.5;
+  }
+  /* Metric lists render as a label / value table */
+  .prose-sis dl {
+    @apply my-8 grid grid-cols-[1fr_auto] overflow-hidden rounded-[1.5rem] bg-brand-cream;
+  }
+  .prose-sis dt,
+  .prose-sis dd {
+    @apply border-b border-black/5 px-6 py-4;
+  }
+  .prose-sis dt:nth-last-of-type(1),
+  .prose-sis dd:last-of-type {
+    @apply border-b-0;
+  }
+  .prose-sis dt {
+    @apply self-center text-sm font-medium text-brand-ink/65;
+  }
+  .prose-sis dd {
+    @apply m-0 text-right font-display text-2xl font-extrabold text-brand-green;
+  }
+  .prose-sis dd strong {
+    @apply ml-2 inline-block rounded-full bg-brand-yellow px-2.5 py-0.5 align-middle font-sans text-xs font-semibold text-brand-green;
+  }
+  .prose-sis blockquote {
+    @apply my-8 rounded-[1.75rem] bg-brand-green p-7 font-display text-2xl leading-snug text-white;
+  }
+  .prose-sis blockquote p {
+    @apply mb-0;
+  }
+  .prose-sis blockquote strong {
+    @apply text-brand-yellow;
+  }
+  .prose-sis aside {
+    @apply relative my-8 overflow-hidden rounded-[1.75rem] border-2 border-brand-yellow bg-brand-yellow-soft p-6 pl-16 text-brand-green;
+  }
+  .prose-sis aside::before {
+    content: '★';
+    @apply absolute left-6 top-6 grid h-7 w-7 place-items-center rounded-full bg-brand-yellow text-sm;
+  }
+  .prose-sis aside.pro-tip::before {
+    content: 'i';
+    @apply font-display font-extrabold;
+  }
+  .prose-sis aside p {
+    @apply mb-0;
+  }
+  .prose-sis .image-classification-example {
+    @apply my-8 rounded-[1.75rem] border border-black/10 p-6;
+  }
+  .prose-sis .image-classification-example h3 {
+    @apply mt-0;
+  }
+  .prose-sis .table-of-contents {
+    @apply mb-10 rounded-[1.75rem] bg-brand-cream p-6 lg:hidden;
+  }
+  .prose-sis .table-of-contents h2 {
+    @apply mb-3 mt-0 text-lg;
+  }
+  .prose-sis .table-of-contents h2::before {
+    @apply hidden;
+  }
+  .prose-sis .table-of-contents li::before {
+    @apply hidden;
+  }
+  .prose-sis .table-of-contents li {
+    @apply pl-0;
+  }
+  .prose-sis figure {
+    @apply my-6;
+  }
+  .prose-sis img {
+    @apply min-h-48 w-full rounded-[1.5rem] border-2 border-dashed border-brand-green/15 bg-white object-cover text-sm text-brand-green/40;
+  }
+  /* Real images (not placeholders) */
+  .prose-sis img.photo {
+    @apply h-auto min-h-0 border-0 border-solid object-contain;
+  }
+  .prose-sis figcaption {
+    @apply mt-3 text-sm text-brand-ink/55;
+  }
+  /* Data tables (e.g. results by marketplace) */
+  .prose-sis .table-wrap {
+    @apply my-8 overflow-x-auto rounded-[1.5rem] bg-brand-cream;
+  }
+  .prose-sis table {
+    @apply w-full min-w-[32rem] border-collapse text-left;
+  }
+  .prose-sis th,
+  .prose-sis td {
+    @apply border-b border-black/5 px-5 py-4;
+  }
+  .prose-sis tr:last-child > * {
+    @apply border-b-0;
+  }
+  .prose-sis thead th {
+    @apply bg-brand-green font-display text-sm font-semibold text-white;
+  }
+  .prose-sis tbody th {
+    @apply text-sm font-medium text-brand-ink/65;
+  }
+  .prose-sis td {
+    @apply font-display text-xl font-extrabold text-brand-green;
+  }
+  .prose-sis td.highlight {
+    @apply text-2xl text-brand-orange;
+  }
+  .prose-sis > .article-body > section:first-of-type h2,
+  .prose-sis > .article-body > header + section h2 {
+    @apply mt-10;
   }
 }

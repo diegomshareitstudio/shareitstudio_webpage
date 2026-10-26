@@ -1,0 +1,30 @@
+---
+interface Props {
+  variant?: 'dark' | 'light';
+}
+
+const { variant = 'dark' } = Astro.props;
+const light = variant === 'light';
+---
+
+<a href="/" class="group inline-flex items-center gap-2.5" aria-label="Share It Studio home">
+  <span
+    class:list={[
+      'relative grid h-10 w-10 place-items-center rounded-2xl font-display text-xl font-extrabold transition group-hover:rotate-6',
+      light ? 'bg-brand-yellow text-brand-green' : 'bg-brand-green text-brand-yellow',
+    ]}
+  >
+    s<span class="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-brand-orange ring-2 ring-white"></span>
+  </span>
+  <span class:list={['font-display leading-none', light ? 'text-white' : 'text-brand-green']}>
+    <span class="block text-lg font-extrabold">share it</span>
+    <span
+      class:list={[
+        'block text-[0.7rem] font-semibold tracking-[0.3em]',
+        light ? 'text-white/60' : 'text-brand-green/60',
+      ]}
+    >
+      studio
+    </span>
+  </span>
+</a>

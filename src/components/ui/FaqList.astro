@@ -1,0 +1,65 @@
+---
+/**
+ * Accordion of questions and answers. Each question is a real heading inside <summary>,
+ * so the Q&A structure is explicit for search engines and AI answers.
+ * Pair it with faqSchema() on the page for the FAQPage JSON-LD.
+ */
+import type { Faq } from '../../data/faqs';
+
+interface Props {
+  faqs: Faq[];
+  /** card: white cards (on cream) · cream: cream cards (on white) · outline: bordered rows */
+  variant?: 'card' | 'cream' | 'outline';
+  /** Level that keeps the page outline: 3 under a section h2, 2 directly under the h1 */
+  headingLevel?: 2 | 3;
+  openFirst?: boolean;
+}
+
+const { faqs, variant = 'card', headingLevel = 3, openFirst = variant !== 'outline' } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const outline = variant === 'outline';
+---
+
+<div class="space-y-3">
+  {faqs.map((f, i) => (
+    <details
+      class:list={[
+        'group',
+        outline ? 'rounded-xl border border-black/10 p-5 open:bg-brand-cream' : 'rounded-[1.5rem] p-6',
+        variant === 'card' && 'bg-white shadow-sm',
+        variant === 'cream' && 'bg-brand-cream',
+      ]}
+      open={openFirst && i === 0}
+    >
+      <summary
+        class:list={[
+          'flex cursor-pointer list-none items-center justify-between gap-4 text-brand-green',
+          outline ? 'font-bold' : 'font-display text-lg font-extrabold',
+        ]}
+      >
+        <Heading class="font-[inherit] text-[length:inherit] tracking-normal">{f.q}</Heading>
+        {outline ? (
+          <span class="transition group-open:rotate-45" aria-hidden="true">
+            +
+          </span>
+        ) : (
+          <span
+            class:list={[
+              'grid h-8 w-8 shrink-0 place-items-center rounded-full transition group-open:rotate-45 group-open:bg-brand-yellow',
+              variant === 'card' ? 'bg-brand-yellow-soft' : 'bg-white',
+            ]}
+            aria-hidden="true"
+          >
+            +
+          </span>
+        )}
+      </summary>
+      <p class:list={['mt-3', outline ? 'text-brand-ink/75' : 'leading-relaxed text-brand-ink/70']}>{f.a}</p>
+      {f.link && (
+        <a href={f.link.href} class="mt-3 inline-block text-sm font-semibold text-brand-green underline underline-offset-4">
+          {f.link.label} →
+        </a>
+      )}
+    </details>
+  ))}
+</div>

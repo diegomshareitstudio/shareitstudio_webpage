@@ -1,12 +1,151 @@
 ---
+/**
+ * Blog & Resources hub (blueprint P25 v1.0): an editorial index of guides.
+ * Sections: Hero → Featured guides → Explore by topic → All articles → Related help → Final CTA.
+ * Topic chips are in-page jump links (no category URLs); empty topics are hidden.
+ * No dates or authors on cards until editorial metadata is verified (D: author and real update dates).
+ * TODO: confirm the legacy root-level URL decision (blueprint says KEEP root URLs; this site serves /blog/{slug}).
+ */
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import { getPost, posts, postHref, type Post } from '../../data/posts';
+import { itemListSchema } from '../../lib/schema';
+
+// 02 — editor-selected evergreen guides (templates, examples, image requirements)
+const featured = ['a-plus-content-templates', 'amazon-a-plus-content-examples', 'amazon-images-requirements'].map(
+  getPost,
+);
+
+// 03/04 — topics that have at least one published article, in a fixed order
+const topicOrder: Post['topic'][] = ['A+ Content', 'Listing Images', 'Storefront & Brand Content'];
+const topics = topicOrder
+  .map((name) => ({
+    name,
+    id: `topic-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '')}`,
+    posts: posts.filter((p) => p.topic === name),
+  }))
+  .filter((t) => t.posts.length > 0);
+
+const breadcrumbs = [{ name: 'Blog', path: '/blog' }];
+const schema = [
+  itemListSchema(
+    '/blog',
+    'Share It Studio resources',
+    posts.map((p) => ({ name: p.title, path: postHref(p) })),
+  ),
+];
 ---
-<Layout>
-    <h1>Share It Studio Blog</h1>
-    <ul>
-        <li><a href="/blog/amazon-post-images-best-practices">Post 1</a></li>
-        <li><a href="/blog/amazon-storefront-complete-guide">Post 2</a></li>
-        <li><a href="/blog/avoid-a-content-rejected">Post 3</a></li>
-        <li><a href="/blog/create-a-content">Post 4</a></li>
+
+<Layout
+  title="Amazon & Ecommerce Resources | Share It Studio"
+  description="Explore practical Amazon listing, A+ Content, product image and ecommerce content guides from Share It Studio. Find helpful resources and related services."
+  breadcrumbs={breadcrumbs}
+  pageType="CollectionPage"
+  schema={schema}
+>
+  <!-- 01 — Hero / archive introduction -->
+  <PageHero
+    eyebrow="Share It Studio"
+    title="Amazon & Ecommerce Resources"
+    highlight="Resources"
+    subtitle="Practical guides from Share It Studio for Amazon and ecommerce brand teams. Find clear answers on A+ Content, listing images, Storefronts and more, then pick the guide that matches your question."
+    ctaLabel="Explore Articles"
+    ctaHref="#latest-guides"
+  />
+
+  <!-- 02 — Featured guides -->
+  <section id="latest-guides" class="container-x scroll-mt-24 py-14 md:py-20" aria-labelledby="featured-heading">
+    <SectionHeading id="featured-heading" title="Featured Guides" align="left" />
+    <ul class="grid gap-6 md:grid-cols-3">
+      {featured.map((p) => (
+        <li class="flex">
+          <a
+            href={postHref(p)}
+            class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
+          >
+            <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-white">Guide image</div>
+            <div class="flex flex-1 flex-col p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{p.topic}</p>
+              <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{p.title}</h3>
+              <p class="mt-2 flex-1 text-sm text-brand-ink/70">{p.excerpt}</p>
+              <span class="mt-5 text-sm font-semibold text-brand-green">Read Guide →</span>
+            </div>
+          </a>
+        </li>
+      ))}
     </ul>
+  </section>
+
+  <!-- 03 — Explore by topic -->
+  <section class="bg-brand-cream py-12" aria-labelledby="topics-heading">
+    <div class="container-x">
+      <h2 id="topics-heading" class="text-2xl font-extrabold text-brand-green">Explore by Topic</h2>
+      <ul class="mt-5 flex flex-wrap gap-2">
+        {topics.map((t) => (
+          <li>
+            <a
+              href={`#${t.id}`}
+              class="inline-flex min-h-[44px] items-center rounded-full bg-white px-5 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
+            >
+              {t.name} ({t.posts.length})
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 — All articles / editorial library -->
+  <section class="container-x py-14 md:py-20" aria-labelledby="all-heading">
+    <SectionHeading id="all-heading" title="All Articles" align="left" />
+    <div class="space-y-12">
+      {topics.map((t) => (
+        <div id={t.id} class="scroll-mt-24">
+          <p class="eyebrow mb-4">{t.name}</p>
+          <ul class="grid gap-6 md:grid-cols-2">
+            {t.posts.map((p) => (
+              <li class="flex">
+                <a
+                  href={postHref(p)}
+                  class="group flex w-full flex-col rounded-[1.75rem] bg-brand-cream p-6 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
+                >
+                  <h3 class="text-xl font-extrabold leading-snug text-brand-green">{p.title}</h3>
+                  <p class="mt-2 flex-1 text-sm text-brand-ink/70">{p.excerpt}</p>
+                  <span class="mt-4 text-sm font-semibold text-brand-green">Read Guide →</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 05 — Related solutions / help -->
+  <section class="bg-brand-cream py-12" aria-labelledby="help-heading">
+    <div class="container-x">
+      <h2 id="help-heading" class="text-2xl font-extrabold text-brand-green">Need Help With Your Content?</h2>
+      <p class="mt-2 max-w-2xl text-brand-ink/70">
+        If you would rather have a team do the work, explore what we offer, see examples of our work or read how past
+        projects went.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-3">
+        <li><a href="/services" class="btn-outline">Explore Services</a></li>
+        <li><a href="/portfolio" class="btn-outline">View Portfolio</a></li>
+        <li><a href="/case-studies" class="btn-outline">Case Studies</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 — Final low-pressure CTA -->
+  <CtaBanner
+    title="Let’s Talk"
+    text="If a guide isn’t enough for your question, book a call and we can talk through your brand’s content."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Prefer to write to us? Contact Us"
+    altHref="/contact-us"
+  />
 </Layout>

@@ -1,0 +1,29 @@
+---
+/** Row list of case studies with their headline metric (homepage and service pages). */
+import { caseStudies, caseStudyHref, type CaseStudy } from '../../data/caseStudies';
+
+interface Props {
+  items?: CaseStudy[];
+}
+
+const { items = caseStudies } = Astro.props;
+---
+
+<ul class="divide-y divide-black/10 border-y border-black/10">
+  {items.map((c) => (
+    <li>
+      <a
+        href={caseStudyHref(c)}
+        class="group grid items-center gap-2 py-7 transition md:grid-cols-[1fr_2fr_auto] md:gap-8"
+      >
+        <h3 class="text-3xl font-extrabold text-brand-green transition group-hover:translate-x-2">{c.client}</h3>
+        <p class="text-brand-ink/65">
+          <span class="font-semibold text-brand-green">{c.niche}.</span> {c.summary}
+        </p>
+        <span class="justify-self-start rounded-full bg-brand-yellow-soft px-4 py-2 text-sm font-semibold text-brand-green transition group-hover:bg-brand-yellow">
+          {c.stats[0].value} {c.stats[0].label.toLowerCase()} →
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>

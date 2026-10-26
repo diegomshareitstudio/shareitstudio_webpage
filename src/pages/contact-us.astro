@@ -1,0 +1,171 @@
+---
+/**
+ * Contact Us (blueprint P38-C v2.0): company contact and support directory. NOT a sales page.
+ * Sections: Hero → Official contact channels → Choose the right inquiry → What to include → Company information
+ * → Consultations are elsewhere (/book-a-call).
+ * No Calendly, no form, no "Book a Call" in the hero, no response times, hours or SLA (C-11), no invented mailboxes.
+ * All routing topics share the one general inbox, and the page says so (C-01, C-05).
+ * TODO: email/phone need an operational test (C-01/C-02); city needs reapproval (C-06); privacy contact (C-07);
+ * routing SOP and escalation owners (C-04). Add contact_email_click / contact_phone_click / contact_to_call_click
+ * / contact_help_link_click events (no PII) once analytics is approved (C-12).
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { SITE } from '../config/site';
+
+const { email, phone, location } = SITE;
+
+// 03 — topic guidance; every topic uses the same verified inbox until Operations approves others
+const topics = [
+  {
+    id: 'client-support',
+    q: 'I’m a current client with a project question',
+    a: 'Email us and include your brand name and the project you’re referring to.',
+  },
+  {
+    id: 'partnerships',
+    q: 'Partnerships, media and general inquiries',
+    a: 'Send your request to the same address and tell us who you are and what you have in mind.',
+  },
+  {
+    id: 'privacy',
+    q: 'Privacy questions',
+    a: 'Read our Privacy Policy first, then email us if you still need help.',
+    link: { label: 'Privacy Policy', href: '/privacy-policy' },
+  },
+];
+
+// 04 — optional, non-sensitive context
+const checklist = [
+  'Your company or brand name',
+  'The project or service you’re referring to, if any',
+  'A short description of the question or problem',
+  'A relevant public link, such as your website or Amazon listing',
+  'How you’d prefer us to reply',
+];
+
+const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
+---
+
+<Layout
+  title="Contact Share It Studio | Company Support & Inquiries"
+  description="Find Share It Studio contact details for client questions, partnerships and general inquiries. Use our company email or business phone to get in touch."
+  breadcrumbs={breadcrumbs}
+  pageType="ContactPage"
+>
+  <!-- 01 — Help & contact hero (no booking button) -->
+  <PageHero
+    eyebrow="Contact / Support"
+    title="Contact Share It Studio"
+    highlight="Share It Studio"
+    subtitle="Reach the Share It Studio team for project support, partnerships and general questions. Email us at the address below or call our business line."
+    ctaLabel="See Contact Options"
+    ctaHref="#contact-options"
+  />
+
+  <!-- 02 — Official contact channels -->
+  <section id="contact-options" class="container-x scroll-mt-24 py-16 md:py-20" aria-labelledby="options-heading">
+    <SectionHeading id="options-heading" title="Contact Options" align="left" />
+    <ul class="grid gap-4 md:grid-cols-2">
+      <li class="flex">
+        <article class="flex w-full flex-col rounded-[1.75rem] bg-brand-green p-7 text-white">
+          <h3 class="text-2xl font-extrabold">Email</h3>
+          <p class="mt-2 text-white/75">For client questions, partnerships and general inquiries.</p>
+          <p class="mt-4 break-all text-lg font-bold">
+            <a href={`mailto:${email}`} class="underline underline-offset-4">{email}</a>
+          </p>
+          <a href={`mailto:${email}`} class="btn-primary mt-6 self-start">Email Our Team</a>
+        </article>
+      </li>
+      <li class="flex">
+        <article class="flex w-full flex-col rounded-[1.75rem] bg-brand-cream p-7">
+          <h3 class="text-2xl font-extrabold text-brand-green">Phone</h3>
+          <p class="mt-2 text-brand-ink/70">Call our business line.</p>
+          <p class="mt-4 text-lg font-bold text-brand-green">
+            <a href={`tel:${phone.tel}`} class="underline underline-offset-4">{phone.display}</a>
+          </p>
+          <a href={`tel:${phone.tel}`} class="btn-dark mt-6 self-start">Call Our Team</a>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 03 — Choose the right inquiry -->
+  <section class="bg-brand-cream py-16 md:py-20" aria-labelledby="route-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="route-heading"
+        title="How to Direct Your Inquiry"
+        text="All topics below are handled through the same company email address."
+        align="left"
+      />
+      <ul class="grid gap-4 md:grid-cols-3">
+        {topics.map((t) => (
+          <li class="flex">
+            <article class="flex w-full flex-col rounded-[1.75rem] bg-white p-6">
+              <h3 class="text-lg font-extrabold text-brand-green">{t.q}</h3>
+              <p class="mt-2 flex-1 text-brand-ink/70">{t.a}</p>
+              <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
+                <a href={`mailto:${email}`} class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4">Email us</a>
+                {t.link && (
+                  <a href={t.link.href} class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4">{t.link.label}</a>
+                )}
+              </p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 — What to include -->
+  <section class="container-x py-16 md:py-20" aria-labelledby="include-heading">
+    <div class="grid gap-10 md:grid-cols-2">
+      <div>
+        <h2 id="include-heading" class="text-3xl font-extrabold text-brand-green md:text-4xl">What to Include</h2>
+        <p class="mt-4 text-brand-ink/70">
+          A short message helps the team understand and route your request. None of this is required.
+        </p>
+        <p class="mt-4 rounded-2xl bg-brand-yellow-soft p-4 text-sm text-brand-green" role="note">
+          Never send passwords, secret keys, payment card details or Seller Central access by email.
+        </p>
+      </div>
+      <div>
+        <ul class="list-disc space-y-2 pl-5 text-brand-ink/80">
+          {checklist.map((c) => <li>{c}</li>)}
+        </ul>
+        <a href={`mailto:${email}`} class="btn-dark mt-6">Write an Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — Company information and help links -->
+  <section class="bg-brand-cream py-12" aria-labelledby="company-heading">
+    <div class="container-x grid gap-8 md:grid-cols-2">
+      <div>
+        <h2 id="company-heading" class="text-2xl font-extrabold text-brand-green">Company Information</h2>
+        <p class="mt-3 font-bold text-brand-green">{SITE.name}</p>
+        <p class="text-brand-ink/70">{location}</p>
+        <p class="text-brand-ink/70">shareitstudio.com</p>
+      </div>
+      <div>
+        <p class="font-bold text-brand-green">Help and policies</p>
+        <ul class="mt-3 flex flex-wrap gap-3">
+          <li><a href="/faqs" class="btn-outline">Frequently Asked Questions</a></li>
+          <li><a href="/privacy-policy" class="btn-outline">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions" class="btn-outline">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — Separate consultation path: small text link only -->
+  <section class="container-x py-12" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="text-2xl font-extrabold text-brand-green">Looking to Discuss Services?</h2>
+    <p class="mt-2 max-w-2xl text-brand-ink/70">
+      Consultations about new projects are scheduled separately.
+      <a href="/book-a-call" class="font-semibold text-brand-green underline underline-offset-4">Book a Call</a>
+    </p>
+  </section>
+</Layout>

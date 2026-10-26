@@ -1,0 +1,193 @@
+---
+/** Main service line #1 — commercial target for "Amazon listing optimization services". */
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import type { Faq } from '../../data/faqs';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+const path = '/services/amazon-listing-optimization';
+const description =
+  'Amazon listing optimization services for established brands: listing images, A+ Content, video and Amazon SEO copy built to raise conversion rate. Get a free audit.';
+
+const points = [
+  'Listing audit: sessions, CVR, competitors',
+  'Keyword research & Amazon SEO',
+  'Buyer persona & image-by-image plan',
+  'Shopper testing and before/after tracking',
+];
+
+const deliverables = [
+  {
+    title: 'Amazon Listing Images',
+    text: 'Main image, infographics and lifestyles planned as one sequence that answers buyers’ questions.',
+    href: '/services/amazon-listing-images',
+  },
+  {
+    title: 'A+ Content Design',
+    text: 'Basic and Premium A+ Content designed to handle objections and cross-sell below the fold.',
+    href: '/services/amazon-a-plus-content',
+  },
+  {
+    title: 'Copywriting & Amazon SEO',
+    text: 'Keyword research, titles, bullet points, descriptions and backend search terms.',
+    href: '/services/amazon-listing-copywriting',
+  },
+  {
+    title: 'Product Video Production',
+    text: 'Listing videos and Sponsored Brands videos that show size, quality and use in seconds.',
+    href: '/services/amazon-product-video-production',
+  },
+  {
+    title: 'Product Photography',
+    text: 'White-background, detail and lifestyle shots planned for your listing.',
+    href: '/services/amazon-product-photography',
+  },
+  {
+    title: 'Brand Story Design',
+    text: 'A catalog-wide carousel that introduces your brand and cross-sells.',
+    href: '/services/amazon-brand-story-design',
+  },
+  {
+    title: 'Storefront Design',
+    text: 'A branded multi-page shop with zero competitor ads.',
+    href: '/services/amazon-storefront-design',
+  },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is Amazon listing optimization?',
+    a: 'It is the process of improving every element of a product page — images, A+ Content, video, title, bullets and backend keywords — so more shoppers find the product and more of them buy it.',
+  },
+  {
+    q: 'What is included in your Amazon listing optimization services?',
+    a: 'A listing and data audit, keyword research, a content plan, new listing images, A+ Content, video when it makes sense, SEO copy, and before/after tracking of sessions and conversion rate.',
+  },
+  {
+    q: 'How much does Amazon listing optimization cost?',
+    a: 'Pricing depends on the number of ASINs and the deliverables (images, A+ modules, photography, video). We send a quote after the free listing audit.',
+  },
+  {
+    q: 'Can you work alongside our PPC agency?',
+    a: 'Yes. We focus on the listing and creative; your PPC agency keeps running campaigns. A higher conversion rate makes the same ad budget go further.',
+  },
+  {
+    q: 'What should I look for before hiring an Amazon listing optimization agency?',
+    a: 'Public case studies with real metrics, a research process before design, in-house creative production, and a clear way to test and measure results.',
+  },
+];
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: 'Amazon Listing Optimization', path },
+];
+const schema = [
+  serviceSchema({
+    path,
+    name: 'Amazon Listing Optimization Services',
+    serviceType: 'Amazon listing optimization',
+    description:
+      'Amazon listing optimization services for established brands: listing images, A+ Content design, product video and Amazon SEO copy, built to increase conversion rate.',
+  }),
+  faqSchema(path, faqs),
+];
+---
+
+<Layout
+  title="Amazon Listing Optimization Services | Share It Studio"
+  description={description}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Amazon listing optimization services"
+    title="Amazon listings rebuilt to convert"
+    highlight="to convert"
+    subtitle="We improve the conversion rate of your Amazon listings with new images, A+ Content, video and SEO copy — planned from your reviews, competitors and sales data."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    secondaryLabel="See case studies"
+    secondaryHref="/case-studies"
+  >
+    <div slot="visual" class="relative pb-6">
+      <div class="placeholder aspect-[16/11] border-solid border-brand-green/10 bg-white shadow-xl">
+        Desktop listing mockup
+      </div>
+      <div class="placeholder absolute -bottom-2 -left-2 aspect-[9/16] w-1/4 rotate-[-5deg] border-solid border-brand-green bg-brand-green text-xs text-white/60 shadow-2xl sm:-left-6">
+        Mobile
+      </div>
+      <span class="absolute -right-2 top-6 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">
+        Before → After
+      </span>
+    </div>
+  </PageHero>
+
+  <section class="container-x grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
+    <div>
+      <p class="eyebrow mb-3">The problem</p>
+      <h2 class="text-3xl font-bold leading-tight text-brand-green md:text-4xl">
+        Traffic without conversion is expensive
+      </h2>
+      <p class="mt-5 text-lg text-brand-ink/75">
+        If your listing gets sessions but not sales, more ad spend won’t fix it. Shoppers leave when images and A+
+        Content don’t answer their questions. We rebuild the listing around what buyers look for, using review mining,
+        competitor analysis, keyword research and your Seller Central data.
+      </p>
+      <ul class="mt-6 space-y-3">
+        {points.map((i) => (
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-yellow text-xs font-bold text-brand-green">
+              ✓
+            </span>
+            {i}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="placeholder aspect-square">Before</div>
+      <div class="placeholder aspect-square border-brand-yellow bg-brand-yellow-soft text-brand-green">After</div>
+    </div>
+  </section>
+
+  <section class="bg-brand-cream py-16 md:py-20">
+    <div class="container-x">
+      <SectionHeading eyebrow="What’s included" title="Every piece of your listing, working together" />
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {deliverables.map((d) => (
+          <li class="flex">
+            <a
+              href={d.href}
+              class="w-full rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <h3 class="text-xl font-bold text-brand-green">{d.title}</h3>
+              <p class="mt-2 text-brand-ink/70">{d.text}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/portfolio" class="btn-outline mt-10">
+        See our portfolio
+      </a>
+    </div>
+  </section>
+
+  <section class="container-x max-w-3xl py-16 md:py-20">
+    <SectionHeading eyebrow="FAQ" title="Amazon listing optimization, answered" align="left" />
+    <FaqList faqs={faqs} variant="outline" />
+    <p class="mt-6 text-center text-sm">
+      <a href="/faqs" class="font-bold text-brand-orange hover:underline">
+        See all FAQs →
+      </a>
+    </p>
+  </section>
+
+  <CtaBanner
+    title="Find out what’s holding your listing back"
+    text="Get a free audit of your images, A+ Content and copy on a 30-minute call."
+    ctaLabel="Book a free listing audit"
+  />
+</Layout>

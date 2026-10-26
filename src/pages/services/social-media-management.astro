@@ -1,0 +1,153 @@
+---
+/** Main service line #2 — monthly social media management plans and pricing. */
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import PackageCards from '../../components/packages/PackageCards.astro';
+import PackageComparison from '../../components/packages/PackageComparison.astro';
+import PostingSchedule from '../../components/packages/PostingSchedule.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import type { Faq } from '../../data/faqs';
+import { socialPackages, formatPrice } from '../../data/socialPackages';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+const path = '/services/social-media-management';
+
+const pillars = [
+  {
+    title: 'Strategy & scripting',
+    text: 'Research, a monthly content plan and scripts built around your products, launches and Amazon goals.',
+  },
+  {
+    title: 'Filming, AI & editing',
+    text: 'Real filming, AI-enhanced content and repurposed assets, edited in-house by the team that makes your listing content.',
+  },
+  {
+    title: 'Posting, ads & reporting',
+    text: 'We upload and post, manage ads on higher plans and report on what drives traffic and sales.',
+  },
+];
+
+const priceRange = `${formatPrice(socialPackages[0].price)} to ${formatPrice(socialPackages[socialPackages.length - 1].price)}`;
+
+const faqs: Faq[] = [
+  {
+    q: 'How much does Share It Studio charge for social media management?',
+    a: `Our monthly e-commerce social media management packages go from ${priceRange} per month: Light (${formatPrice(socialPackages[0].price)}, 20 posts), Grow (${formatPrice(socialPackages[1].price)}, 40+ posts), Scale (${formatPrice(socialPackages[2].price)}, 60+ posts) and Dominate (${formatPrice(socialPackages[3].price)}, 80+ posts).`,
+  },
+  {
+    q: 'Which package is right for my Amazon brand?',
+    a: 'Light covers a consistent presence with repurposed and AI-enhanced content. Grow adds ads management and product integration. Scale adds real filming and sales-focused product integration. Dominate adds full filming, weekly tracking and conversion testing.',
+  },
+  {
+    q: 'What is avatar creation?',
+    a: 'A recurring on-screen character created for your brand’s content. It is included in Scale and Dominate, and available on Grow for an extra fee.',
+  },
+  {
+    q: 'Do you also manage our Amazon listing?',
+    a: 'Yes. Social media is one of our services; we also create listing images, A+ Content, Storefronts and product videos, so your brand looks the same on social and on Amazon.',
+  },
+];
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: 'Social Media Management', path },
+];
+const schema = [
+  serviceSchema({
+    path,
+    name: 'E-commerce Social Media Management',
+    serviceType: 'Social media management',
+    description:
+      'Monthly e-commerce social media management for Amazon brands: strategy, content creation, filming, editing, posting and reporting for Instagram and TikTok.',
+    offers: socialPackages.map((p) => ({
+      '@type': 'Offer',
+      name: `${p.name} — ${p.posts}`,
+      price: p.price,
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: p.price,
+        priceCurrency: 'USD',
+        unitText: 'MONTH',
+      },
+    })),
+  }),
+  faqSchema(path, faqs),
+];
+---
+
+<Layout
+  title="E-commerce Social Media Management Packages | Share It Studio"
+  description={`Monthly social media management packages for Amazon and e-commerce brands, from ${priceRange}/month: strategy, scripting, filming, editing, posting, ads and reporting.`}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
+  <PageHero
+    eyebrow="E-commerce social media management"
+    title="Social media management for Amazon brands"
+    highlight="Amazon brands"
+    subtitle={`Monthly content packages from ${formatPrice(socialPackages[0].price)}/mo — strategy, scripting, filming, editing, posting and reporting, from the team that already knows your listing.`}
+    ctaLabel="Compare packages"
+    ctaHref="#packages"
+    secondaryLabel="See our videos"
+    secondaryHref="/portfolio/social-media"
+  />
+
+  <section class="container-x py-16 md:py-20">
+    <SectionHeading
+      eyebrow="What we do"
+      title="Everything a monthly social media team does, in one place"
+      text="Your listing, your ads and your social content share one message, so shoppers recognize your brand wherever they find it."
+    />
+    <ul class="grid gap-6 md:grid-cols-3">
+      {pillars.map((p) => (
+        <li class="rounded-[2rem] border border-black/5 p-7 shadow-sm">
+          <div class="placeholder mb-5 aspect-[9/16] max-h-64 w-full">Vertical video</div>
+          <h3 class="text-xl font-extrabold text-brand-green">{p.title}</h3>
+          <p class="mt-2 text-brand-ink/70">{p.text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="packages" class="scroll-mt-24 bg-brand-cream py-16 md:py-24">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Packages"
+        title="Monthly social media content packages"
+        text="Four plans, billed monthly. Pick the posting volume and production level your brand needs."
+      />
+      <PackageCards />
+
+      <div class="mt-20">
+        <h3 class="mb-6 text-2xl font-extrabold text-brand-green md:text-3xl">Compare the packages</h3>
+        <PackageComparison />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-brand-green py-16 md:py-24">
+    <div class="container-x">
+      <p class="eyebrow mb-4 text-brand-yellow">Posting cadence</p>
+      <h2 class="mb-10 text-4xl font-extrabold text-white md:text-5xl">Content schedule by plan</h2>
+      <PostingSchedule />
+    </div>
+  </section>
+
+  <section class="container-x grid gap-12 py-16 md:grid-cols-[1fr_1.6fr] md:py-24">
+    <div>
+      <p class="eyebrow mb-4">FAQ</p>
+      <h2 class="text-4xl font-extrabold leading-tight text-brand-green">Social media packages, answered</h2>
+    </div>
+    <FaqList faqs={faqs} variant="cream" />
+  </section>
+
+  <CtaBanner
+    title="Not sure which package fits?"
+    text="Book a call and we’ll recommend a plan based on your products, channels and goals."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+  />
+</Layout>

@@ -1,0 +1,136 @@
+---
+/** Template for the standalone Amazon services (every service in data/services.ts with `page` content). */
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import CaseStudyList from '../../components/ui/CaseStudyList.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import { services, type ServiceItem } from '../../data/services';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+// The two main service lines have their own hand-built pages and no `page` data
+export function getStaticPaths() {
+  return services.filter((s) => s.page).map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props as { service: ServiceItem };
+const page = service.page!;
+const related = services.filter((s) => s.line === 'amazon' && s.slug !== service.slug).slice(0, 4);
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: service.title, path: service.href },
+];
+const schema = [
+  serviceSchema({ path: service.href, name: service.title, description: page.description }),
+  faqSchema(service.href, page.faqs),
+];
+---
+
+<Layout title={page.metaTitle} description={page.description} breadcrumbs={breadcrumbs} schema={schema}>
+  <PageHero
+    eyebrow={page.eyebrow}
+    title={page.heroTitle}
+    highlight={page.highlight}
+    subtitle={page.subtitle}
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    secondaryLabel="See our work"
+    secondaryHref={service.portfolio}
+  >
+    <div slot="visual" class="relative pb-6">
+      <div class="placeholder aspect-[16/11] border-solid border-brand-green/10 bg-white shadow-xl">
+        {service.title} visual
+      </div>
+      <span class="absolute -right-2 top-6 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">
+        Before → After
+      </span>
+    </div>
+  </PageHero>
+
+  <section class="container-x grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
+    <div>
+      <p class="eyebrow mb-3">The problem</p>
+      <h2 class="text-3xl font-bold leading-tight text-brand-green md:text-4xl">{page.problemTitle}</h2>
+      <p class="mt-5 text-lg text-brand-ink/75">{page.problemText}</p>
+      <ul class="mt-6 space-y-3">
+        {page.points.map((i) => (
+          <li class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-yellow text-xs font-bold text-brand-green">
+              ✓
+            </span>
+            {i}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="placeholder aspect-square">Before</div>
+      <div class="placeholder aspect-square border-brand-yellow bg-brand-yellow-soft text-brand-green">After</div>
+    </div>
+  </section>
+
+  <section class="bg-brand-cream py-16 md:py-20">
+    <div class="container-x">
+      <SectionHeading eyebrow="What’s included" title="What you get" />
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {page.deliverables.map((d) => (
+          <li class="rounded-2xl bg-white p-7 shadow-sm">
+            <h3 class="text-xl font-bold text-brand-green">{d.title}</h3>
+            <p class="mt-2 text-brand-ink/70">{d.text}</p>
+          </li>
+        ))}
+      </ul>
+      <a href={service.portfolio} class="btn-outline mt-10">
+        See examples in our portfolio
+      </a>
+    </div>
+  </section>
+
+  <section class="container-x py-16 md:py-20">
+    <SectionHeading
+      eyebrow="Proof"
+      title="Results from our Amazon work"
+      text="Case studies with before and after metrics from Seller Central."
+    />
+    <CaseStudyList />
+  </section>
+
+  <section class="container-x max-w-3xl pb-16 md:pb-20">
+    <SectionHeading eyebrow="FAQ" title={`${service.title}, answered`} align="left" />
+    <FaqList faqs={page.faqs} variant="outline" />
+  </section>
+
+  <nav class="container-x" aria-labelledby="related-services">
+    <h2 id="related-services" class="mb-6 text-center text-xl font-bold text-brand-green">
+      Part of our Amazon Listing Optimization services
+    </h2>
+    <ul class="flex flex-wrap justify-center gap-3">
+      <li>
+        <a
+          href="/services/amazon-listing-optimization"
+          class="inline-block rounded-full bg-brand-green px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-yellow hover:text-brand-green"
+        >
+          Amazon Listing Optimization
+        </a>
+      </li>
+      {related.map((s) => (
+        <li>
+          <a
+            href={s.href}
+            class="inline-block rounded-full border border-brand-green/20 px-4 py-2 text-sm font-medium text-brand-green transition hover:border-brand-yellow hover:bg-brand-yellow"
+          >
+            {s.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <CtaBanner
+    title={`Let’s talk about your ${service.title.replace('Amazon ', '')}`}
+    text="Book a call. We’ll review your listing and tell you where to start."
+    ctaLabel="Book a Call"
+  />
+</Layout>

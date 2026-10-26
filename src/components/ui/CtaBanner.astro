@@ -4,23 +4,42 @@ interface Props {
   text?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  /** Small alternative-contact link under the button */
+  altLabel?: string;
+  altHref?: string;
+  /** Short reassurance line (e.g. privacy) */
+  note?: string;
 }
 
 const {
   title = 'Ready to turn more visitors into buyers?',
-  text = 'Book a free 30-minute strategy call and we’ll review your listing with you — no strings attached.',
-  ctaLabel = 'Schedule a Call',
-  ctaHref = '/call',
+  text = 'Book a call to talk through your brand and the content you need.',
+  ctaLabel = 'Book a Call',
+  ctaHref = '/book-a-call',
+  altLabel,
+  altHref,
+  note,
 } = Astro.props;
 ---
 
 <section class="container-x py-16">
-  <div class="relative overflow-hidden rounded-3xl bg-brand-yellow px-6 py-12 text-center md:px-16 md:py-16">
-    <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/20"></div>
-    <h2 class="relative text-3xl font-bold text-brand-green md:text-4xl">{title}</h2>
-    <p class="relative mx-auto mt-4 max-w-xl text-brand-green/80">{text}</p>
-    <a href={ctaHref} class="relative mt-8 inline-flex rounded-lg bg-brand-green px-7 py-3 font-bold text-white transition hover:bg-brand-green-dark">
-      {ctaLabel}
-    </a>
+  <div class="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-brand-green p-8 md:grid-cols-[1.5fr_1fr] md:p-14">
+    <div class="pointer-events-none absolute -bottom-20 -right-16 h-64 w-64 rounded-full border-[28px] border-brand-yellow/90"></div>
+    <div class="pointer-events-none absolute right-40 top-8 h-6 w-6 rounded-full bg-brand-orange"></div>
+    <div class="relative">
+      <h2 class="text-3xl font-extrabold leading-tight text-white md:text-4xl">{title}</h2>
+      <p class="mt-4 max-w-lg text-white/70">{text}</p>
+    </div>
+    <div class="relative md:justify-self-start">
+      <a href={ctaHref} class="btn-primary">
+        {ctaLabel}
+      </a>
+      {altLabel && (
+        <a href={altHref} class="mt-4 block text-sm font-semibold text-white underline-offset-4 hover:underline">
+          {altLabel}
+        </a>
+      )}
+      {note && <p class="mt-3 max-w-xs text-xs text-white/60">{note}</p>}
+    </div>
   </div>
 </section>

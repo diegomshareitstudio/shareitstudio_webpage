@@ -1,124 +1,429 @@
 ---
+/**
+ * Homepage (blueprint P01 v1.1) — 10 sections; Services opens with the 10-card directory. Booking CTAs → /book-a-call:
+ * Hero → Brands → Reviews → Services → Case studies → Methodology → Portfolio → Resources → FAQ → Final CTA.
+ * Items marked TODO are PENDING in the blueprint (permissions, evidence, sign-off).
+ */
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
+import FaqList from '../components/ui/FaqList.astro';
+import CaseStudyList from '../components/ui/CaseStudyList.astro';
+import { listedCaseStudies } from '../data/caseStudies';
+import { getService } from '../data/services';
+import { getPost, postHref } from '../data/posts';
+import { homepageFaqs } from '../data/faqs';
 
-	const organizationSchema = {
-	"@context": "https://schema.org",
-	"@type": "Organization",
-	"@id": "https://shareitstudio.com/#organization",
-	"name": "Share It Studio",
-	"url": "https://shareitstudio.com",
-	//"logo": "https://shareitstudio.com/logo.png",
-	"sameAs": [
-		"https://twitter.com/shareitstudio",
-		"https://github.com/shareitstudio",
-		"https://linkedin.com/company/shareitstudio"
-	],
-	};
+const title = 'Share It Studio | Amazon Listing & Ecommerce Social Media';
+const description =
+  'Explore Share It Studio’s Amazon listing creative, ecommerce social media and specialist services. See selected work, learn our process and book a call.';
 
-	const websiteSchema = {
-	"@context": "https://schema.org",
-	"@type": "WebSite",
-	"@id": "https://shareitstudio.com/#website",
-	"name": "Share It Studio",
-	"url": "https://shareitstudio.com",
-	"publisher": {
-		"@id": "https://shareitstudio.com/#organization"
-		}
-	};
-
-const combinedSchema = [organizationSchema, websiteSchema];
-
-const offerings = [
-  { title: 'Listing Images', text: 'Hero, infographics and lifestyles that win the click.', href: '/portfolio/listing-images/hero-images' },
-  { title: 'A+ Content', text: 'Below-the-fold storytelling that lifts conversion.', href: '/portfolio/a-content' },
-  { title: 'Videos', text: 'Demos, ads and UGC for Amazon and social.', href: '/portfolio/videos/listing-videos' },
-  { title: 'Storefront', text: 'A branded shop with zero competitor ads.', href: '/portfolio/storefront' },
+// 01 — the two flagship routes shown in the hero
+const listing = getService('amazon-listing-optimization');
+const social = getService('social-media-management');
+const routes = [
+  { label: 'Explore Amazon listing optimization', href: listing.href },
+  { label: 'Explore ecommerce social media management', href: social.href },
 ];
 
-const cases = [
-  { name: 'ROSSM', text: 'Minimalist wallets that set out to beat the category leader.', stat: '+45.5% sales', href: '/case-studies/rossm' },
-  { name: 'Vizayo', text: 'Premium product videos for a tabletop fire pit bowl.', stat: '+49% CVR', href: '/case-studies/vizayo' },
-  { name: 'Pink Miracle', text: 'Listing and video ad optimization that turned a loss around.', stat: '$112K win', href: '/case-studies/pink-miracle' },
+// 02 — TODO: only authorized client logos (D02); label partners separately. No stats until audited.
+const logoCount = 6;
+
+// 03 — TODO: replace with approved, verbatim client reviews (D03). Never ship placeholders.
+const testimonials = [
+  {
+    quote: 'Testimonial about the clarity of the process and the quality of the deliverables.',
+    name: 'Client name',
+    brand: 'Brand',
+  },
+  {
+    quote: 'Testimonial about collaboration and how the team executed a specific creative vision.',
+    name: 'Client name',
+    brand: 'Brand',
+  },
+  {
+    quote: 'Testimonial about the strategy and the content delivered for the brand.',
+    name: 'Client name',
+    brand: 'Brand',
+  },
+];
+
+// 04A — compact directory: the nine Services Hub titles plus the proposed tenth card, in blueprint order.
+// TODO (D14/D15/D16): owners approve the descriptions; the tenth card has no link until its name, scope and URL
+// are decided ("Content Performance Pillars" is not the source or Page Mapping name). Never link a dead URL.
+const directory = [
+  { id: 'social-media-management', title: 'Social Media Management', text: 'Ongoing social strategy, content production and account support for ecommerce brands.' },
+  { id: 'amazon-listing-optimization', title: 'Amazon Listing Optimization', text: 'Research-informed listing improvements across relevant creative components; tailored work, not a fixed package.' },
+  { id: 'amazon-a-plus-content', title: 'Amazon A+ Content Design', text: 'Basic or Premium A+ modules designed to clarify value and guide shopper decisions.' },
+  { id: 'amazon-listing-images', title: 'Amazon Listing Images', text: 'Main images, infographics and secondary listing visuals structured around product questions.' },
+  { id: 'amazon-product-photography', title: 'Amazon Product Photography', text: 'Real product and lifestyle photography, with production logistics agreed per brief.' },
+  { id: 'amazon-product-video-production', title: 'Amazon Product Video Production', text: 'Listing, instructional and sponsored-video creative. Ad management is not included.' },
+  { id: 'amazon-storefront-design', title: 'Amazon Storefront Design', text: 'Creative structure and assets for an Amazon Brand Store experience.' },
+  { id: 'amazon-brand-story-design', title: 'Amazon Brand Story Design', text: 'Amazon Brand Story modules and brand-led content, distinct from A+ Content.' },
+  { id: 'amazon-listing-copywriting', title: 'Amazon Listing Copywriting & SEO', text: 'Amazon listing titles, bullet points and content fields informed by shopper research.' },
+].map((c) => ({ ...c, href: getService(c.id).href }));
+const tenthCard = {
+  title: 'Content Performance Pillars',
+  text: 'Post-launch content tracking, creative iteration and updates. Contracted scope is confirmed per project.',
+};
+
+// 04 — two equal-priority flagship cards
+const lines = [
+  {
+    service: listing,
+    problem: 'Your Amazon listing content is unclear or underperforming.',
+    text: 'Listing images, A+ Content, Brand Story, product video and copy, planned around your product, customers and competitors.',
+    cta: 'Learn more about listing optimization',
+    chips: [
+      getService('amazon-listing-images'),
+      getService('amazon-a-plus-content'),
+      getService('amazon-product-video-production'),
+    ],
+    note: 'Hire individual components or a custom combination, quoted per project.',
+  },
+  {
+    service: social,
+    problem: 'You want ongoing content and a consistent social presence.',
+    text: 'Content strategy, content creation and ongoing social support for ecommerce brands, on and off Amazon.',
+    cta: 'Learn more about social media management',
+    chips: [],
+    note: 'Scope and plans are confirmed on the service page.',
+  },
+];
+
+// 05 — TODO: show 2–3 cases only once metrics, baseline and period are audited (D04)
+const cases = listedCaseStudies.slice(0, 3);
+
+// 06 — methodology (TODO: Founder/Delivery sign-off, D09). Scope varies per engagement.
+const steps = [
+  {
+    t: 'Discover & Research',
+    d: 'We study your product, customers, reviews and competing content to find what the content needs to say.',
+  },
+  { t: 'Strategic Direction', d: 'We turn the research into a clear creative direction tied to your business goals.' },
+  { t: 'Create & Produce', d: 'We design, write and produce the content defined in the scope of your project.' },
+  { t: 'Review & Refine', d: 'We review the work with you and iterate so it gets closer to your brand’s goals.' },
+];
+
+// 07 — four categories, one teaser each, each linking to its own portfolio page
+const work = [
+  {
+    cat: 'Listing Images',
+    label: 'Hero, lifestyle and infographic images',
+    href: '/portfolio/hero-images',
+    cta: 'View listing image work',
+  },
+  {
+    cat: 'A+ Content',
+    label: 'Desktop and mobile A+ modules',
+    href: '/portfolio/a-plus-content',
+    cta: 'View A+ Content designs',
+  },
+  {
+    cat: 'Product Videos',
+    label: 'Listing and Sponsored Brands videos',
+    href: '/portfolio/video-production',
+    cta: 'See product videos',
+  },
+  {
+    cat: 'Social Media',
+    label: 'Reels, carousels and campaigns',
+    href: '/portfolio/social-media',
+    cta: 'See social media work',
+  },
+];
+
+// 08 — three live guides: Amazon images, A+ Content, creative
+// TODO: swap the third card for a video / social article once one exists (D08)
+const resources = [
+  getPost('amazon-images-requirements'),
+  getPost('a-plus-content-templates'),
+  getPost('amazon-product-images-best-practices'),
 ];
 ---
 
-<Layout schema={combinedSchema}>
+<Layout title={title} description={description}>
+  <!-- 01 — Hero / two clear routes -->
   <PageHero
     size="lg"
-    title="Turn visitors into buyers with data-driven Amazon content"
-    subtitle="We’re Share It Studio, Amazon marketing experts specializing in visual content <span class='font-bold text-brand-yellow'>for sellers obsessed with data.</span>"
-    ctaLabel="Schedule a Call"
-    ctaHref="/call"
-    secondaryLabel="See our work"
-    secondaryHref="/portfolio"
+    eyebrow="Share It Studio"
+    title="Amazon Listing Content and Ecommerce Social Media, Built Around Your Brand"
+    highlight="Built Around Your Brand"
+    subtitle="Share It Studio supports Amazon and ecommerce brands with listing creative, product video and social media content shaped by customer research and business goals."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    secondaryLabel="Explore Services"
+    secondaryHref="#services-heading"
   >
-    <div class="placeholder mx-auto mt-16 aspect-video max-w-4xl border-white/20 bg-white/5 text-white/50">▶ Welcome video placeholder</div>
+    <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+      {routes.map((r) => (
+        <li>
+          <a
+            href={r.href}
+            class="flex min-h-[44px] items-center justify-between gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-brand-green shadow-sm transition hover:bg-brand-yellow-soft"
+          >
+            {r.label} <span aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <!-- TODO: HERO-01 — replace placeholders with approved client work (D12) -->
+    <div slot="visual" class="relative">
+      <div class="grid grid-cols-[1.4fr_1fr] gap-3">
+        <div class="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[2.5rem] bg-brand-green">
+          <div class="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-brand-green-light"></div>
+          <p class="relative px-6 text-center text-sm text-white/60">Amazon listing project</p>
+        </div>
+        <div class="placeholder aspect-[9/16] self-end rounded-[2rem] bg-white">▶ Social video</div>
+      </div>
+    </div>
   </PageHero>
 
-  <section class="border-b border-black/5 py-10">
-    <div class="container-x flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-xl font-bold text-brand-green/30">
-      <span>ROSSM</span><span>VIZAYO</span><span>PINK MIRACLE</span><span>CLIENT LOGO</span><span>CLIENT LOGO</span>
-    </div>
-  </section>
-
-  <section class="container-x py-16 md:py-24">
-    <SectionHeading eyebrow="What we create" title="Every touchpoint of your listing, designed to convert" />
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {offerings.map((o) => (
-        <a href={o.href} class="group rounded-2xl border border-black/5 p-6 transition hover:-translate-y-1 hover:border-brand-yellow hover:shadow-lg">
-          <div class="placeholder mb-5 aspect-square">{o.title}</div>
-          <h3 class="text-lg font-bold text-brand-green">{o.title}</h3>
-          <p class="mt-1 text-sm text-brand-ink/70">{o.text}</p>
-        </a>
+  <!-- 02 — Brands & relationships -->
+  <section class="container-x py-10" aria-labelledby="brands-heading">
+    <h2 id="brands-heading" class="eyebrow mb-6 text-center">Brands We’ve Worked With</h2>
+    <ul class="grid grid-cols-2 items-center justify-items-center gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      {Array.from({ length: logoCount }).map((_, i) => (
+        <li class="placeholder h-14 w-full max-w-[9rem] rounded-xl text-xs">Logo {i + 1}</li>
       ))}
-    </div>
-    <div class="mt-10 text-center"><a href="/services" class="font-bold text-brand-orange hover:underline">Explore all services →</a></div>
+    </ul>
   </section>
 
-  <section class="bg-brand-green py-16 text-white md:py-24">
-    <div class="container-x grid items-center gap-12 md:grid-cols-2">
-      <div>
-        <p class="eyebrow mb-3 text-brand-yellow">Why Share It Studio</p>
-        <h2 class="text-3xl font-bold leading-tight md:text-5xl">Pretty images don’t sell. <span class="text-brand-yellow">Strategic ones do.</span></h2>
-        <p class="mt-6 text-lg text-white/80">
-          Every project starts with research: competitor listings, thousands of customer reviews and your own sales data. Then we design content that answers exactly what your buyers need to hear.
-        </p>
-        <a href="/call" class="btn-primary mt-8">Get a Free Listing Audit</a>
-      </div>
-      <dl class="grid grid-cols-2 gap-4">
-        {[
-          { n: '+45.5%', l: 'Sales lift for ROSSM' },
-          { n: '+55.7%', l: 'Traffic increase for ROSSM' },
-          { n: '9', l: 'Image slots planned as one story' },
-          { n: '30 min', l: 'Free strategy call' },
-        ].map((s) => (
-          <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
-            <dt class="text-4xl font-bold text-brand-yellow">{s.n}</dt>
-            <dd class="mt-2 text-sm text-white/70">{s.l}</dd>
-          </div>
+  <!-- 03 — Client reviews -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="reviews-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="reviews-heading"
+        title="Client Reviews"
+        text="What the brands we work with say about collaborating with us."
+      />
+      <ul class="grid gap-4 md:grid-cols-3">
+        {testimonials.map((t) => (
+          <li class="flex">
+            <figure class="flex w-full flex-col rounded-[1.75rem] bg-white p-7 shadow-sm">
+              <blockquote class="flex-1 text-lg text-brand-ink/75">“{t.quote}”</blockquote>
+              <figcaption class="mt-6 flex items-center gap-3">
+                <span class="h-10 w-10 rounded-full bg-brand-cream" aria-hidden="true"></span>
+                <span class="text-sm">
+                  <span class="block font-bold text-brand-green">{t.name}</span>
+                  <span class="text-brand-ink/55">{t.brand}</span>
+                </span>
+              </figcaption>
+            </figure>
+          </li>
         ))}
-      </dl>
+      </ul>
+      <a href="/case-studies" class="btn-outline mt-8">Read client stories</a>
     </div>
   </section>
 
-  <section class="container-x py-16 md:py-24">
-    <SectionHeading eyebrow="Case studies" title="Real brands, measurable results" />
-    <div class="grid gap-6 md:grid-cols-3">
-      {cases.map((c) => (
-        <a href={c.href} class="group overflow-hidden rounded-2xl border border-black/5 shadow-sm transition hover:shadow-xl">
-          <div class="placeholder aspect-[4/3] rounded-none border-0">{c.name} listing</div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-brand-green">{c.name}</h3>
-            <p class="mt-1 text-sm text-brand-ink/70">{c.text}</p>
-            <p class="mt-4 font-bold text-brand-orange group-hover:underline">{c.stat} →</p>
+  <!-- 04 — Our services -->
+  <section class="py-16 md:py-24" aria-labelledby="services-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="services-heading"
+        title="Our Services"
+        text="The complete service menu at a glance. Pick the specialty you need, or start with one of the two main routes."
+      />
+      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {directory.map((c) => (
+          <li class="flex">
+            <a
+              href={c.href}
+              class="group flex w-full flex-col rounded-[1.5rem] bg-brand-cream p-5 transition hover:-translate-y-0.5 hover:bg-brand-yellow-soft"
+            >
+              <h3 class="text-lg font-extrabold leading-snug text-brand-green">{c.title}</h3>
+              <p class="mt-2 flex-1 text-sm text-brand-ink/70">{c.text}</p>
+              <span class="mt-4 text-sm font-semibold text-brand-green">Explore {c.title} <span aria-hidden="true">→</span></span>
+            </a>
+          </li>
+        ))}
+        <li class="flex">
+          <div class="flex w-full flex-col rounded-[1.5rem] border border-dashed border-brand-green/30 p-5">
+            <h3 class="text-lg font-extrabold leading-snug text-brand-green">{tenthCard.title}</h3>
+            <p class="mt-2 flex-1 text-sm text-brand-ink/70">{tenthCard.text}</p>
+            <span class="mt-4 text-sm font-semibold text-brand-ink/50">Details coming soon</span>
           </div>
-        </a>
-      ))}
+        </li>
+      </ul>
+      <a href="/services" class="btn-outline mt-6">View All Services</a>
+
+      <h3 class="mt-16 text-2xl font-extrabold text-brand-green md:text-3xl">Our two main routes</h3>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        {lines.map((l, i) => {
+          const dark = i === 0;
+          return (
+            <article
+              class:list={[
+                'relative flex flex-col overflow-hidden rounded-[2rem] p-3',
+                dark ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
+              ]}
+            >
+              <div
+                class:list={[
+                  'placeholder aspect-[16/9] rounded-[1.6rem]',
+                  dark ? 'border-white/15 bg-white/5 text-white/40' : 'bg-white',
+                ]}
+              >
+                {l.service.title} project
+              </div>
+              <div class="flex flex-1 flex-col p-5 md:p-6">
+                <h3 class="text-3xl font-extrabold">{l.service.title}</h3>
+                <p
+                  class:list={['mt-2 text-sm font-semibold', dark ? 'text-brand-yellow' : 'text-brand-orange']}
+                >
+                  {l.problem}
+                </p>
+                <p class:list={['mt-3 flex-1', dark ? 'text-white/70' : 'text-brand-ink/65']}>{l.text}</p>
+                {l.chips.length > 0 && (
+                  <ul class="mt-5 flex flex-wrap gap-2">
+                    {l.chips.map((q) => (
+                      <li>
+                        <a
+                          href={q.href}
+                          class="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-brand-yellow hover:text-brand-green"
+                        >
+                          {q.title.replace('Amazon ', '')} →
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p class:list={['mt-5 text-sm', dark ? 'text-white/70' : 'text-brand-ink/65']}>{l.note}</p>
+                <a href={l.service.href} class:list={['mt-6 self-start', dark ? 'btn-primary' : 'btn-dark']}>
+                  {l.cta}
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </div>
   </section>
 
-  <CtaBanner />
+  <!-- 05 — Results / case study highlights -->
+  <section class="container-x pb-16 md:pb-24" aria-labelledby="cases-heading">
+    <SectionHeading
+      id="cases-heading"
+      title="Selected Case Studies"
+      text="The challenge, the work we delivered and what changed for specific brands."
+    />
+    <CaseStudyList items={cases} />
+    <p class="mt-4 text-xs text-brand-ink/50">
+      Results are specific to each brand and time period, and are not a guarantee of future performance.
+    </p>
+    <a href="/case-studies" class="btn-outline mt-6">View Case Studies</a>
+  </section>
+
+  <!-- 06 — Why Share It Studio / methodology -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="why-heading">
+    <div class="container-x grid gap-12 md:grid-cols-2">
+      <div class="md:sticky md:top-28 md:self-start">
+        <p class="eyebrow mb-4">Our approach</p>
+        <h2 id="why-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
+          Why <span class="marker">Share It Studio?</span>
+        </h2>
+        <p class="mt-5 text-lg text-brand-ink/65">
+          We examine the market, buyer concerns and content gaps first, then create with intent. The exact scope
+          depends on the project you hire.
+        </p>
+        <a href="/about-us" class="btn-outline mt-8">Learn more about Share It Studio</a>
+      </div>
+      <ol class="space-y-4">
+        {steps.map((s, i) => (
+          <li class="flex gap-5 rounded-[1.75rem] bg-white p-6">
+            <span class="font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3 class="text-xl font-extrabold text-brand-green">{s.t}</h3>
+              <p class="mt-1 text-brand-ink/65">{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 07 — Selected portfolio work -->
+  <section class="py-16 md:py-24" aria-labelledby="portfolio-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="portfolio-heading"
+        title="Explore Our Portfolio"
+        text="Samples of what we create, grouped by the type of content you need. A sample is not a measured result."
+      />
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {work.map((w) => (
+          <li>
+            <a href={w.href} class="group block">
+              <div class="placeholder aspect-square bg-brand-cream transition group-hover:border-brand-yellow group-hover:bg-brand-yellow-soft">
+                Image placeholder
+              </div>
+              <h3 class="mt-3 text-lg font-extrabold text-brand-green">{w.cat}</h3>
+              <p class="text-sm text-brand-ink/65">{w.label}</p>
+              <span class="mt-2 inline-block text-sm font-semibold text-brand-green">{w.cta} →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/portfolio" class="btn-outline mt-10">Explore the portfolio</a>
+    </div>
+  </section>
+
+  <!-- 08 — Resources / insights -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="resources-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="resources-heading"
+        title="Resources"
+        text="Practical guides on Amazon creative content and listing decisions, from our team."
+      />
+      <ul class="grid gap-6 md:grid-cols-3">
+        {resources.map((p) => (
+          <li class="flex">
+            <a
+              href={postHref(p)}
+              class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
+            >
+              <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-brand-cream">Article image</div>
+              <div class="flex flex-1 flex-col p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">
+                  {p.category} · {p.readTime}
+                </p>
+                <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{p.title}</h3>
+                <p class="mt-2 flex-1 text-sm text-brand-ink/65">{p.excerpt}</p>
+                <span class="mt-5 text-sm font-semibold text-brand-green">Read the guide →</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/blog" class="btn-outline mt-8">Read all resources</a>
+    </div>
+  </section>
+
+  <!-- 09 — Quick FAQ (no FAQPage markup: not needed for eligibility, see blueprint 09) -->
+  <section class="py-16 md:py-24" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-12 md:grid-cols-[1fr_1.6fr]">
+      <div>
+        <p class="eyebrow mb-4">FAQ</p>
+        <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">
+          Frequently Asked Questions
+        </h2>
+        <a href="/faqs" class="btn-outline mt-8">View all FAQs</a>
+      </div>
+      <FaqList faqs={homepageFaqs} variant="cream" />
+    </div>
+  </section>
+
+  <!-- 10 — Final consultation CTA -->
+  <CtaBanner
+    title="Let’s Discuss Your Brand"
+    text="Book a call to talk through your goals and the creative or social support your brand needs. If there’s a fit, we’ll prepare a tailored proposal."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="General questions? Contact Share It Studio"
+    altHref="/contact-us"
+    note="We only use your details to reply to your request."
+  />
 </Layout>

@@ -1,72 +1,35 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "@id": "https://shareitstudio.com/case-studies/rossm#article",
-  "headline": "ROSSM Case Study | Share It Studio",
-  "description": "Elevating ROSSM’s Amazon Listing for Minimalist Wallets",
-  "author": {
-    "@type": "Organization",
-    "name": "Share It Studio"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Share It Studio",
-    // Optional: Add a logo if available
-    // "logo": {
-    //   "@type": "ImageObject",
-    //   "url": "https://shareitstudio.com/logo.png"
-    // }
-  }
-};
-
-const breadcrumbListSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": "https://shareitstudio.com/case-studies/rossm#breadcrumb",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://shareitstudio.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Case Studies",
-      "item": "https://shareitstudio.com/case-studies"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "ROSSM Case Study",
-      "item": "https://shareitstudio.com/case-studies/rossm"
-    }
-  ]
-};
-
-const combinedSchema = [articleSchema, breadcrumbListSchema];
+const cs = getCaseStudy('rossm');
 ---
 
-<Layout 
-  title="ROSSM Case Study | Share It Studio" 
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="Elevating ROSSM’s Amazon listing for minimalist wallets"
+  highlight="minimalist wallets"
+  lead="How strategic visual optimization and target buyer persona positioning drove a 45.5% increase in sales and a 55.7% surge in traffic."
+  metaTitle="ROSSM Case Study | Share It Studio"
+  service={{ label: 'Amazon Listing Images', href: '/services/amazon-listing-images' }}
   description="Elevating ROSSM’s Amazon Listing for Minimalist Wallets"
-  schema={combinedSchema}
 >
-<article itemscope itemtype="https://schema.org/Article">
-    <header>
-      <h1 itemprop="headline">Case Study: Elevating ROSSM's Amazon Listing for Minimalist Wallets</h1>
-      <p itemprop="description">How strategic visual optimization and target buyer persona positioning drove a 45.5% increase in sales and a 55.7% surge in traffic.</p>
-    </header>
-
+  <div class="article-body">
     <section id="client-background">
       <h2>Client Background</h2>
-      <p><strong>ROSSM</strong>, a brand specializing in minimalist wallets for men, was striving to outpace their competition and enhance their Amazon presence. They came to us with a specific goal: to surpass “The Ridge” by showcasing superior quality through improved images.</p>
-      
-      <p>ROSSM was firmly positioned as the second in their niche, trailing behind "The Ridge." Despite having substantial sales of 5,364 units and 34,535 sessions, their listing needed a visual overhaul to emphasize the quality and giftability of their wallets. The aim was to increase sales by appealing to a broader audience, particularly women buying gifts for men during peak seasons.</p>
+      <p>
+        <strong>ROSSM</strong>, a brand specializing in minimalist wallets for men, was striving to outpace their
+        competition and enhance their Amazon presence. They came to us with a specific goal: to surpass “The Ridge” by
+        showcasing superior quality through improved images.
+      </p>
+
+      <p>
+        ROSSM was firmly positioned as the second in their niche, trailing behind "The Ridge." Despite having
+        substantial sales of 5,364 units and 34,535 sessions, their listing needed a visual overhaul to emphasize the
+        quality and giftability of their wallets. The aim was to increase sales by appealing to a broader audience,
+        particularly women buying gifts for men during peak seasons.
+      </p>
 
       <section id="baseline-metrics">
         <h3>Baseline Metrics (Pre-Optimization)</h3>
@@ -82,41 +45,71 @@ const combinedSchema = [articleSchema, breadcrumbListSchema];
 
     <section id="our-approach">
       <h2>Our Approach</h2>
-      <p>Our strategy was grounded in deep market insights. Through seasonal and demographic analysis, we discovered that <strong>80% of ROSSM's customers were married</strong> and that women predominantly purchased the wallets as gifts during December, February, and June. This insight directed us to focus on highlighting the giftability of the product while ensuring it remained fashionable for men.</p>
+      <p>
+        Our strategy was grounded in deep market insights. Through seasonal and demographic analysis, we discovered that{' '}
+        <strong>80% of ROSSM's customers were married</strong> and that women predominantly purchased the wallets as
+        gifts during December, February, and June. This insight directed us to focus on highlighting the giftability of
+        the product while ensuring it remained fashionable for men.
+      </p>
 
-      <p>We also conducted a thorough review analysis to understand what customers valued in competitors’ products and performed keyword and benchmark analyses to align our visuals with customer search intent and create standout hero images.</p>
+      <p>
+        We also conducted a thorough review analysis to understand what customers valued in competitors’ products and
+        performed keyword and benchmark analyses to align our visuals with customer search intent and create standout
+        hero images.
+      </p>
     </section>
 
     <section id="implementation">
       <h2>Implementation</h2>
-      <p>We crafted a comprehensive proposal featuring new copies and images tailored to our findings. A photoshoot was organized with a model representing the typical buyer persona—men in their late 20s.</p>
+      <p>
+        We crafted a comprehensive proposal featuring new copies and images tailored to our findings. A photoshoot was
+        organized with a model representing the typical buyer persona—men in their late 20s.
+      </p>
 
-      <p>We emphasized the giftable aspect of the wallets, particularly targeting women searching for gifts for their husbands, and creatively used both photoshoot and photoshopped images to achieve our goals.</p>
+      <p>
+        We emphasized the giftable aspect of the wallets, particularly targeting women searching for gifts for their
+        husbands, and creatively used both photoshoot and photoshopped images to achieve our goals.
+      </p>
     </section>
 
     <section id="results">
       <h2>Results</h2>
-      <p>The results of our optimization efforts were impressive. These metrics clearly demonstrate the powerful impact of our strategic and creative interventions on ROSSM's Amazon performance:</p>
-      
+      <p>
+        The results of our optimization efforts were impressive. These metrics clearly demonstrate the powerful impact
+        of our strategic and creative interventions on ROSSM's Amazon performance:
+      </p>
+
       <dl>
         <dt>Post-Optimization Sessions</dt>
-        <dd>53,760 <strong>(+55.7% increase)</strong></dd>
+        <dd>
+          53,760 <strong>(+55.7% increase)</strong>
+        </dd>
 
         <dt>Post-Optimization Units Sold</dt>
-        <dd>7,803 <strong>(+45.5% increase)</strong></dd>
+        <dd>
+          7,803 <strong>(+45.5% increase)</strong>
+        </dd>
       </dl>
     </section>
 
     <section id="key-takeaways">
       <h2>Key Takeaways</h2>
-      <p>This case study underscores the importance of understanding customer demographics and purchasing behaviors. By focusing on unique selling points like giftability and employing targeted visual strategies, significant improvements in sales and traffic can be achieved.</p>
+      <p>
+        This case study underscores the importance of understanding customer demographics and purchasing behaviors. By
+        focusing on unique selling points like giftability and employing targeted visual strategies, significant
+        improvements in sales and traffic can be achieved.
+      </p>
     </section>
 
     <section id="call-to-action">
       <h2>Call to Action</h2>
-      <p>At <strong>Share It Studio</strong>, we are experts in crafting compelling Amazon listings that drive results. Our proven methods and marketing-first approach help our clients achieve an average sales increase of 77% within weeks.</p>
-      
+      <p>
+        At <strong>Share It Studio</strong>, we are experts in crafting compelling Amazon listings that drive results.
+        Our proven methods and marketing-first approach help our clients achieve an average sales increase of 77% within
+        weeks.
+      </p>
+
       <p>Ready to transform your Amazon listings and elevate your brand? Book a call with us today!</p>
     </section>
-  </article>
-</Layout>
+  </div>
+</ArticleLayout>

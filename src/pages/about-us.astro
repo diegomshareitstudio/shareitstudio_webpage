@@ -1,10 +1,150 @@
 ---
+/**
+ * About Us (blueprint P36 v1.0): company, people and method.
+ * Sections: Hero → Who we work with → How we work → Meet the team → Experience & proof → Final CTA.
+ * Omitted until sourced and approved (blueprint fallbacks): founder story and milestones (02), behind-the-scenes
+ * media (07), client/review counters, partner badges, team bios and portraits, location and AI/QA claims.
+ * TODO: CEO to approve the company description, process wording and the roster (AB-TEAM-01).
+ */
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import { getService } from '../data/services';
+
+// 03 — two service families; links only, no pricing or plan detail
+const families = [
+  {
+    service: getService('amazon-listing-optimization'),
+    who: 'For Amazon brands whose product pages need clearer, stronger content.',
+    text: 'Listing images, A+ Content, video and copy, as individual components or a tailored combination.',
+    cta: 'Amazon Listing Optimization',
+  },
+  {
+    service: getService('social-media-management'),
+    who: 'For ecommerce brands, on and off Amazon, that want ongoing social content.',
+    text: 'Content strategy, content creation and ongoing social media support.',
+    cta: 'Ecommerce Social Media Management',
+  },
+];
+
+// 04 — standard sequence; actual scope depends on the contracted project (AB-PROC-01 pending)
+const steps = [
+  { t: 'Discovery & onboarding', d: 'We learn about your brand, products and goals.' },
+  { t: 'Buyer & competitor research', d: 'We study your customers, their reviews and the competing content.' },
+  { t: 'Strategy & creative brief', d: 'We turn the research into a clear creative direction.' },
+  { t: 'Production & design', d: 'We create the content defined in your project scope.' },
+  { t: 'Review, approval & delivery', d: 'We review the work with you and deliver the final files.' },
+];
+
+const breadcrumbs = [{ name: 'About Us', path: '/about-us' }];
 ---
-<Layout title="About Us | Share It Studio">
-  <h1>About Us</h1>
-  <p>Welcome to our company! We are dedicated to providing the best services to our clients.</p>
-  <p>Our team consists of experienced professionals who are passionate about their work.</p>
-  <p>We believe in innovation, integrity, and customer satisfaction.</p>
-  <p>Thank you for visiting our website!</p>
+
+<Layout
+  title="About Share It Studio | Team, Story & Approach"
+  description="Meet the people behind Share It Studio and explore how our team approaches Amazon listing content and ecommerce social media work."
+  breadcrumbs={breadcrumbs}
+  pageType="AboutPage"
+>
+  <!-- 01 — Hero: Who we are -->
+  <PageHero
+    eyebrow="Share It Studio"
+    title="About Share It Studio"
+    highlight="Share It Studio"
+    subtitle="Share It Studio is a creative team that helps Amazon and ecommerce brands present their products clearly. We combine customer and competitor research with listing content and social media work."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    secondaryLabel="Explore Our Work"
+    secondaryHref="/portfolio"
+  />
+
+  <!-- 03 — Who we help & what we do -->
+  <section class="container-x py-16 md:py-20" aria-labelledby="who-heading">
+    <SectionHeading
+      id="who-heading"
+      title="Who We Work With"
+      text="Two complementary services for brands that sell on Amazon and across ecommerce."
+    />
+    <ul class="grid gap-4 md:grid-cols-2">
+      {families.map((f, i) => (
+        <li class="flex">
+          <article
+            class:list={[
+              'flex w-full flex-col rounded-[2rem] p-8',
+              i === 0 ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
+            ]}
+          >
+            <h3 class="text-2xl font-extrabold">{f.service.title}</h3>
+            <p class:list={['mt-2 text-sm font-semibold', i === 0 ? 'text-brand-yellow' : 'text-brand-orange']}>
+              {f.who}
+            </p>
+            <p class:list={['mt-3 flex-1', i === 0 ? 'text-white/75' : 'text-brand-ink/70']}>{f.text}</p>
+            <a href={f.service.href} class:list={['mt-6 self-start', i === 0 ? 'btn-primary' : 'btn-dark']}>
+              {f.cta}
+            </a>
+          </article>
+        </li>
+      ))}
+    </ul>
+    <a href="/services" class="btn-outline mt-8">Explore Our Services</a>
+  </section>
+
+  <!-- 04 — How we work -->
+  <section class="bg-brand-cream py-16 md:py-20" aria-labelledby="how-heading">
+    <div class="container-x grid gap-10 md:grid-cols-[1fr_1.4fr]">
+      <div>
+        <h2 id="how-heading" class="text-3xl font-extrabold text-brand-green md:text-4xl">How We Work</h2>
+        <p class="mt-4 text-brand-ink/70">
+          We study the product, the audience and the competition before we create. The exact steps depend on the
+          project you hire, and ongoing social media work continues month to month.
+        </p>
+      </div>
+      <ol class="space-y-3">
+        {steps.map((s, i) => (
+          <li class="flex gap-4 rounded-[1.5rem] bg-white p-5">
+            <span class="font-display text-3xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3 class="text-lg font-extrabold text-brand-green">{s.t}</h3>
+              <p class="text-brand-ink/70">{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 05 — Meet the people (founder only until the roster, titles and consent are approved) -->
+  <section id="team" class="container-x scroll-mt-24 py-16 md:py-20" aria-labelledby="team-heading">
+    <SectionHeading id="team-heading" title="Meet the Team" align="left" />
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <li class="rounded-[1.75rem] bg-brand-cream p-7">
+        <h3 class="text-xl font-extrabold text-brand-green">Rafael Veloz</h3>
+        <p class="mt-1 text-brand-ink/70">Founder & CEO</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 06 — Experience, trust & proof (links only; no unverified counters or badges) -->
+  <section class="bg-brand-cream py-12" aria-labelledby="proof-heading">
+    <div class="container-x">
+      <h2 id="proof-heading" class="text-2xl font-extrabold text-brand-green">Our Experience & Proof</h2>
+      <p class="mt-2 max-w-2xl text-brand-ink/70">
+        The best way to judge our work is to see it. Read how specific projects went, or browse the work itself.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-3">
+        <li><a href="/case-studies" class="btn-outline">See Case Studies</a></li>
+        <li><a href="/portfolio" class="btn-outline">Explore Our Work</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 — Take the next step -->
+  <CtaBanner
+    title="Let’s Talk"
+    text="Book a call to talk about your goals and whether we’re a good fit. There’s no commitment to a quote or outcome."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Prefer to write to us? Contact Us"
+    altHref="/contact-us"
+  />
 </Layout>

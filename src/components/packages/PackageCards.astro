@@ -1,0 +1,74 @@
+---
+import { socialPackages, formatPrice } from '../../data/socialPackages';
+
+interface Props {
+  /** Show the full feature list (false = compact cards for overview pages) */
+  detailed?: boolean;
+}
+
+const { detailed = true } = Astro.props;
+---
+
+<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  {socialPackages.map((p) => (
+    <article
+      id={`plan-${p.id}`}
+      class:list={[
+        'relative flex flex-col overflow-hidden rounded-[2rem] transition',
+        p.featured
+          ? 'bg-brand-green text-white shadow-2xl ring-4 ring-brand-yellow xl:-translate-y-3'
+          : 'bg-white text-brand-green shadow-sm ring-1 ring-black/5',
+      ]}
+    >
+      <header class:list={['p-7 pb-6', p.featured ? 'border-b border-white/10' : 'border-b border-black/5']}>
+        <span
+          class:list={[
+            'inline-block rounded-full px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wider',
+            p.featured
+              ? 'bg-brand-yellow text-brand-green'
+              : p.id === 'dominate'
+                ? 'bg-brand-green text-brand-yellow'
+                : 'bg-brand-yellow-soft text-brand-green',
+          ]}
+        >
+          {p.tier}
+        </span>
+        <h3 class:list={['mt-4 text-3xl font-extrabold', p.featured && 'text-brand-yellow']}>{p.name}</h3>
+        <p class:list={['text-sm', p.featured ? 'text-white/60' : 'text-brand-ink/55']}>{p.posts}</p>
+        <p class="mt-4 flex items-baseline gap-1">
+          <span class="font-display text-5xl font-extrabold tracking-tight">{formatPrice(p.price)}</span>
+          <span class:list={['text-sm', p.featured ? 'text-white/60' : 'text-brand-ink/55']}>/mo</span>
+        </p>
+      </header>
+
+      {detailed ? (
+        <ul class="flex-1 space-y-2.5 p-7 text-sm">
+          {p.features.map((f) => (
+            <li class="flex items-start gap-3">
+              <span
+                class:list={[
+                  'mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[0.65rem] font-bold',
+                  p.featured ? 'bg-brand-yellow text-brand-green' : 'bg-brand-yellow-soft text-brand-green',
+                ]}
+              >
+                ✓
+              </span>
+              <span class:list={[p.featured ? 'text-white/85' : 'text-brand-ink/80']}>{f}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class:list={['flex-1 p-7 text-sm', p.featured ? 'text-white/75' : 'text-brand-ink/65']}>
+          {p.features.slice(-3).join(' · ')}
+        </p>
+      )}
+
+      <div class="px-7 pb-7">
+        {p.note && detailed && <p class="mb-4 text-xs italic text-brand-ink/50">{p.note}</p>}
+        <a href={`/book-a-call?plan=${p.id}`} class:list={['w-full', p.featured ? 'btn-primary' : 'btn-dark']}>
+          Choose {p.name}
+        </a>
+      </div>
+    </article>
+  ))}
+</div>

@@ -1,0 +1,20 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getPost } from '../../data/posts';
+
+const post = getPost('amazon-a-plus-content-examples');
+---
+
+<!-- Placeholder: existing article, content to be migrated -->
+<ArticleLayout
+  kind="blog"
+  post={post}
+  title={post.title}
+  lead={post.excerpt}
+  metaTitle={`${post.title} | Share It Studio Blog`}
+>
+  <div class="article-body">
+    <h2>Content coming soon</h2>
+    <p>This article is being migrated. Its content will be added here.</p>
+  </div>
+</ArticleLayout>

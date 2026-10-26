@@ -1,0 +1,37 @@
+---
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+
+const benefits = [
+  {
+    title: 'Scripted from reviews',
+    text: 'We address real questions from customer reviews.',
+  },
+  {
+    title: '2-second hook',
+    text: 'Ad openers designed to stop the scroll in search results.',
+  },
+  {
+    title: 'Silent-friendly',
+    text: 'Captions and on-screen text for sound-off viewing.',
+  },
+];
+---
+
+<PortfolioLayout
+  title="Video Production"
+  metaTitle="Amazon Video Production Portfolio | Share It Studio"
+  description="Listing videos, Sponsored Brands video ads and UGC videos. Explore Share It Studio’s video production portfolio for Amazon sellers."
+  subtitle="Listing videos, Sponsored Brands ads and UGC videos that show the product in action."
+  intro="Video demonstrates how your product works, its size and its quality in ways photos can’t. We script, shoot and edit listing videos, 15–30 second Sponsored Brands spots and creator-style UGC built to answer shoppers’ biggest questions."
+  items={[
+    'Listing video — product demo',
+    'Listing video — how to use',
+    'Sponsored Brands — 15s hook',
+    'Sponsored Brands — problem / solution',
+    'UGC — creator review',
+    'UGC — honest unboxing',
+  ]}
+  aspect="video"
+  benefits={benefits}
+  service={{ label: 'Product Video Production service', href: '/services/amazon-product-video-production' }}
+/>

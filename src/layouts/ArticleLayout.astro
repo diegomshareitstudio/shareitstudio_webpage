@@ -1,0 +1,206 @@
+---
+/**
+ * Long-form layout for case studies and blog posts.
+ * Builds its own JSON-LD (Article / BlogPosting + breadcrumbs) from the case study or post data,
+ * so pages only contain their content. Wrap that content in <div class="article-body">.
+ */
+import { Image } from 'astro:assets';
+import Layout from './Layout.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import { articleSchema } from '../lib/schema';
+import { caseStudyHref, type CaseStudy } from '../data/caseStudies';
+import { postHref, type Post } from '../data/posts';
+
+interface Common {
+  /** Visible <h1> */
+  title: string;
+  /** Part of the title to mark with the yellow highlighter */
+  highlight?: string;
+  lead?: string;
+  /** <title> tag */
+  metaTitle: string;
+  /** Extra tag pills after the defaults */
+  tags?: string[];
+}
+
+type Props = Common &
+  (
+    | { kind: 'case-study'; caseStudy: CaseStudy; description: string; service?: Post['service'] }
+    | { kind: 'blog'; post: Post; description?: string }
+  );
+
+const props = Astro.props;
+const { title, highlight, lead, metaTitle, tags = [] } = props;
+
+const isCase = props.kind === 'case-study';
+const cs = isCase ? props.caseStudy : undefined;
+const post = isCase ? undefined : props.post;
+
+const description = props.description ?? post!.excerpt;
+const service = isCase ? props.service : post!.service;
+const cover = cs?.image;
+const stats = cs?.stats ?? [];
+const pills = isCase ? [cs!.client, cs!.niche, ...tags] : [post!.category, `${post!.readTime} read`, ...tags];
+const path = isCase ? caseStudyHref(cs!) : postHref(post!);
+
+const parent = isCase ? { name: 'Case Studies', path: '/case-studies' } : { name: 'Resources', path: '/blog' };
+const breadcrumbs = [parent, { name: isCase ? `${cs!.client} Case Study` : post!.title, path }];
+
+const schema = [
+  articleSchema({
+    type: isCase ? 'Article' : 'BlogPosting',
+    path,
+    headline: title,
+    description,
+    image: cover?.src.src,
+    about: cs?.client,
+  }),
+];
+
+const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
+---
+
+<Layout
+  title={metaTitle}
+  description={description}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+  image={cover?.src.src}
+  ogType="article"
+>
+  <article>
+    <header class="bg-brand-cream">
+      <div class="container-x pb-14 pt-8 md:pb-20">
+        <a
+          href={parent.path}
+          class="inline-flex items-center gap-2 text-sm font-medium text-brand-green/60 transition hover:text-brand-green"
+        >
+          ← All {parent.name.toLowerCase()}
+        </a>
+        <ul class="mt-8 flex flex-wrap gap-2" aria-label="Tags">
+          <li class="rounded-full bg-brand-green px-3 py-1 text-xs font-semibold text-brand-yellow">
+            {isCase ? 'Case study' : 'Blog'}
+          </li>
+          {pills.map((t) => (
+            <li class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-green ring-1 ring-black/5">
+              {t}
+            </li>
+          ))}
+        </ul>
+        <h1 class="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.05] text-brand-green sm:text-5xl lg:text-6xl">
+          {before}
+          {after !== undefined && (
+            <>
+              <span class="marker">{highlight}</span>
+              {after}
+            </>
+          )}
+        </h1>
+        {lead && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-brand-ink/70">{lead}</p>}
+
+        {stats.length > 0 && (
+          <dl class="mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
+            {stats.map((s, i) => (
+              <div
+                class:list={[
+                  'rounded-[1.5rem] p-5',
+                  i === 0 ? 'bg-brand-green text-white' : 'bg-white text-brand-green',
+                ]}
+              >
+                <dt
+                  class:list={[
+                    'text-xs font-semibold uppercase tracking-wider',
+                    i === 0 ? 'text-white/60' : 'text-brand-green/50',
+                  ]}
+                >
+                  {s.label}
+                </dt>
+                <dd class:list={['mt-1 font-display text-4xl font-extrabold', i === 0 && 'text-brand-yellow']}>
+                  {s.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </header>
+
+    {isCase && (
+      <figure class="container-x -mb-6 pt-12">
+        {cover ? (
+          <div class="grid min-h-72 place-items-center rounded-[2rem] bg-brand-cream p-6 md:p-10">
+            <Image src={cover.src} alt={cover.alt} loading="eager" class="max-h-96 w-auto rounded-[1.5rem]" />
+          </div>
+        ) : (
+          <div class="placeholder aspect-[21/9]">Before / after listing visuals</div>
+        )}
+      </figure>
+    )}
+
+    <div class="container-x grid gap-12 py-14 lg:grid-cols-[220px_1fr] lg:py-20">
+      <aside class="hidden lg:block">
+        <div class="sticky top-28">
+          <nav aria-label="On this page">
+            <p class="eyebrow mb-4">On this page</p>
+            <ol id="toc" class="space-y-1 border-l border-black/10 text-sm"></ol>
+          </nav>
+          {service && (
+            <a
+              href={service.href}
+              class="mt-8 block rounded-[1.5rem] bg-brand-cream p-5 transition hover:bg-brand-yellow-soft"
+            >
+              <span class="text-xs font-semibold uppercase tracking-wider text-brand-orange">Need help with this?</span>
+              <span class="mt-1 block font-display font-extrabold text-brand-green">{service.label} →</span>
+            </a>
+          )}
+          <a href="/book-a-call" class="btn-dark mt-8">
+            Book a Call
+          </a>
+        </div>
+      </aside>
+
+      <div class="max-w-3xl">
+        <div class="prose-sis">
+          <slot />
+        </div>
+        {service && (
+          <a
+            href={service.href}
+            class="group mt-12 flex flex-col gap-4 rounded-[2rem] bg-brand-green p-8 text-white transition hover:-translate-y-1 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <span>
+              <span class="text-sm font-semibold text-brand-yellow">Rather have us do it for you?</span>
+              <span class="mt-1 block text-2xl font-extrabold">{service.label}</span>
+            </span>
+            <span
+              class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-yellow text-brand-green transition group-hover:rotate-[-45deg]"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </a>
+        )}
+      </div>
+    </div>
+  </article>
+
+  <CtaBanner />
+</Layout>
+
+<script>
+  // Build the "On this page" list from the article's h2 headings
+  const toc = document.getElementById('toc');
+  const headings = document.querySelectorAll<HTMLHeadingElement>('.prose-sis h2');
+  headings.forEach((h, i) => {
+    if (h.closest('.table-of-contents')) return;
+    if (!h.id) h.id = h.closest('section')?.id ? `${h.closest('section')!.id}-title` : `section-${i + 1}`;
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${h.id}`;
+    a.textContent = h.textContent?.replace(/^\d+\.\s*/, '') ?? '';
+    a.className =
+      '-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-brand-ink/60 transition hover:border-brand-yellow hover:text-brand-green';
+    li.appendChild(a);
+    toc?.appendChild(li);
+  });
+</script>

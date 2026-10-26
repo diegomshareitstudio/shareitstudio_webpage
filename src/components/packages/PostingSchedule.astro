@@ -1,0 +1,65 @@
+---
+import { socialPackages, type PostType } from '../../data/socialPackages';
+
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const chip: Record<PostType, string> = {
+  Reel: 'bg-brand-yellow text-brand-green',
+  Story: 'bg-white/10 text-white/85',
+  Carousel: 'bg-brand-orange/90 text-white',
+};
+---
+
+<div class="overflow-x-auto rounded-[2rem] bg-white/5 ring-1 ring-white/10">
+  <table class="w-full min-w-[760px] border-collapse text-center text-xs">
+    <caption class="sr-only">Weekly posting cadence by package</caption>
+    <thead>
+      <tr class="text-white/50">
+        <th scope="col" class="px-4 py-4 text-left font-semibold uppercase tracking-wider">
+          Plan
+        </th>
+        {days.map((d) => (
+          <th scope="col" class="px-2 py-4 font-semibold uppercase tracking-wider">
+            {d}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {socialPackages.map((p) => (
+        <tr class="border-t border-white/10">
+          <th scope="row" class="px-4 py-4 text-left">
+            <span
+              class:list={[
+                'inline-block rounded-full px-4 py-1.5 font-display text-sm font-extrabold',
+                p.featured ? 'bg-brand-yellow text-brand-green' : 'bg-white/10 text-white',
+              ]}
+            >
+              {p.name}
+            </span>
+          </th>
+          {p.schedule.map((posts) => (
+            <td class="px-2 py-4 align-middle">
+              {posts.length === 0 ? (
+                <span class="text-white/25">—</span>
+              ) : (
+                <div class="flex flex-col items-center gap-1.5">
+                  {posts.map((t) => (
+                    <span class:list={['rounded-full px-2.5 py-1 font-semibold', chip[t]]}>{t}</span>
+                  ))}
+                </div>
+              )}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<div class="mt-5 flex flex-wrap gap-4 text-xs text-white/60">
+  {(Object.keys(chip) as PostType[]).map((t) => (
+    <span class="flex items-center gap-2">
+      <span class:list={['h-3 w-3 rounded-full', chip[t].split(' ')[0]]}></span>
+      {t}
+    </span>
+  ))}
+</div>

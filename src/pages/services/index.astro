@@ -1,100 +1,222 @@
 ---
+/**
+ * Services Hub (blueprint P02 v1.0): a directory that routes visitors to the right service.
+ * Six sections: Hero → Two primary solutions → Specialized Amazon services → How to choose
+ * → (Selected work: omitted until client-authorized assets exist, D-07) → FAQ + final CTA.
+ * No prices, plans or results here — those live on the child pages.
+ */
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
 import CtaBanner from '../../components/ui/CtaBanner.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import { getService, services } from '../../data/services';
+import { itemListSchema } from '../../lib/schema';
+import type { Faq } from '../../data/faqs';
 
-const services = [
+// 02 — TODO: owner-approved 1–2 sentence summaries (S-01/S-02, D-02, D-03)
+const primary = [
   {
-    title: 'Listing Optimization',
-    text: 'Images, A+ Content, videos and copy designed around your buyer persona and competitor data to increase conversion rate.',
-    href: '/services/listing-optimization',
-    tags: ['Listing Images', 'A+ Content', 'Copywriting', 'Videos'],
+    service: getService('social-media-management'),
+    text: 'Ongoing social media content for ecommerce brands, on and off Amazon.',
+    bestFor: 'Best for brands that want consistent content and a coherent social presence.',
   },
   {
-    title: 'Social Media',
-    text: 'Content and management for Instagram, TikTok and Facebook that builds your brand and drives external traffic to Amazon.',
-    href: '/services/social-media',
-    tags: ['Reels & TikToks', 'UGC', 'Content Calendar', 'Community'],
+    service: getService('amazon-listing-optimization'),
+    text: 'Amazon product-page creative and content, hired as individual components or a tailored combination.',
+    bestFor: 'Best for brands whose Amazon listings need clearer, stronger content.',
   },
 ];
 
-const steps = [
-  { title: 'Research', text: 'We analyze your market, competitors and thousands of reviews to find what drives purchases.' },
-  { title: 'Strategy', text: 'We define your buyer persona, key messages and an image-by-image content plan.' },
-  { title: 'Create', text: 'Designers, photographers and copywriters bring the plan to life.' },
-  { title: 'Measure', text: 'We track sessions, CVR and sales to prove impact and iterate.' },
+// 03 — the seven specialist services, in the order of the directory matrix
+const specialistSlugs = [
+  'amazon-a-plus-content',
+  'amazon-listing-images',
+  'amazon-product-photography',
+  'amazon-product-video-production',
+  'amazon-storefront-design',
+  'amazon-brand-story-design',
+  'amazon-listing-copywriting',
+];
+// TODO: owner-approved 25–40 word blurbs (D-02, D-06)
+const specialist = specialistSlugs.map(getService);
+
+// 04 — selection-level guidance only
+const choose = [
+  {
+    q: 'Need ongoing social content?',
+    a: 'Social Media Management',
+    href: '/services/social-media-management',
+  },
+  {
+    q: 'Need an overall Amazon listing refresh?',
+    a: 'Amazon Listing Optimization',
+    href: '/services/amazon-listing-optimization',
+  },
+  { q: 'Need a specific asset?', a: 'Choose a specialist service', href: '#amazon-creative-services' },
 ];
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  itemListElement: services.map((s, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    item: { '@type': 'Service', name: s.title, description: s.text, url: `https://shareitstudio.com${s.href}` },
-  })),
-};
+// 06 — TODO: Copy + Commercial sign-off (S-FAQ-01…03, D-11)
+const faqs: Faq[] = [
+  {
+    q: 'Can I hire one service, or combine several?',
+    a: 'Both. Amazon services can be hired individually or combined into a tailored project scope. We discuss what you need and prepare a proposal.',
+  },
+  {
+    q: 'How is Social Media Management different from Amazon Listing Optimization?',
+    a: 'Social Media Management is ongoing content for your social channels and works for ecommerce brands on and off Amazon. Amazon Listing Optimization improves the creative and content on your Amazon product pages.',
+  },
+  {
+    q: 'Where can I see pricing and what is included?',
+    a: 'Scope is described on each service page, and pricing is discussed on a call so we can tailor it to your needs.',
+  },
+];
+
+const breadcrumbs = [{ name: 'Services', path: '/services' }];
+const schema = [
+  itemListSchema(
+    '/services',
+    'Share It Studio services',
+    services.map((s) => ({ name: s.title, path: s.href })),
+  ),
+];
 ---
 
-<Layout title="Services | Share It Studio" description="Amazon listing optimization and social media services for brands that want data-driven visual content." schema={serviceSchema}>
+<Layout
+  title="Services | Amazon Content & Ecommerce Social Media | Share It Studio"
+  description="Explore Share It Studio services for ecommerce brands, from social media management to Amazon listing images, A+ content, photography, video and more."
+  breadcrumbs={breadcrumbs}
+  pageType="CollectionPage"
+  schema={schema}
+>
+  <!-- 01 — Hero + orientation -->
   <PageHero
-    eyebrow="Services"
-    title="Everything your brand needs to sell more on Amazon"
-    subtitle="Strategic visual content for sellers — from the first image to the last A+ module."
-    ctaLabel="Schedule a Call"
-    ctaHref="/call"
-  />
+    eyebrow="Share It Studio"
+    title="Our Services"
+    highlight="Services"
+    subtitle="Share It Studio is a studio for ecommerce and Amazon brands. We create Amazon listing content and manage ongoing ecommerce social media."
+    ctaLabel="Browse Services"
+    ctaHref="#service-directory"
+  >
+    <ul class="mt-6 flex flex-wrap gap-2">
+      <li><span class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-green">Social Media Management</span></li>
+      <li><span class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-green">Amazon Listing Optimization</span></li>
+    </ul>
+    <a href="/book-a-call" class="mt-5 inline-block text-sm font-semibold text-brand-green underline-offset-4 hover:underline">
+      Or book a call
+    </a>
+  </PageHero>
 
-  <section class="container-x py-16 md:py-20">
-    <div class="grid gap-8 md:grid-cols-2">
-      {services.map((s) => (
-        <a href={s.href} class="group flex flex-col rounded-3xl border border-black/5 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-          <div class="placeholder mb-6 aspect-[16/9]">{s.title} visual</div>
-          <h2 class="text-2xl font-bold text-brand-green">{s.title}</h2>
-          <p class="mt-3 flex-1 text-brand-ink/70">{s.text}</p>
-          <ul class="mt-5 flex flex-wrap gap-2">
-            {s.tags.map((t) => <li class="rounded-full bg-brand-yellow-soft px-3 py-1 text-xs font-medium text-brand-green">{t}</li>)}
-          </ul>
-          <span class="mt-6 font-bold text-brand-orange group-hover:underline">Learn more →</span>
-        </a>
-      ))}
-    </div>
-  </section>
+  <div id="service-directory" class="scroll-mt-24">
+    <!-- 02 — Two primary solutions -->
+    <section class="container-x py-16 md:py-20" aria-labelledby="primary-heading">
+      <SectionHeading
+        id="primary-heading"
+        title="Social Media Management & Amazon Listing Optimization"
+        text="Our two main services. Pick the one that matches what your brand needs."
+      />
+      <ul class="grid gap-4 md:grid-cols-2">
+        {primary.map((p, i) => {
+          const dark = i === 0;
+          return (
+            <li class="flex">
+              <article
+                class:list={[
+                  'flex w-full flex-col rounded-[2rem] p-8',
+                  dark ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
+                ]}
+              >
+                <h3 class="text-3xl font-extrabold">{p.service.title}</h3>
+                <p class:list={['mt-3', dark ? 'text-white/75' : 'text-brand-ink/70']}>{p.text}</p>
+                <p
+                  class:list={['mt-3 flex-1 text-sm font-semibold', dark ? 'text-brand-yellow' : 'text-brand-orange']}
+                >
+                  {p.bestFor}
+                </p>
+                <a
+                  href={p.service.href}
+                  class:list={['mt-6 self-start', dark ? 'btn-primary' : 'btn-dark']}
+                  aria-label={`View service: ${p.service.title}`}
+                >
+                  View Service
+                </a>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
 
-  <section class="bg-brand-green py-16 text-white md:py-20">
-    <div class="container-x">
-      <div class="mx-auto mb-12 max-w-2xl text-center">
-        <p class="eyebrow mb-3 text-brand-yellow">Our process</p>
-        <h2 class="text-3xl font-bold md:text-4xl">Data first, design second</h2>
+    <!-- 03 — Specialized Amazon services directory -->
+    <section id="amazon-creative-services" class="scroll-mt-24 pb-16 md:pb-24" aria-labelledby="creative-heading">
+      <div class="container-x">
+        <SectionHeading
+          id="creative-heading"
+          title="Amazon Creative Services"
+          text="Need a specific piece of your Amazon listing? Each of these services has its own page."
+        />
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {specialist.map((s) => (
+            <li class="flex">
+              <article class="flex w-full flex-col rounded-[1.75rem] bg-brand-cream p-7">
+                <h3 class="text-2xl font-extrabold text-brand-green">{s.title}</h3>
+                <p class="mt-3 flex-1 text-brand-ink/70">{s.text}</p>
+                <a
+                  href={s.href}
+                  class="mt-5 inline-flex min-h-[44px] items-center self-start text-sm font-semibold text-brand-green underline-offset-4 hover:underline"
+                  aria-label={`Explore service: ${s.title}`}
+                >
+                  Explore Service →
+                </a>
+              </article>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ol class="grid gap-6 md:grid-cols-4">
-        {steps.map((s, i) => (
-          <li class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
-            <span class="text-4xl font-bold text-brand-yellow">0{i + 1}</span>
-            <h3 class="mt-3 text-xl font-bold">{s.title}</h3>
-            <p class="mt-2 text-sm text-white/75">{s.text}</p>
+    </section>
+  </div>
+
+  <!-- 04 — How to choose / combine -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="choose-heading">
+    <div class="container-x">
+      <SectionHeading
+        id="choose-heading"
+        title="How to Choose the Right Service"
+        text="You can hire a single component, or combine several through a tailored scope for your project."
+      />
+      <ul class="grid gap-4 md:grid-cols-3">
+        {choose.map((c) => (
+          <li class="flex">
+            <a
+              href={c.href}
+              class="flex w-full flex-col rounded-[1.75rem] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <h3 class="text-xl font-extrabold text-brand-green">{c.q}</h3>
+              <p class="mt-3 flex-1 text-brand-ink/70">→ {c.a}</p>
+            </a>
           </li>
         ))}
-      </ol>
+      </ul>
+      <a href="/book-a-call" class="btn-dark mt-10">Talk Through Your Needs</a>
     </div>
   </section>
 
-  <section class="container-x py-16">
-    <SectionHeading eyebrow="Results" title="Numbers our clients care about" />
-    <div class="grid gap-6 text-center sm:grid-cols-3">
-      {[
-        { n: '+45.5%', l: 'Sales lift — ROSSM', href: '/case-studies/rossm' },
-        { n: '+55.7%', l: 'Traffic increase — ROSSM', href: '/case-studies/rossm' },
-        { n: '3', l: 'Featured case studies', href: '/case-studies' },
-      ].map((s) => (
-        <a href={s.href} class="rounded-2xl bg-brand-cream p-8 transition hover:bg-brand-yellow-soft">
-          <p class="text-5xl font-bold text-brand-green">{s.n}</p>
-          <p class="mt-2 text-sm text-brand-ink/70">{s.l}</p>
-        </a>
-      ))}
+  <!-- 06 — Practical questions + final CTA -->
+  <section class="py-16 md:py-24" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-12 md:grid-cols-[1fr_1.6fr]">
+      <div>
+        <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">Common Questions</h2>
+      </div>
+      <FaqList faqs={faqs} variant="cream" />
     </div>
   </section>
 
-  <CtaBanner />
+  <CtaBanner
+    title="Not sure which service fits?"
+    text="Book a call and we’ll talk through your brand and recommend where to start."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Prefer to write to us? Contact Us"
+    altHref="/contact-us"
+  />
 </Layout>

@@ -1,0 +1,61 @@
+---
+import { footerNav, legalNav } from '../../data/navigation';
+import Logo from '../ui/Logo.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto px-3 pb-3 sm:px-4 sm:pb-4">
+  <div class="overflow-hidden rounded-[2rem] bg-brand-green-dark text-white/75">
+    <div class="container-x grid gap-10 py-14 md:grid-cols-[1.5fr_repeat(4,1fr)]">
+      <div>
+        <Logo variant="light" />
+        <p class="mt-5 max-w-xs text-sm leading-relaxed">
+          Ecommerce creative & growth studio: Amazon listing optimization and done-for-you social media management.
+        </p>
+        <a href="/book-a-call" class="btn-primary mt-6 text-sm">
+          Book a Call
+        </a>
+      </div>
+      {footerNav.map((col) => (
+        <nav aria-label={`${col.label} links`}>
+          <h2 class="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-brand-yellow">
+            {col.label}
+          </h2>
+          <ul class="space-y-2 text-sm">
+            {col.children!.map((link) => (
+              <li>
+                <a href={link.href} class="transition hover:text-white">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+    <div class="container-x">
+      <p
+        class="select-none font-display text-[18vw] font-extrabold leading-[0.8] tracking-tighter text-white/[0.04] md:text-[11rem]"
+        aria-hidden="true"
+      >
+        share it
+      </p>
+    </div>
+    <div class="border-t border-white/10">
+      <div class="container-x flex flex-col items-center justify-between gap-2 py-5 text-xs sm:flex-row">
+        <p>© {year} Share It Studio. All rights reserved.</p>
+        <ul class="flex flex-wrap items-center gap-x-5 gap-y-1">
+          {legalNav.map((l) => (
+            <li>
+              <a href={l.href} class="transition hover:text-white">
+                {l.label}
+              </a>
+            </li>
+          ))}
+          <li class="text-white/40">Prototype — content and images are placeholders.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

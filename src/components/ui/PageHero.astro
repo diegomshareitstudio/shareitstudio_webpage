@@ -1,7 +1,10 @@
 ---
+/** Page header with the page's only <h1>, optional CTAs and an optional `visual` slot. */
 interface Props {
   eyebrow?: string;
   title: string;
+  /** Part of the title to mark with the yellow highlighter */
+  highlight?: string;
   subtitle?: string;
   ctaLabel?: string;
   ctaHref?: string;
@@ -10,29 +13,75 @@ interface Props {
   size?: 'lg' | 'md';
 }
 
-const { eyebrow, title, subtitle, ctaLabel, ctaHref, secondaryLabel, secondaryHref, size = 'md' } = Astro.props;
+const {
+  eyebrow,
+  title,
+  highlight,
+  subtitle,
+  ctaLabel,
+  ctaHref,
+  secondaryLabel,
+  secondaryHref,
+  size = 'md',
+} = Astro.props;
+
+const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
+const hasVisual = Astro.slots.has('visual');
 ---
 
-<section class="relative overflow-hidden bg-brand-green text-white">
-  <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-yellow/10 blur-2xl"></div>
-  <div class="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-brand-green-light/60 blur-3xl"></div>
-  <div class:list={['container-x relative text-center', size === 'lg' ? 'py-24 md:py-32' : 'py-16 md:py-20']}>
-    {eyebrow && <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-white/70">{eyebrow}</p>}
-    <h1
-      class:list={[
-        'mx-auto max-w-4xl font-bold leading-[1.05] tracking-tight text-brand-yellow',
-        size === 'lg' ? 'text-4xl sm:text-5xl md:text-7xl' : 'text-4xl sm:text-5xl md:text-6xl',
-      ]}
-    >
-      {title}
-    </h1>
-    {subtitle && <p class="mx-auto mt-6 max-w-2xl text-lg text-white/85 md:text-xl" set:html={subtitle} />}
-    {(ctaLabel || secondaryLabel) && (
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        {ctaLabel && <a href={ctaHref} class="btn-primary text-lg">{ctaLabel}</a>}
-        {secondaryLabel && <a href={secondaryHref} class="btn-outline">{secondaryLabel}</a>}
+<header class="relative overflow-hidden bg-brand-cream">
+  <div
+    class:list={[
+      'container-x relative grid items-center gap-12',
+      hasVisual ? 'lg:grid-cols-[1.1fr_1fr]' : 'md:grid-cols-[1.6fr_1fr]',
+      size === 'lg' ? 'pb-20 pt-12 md:pb-28 md:pt-16' : 'pb-14 pt-10 md:pb-20 md:pt-14',
+    ]}
+  >
+    <div>
+      {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
+      <h1
+        class:list={[
+          'font-extrabold leading-[1.02] text-brand-green',
+          size === 'lg' ? 'text-5xl sm:text-6xl lg:text-7xl' : 'text-4xl sm:text-5xl lg:text-6xl',
+        ]}
+      >
+        {before}
+        {after !== undefined && (
+          <>
+            <span class="marker">{highlight}</span>
+            {after}
+          </>
+        )}
+      </h1>
+      {subtitle && <p class="mt-6 max-w-xl text-lg leading-relaxed text-brand-ink/70" set:html={subtitle} />}
+      {(ctaLabel || secondaryLabel) && (
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          {ctaLabel && (
+            <a href={ctaHref} class="btn-primary">
+              {ctaLabel}
+            </a>
+          )}
+          {secondaryLabel && (
+            <a href={secondaryHref} class="btn-outline">
+              {secondaryLabel}
+            </a>
+          )}
+        </div>
+      )}
+      <slot />
+    </div>
+
+    {hasVisual ? (
+      <div>
+        <slot name="visual" />
+      </div>
+    ) : (
+      <div class="relative hidden h-56 md:block" aria-hidden="true">
+        <div class="absolute right-10 top-0 h-40 w-40 rotate-12 rounded-[2.5rem] bg-brand-green"></div>
+        <div class="absolute right-40 top-20 h-28 w-28 -rotate-6 rounded-full bg-brand-yellow"></div>
+        <div class="absolute bottom-0 right-0 h-20 w-20 rotate-45 rounded-3xl bg-brand-orange"></div>
+        <div class="absolute right-24 top-28 h-10 w-10 rounded-full border-4 border-brand-green"></div>
       </div>
     )}
-    <slot />
   </div>
-</section>
+</header>

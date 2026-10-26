@@ -1,0 +1,111 @@
+---
+/**
+ * Terms & Conditions (blueprint P40 v1.0): structure only. The legal text is NOT written here.
+ * The blueprint forbids publishing clauses, liability limits, warranties, fees, cancellation terms, governing law
+ * or an effective date before counsel approves them against real practices and signed agreements (TC-01…TC-30).
+ * Each section therefore holds a visible draft notice describing what it will cover.
+ *
+ * "Commercial Terms" is left out on purpose: the site has no checkout, and the blueprint says to remove a clause
+ * that does not apply rather than leave a placeholder (TC-12). Add it back only if counsel confirms it is needed.
+ *
+ * While DRAFT is true the page is noindex. To release: replace each `covers` with approved text, set the dates,
+ * set DRAFT = false.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+
+const DRAFT = true;
+const lastUpdated = 'Pending legal review';
+
+const sections = [
+  {
+    id: 'scope-and-company',
+    title: 'Scope and Company Information',
+    covers: 'Who operates this website, which sites these terms cover, and when they apply.',
+  },
+  {
+    id: 'website-use',
+    title: 'Website Use',
+    covers: 'What you may do on the site, what is not allowed, and how messages you send us are handled.',
+  },
+  {
+    id: 'services-and-agreements',
+    title: 'Service Information and Agreements',
+    covers: 'How the service descriptions on this site relate to proposals and signed project agreements, which take precedence.',
+  },
+  {
+    id: 'bookings-and-third-parties',
+    title: 'Bookings and Third Parties',
+    covers: 'What booking a call means, and the role of external scheduling and other third-party tools.',
+  },
+  {
+    id: 'intellectual-property',
+    title: 'Intellectual Property',
+    covers: 'Who owns the content on this site, what you may reuse, and how client work shown in our portfolio is treated.',
+  },
+  {
+    id: 'disclaimers-and-liability',
+    title: 'Disclaimers and Liability',
+    covers: 'Third-party links, the availability and accuracy of site content, and the limits of our responsibility.',
+  },
+  {
+    id: 'changes-and-disputes',
+    title: 'Changes and Disputes',
+    covers: 'How these terms are updated, and how questions or disputes are handled.',
+  },
+  {
+    id: 'contact',
+    title: 'Contact',
+    covers: 'How to reach us with questions about these terms, and where to find our related notices.',
+  },
+];
+
+const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions' }];
+---
+
+<Layout
+  title="Terms & Conditions | Share It Studio"
+  description="Read the terms governing use of the Share It Studio website and find related legal notices and contact information."
+  breadcrumbs={breadcrumbs}
+  noindex={DRAFT}
+>
+  <!-- 01 — Heading, date and contents -->
+  <PageHero
+    eyebrow="Legal"
+    title="Terms & Conditions"
+    subtitle={`These terms explain the conditions for using the Share It Studio website (shareitstudio.com) and how it relates to separately agreed services. Last updated: ${lastUpdated}.`}
+  />
+
+  <div class="container-x grid gap-10 py-16 md:grid-cols-[14rem_1fr] md:py-20">
+    <nav aria-label="Terms and conditions contents" class="md:sticky md:top-28 md:self-start">
+      <p class="mb-3 text-sm font-bold text-brand-green">Contents</p>
+      <ul class="space-y-2 text-sm">
+        {sections.map((s) => (
+          <li><a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">{s.title}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="max-w-3xl space-y-12">
+      {DRAFT && (
+        <p class="rounded-2xl bg-brand-yellow-soft p-5 text-sm text-brand-green" role="note">
+          <strong>Draft.</strong> This page shows the structure of our terms. The full text is being reviewed and will
+          be published here. For questions, please <a href="/contact-us" class="underline">contact us</a>.
+        </p>
+      )}
+
+      {sections.map((s) => (
+        <section id={s.id} class="scroll-mt-28" aria-labelledby={`${s.id}-heading`}>
+          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">{s.title}</h2>
+          {/* TODO: replace with counsel-approved text (see TC-01…TC-30 in the blueprint) */}
+          <p class="mt-3 text-brand-ink/70">{DRAFT ? `This section will cover: ${s.covers}` : ''}</p>
+        </section>
+      ))}
+
+      <p class="border-t border-black/10 pt-6 text-sm text-brand-ink/60">
+        Related: <a href="/privacy-policy" class="underline">Privacy Policy</a> ·
+        <a href="/contact-us" class="underline">Contact Us</a>
+      </p>
+    </div>
+  </div>
+</Layout>

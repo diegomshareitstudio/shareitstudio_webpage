@@ -1,75 +1,128 @@
 ---
+/**
+ * Portfolio hub (blueprint P15 v1.0): a visual, category-led hub with seven category tiles.
+ * Sections: Hero → Seven-category mosaic → (Selected work spotlight: omitted until approved assets exist, D01/D04)
+ * → Services + final CTA. No metrics or outcome claims: samples show capability, not results.
+ * TODO: replace tile placeholders with approved, permissioned work (PORT-CAT-01…07).
+ */
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
 import CtaBanner from '../../components/ui/CtaBanner.astro';
+import { itemListSchema } from '../../lib/schema';
 
-const groups = [
+// Seven categories from the blueprint, in order. `span` shapes the asymmetric grid on large screens.
+const categories = [
   {
-    name: 'Listing Images',
-    text: 'Main images, infographics and lifestyles that win the click and the sale.',
-    links: [
-      { label: 'Hero Images', href: '/portfolio/listing-images/hero-images' },
-      { label: 'Infographics', href: '/portfolio/listing-images/infographics' },
-      { label: 'Lifestyles', href: '/portfolio/listing-images/lifestyles' },
-    ],
+    name: 'A+ Content',
+    text: 'Desktop and mobile A+ modules for Amazon product pages.',
+    href: '/portfolio/a-plus-content',
+    span: 'lg:col-span-3',
   },
   {
-    name: 'A+ & Brand Content',
-    text: 'Below-the-fold storytelling that builds trust and lifts conversion.',
-    links: [
-      { label: 'A+ Content', href: '/portfolio/a-content' },
-      { label: 'Premium A+ Content', href: '/portfolio/premium-a-content' },
-      { label: 'Brand Story', href: '/portfolio/brand-story' },
-      { label: 'Storefront', href: '/portfolio/storefront' },
-    ],
+    name: 'Hero Images',
+    text: 'Main listing images designed for Amazon search results.',
+    href: '/portfolio/hero-images',
+    span: 'lg:col-span-3',
   },
   {
-    name: 'Videos',
-    text: 'Product demos, ads and creator content for Amazon and social.',
-    links: [
-      { label: 'Listing Videos', href: '/portfolio/videos/listing-videos' },
-      { label: 'Sponsored Ads', href: '/portfolio/videos/sponsored-ads' },
-      { label: 'UGC Videos', href: '/portfolio/videos/ugc-videos' },
-      { label: 'Social Media Videos', href: '/portfolio/videos/social-media-videos' },
-    ],
+    name: 'Amazon Infographics',
+    text: 'Listing images that explain features and benefits.',
+    href: '/portfolio/amazon-infographics',
+    span: 'lg:col-span-2',
   },
   {
-    name: 'Branding',
-    text: 'Logos, packaging and identity systems designed for e-commerce.',
-    links: [{ label: 'Branding', href: '/portfolio/branding' }],
+    name: 'Lifestyle Photography',
+    text: 'Product photography shown in use.',
+    href: '/portfolio/lifestyle-photography',
+    span: 'lg:col-span-2',
   },
+  {
+    name: 'Video Production',
+    text: 'Listing videos and Sponsored Brands video ads.',
+    href: '/portfolio/video-production',
+    span: 'lg:col-span-2',
+  },
+  {
+    name: 'Other Services',
+    text: 'Other Amazon creative work, such as Brand Story and Storefront design.',
+    href: '/portfolio/other-services',
+    span: 'lg:col-span-3',
+  },
+  {
+    name: 'Social Media Portfolio',
+    text: 'Reels, carousels and social content for ecommerce brands.',
+    href: '/portfolio/social-media',
+    span: 'lg:col-span-3',
+  },
+];
+
+const breadcrumbs = [{ name: 'Portfolio', path: '/portfolio' }];
+const schema = [
+  itemListSchema(
+    '/portfolio',
+    'Portfolio categories',
+    categories.map((c) => ({ name: c.name, path: c.href })),
+  ),
 ];
 ---
 
-<Layout title="Portfolio | Share It Studio" description="Browse Share It Studio’s portfolio of Amazon listing images, A+ Content, Storefronts, videos and branding.">
+<Layout
+  title="Amazon & Ecommerce Creative Portfolio | Share It Studio"
+  description="Explore Share It Studio’s Amazon and ecommerce creative work, from A+ Content and hero images to product photography, video and social media."
+  breadcrumbs={breadcrumbs}
+  pageType="CollectionPage"
+  schema={schema}
+>
+  <!-- 01 — Hero / visual statement -->
   <PageHero
-    eyebrow="Our work"
-    title="Portfolio"
-    subtitle="Visual content built on data — explore what we create for Amazon sellers."
+    eyebrow="Share It Studio"
+    title="Our Portfolio"
+    highlight="Portfolio"
+    subtitle="A curated view of Amazon and ecommerce creative work, organized by format so you can quickly find the examples relevant to your brand."
+    ctaLabel="Explore the Portfolio"
+    ctaHref="#portfolio-categories"
+    secondaryLabel="View Services"
+    secondaryHref="/services"
   />
 
-  <section class="container-x py-16 md:py-20">
-    <div class="grid gap-8 md:grid-cols-2">
-      {groups.map((g) => (
-        <article class="group overflow-hidden rounded-3xl border border-black/5 bg-white shadow-sm transition hover:shadow-xl">
-          <div class="placeholder aspect-[16/9] rounded-none border-0 border-b-2">{g.name} preview</div>
-          <div class="p-7">
-            <h2 class="text-2xl font-bold text-brand-green">{g.name}</h2>
-            <p class="mt-2 text-brand-ink/70">{g.text}</p>
-            <ul class="mt-5 flex flex-wrap gap-2">
-              {g.links.map((l) => (
-                <li>
-                  <a href={l.href} class="inline-block rounded-full bg-brand-cream px-4 py-1.5 text-sm font-medium text-brand-green transition hover:bg-brand-yellow">
-                    {l.label} →
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </article>
+  <!-- 02 — Seven-category portfolio mosaic -->
+  <section id="portfolio-categories" class="container-x scroll-mt-24 py-16 md:py-20" aria-labelledby="work-heading">
+    <SectionHeading id="work-heading" title="Explore Our Work" align="left" />
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+      {categories.map((c) => (
+        <li class:list={['flex', c.span]}>
+          <a
+            href={c.href}
+            class="group flex w-full flex-col overflow-hidden rounded-[2rem] bg-brand-cream p-3 transition hover:-translate-y-1 hover:shadow-xl"
+          >
+            <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-white transition group-hover:bg-brand-yellow-soft">
+              {c.name} preview
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <h3 class="text-2xl font-extrabold text-brand-green">{c.name}</h3>
+              <p class="mt-1 flex-1 text-sm text-brand-ink/70">{c.text}</p>
+              <span class="mt-4 text-sm font-semibold text-brand-green transition group-hover:translate-x-1">
+                View {c.name} →
+              </span>
+            </div>
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
+    <p class="mt-6 text-xs text-brand-ink/50">
+      Portfolio samples show our creative work. They are not measured results; see our
+      <a href="/case-studies" class="underline">case studies</a> for documented outcomes.
+    </p>
   </section>
 
-  <CtaBanner title="Like what you see?" text="Let’s talk about the content your listing needs to convert better." />
+  <!-- 04 — Explore services + final CTA -->
+  <CtaBanner
+    title="Bring Your Project to Life"
+    text="Tell us about your brand and what you need. We’ll tailor the conversation to your project."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Explore Services"
+    altHref="/services"
+  />
 </Layout>

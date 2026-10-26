@@ -1,57 +1,109 @@
 ---
-import SchemaOrg from '../components/SchemaOrg.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+/**
+ * Base layout for every page: <head> SEO tags, one JSON-LD @graph, header, <main> and footer.
+ */
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { SITE } from '../config/site';
+import {
+  absoluteUrl,
+  breadcrumbSchema,
+  organizationSchema,
+  webPageSchema,
+  websiteSchema,
+  type Crumb,
+  type PageType,
+  type Schema,
+} from '../lib/schema';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
-  canonical?: string;
+  /** Trail after Home, e.g. [{ name: 'Services', path: '/services' }]. Omit on the homepage. */
+  breadcrumbs?: Crumb[];
+  /** schema.org type of the WebPage node */
+  pageType?: PageType;
+  /** Page-specific JSON-LD nodes (Service, Article, FAQPage…) */
+  schema?: Schema[];
+  /** Social preview image (path or URL of a built asset) */
+  image?: string;
+  ogType?: 'website' | 'article';
   noindex?: boolean;
-  schema?: Record<string, any> | Record<string, any>[];
 }
 
 const {
-  title = "Share It Studio | Amazon Listing Optimization & E-commerce Content",
-  description = "Turn product traffic into stronger conversion with strategic Amazon listing content. Explore Share It Studio’s approach.",
-  canonical = Astro.url.href,
+  title = SITE.title,
+  description = SITE.description,
+  breadcrumbs,
+  pageType,
+  schema = [],
+  image,
+  ogType = 'website',
   noindex = false,
-  schema
 } = Astro.props;
 
-const robotsContent = noindex 
-  ? "noindex, nofollow" 
-  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+const path = Astro.url.pathname;
+const canonical = absoluteUrl(path);
+const ogImage = image && absoluteUrl(image);
+const robots = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organizationSchema(),
+    websiteSchema(),
+    webPageSchema({ path, title, description, type: pageType, image, hasBreadcrumb: Boolean(breadcrumbs) }),
+    ...(breadcrumbs ? [breadcrumbSchema(path, breadcrumbs)] : []),
+    ...schema,
+  ],
+};
 ---
 
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang={SITE.language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-	{schema && <SchemaOrg schema={schema} />}
-
-    <link rel="canonical" href={canonical} />
-    <meta name="robots" content={robotsContent} />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <!-- Open Graph / social -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-   <!--  <meta property="og:image" content={new URL("/og-image.jpg", Astro.site)} /> -->
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(graph)} />
   </head>
   <body class="flex min-h-screen flex-col">
-	<Header></Header>
-    <slot />
-	<Footer></Footer>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-brand-yellow focus:px-5 focus:py-3 focus:font-semibold focus:text-brand-green"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

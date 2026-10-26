@@ -1,0 +1,235 @@
+---
+/**
+ * FAQs (blueprint P37 v1.0): a cross-service hub of grouped, answer-first questions.
+ * No FAQPage markup (Google retired FAQ rich results in 2026) and no prices, plans or turnaround figures.
+ * Answers on topics the blueprint marks as blockers are deliberately not published until approved:
+ * payment terms and deposits (F20), revision count (F27), upload/publishing responsibility (F30),
+ * file ownership and usage rights (F31), AI-assisted production (F32/F33) and account access (F39).
+ * Because of that, the "Deliverables, Revisions and Ownership" group only carries scope-level answers.
+ * TODO: every answer needs an owner and an approval date in the CMS (D01–D17).
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import FaqList from '../components/ui/FaqList.astro';
+import type { Faq } from '../data/faqs';
+
+interface Group {
+  id: string;
+  title: string;
+  faqs: Faq[];
+}
+
+const groups: Group[] = [
+  {
+    id: 'top-questions',
+    title: 'Most Asked Questions',
+    faqs: [
+      {
+        q: 'Can I hire just one service or one component?',
+        a: 'Yes. Amazon listing components, such as A+ Content or listing images, can be hired individually or combined into a tailored project. They are quoted per project rather than sold as fixed packages.',
+        link: { label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' },
+      },
+      {
+        q: 'What is included in Amazon Listing Optimization?',
+        a: 'It starts with research on your product, customers and competitors. The deliverables, such as listing images, A+ Content, video and copy, depend on the scope we agree for your project.',
+        link: { label: 'See all services', href: '/services' },
+      },
+      {
+        q: 'How are your services priced?',
+        a: 'Pricing depends on the service and the scope of your project, so we discuss it on a call and confirm it in a proposal. We don’t publish prices on this page.',
+        link: { label: 'Book a Call', href: '/book-a-call' },
+      },
+      {
+        q: 'How long does a project take?',
+        a: 'It depends on the scope and whether photography or video is needed. We confirm the timeline in your proposal, before the project starts.',
+      },
+      {
+        q: 'What happens after I book a call?',
+        a: 'We talk through your brand, your products and what you need. If there’s a fit, we prepare a tailored proposal for you.',
+        link: { label: 'Book a Call', href: '/book-a-call' },
+      },
+      {
+        q: 'How do I get a proposal or speak with your team?',
+        a: 'Contact us to start a conversation about your brand. We’ll take it from there.',
+        link: { label: 'Book a Call', href: '/book-a-call' },
+      },
+    ],
+  },
+  {
+    id: 'services',
+    title: 'Choosing a Service',
+    faqs: [
+      {
+        q: 'What does Share It Studio do?',
+        a: 'We create Amazon listing content and manage ecommerce social media. We focus on content and creative; we are not Amazon and we don’t run your account operations.',
+        link: { label: 'Explore services', href: '/services' },
+      },
+      {
+        q: 'Do you work with ecommerce brands outside Amazon?',
+        a: 'Yes, for social media management, which works for any ecommerce brand. Our Amazon listing services are specific to Amazon.',
+        link: { label: 'Social Media Management', href: '/services/social-media-management' },
+      },
+      {
+        q: 'How is listing image design different from product photography?',
+        a: 'Listing images are composed designs, such as the main image, infographics and lifestyle images. Product photography is the shooting of the product itself, and its photos can feed those images.',
+        link: { label: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+      },
+      {
+        q: 'What is the difference between Basic and Premium A+ Content?',
+        a: 'Basic A+ Content uses standard image and text modules. Premium A+ Content adds larger, interactive modules, such as video, carousels and hotspots, for eligible brands.',
+        link: { label: 'Amazon A+ Content Design', href: '/services/amazon-a-plus-content' },
+      },
+      {
+        q: 'Do you create product videos for listings and Amazon ads?',
+        a: 'Yes. We produce listing videos and Sponsored Brands video ads. The exact format depends on your brief.',
+        link: { label: 'Amazon Product Video Production', href: '/services/amazon-product-video-production' },
+      },
+      {
+        q: 'Are Amazon Storefront and Brand Story separate services?',
+        a: 'Yes. The Brand Story is a carousel shown across your catalog, and the Storefront is a multi-page Amazon Store. Each has its own service page.',
+        link: { label: 'Amazon Storefront Design', href: '/services/amazon-storefront-design' },
+      },
+      {
+        q: 'Can you optimize only my listing copy and keywords?',
+        a: 'Yes. Listing copywriting and SEO covers keyword research, titles, bullet points and backend search terms, and can be hired on its own.',
+        link: { label: 'Amazon Listing Copywriting & SEO', href: '/services/amazon-listing-copywriting' },
+      },
+      {
+        q: 'Can you work alongside my existing Amazon PPC agency?',
+        a: 'Yes. We focus on listing content and creative, and your PPC agency keeps managing your campaigns.',
+      },
+    ],
+  },
+  {
+    id: 'pricing',
+    title: 'Pricing and Engagement',
+    faqs: [
+      {
+        q: 'What determines a custom quote?',
+        a: 'For Amazon listing work, the price depends on the number of ASINs and the deliverables included, such as listing images, A+ modules, photography, video and copy.',
+      },
+      {
+        q: 'Do you offer monthly plans or one-time projects?',
+        a: 'Amazon listing work is quoted per project. Social media management is an ongoing monthly service. We confirm the model for your case in the proposal.',
+        link: { label: 'Social Media Management', href: '/services/social-media-management' },
+      },
+    ],
+  },
+  {
+    id: 'process',
+    title: 'Our Process',
+    faqs: [
+      {
+        q: 'What are the steps in your creative process?',
+        a: 'We start with research on your market and customers, define a creative direction, produce the content in your scope, then review it with you and deliver. The exact steps depend on the project.',
+        link: { label: 'How we work', href: '/about-us' },
+      },
+      {
+        q: 'What do you need from my brand to get started?',
+        a: 'Typically your product details, brand assets and any existing marketing materials. We confirm exactly what we need once we know the scope.',
+      },
+      {
+        q: 'Do I need to send physical product samples?',
+        a: 'For product photography, yes, we need physical samples. We share shipping details when the project starts.',
+        link: { label: 'Amazon Product Photography', href: '/services/amazon-product-photography' },
+      },
+    ],
+  },
+  {
+    id: 'deliverables',
+    title: 'Deliverables and Scope',
+    faqs: [
+      {
+        q: 'How many listing images do you design?',
+        a: 'Usually a full stack of 7 to 9 images, but the scope is defined after we review your listing.',
+        link: { label: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+      },
+      {
+        q: 'Do you use real photography or 3D?',
+        a: 'We choose per image: real photography where trust and detail matter most, and 3D where it is just as accurate.',
+      },
+    ],
+  },
+  {
+    id: 'ai-performance',
+    title: 'Compliance and Results',
+    faqs: [
+      {
+        q: 'Will my content follow Amazon’s requirements?',
+        a: 'We design to Amazon’s current content guidelines and avoid the most common rejection reasons. Amazon makes the final decision on whether content is approved.',
+        link: { label: 'Amazon image requirements', href: '/blog/amazon-images-requirements' },
+      },
+      {
+        q: 'Do you guarantee a sales lift or a ranking increase?',
+        a: 'No. We aim to improve how your products are presented, but results depend on many factors, so we don’t promise specific outcomes.',
+      },
+    ],
+  },
+  {
+    id: 'proof',
+    title: 'Proof and Next Steps',
+    faqs: [
+      {
+        q: 'Where can I see your work and case studies?',
+        a: 'Browse examples of our creative work in the portfolio, and read how specific projects went in the case studies.',
+        link: { label: 'View the portfolio', href: '/portfolio' },
+      },
+    ],
+  },
+];
+
+const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
+---
+
+<Layout
+  title="Frequently Asked Questions | Share It Studio"
+  description="Find answers about Share It Studio services, project scope, pricing, creative production, timelines, revisions and how to get started."
+  breadcrumbs={breadcrumbs}
+>
+  <!-- 01 — Hero + topic navigator -->
+  <PageHero
+    eyebrow="Share It Studio"
+    title="Frequently Asked Questions"
+    highlight="Questions"
+    subtitle="Answers about Share It Studio’s Amazon content and ecommerce social media services: how projects work, what to expect and how to get started."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+  >
+    <nav aria-label="FAQ topics" class="mt-8">
+      <p class="mb-3 text-sm font-semibold text-brand-green">What do you need help with?</p>
+      <ul class="flex flex-wrap gap-2">
+        {groups.map((g) => (
+          <li>
+            <a
+              href={`#${g.id}`}
+              class="inline-flex min-h-[44px] items-center rounded-full bg-white px-4 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
+            >
+              {g.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </PageHero>
+
+  <!-- 02–08 — Grouped answers -->
+  <div class="container-x max-w-3xl space-y-14 py-16 md:py-20">
+    {groups.map((g) => (
+      <section id={g.id} class="scroll-mt-24" aria-labelledby={`${g.id}-heading`}>
+        <h2 id={`${g.id}-heading`} class="mb-5 text-2xl font-extrabold text-brand-green md:text-3xl">{g.title}</h2>
+        <FaqList faqs={g.faqs} variant="cream" headingLevel={3} openFirst={false} />
+      </section>
+    ))}
+  </div>
+
+  <!-- 09 — Still need help -->
+  <CtaBanner
+    title="Didn’t find your answer?"
+    text="Every brand is different. Book a call and we’ll talk through your situation and what makes sense for it."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Explore Services"
+    altHref="/services"
+  />
+</Layout>

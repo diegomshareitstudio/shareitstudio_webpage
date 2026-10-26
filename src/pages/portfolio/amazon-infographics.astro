@@ -1,0 +1,37 @@
+---
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+
+const benefits = [
+  {
+    title: 'Built from data',
+    text: 'We mine competitor reviews to find what buyers actually care about.',
+  },
+  {
+    title: 'Readable on mobile',
+    text: 'Large type, short copy and clear hierarchy for small screens.',
+  },
+  {
+    title: 'Answers objections',
+    text: 'Every image targets one doubt that stops a shopper from buying.',
+  },
+];
+---
+
+<PortfolioLayout
+  title="Amazon Infographics"
+  metaTitle="Amazon Infographics Portfolio | Share It Studio"
+  description="Turn features into benefits shoppers understand in seconds. Explore Share It Studio’s Amazon Infographics portfolio for Amazon sellers."
+  subtitle="Turn features into benefits shoppers understand in seconds."
+  intro="Most shoppers skim images instead of reading bullets. Our infographics answer objections, highlight differentiators and compare you against competitors — all in a format that works on a phone screen."
+  items={[
+    'Feature callouts',
+    'Size & dimensions',
+    'Comparison chart',
+    'How it works — 3 steps',
+    'What’s in the box',
+    'Materials & certifications',
+  ]}
+  aspect="square"
+  benefits={benefits}
+  service={{ label: 'Listing Images service', href: '/services/amazon-listing-images' }}
+/>

@@ -1,123 +1,154 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "@id": "https://shareitstudio.com/case-studies/pink-miracle#article",
-  "headline": "Pink Miracle Case Study | Share It Studio",
-  "description": "Turning Pink Miracle’s Loss into a $112K Win",
-  "author": {
-    "@type": "Organization",
-    "name": "Share It Studio"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Share It Studio",
-    // Optional: Add a logo if available
-    // "logo": {
-    //   "@type": "ImageObject",
-    //   "url": "https://shareitstudio.com/logo.png"
-    // }
-  }
-};
+const cs = getCaseStudy('pink-miracle');
 
-const breadcrumbListSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": "https://shareitstudio.com/case-studies/pink-miracle#breadcrumb",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://shareitstudio.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Case Studies",
-      "item": "https://shareitstudio.com/case-studies"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Pink Miracle Case Study",
-      "item": "https://shareitstudio.com/case-studies/pink-miracle"
-    }
-  ]
-};
+const metaTitle = 'Pink Miracle Case Study: +110% Amazon Sales | Share It Studio';
+const description =
+  'How data-driven listing optimization and A/B testing took Pink Miracle, a #1-ranked shoe cleaner, from $404K to $849K in monthly Amazon sales.';
 
-const combinedSchema = [articleSchema, breadcrumbListSchema];
+const results = [
+  { metric: 'Monthly sales', before: '$404,480', after: '$606,494', change: '+51.94%', highlight: true },
+  { metric: 'Units ordered', before: '20,234', after: '30,038', change: '+48.5%' },
+  { metric: 'Sessions', before: '92,548', after: '121,808', change: '+31.6%' },
+  { metric: 'Unit session percentage', before: '21.59%', after: '24.44%', change: '+2.85 pts' },
+  { metric: 'Main image CTR (tested)', before: '2.03%', after: '2.48%', change: '+22.2%' },
+];
 ---
 
-<Layout 
-  title="Pink Miracle Case Study | Share It Studio" 
-  description="Turning Pink Miracle’s Loss into a $112K Win"
-  schema={combinedSchema}
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="How Pink Miracle grew a #1 Amazon listing to $849K in monthly sales"
+  highlight="$849K in monthly sales"
+  lead="Pink Miracle already ranked #1 in its category. Data-driven creative, A/B testing and weekly optimization still added +51.94% in sales in one month."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['Amazon US']}
+  service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
 >
-<article>
-    <header>
-      <h1>Case Study: Pink Miracle Amazon Listing & Video Ad Optimization</h1>
-      <p>Turning Pink Miracle’s Loss into a $112K Win through data-driven content and sponsored ads optimization.</p>
-    </header>
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> Pink Miracle’s #1-ranked listing had outdated images and messaging. We redesigned its
+        visual content, A/B tested it and optimized it every week together with the brand’s PPC manager. Monthly sales
+        grew from <strong>$404,480 to $606,494 (+51.94%) in one month</strong>, and reached{' '}
+        <strong>$849,312 six months later</strong>.
+      </p>
+    </aside>
 
     <section id="client-background">
       <h2>Client Background</h2>
-      <p><strong>Pink Miracle</strong> is a shoe cleaner brand with deep roots in California’s open-air markets. It has been selling a trusted product “since Jordan hit the scene.” From the start, it’s focused on crafting a shoe cleaner that truly resonates with sneakerheads and fashion enthusiasts alike, building a reputation for quality that stands the test of time.</p>
+      <p>
+        <strong>Pink Miracle</strong> is an established shoe cleaner brand with a strong reputation and a top-ranking
+        position on Amazon. Despite its success, the brand had significant untapped sales potential because of outdated
+        listing content.
+      </p>
     </section>
 
     <section id="initial-challenge">
       <h2>Initial Challenge</h2>
-      <p>Despite having a strong product and a well-established brand, Pink Miracle’s Amazon listing was lacking due to poor-quality content. Although they saw decent sales, their unoptimized listing led to lost revenue from low-quality images and videos and a weak overall presentation.</p>
-      
-      <p>Our connection with Pink Miracle came through networking, as a previous client referred them to us in October 2023 after they expressed dissatisfaction with their listing’s performance. The shared goal was clear: optimize their listing to increase revenue.</p>
-
-      <section id="baseline-metrics">
-        <h3>Baseline Metrics (At the Start of Engagement)</h3>
-        <dl>
-          <dt>Sessions</dt>
-          <dd>4,966</dd>
-          
-          <dt>Units Ordered</dt>
-          <dd>371</dd>
-          
-          <dt>Conversion Rate (CVR)</dt>
-          <dd>24%</dd>
-        </dl>
-      </section>
-
-      <section id="kpis">
-        <h3>KPIs for the Video Ad</h3>
-        <ul>
-          <li><strong>CVR:</strong> Conversion Rate</li>
-          <li><strong>ROAS:</strong> Return on Ad Spend</li>
-        </ul>
-      </section>
+      <p>
+        Although Pink Miracle already ranked <strong>#1 in its category</strong>, its Amazon listing lacked engaging
+        visuals, clear product messaging and competitive differentiation.
+      </p>
+      <p>
+        With approximately <strong>$404K in monthly sales</strong>, the challenge was to improve an already successful
+        listing and unlock additional revenue — without disrupting its existing performance.
+      </p>
     </section>
 
     <section id="our-approach">
       <h2>Our Approach</h2>
-      <p>Our primary goal was to create data-driven content, including images, A+ Content, and sponsored ad videos. We aimed to test everything we produced and optimize the content based on results.</p>
+      <p>
+        We developed a data-driven Amazon marketing strategy focused on improving click-through rate, conversion and
+        sales through content optimization and continuous testing.
+      </p>
+      <p>
+        The strategy combined{' '}
+        <strong>PPC analysis, sales data, keyword targeting, customer-focused creative and A/B testing</strong> to find
+        where the listing could improve.
+      </p>
     </section>
 
     <section id="implementation">
       <h2>Implementation</h2>
-      <p>After analyzing the product’s demographics, keywords, and unique selling points (USPs), we created the first round of content: Images, Videos (Listing and Keyword-targeted Sponsored Ads), A+ Content, and Brand Story.</p>
-      
-      <p>Once the initial content round was created, we tested it across different platforms (PickFu and Intellivy). After this first round of testing, we optimized the content based on the results and repeated this process for the main images, secondary images, and image stack.</p>
-      
-      <p>For the video ad, we analyzed PPC data and campaigns and, based on that, created three groups of <em>[Pending Information]</em>.</p>
+      <ol class="steps-list">
+        <li>
+          <h3>Performance analysis</h3>
+          <p>Analyzed PPC metrics, sales and customer behavior to identify optimization opportunities.</p>
+        </li>
+        <li>
+          <h3>Content optimization</h3>
+          <p>
+            Redesigned the main image, infographics, lifestyle images, A+ Content, Premium A+, Brand Story and videos.
+          </p>
+        </li>
+        <li>
+          <h3>A/B testing</h3>
+          <p>
+            Tested main images, image stacks, product messaging and competitor comparisons with <strong>PickFu</strong>{' '}
+            and <strong>Intellivy</strong>.
+          </p>
+        </li>
+        <li>
+          <h3>Continuous optimization</h3>
+          <p>Monitored CTR, CVR, sessions, units, ROAS and ACOS to guide weekly improvements.</p>
+        </li>
+        <li>
+          <h3>Performance monitoring</h3>
+          <p>
+            Dedicated <strong>24 hours per month</strong> to data reviews, content adjustments and coordination with the
+            PPC manager.
+          </p>
+        </li>
+      </ol>
     </section>
 
     <section id="results">
       <h2>Results</h2>
-      <p><em>[Pending Information]</em></p>
+      <p>Performance one month after the new content went live, compared with the starting baseline:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Metric</th>
+              <th scope="col">Before</th>
+              <th scope="col">After</th>
+              <th scope="col">Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r) => (
+              <tr>
+                <th scope="row">{r.metric}</th>
+                <td>{r.before}</td>
+                <td>{r.after}</td>
+                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-brand-ink/55">Main image CTR comes from a tested main image variation.</p>
+
+      <blockquote>
+        <p>
+          Six months later, monthly sales reached <strong>$849,312</strong> — about <strong>110% above</strong> the
+          initial baseline.
+        </p>
+      </blockquote>
     </section>
 
     <section id="key-takeaways">
       <h2>Key Takeaways</h2>
-      <p><em>[Pending Information]</em></p>
+      <ul>
+        <li>Even top-ranking Amazon products can have significant untapped revenue potential.</li>
+        <li>Data-driven creative and A/B testing help improve listing performance.</li>
+        <li>Continuous monitoring and strategic content adjustments can generate measurable sales growth.</li>
+        <li>High-quality visuals, supported by PPC and customer insights, strengthen conversion opportunities.</li>
+      </ul>
     </section>
-  </article>
-</Layout>
+  </div>
+</ArticleLayout>

@@ -1,0 +1,173 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
+
+const cs = getCaseStudy('yungprime');
+
+const metaTitle = 'YUNGPRIME Case Study: +28% Organic Sales | Share It Studio';
+const description =
+  'How a unified Amazon content strategy for slip-resistant work shoes grew YUNGPRIME’s organic sales by 28.3% and ROAS to 2.81× while ad spend went down.';
+
+const results = [
+  { metric: 'Organic sales', before: '$16,432', after: '$21,077', change: '+28.3%', highlight: true },
+  { metric: 'ROAS', before: '2.63×', after: '2.81×', change: '+6.8%' },
+  { metric: 'Ads CVR', before: '3.46%', after: '3.88%', change: '+0.42 pts' },
+  { metric: 'Organic CVR', before: '2.74%', after: '2.96%', change: '+0.22 pts' },
+];
+---
+
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="How YUNGPRIME grew organic Amazon sales by 28.3% in one month"
+  highlight="28.3% in one month"
+  lead="A unified listing, A+ Content, Brand Story, Storefront and video for slip-resistant work shoes — more organic sales and a higher ROAS, with less ad spend."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['May – Jun 2026']}
+  service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+>
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> YUNGPRIME’s listing, A+ Content, Brand Story and Storefront lacked consistency and
+        clear differentiation. We rebuilt them around buyer research. From May to June 2026,{' '}
+        <strong>organic sales grew +28.3%</strong>, <strong>total sales +14.1%</strong> and{' '}
+        <strong>ROAS rose to 2.81×</strong> — while ad spend went down 2.85%.
+      </p>
+    </aside>
+
+    <section id="client-background">
+      <h2>Client Background</h2>
+      <p>
+        <strong>YUNGPRIME</strong> is an Amazon footwear brand specializing in{' '}
+        <strong>slip-resistant work shoes</strong> for professionals, including healthcare and food service workers.
+        With a competitive product and strong customer reviews, the brand had an opportunity to grow sales through more
+        effective Amazon content.
+      </p>
+    </section>
+
+    <section id="initial-challenge">
+      <h2>Initial Challenge</h2>
+      <p>
+        Despite a strong product, YUNGPRIME’s <strong>Amazon listing, A+ Content, Brand Story and Storefront</strong>{' '}
+        lacked consistency and clear product differentiation.
+      </p>
+      <p>
+        The brand needed to communicate its benefits more effectively, address customer objections, improve conversions
+        and <strong>reduce its reliance on paid advertising</strong>.
+      </p>
+    </section>
+
+    <section id="our-approach">
+      <h2>Our Approach</h2>
+      <p>
+        We developed a research-driven Amazon content strategy focused on a consistent shopping experience across every
+        touchpoint.
+      </p>
+      <p>
+        By analyzing competitors, customer reviews, purchasing concerns and product positioning, we set a{' '}
+        <strong>content hierarchy</strong> designed to guide shoppers from product discovery to purchase.
+      </p>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation</h2>
+      <ol class="steps-list">
+        <li>
+          <h3>Market research</h3>
+          <p>Analyzed competitor listings, customer reviews, objections and purchasing concerns.</p>
+        </li>
+        <li>
+          <h3>Listing optimization</h3>
+          <p>
+            Redesigned the main images, infographics and image sequence around product benefits and buyer questions.
+          </p>
+        </li>
+        <li>
+          <h3>A+ Content</h3>
+          <p>Created structured modules that highlight product advantages, address objections and build trust.</p>
+        </li>
+        <li>
+          <h3>Brand Story & Storefront</h3>
+          <p>Developed consistent brand messaging and organized the shopping experience around customer needs.</p>
+        </li>
+        <li>
+          <h3>Copywriting</h3>
+          <p>Optimized product titles and bullet points to emphasize relevant benefits and product differentiation.</p>
+        </li>
+        <li>
+          <h3>Product video</h3>
+          <p>Created demonstration content showing product features and real-world use.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="results">
+      <h2>Results</h2>
+      <p>May vs. June 2026:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Metric</th>
+              <th scope="col">May</th>
+              <th scope="col">June</th>
+              <th scope="col">Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r) => (
+              <tr>
+                <th scope="row">{r.metric}</th>
+                <td>{r.before}</td>
+                <td>{r.after}</td>
+                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Sales, units and ad spend in June</h3>
+      <dl>
+        <dt>Total monthly sales</dt>
+        <dd>
+          $44,593 <strong>+14.1%</strong>
+        </dd>
+
+        <dt>Units sold</dt>
+        <dd>
+          1,048 <strong>+13.9%</strong>
+        </dd>
+
+        <dt>Advertising spend</dt>
+        <dd>−2.85%</dd>
+
+        <dt>Rest of the catalog (excluding the two main ASINs)</dt>
+        <dd>+13.6%</dd>
+      </dl>
+
+      <blockquote>
+        <p>
+          Organic sales grew <strong>+28.3%</strong> and ROAS improved — while spending <strong>less</strong> on ads.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>A unified Amazon content strategy creates a more consistent customer journey.</li>
+        <li>
+          Research-driven visuals and messaging help communicate product benefits and address purchasing objections.
+        </li>
+        <li>Stronger organic performance can support sales growth without increasing advertising spend.</li>
+        <li>
+          Coordinated listing content, A+ Content, Brand Story, Storefront and video strengthen conversion across the
+          Amazon customer journey.
+        </li>
+      </ul>
+    </section>
+  </div>
+</ArticleLayout>

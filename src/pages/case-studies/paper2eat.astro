@@ -1,0 +1,166 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
+
+const cs = getCaseStudy('paper2eat');
+
+const metaTitle = 'Paper2eat Case Study: $1.33M in Amazon Sales | Share It Studio';
+const description =
+  'How an integrated Amazon content strategy — listing images, A+ Content, video, Storefront and Spanish localization — grew Paper2eat’s monthly sales by 25.3%.';
+
+const results = [
+  { metric: 'Monthly sales (June)', before: '$184,569', after: '$231,257', change: '+25.3%', highlight: true },
+  { metric: 'Peak monthly sales (May)', before: '$184,569', after: '$258,265', change: '+39.9%' },
+];
+---
+
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="How Paper2eat reached $1.33M in Amazon sales in six months"
+  highlight="$1.33M in Amazon sales"
+  lead="By connecting listing images, A+ Content, video and Storefront into one shopping experience — and localizing it into Spanish — Paper2eat grew monthly sales by 25.3% while keeping a 6.87× ROAS."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['Jan – Jun 2026']}
+  service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+>
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> Paper2eat’s listing images, A+ Content, videos and Storefront didn’t tell one
+        consistent story. We aligned every Amazon touchpoint and added Spanish content. From January to June 2026,
+        monthly sales grew from <strong>$184,569 to $231,257 (+25.3%)</strong>, with{' '}
+        <strong>$1.33M in total sales</strong> and an average <strong>6.87× ROAS</strong>.
+      </p>
+    </aside>
+
+    <section id="client-background">
+      <h2>Client Background</h2>
+      <p>
+        <strong>Paper2eat</strong> is an established Amazon brand with consistent sales. In January 2026 it generated{' '}
+        <strong>$184,569 in monthly revenue</strong>, a strong foundation for further growth.
+      </p>
+    </section>
+
+    <section id="initial-challenge">
+      <h2>Initial Challenge</h2>
+      <p>
+        Despite its sales performance, Paper2eat needed a more cohesive Amazon content strategy. Its{' '}
+        <strong>listing images, A+ Content, videos and Storefront</strong> were not aligned, so shoppers didn’t get a
+        consistent experience.
+      </p>
+      <p>
+        The goal was to improve product communication, address customer objections, support conversions and increase
+        sales — while maintaining advertising efficiency.
+      </p>
+    </section>
+
+    <section id="our-approach">
+      <h2>Our Approach</h2>
+      <p>
+        We developed an integrated Amazon growth strategy that combined performance analysis, content optimization and
+        continuous monitoring.
+      </p>
+      <p>
+        The focus was to <strong>connect every Amazon touchpoint</strong>, creating a clearer customer journey from
+        product discovery to purchase.
+      </p>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation</h2>
+      <ol class="steps-list">
+        <li>
+          <h3>Performance analysis</h3>
+          <p>Analyzed sales trends, account data and shopper behavior to identify growth opportunities.</p>
+        </li>
+        <li>
+          <h3>Listing optimization</h3>
+          <p>Improved product images and messaging to communicate product benefits and address customer concerns.</p>
+        </li>
+        <li>
+          <h3>A+ Content & video</h3>
+          <p>Updated visual content to strengthen product storytelling and the shopping experience.</p>
+        </li>
+        <li>
+          <h3>Storefront optimization</h3>
+          <p>Aligned brand messaging and visuals across the Amazon Storefront.</p>
+        </li>
+        <li>
+          <h3>Spanish localization</h3>
+          <p>Developed Spanish listing content, A+ Content and Storefront assets.</p>
+        </li>
+        <li>
+          <h3>Continuous optimization</h3>
+          <p>Monitored sales and performance metrics to find opportunities for further improvement.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="results">
+      <h2>Results</h2>
+      <p>Monthly sales compared with the January 2026 baseline:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Metric</th>
+              <th scope="col">January</th>
+              <th scope="col">After</th>
+              <th scope="col">Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r) => (
+              <tr>
+                <th scope="row">{r.metric}</th>
+                <td>{r.before}</td>
+                <td>{r.after}</td>
+                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Six-month totals (January – June 2026)</h3>
+      <dl>
+        <dt>Total sales</dt>
+        <dd>$1,334,246</dd>
+
+        <dt>Ad-attributed sales</dt>
+        <dd>$426.9K</dd>
+
+        <dt>Average ROAS</dt>
+        <dd>6.87×</dd>
+
+        <dt>Months above the January baseline</dt>
+        <dd>
+          5 <strong>Feb – Jun, in a row</strong>
+        </dd>
+      </dl>
+    </section>
+
+    <section id="next-opportunities">
+      <h2>Next Opportunities</h2>
+      <p>
+        Not every metric moved up. CTR went from <strong>0.978% to 0.748%</strong> and CVR from{' '}
+        <strong>15.05% to 13.80%</strong>. These signals point to traffic quality and conversion rate as the next areas
+        to optimize.
+      </p>
+    </section>
+
+    <section id="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>
+          Connecting listing images, A+ Content, videos and Storefront creates a more consistent shopping experience.
+        </li>
+        <li>Combining content strategy with performance analysis helps identify growth opportunities.</li>
+        <li>Spanish localization extends the brand experience to Spanish-speaking customers.</li>
+        <li>Continuous monitoring is essential to find the areas that still need improvement.</li>
+      </ul>
+    </section>
+  </div>
+</ArticleLayout>

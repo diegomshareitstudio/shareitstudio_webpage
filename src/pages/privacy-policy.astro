@@ -1,0 +1,110 @@
+---
+/**
+ * Privacy Policy (blueprint P39 v1.0): structure only. The legal text is NOT written here.
+ * The blueprint forbids publishing policy language, dates, vendor lists, retention periods, rights wording or a
+ * privacy contact before a data-flow inventory and counsel approval (PP-01…PP-26), and forbids reusing the
+ * WordPress "Suggested text". Each section therefore holds a visible draft notice describing what it will cover.
+ *
+ * While DRAFT is true the page is noindex, so an unfinished notice is not indexed or presented as the real policy.
+ * To release: replace each `body` with the approved text, set the dates, set DRAFT = false.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+
+const DRAFT = true;
+const lastUpdated = 'Pending legal review';
+
+// 02–09 — sections in blueprint order; `covers` is what counsel-approved text must address
+const sections = [
+  {
+    id: 'at-a-glance',
+    title: 'At a Glance',
+    covers: 'A short plain-language summary, written only after the data-flow audit.',
+  },
+  {
+    id: 'information-we-collect',
+    title: 'Information We Collect',
+    covers: 'The categories of information collected and their sources: information you send us, scheduling details, and information collected automatically when you visit the site.',
+  },
+  {
+    id: 'how-we-use-information',
+    title: 'How We Use Information',
+    covers: 'The purposes for each category of information, and the legal grounds where they apply.',
+  },
+  {
+    id: 'when-we-share-data',
+    title: 'When We Share Data',
+    covers: 'The service providers and tools that receive information, why, and any international transfers.',
+  },
+  {
+    id: 'cookies-and-tracking',
+    title: 'Cookies and Tracking',
+    covers: 'The cookies and tracking tools in use, and how to manage your choices.',
+  },
+  {
+    id: 'retention-and-security',
+    title: 'Retention and Security',
+    covers: 'How long information is kept, how it is protected, and our approach to children’s information.',
+  },
+  {
+    id: 'privacy-rights',
+    title: 'Privacy Rights',
+    covers: 'The rights available to you depending on where you live, and how to make a request.',
+  },
+  {
+    id: 'updates-and-contact',
+    title: 'Updates and Contact',
+    covers: 'How changes to this policy are communicated, and who to contact about privacy.',
+  },
+];
+
+const breadcrumbs = [{ name: 'Privacy Policy', path: '/privacy-policy' }];
+---
+
+<Layout
+  title="Privacy Policy | Share It Studio"
+  description="Read how Share It Studio handles website information, cookies and privacy choices, and how to contact the team about privacy requests."
+  breadcrumbs={breadcrumbs}
+  noindex={DRAFT}
+>
+  <!-- 01 — Identity, introduction and date -->
+  <PageHero
+    eyebrow="Legal"
+    title="Privacy Policy"
+    subtitle={`This policy explains how Share It Studio handles information connected with visiting its website (shareitstudio.com) and contacting its team. Last updated: ${lastUpdated}.`}
+  />
+
+  <div class="container-x grid gap-10 py-16 md:grid-cols-[14rem_1fr] md:py-20">
+    <!-- 02 — Contents -->
+    <nav aria-label="Privacy policy contents" class="md:sticky md:top-28 md:self-start">
+      <p class="mb-3 text-sm font-bold text-brand-green">Contents</p>
+      <ul class="space-y-2 text-sm">
+        {sections.map((s) => (
+          <li><a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">{s.title}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="max-w-3xl space-y-12">
+      {DRAFT && (
+        <p class="rounded-2xl bg-brand-yellow-soft p-5 text-sm text-brand-green" role="note">
+          <strong>Draft.</strong> This page shows the structure of our privacy policy. The full text is being reviewed
+          and will be published here. For general questions, please <a href="/contact-us" class="underline">contact us</a>.
+        </p>
+      )}
+
+      {sections.map((s) => (
+        <section id={s.id} class="scroll-mt-28" aria-labelledby={`${s.id}-heading`}>
+          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">{s.title}</h2>
+          {/* TODO: replace with counsel-approved text (see PP-01…PP-26 in the blueprint) */}
+          <p class="mt-3 text-brand-ink/70">{DRAFT ? `This section will cover: ${s.covers}` : ''}</p>
+        </section>
+      ))}
+
+      <p class="border-t border-black/10 pt-6 text-sm text-brand-ink/60">
+        Related: <a href="/terms-and-conditions" class="underline">Terms and Conditions</a> ·
+        <a href="/contact-us" class="underline">Contact Us</a>
+      </p>
+    </div>
+  </div>
+</Layout>

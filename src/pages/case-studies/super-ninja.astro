@@ -1,0 +1,204 @@
+---
+import { Image } from 'astro:assets';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
+import salesChart from '../../assets/case-studies/super-ninja/sales-before-after-by-asin.png';
+import oldListing from '../../assets/case-studies/super-ninja/old-listing.png';
+import newListing from '../../assets/case-studies/super-ninja/new-listing.png';
+
+const cs = getCaseStudy('super-ninja');
+
+const metaTitle = 'Super Ninja Amazon Case Study: +716% US Sales | Share It Studio';
+const description =
+  'How localized Amazon listing optimization grew Super Ninja’s fruit fly trap sales by +716.9% in the US, +310.5% in the UK and +91.5% in Germany.';
+
+const results = [
+  { metric: 'Product sales growth', de: '+91.5%', uk: '+310.5%', us: '+716.9%', highlight: true },
+  { metric: 'CTR growth', de: '+59.19%', uk: '+41.76%', us: '+83.84%' },
+  { metric: 'CVR growth', de: '+44.11%', uk: '+46.29%', us: '+77.96%' },
+];
+---
+
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="How Super Ninja grew Amazon sales across three marketplaces"
+  highlight="three marketplaces"
+  lead="Localized listing images and messaging for Germany, the UK and the US — tested and refined every week — lifted product sales by up to 716.9%."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['Amazon DE · UK · US']}
+  service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+>
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> Super Ninja used the same generic listing in every Amazon marketplace. We rebuilt its
+        images and messaging for each market from customer research, then A/B tested and monitored them weekly. Product
+        sales grew <strong>+716.9% in the US</strong>, <strong>+310.5% in the UK</strong> and{' '}
+        <strong>+91.5% in Germany</strong>.
+      </p>
+    </aside>
+
+    <section id="client-background">
+      <h2>Client Background</h2>
+      <p>
+        <strong>Super Ninja</strong> is an established European pest control brand with a loyal customer base and a
+        strong retail presence. As the brand expanded into the US, it needed to strengthen its Amazon performance across{' '}
+        <strong>Germany, the UK and the US</strong>.
+      </p>
+    </section>
+
+    <section id="initial-challenge">
+      <h2>Initial Challenge</h2>
+      <p>
+        Despite offering high-quality products, Super Ninja used generic Amazon listing content across different
+        markets. Its images and messaging didn’t address local buyer preferences, which made it hard to stand out from
+        competitors.
+      </p>
+      <p>
+        The goal was to increase <strong>visibility, clicks, conversions and sales</strong> through market-specific
+        listing optimization.
+      </p>
+      <blockquote>
+        <p>
+          <strong>$2M+</strong> in estimated potential sales were at risk without optimization.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="our-approach">
+      <h2>Our Approach</h2>
+      <p>
+        We developed a localized content strategy based on marketplace research, competitor analysis, customer reviews,
+        FAQs and buyer personas.
+      </p>
+      <p>
+        The research showed that each market buys for different reasons. These insights guided the messaging and visual
+        content for each marketplace:
+      </p>
+      <ul>
+        <li>
+          <strong>Germany:</strong> eco-friendliness.
+        </li>
+        <li>
+          <strong>US:</strong> natural pest control solutions.
+        </li>
+      </ul>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation</h2>
+      <ol class="steps-list">
+        <li>
+          <h3>Market research</h3>
+          <p>
+            Analyzed competitors, customer reviews, FAQs and purchasing preferences across Germany, the UK and the US.
+          </p>
+        </li>
+        <li>
+          <h3>Buyer personas</h3>
+          <p>Identified customer pain points and motivations for each marketplace.</p>
+        </li>
+        <li>
+          <h3>Content optimization</h3>
+          <p>Redesigned the Amazon listing images and messaging to communicate product benefits more effectively.</p>
+        </li>
+        <li>
+          <h3>A/B testing</h3>
+          <p>
+            Created <strong>15+ main image variations</strong> and ran <strong>10+ tests</strong> on images, copy and
+            product features.
+          </p>
+        </li>
+        <li>
+          <h3>Performance monitoring</h3>
+          <p>Reviewed CTR, CVR, sessions, ROAS and ACOS every week to guide continuous improvements.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="before-and-after">
+      <h2>Before and After</h2>
+      <p>
+        From a generic image stack to a listing that shows how the trap works, why it’s safe and how it compares with
+        other brands.
+      </p>
+      <div class="my-8 grid gap-4 sm:grid-cols-2">
+        <figure class="my-0">
+          <span class="mb-3 inline-block rounded-full bg-brand-cream px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-ink/60">
+            Before
+          </span>
+          <Image
+            src={oldListing}
+            alt="Old Super Ninja Amazon listing images: product packaging, fruit, family scene and a non-toxic claim"
+            class="photo"
+          />
+          <figcaption>The original listing: generic images with the same message for every market.</figcaption>
+        </figure>
+        <figure class="my-0">
+          <span class="mb-3 inline-block rounded-full bg-brand-yellow px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-green">
+            After
+          </span>
+          <Image
+            src={newListing}
+            alt="New Super Ninja Amazon listing images: 4-pack main image, strong adhesive, lab-tested results catching over 90% of fruit flies in 24 hours and a comparison with other brands"
+            class="photo ring-4 ring-brand-yellow"
+          />
+          <figcaption>
+            The optimized listing: lab-tested results, ease of use and a comparison with other brands.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="results">
+      <h2>Results</h2>
+      <p>Growth on each marketplace’s main ASIN after the optimization:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Metric</th>
+              <th scope="col">Germany</th>
+              <th scope="col">UK</th>
+              <th scope="col">US</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r) => (
+              <tr>
+                <th scope="row">{r.metric}</th>
+                <td class:list={{ highlight: r.highlight }}>{r.de}</td>
+                <td class:list={{ highlight: r.highlight }}>{r.uk}</td>
+                <td class:list={{ highlight: r.highlight }}>{r.us}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-brand-ink/55">
+        Sales: August 2024 vs. August 2025 (Germany and UK); April 2025 vs. August 2025 (US). CTR and CVR: September
+        2024 vs. September 2025. Results from each marketplace’s main ASIN.
+      </p>
+
+      <figure>
+        <Image
+          src={salesChart}
+          alt="Bar chart comparing Super Ninja ASIN performance before and after the listing optimization"
+          class="photo bg-brand-cream"
+        />
+        <figcaption>Before (yellow) vs. after (orange) the optimization, across four Super Ninja ASINs.</figcaption>
+      </figure>
+    </section>
+
+    <section id="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>Localized content helps brands connect with buyers across different Amazon marketplaces.</li>
+        <li>Research-driven images and messaging communicate product value more effectively.</li>
+        <li>Continuous A/B testing and performance monitoring support stronger conversions and sales growth.</li>
+      </ul>
+    </section>
+  </div>
+</ArticleLayout>

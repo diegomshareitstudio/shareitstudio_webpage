@@ -1,89 +1,154 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getPost } from '../../data/posts';
+
+const post = getPost('create-a-content');
 ---
 
-<Layout>
-    <article class="blog-post">
+<ArticleLayout
+  kind="blog"
+  post={post}
+  title="How to Add A+ Content to Your Amazon Listing"
+  highlight="A+ Content"
+  metaTitle={`${post.title} | Share It Studio Blog`}
+>
+  <div class="article-body">
+    <!-- Sección 1: Importancia -->
+    <section id="importance">
+      <h2>Why Is It Important to Have A+ Content on Your Listing?</h2>
+      <ul>
+        <li>
+          <strong>Build Customer Trust:</strong> Amazon A+ content is one of the most effective ways to increase
+          customer trust, boost your conversion rates, and drive overall product sales.
+        </li>
+        <li>
+          <strong>Drive Conversions:</strong> A+ content persuades potential buyers by providing a clearer, more
+          engaging understanding of your product's value proposition.
+        </li>
+      </ul>
+    </section>
 
-      <!-- Cabecera del Artículo -->
-      <header class="post-header">
-        <h1>How to Add A+ Content to Your Amazon Listing</h1>
-      </header>
+    <!-- Sección 2: Contexto y Personalización -->
+    <section id="customization">
+      <h2>Unlocking the Power of Custom A+ Content</h2>
+      <p>
+        Since 2019, Amazon has made A+ content available for brand-registered third-party sellers—and this premium
+        feature is currently free to create.
+      </p>
+      <p>
+        As we explained in our preview video, Amazon offers pre-built modules so you can customize your listing, provide
+        richer descriptions, and keep potential customers engaged.
+      </p>
 
-      <!-- Sección 1: Importancia -->
-      <section id="importance">
-        <h2>Why Is It Important to Have A+ Content on Your Listing?</h2>
-        <ul>
-          <li><strong>Build Customer Trust:</strong> Amazon A+ content is one of the most effective ways to increase customer trust, boost your conversion rates, and drive overall product sales.</li>
-          <li><strong>Drive Conversions:</strong> A+ content persuades potential buyers by providing a clearer, more engaging understanding of your product's value proposition.</li>
-        </ul>
-      </section>
+      <p>
+        However, relying solely on default modules can lead to blocks of dense text that don't convert well.
+        Fortunately, <strong>Amazon A+ Content can be fully customized</strong> with high-quality images, large
+        infographics, and strategic descriptive copy.
+      </p>
 
-      <!-- Sección 2: Contexto y Personalización -->
-      <section id="customization">
-        <h2>Unlocking the Power of Custom A+ Content</h2>
-        <p>Since 2019, Amazon has made A+ content available for brand-registered third-party sellers—and this premium feature is currently free to create.</p>
-        <p>As we explained in our preview video, Amazon offers pre-built modules so you can customize your listing, provide richer descriptions, and keep potential customers engaged.</p>
-        
-        <p>However, relying solely on default modules can lead to blocks of dense text that don't convert well. Fortunately, <strong>Amazon A+ Content can be fully customized</strong> with high-quality images, large infographics, and strategic descriptive copy.</p>
+      <aside class="cta-callout">
+        <p>
+          Want to see how custom designs can transform your listing? Watch our preview video where we showcase the
+          high-converting A+ Content we design for our clients!
+        </p>
+      </aside>
+    </section>
 
-        <aside class="cta-callout">
-          <p>Want to see how custom designs can transform your listing? Watch our preview video where we showcase the high-converting A+ Content we design for our clients!</p>
-        </aside>
-      </section>
+    <!-- Sección 3: Guía Paso a Paso -->
+    <section id="step-by-step-guide">
+      <h2>A Step-by-Step Guide on How to Add A+ Content to Your Listing</h2>
+      <p>
+        Now that you know how A+ Content benefits your brand, follow these simple steps to upload your content directly
+        in Amazon Seller Central:
+      </p>
 
-      <!-- Sección 3: Guía Paso a Paso -->
-      <section id="step-by-step-guide">
-        <h2>A Step-by-Step Guide on How to Add A+ Content to Your Listing</h2>
-        <p>Now that you know how A+ Content benefits your brand, follow these simple steps to upload your content directly in Amazon Seller Central:</p>
+      <ol class="steps-list">
+        <li>
+          <h3>Log in to Amazon Seller Central</h3>
+          <p>
+            Access your Amazon Seller Central account, navigate to the <strong>Advertising</strong> menu, and click on{' '}
+            <strong>A+ Content Manager</strong>.
+          </p>
+          <figure>
+            <!-- Reemplazar con la ruta de tu imagen -->
+            <img
+              src="path-to-image-seller-central.jpg"
+              alt="Navigating to A+ Content Manager in Amazon Seller Central"
+              loading="lazy"
+            />
+          </figure>
+        </li>
 
-        <ol class="steps-list">
-          <li>
-            <h3>Log in to Amazon Seller Central</h3>
-            <p>Access your Amazon Seller Central account, navigate to the <strong>Advertising</strong> menu, and click on <strong>A+ Content Manager</strong>.</p>
-            <figure>
-              <!-- Reemplazar con la ruta de tu imagen -->
-              <img src="path-to-image-seller-central.jpg" alt="Navigating to A+ Content Manager in Amazon Seller Central" loading="lazy">
-            </figure>
-          </li>
+        <li>
+          <h3>Start Creating A+ Content</h3>
+          <p>
+            Click on the <strong>"Start creating A+ content"</strong> button. You will be prompted to choose between two
+            content types:
+          </p>
+          <ul>
+            <li>
+              <strong>Basic Enhanced Product Description:</strong> Allows you to add up to 5 custom modules to showcase
+              product features.
+            </li>
+            <li>
+              <strong>Brand Story:</strong> Displays above your basic content to showcase your brand origin, values, and
+              product catalog for deeper brand connection.
+            </li>
+          </ul>
+          <p>
+            <em>For this guide, we will select the Basic Enhanced Content.</em>
+          </p>
+        </li>
 
-          <li>
-            <h3>Start Creating A+ Content</h3>
-            <p>Click on the <strong>"Start creating A+ content"</strong> button. You will be prompted to choose between two content types:</p>
-            <ul>
-              <li><strong>Basic Enhanced Product Description:</strong> Allows you to add up to 5 custom modules to showcase product features.</li>
-              <li><strong>Brand Story:</strong> Displays above your basic content to showcase your brand origin, values, and product catalog for deeper brand connection.</li>
-            </ul>
-            <p><em>For this guide, we will select the Basic Enhanced Content.</em></p>
-          </li>
+        <li>
+          <h3>Name Your Project and Choose Modules</h3>
+          <p>
+            Follow the on-screen prompts to name your content project and set your language. Click{' '}
+            <strong>"Add module"</strong> to pick the layout slots you want to use.
+          </p>
+          <figure>
+            <img
+              src="path-to-image-adding-modules.jpg"
+              alt="Adding content modules in Amazon A+ Content Manager"
+              loading="lazy"
+            />
+          </figure>
+          <p>
+            You can add up to five modules and customize them to fit your brand assets. You can also preview how your
+            layout appears on both desktop and mobile devices at any time.
+          </p>
+        </li>
 
-          <li>
-            <h3>Name Your Project and Choose Modules</h3>
-            <p>Follow the on-screen prompts to name your content project and set your language. Click <strong>"Add module"</strong> to pick the layout slots you want to use.</p>
-            <figure>
-              <img src="path-to-image-adding-modules.jpg" alt="Adding content modules in Amazon A+ Content Manager" loading="lazy">
-            </figure>
-            <p>You can add up to five modules and customize them to fit your brand assets. You can also preview how your layout appears on both desktop and mobile devices at any time.</p>
-          </li>
+        <li>
+          <h3>Add Your ASINs</h3>
+          <p>
+            Add parent or child ASINs (or both) to your project in the <strong>ASIN management</strong> section. Search
+            for any ASIN within an ASIN family, select the targeted listings, and apply the content.
+          </p>
+        </li>
 
-          <li>
-            <h3>Add Your ASINs</h3>
-            <p>Add parent or child ASINs (or both) to your project in the <strong>ASIN management</strong> section. Search for any ASIN within an ASIN family, select the targeted listings, and apply the content.</p>
-          </li>
+        <li>
+          <h3>Review and Submit for Approval</h3>
+          <p>
+            Carefully review your project and submit it for Amazon approval. Make sure to review{' '}
+            <strong>Amazon’s A+ Content Guidelines</strong> beforehand—policy violations can delay approval, which
+            typically takes up to seven days.
+          </p>
+        </li>
+      </ol>
+    </section>
 
-          <li>
-            <h3>Review and Submit for Approval</h3>
-            <p>Carefully review your project and submit it for Amazon approval. Make sure to review <strong>Amazon’s A+ Content Guidelines</strong> beforehand—policy violations can delay approval, which typically takes up to seven days.</p>
-          </li>
-        </ol>
-      </section>
-
-      <!-- Sección 4: Conclusión -->
-      <section id="conclusion">
-        <h2>Conclusion</h2>
-        <p>When planning your A+ Content, focus on showcasing your product’s most essential features and proactively answering common buyer questions.</p>
-        <p>Avoid cluttering your page with wall-to-wall text or irrelevant details. Your primary goal is to deliver clear value—and strategically designed visual content is the best way to achieve high conversions.</p>
-      </section>
-
-    </article>
-</Layout>
+    <!-- Sección 4: Conclusión -->
+    <section id="conclusion">
+      <h2>Conclusion</h2>
+      <p>
+        When planning your A+ Content, focus on showcasing your product’s most essential features and proactively
+        answering common buyer questions.
+      </p>
+      <p>
+        Avoid cluttering your page with wall-to-wall text or irrelevant details. Your primary goal is to deliver clear
+        value—and strategically designed visual content is the best way to achieve high conversions.
+      </p>
+    </section>
+  </div>
+</ArticleLayout>

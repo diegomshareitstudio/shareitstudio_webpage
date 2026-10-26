@@ -1,0 +1,71 @@
+---
+import { socialPackages, packageComparison, formatPrice } from '../../data/socialPackages';
+
+const featuredIndex = socialPackages.findIndex((p) => p.featured);
+---
+
+<div class="overflow-x-auto rounded-[2rem] bg-white shadow-sm ring-1 ring-black/5">
+  <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+    <caption class="sr-only">Social media package comparison</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="px-6 py-5 text-xs font-semibold uppercase tracking-wider text-brand-ink/50">
+          Feature
+        </th>
+        {socialPackages.map((p, i) => (
+          <th
+            scope="col"
+            class:list={[
+              'px-6 py-5 font-display text-base font-extrabold',
+              i === featuredIndex ? 'bg-brand-green text-brand-yellow' : 'text-brand-green',
+            ]}
+          >
+            {p.name}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {packageComparison.map((row) => (
+        <tr class="border-t border-black/5">
+          <th scope="row" class="px-6 py-4 font-medium text-brand-ink/65">
+            {row.feature}
+          </th>
+          {row.values.map((v, i) => (
+            <td class:list={['px-6 py-4', i === featuredIndex && 'bg-brand-yellow-soft/60 font-semibold']}>
+              {v === true ? (
+                <span
+                  class="grid h-6 w-6 place-items-center rounded-full bg-brand-green text-xs text-brand-yellow"
+                  aria-label="Included"
+                >
+                  ✓
+                </span>
+              ) : v === false ? (
+                <span class="text-brand-ink/30" aria-label="Not included">
+                  —
+                </span>
+              ) : (
+                <span class="text-brand-green">{v}</span>
+              )}
+            </td>
+          ))}
+        </tr>
+      ))}
+      <tr class="border-t-2 border-brand-yellow">
+        <th scope="row" class="px-6 py-5 font-medium text-brand-ink/65">
+          Price per month
+        </th>
+        {socialPackages.map((p, i) => (
+          <td
+            class:list={[
+              'px-6 py-5 font-display text-lg font-extrabold text-brand-green',
+              i === featuredIndex && 'bg-brand-yellow-soft/60',
+            ]}
+          >
+            {formatPrice(p.price)}
+          </td>
+        ))}
+      </tr>
+    </tbody>
+  </table>
+</div>

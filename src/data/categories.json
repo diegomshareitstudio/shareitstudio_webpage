@@ -1,23 +1,23 @@
 [
-    {
-        "category": "Amazon"
-    },
-    {
-        "category": "Business"
-    },
-    {
-        "category": "General"
-    },
-    {
-        "category": "Graphic Design"
-    },
-    {
-        "category": "Marketing"
-    },
-    {
-        "category": "Social Media for Brands"
-    },
-    {
-        "category": "Video"
-    }
+  {
+    "category": "Amazon"
+  },
+  {
+    "category": "Business"
+  },
+  {
+    "category": "General"
+  },
+  {
+    "category": "Graphic Design"
+  },
+  {
+    "category": "Marketing"
+  },
+  {
+    "category": "Social Media for Brands"
+  },
+  {
+    "category": "Video"
+  }
 ]

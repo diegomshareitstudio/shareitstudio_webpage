@@ -3,4 +3,4 @@ User-agent: *
 Disallow: /?s=
 Allow: /
 
-Sitemap: https://shareitstudio.com/sitemap.xml
+Sitemap: https://shareitstudio2.com/sitemap-index.xml
