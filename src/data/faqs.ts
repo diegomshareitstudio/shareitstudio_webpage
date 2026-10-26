@@ -86,7 +86,7 @@ export const faqs: Faq[] = [
 export const homepageFaqs: Faq[] = [
   {
     q: 'Which service is right for my brand?',
-    a: 'Choose Amazon Listing Optimization if your Amazon product pages need clearer images, A+ Content, video or copy. Choose Ecommerce Social Media Management if you want ongoing content and a consistent social presence. Many brands start with one and add the other later.',
+    a: 'Choose Amazon Listing Optimization if your Amazon product pages need clearer images, A+ Content, video or copy. Choose Social Media Management if you want ongoing content and a consistent social presence. Content Performance Pillars is for continued content improvement after launch, with scope agreed per project.',
   },
   {
     q: 'Can I hire just listing images or A+ Content?',

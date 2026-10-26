@@ -1,0 +1,239 @@
+/*
+ * Motion layer: CSS only, no JavaScript, no animation library.
+ * - Only `opacity` and `transform` are animated (compositor-friendly, no layout work).
+ * - Scroll-driven effects sit behind @supports (animation-timeline), so browsers without it show the
+ *   normal, fully visible page.
+ * - Everything is off for visitors who ask for reduced motion.
+ * Pages need no markup: reveal and hover effects attach to the existing sections, grids and headings.
+ */
+
+.scroll-progress,
+.back-to-top {
+  display: none; /* only shown where scroll-driven animation exists, see below */
+}
+
+:root {
+  /* lets <details> animate to its natural height */
+  interpolate-size: allow-keywords;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Keyframes ---------- */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes draw-marker {
+    from {
+      background-size: 0% 100%;
+    }
+    to {
+      background-size: 100% 100%;
+    }
+  }
+  @keyframes float {
+    from {
+      transform: translateY(0) rotate(var(--r, 0deg));
+    }
+    to {
+      transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 4deg));
+    }
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ---------- Hero: staggered entrance on load ---------- */
+  main > header .container-x > div:first-child > * {
+    animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  main > header .container-x > div:first-child > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  main > header .container-x > div:first-child > :nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  main > header .container-x > div:first-child > :nth-child(4) {
+    animation-delay: 0.24s;
+  }
+  main > header .container-x > div:first-child > :nth-child(n + 5) {
+    animation-delay: 0.32s;
+  }
+  main > header .container-x > div:last-child {
+    animation: rise 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* The yellow highlighter draws itself */
+  .marker {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation: draw-marker 0.9s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Decorative shapes drift slowly */
+  .motion-float {
+    animation: float 6s ease-in-out infinite alternate;
+  }
+  .motion-float:nth-child(2n) {
+    animation-duration: 8s;
+    animation-direction: alternate-reverse;
+  }
+
+  /* ---------- Hover and press feedback ---------- */
+  .btn-primary,
+  .btn-dark,
+  .btn-outline {
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .btn-primary:active,
+  .btn-dark:active,
+  .btn-outline:active {
+    transform: scale(0.97);
+  }
+  @media (hover: hover) {
+    .btn-primary:hover,
+    .btn-dark:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -10px rgb(28 58 58 / 0.45);
+    }
+
+    /* Cards in grids lift a little */
+    main :is(ul, ol).grid > li > :is(a, article, div, figure) {
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.2s;
+    }
+    main :is(ul, ol).grid > li > :is(a, article, figure):hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px -18px rgb(28 58 58 / 0.35);
+    }
+  }
+
+  /* Smooth open and close for FAQ accordions */
+  @supports selector(::details-content) {
+    details::details-content {
+      block-size: 0;
+      opacity: 0;
+      overflow-y: clip;
+      transition:
+        block-size 0.3s ease,
+        opacity 0.3s ease,
+        content-visibility 0.3s allow-discrete;
+    }
+    details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+
+  /* Mobile menu slides in */
+  #mobile-menu:not(.hidden) {
+    animation: menu-in 0.25s ease-out;
+  }
+
+  /* ---------- Page transitions (cross-document View Transitions) ---------- */
+  @view-transition {
+    navigation: auto;
+  }
+  body > header {
+    view-transition-name: site-header;
+  }
+  ::view-transition-old(root) {
+    animation: 0.18s ease-in both fade-out;
+  }
+  ::view-transition-new(root) {
+    animation: 0.28s ease-out both fade-in;
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Scroll-driven effects ---------- */
+  @supports (animation-timeline: view()) {
+    /* Sections reveal as they scroll into view (not the hero, not long-form articles) */
+    main > section :is(h2, .reveal):not(.prose-sis *),
+    main > section :is(ul, ol).grid > li:not(.prose-sis *) {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    /* Grid items arrive one after another */
+    main > section :is(ul, ol).grid > li:nth-child(4n + 2) {
+      animation-range: entry 6% entry 46%;
+    }
+    main > section :is(ul, ol).grid > li:nth-child(4n + 3) {
+      animation-range: entry 12% entry 52%;
+    }
+    main > section :is(ul, ol).grid > li:nth-child(4n) {
+      animation-range: entry 18% entry 58%;
+    }
+
+    /* Reading-progress bar */
+    .scroll-progress {
+      display: block;
+      transform-origin: 0 50%;
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    /* Back-to-top button appears after the first screen */
+    .back-to-top {
+      display: grid;
+      animation: show linear both;
+      animation-timeline: scroll(root);
+      animation-range: 500px 800px;
+    }
+    @keyframes show {
+      from {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(0.75rem);
+      }
+      to {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+    }
+  }
+}

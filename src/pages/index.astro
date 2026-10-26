@@ -1,7 +1,7 @@
 ---
 /**
- * Homepage (blueprint P01 v1.1) — 10 sections; Services opens with the 10-card directory. Booking CTAs → /book-a-call:
- * Hero → Brands → Reviews → Services → Case studies → Methodology → Portfolio → Resources → FAQ → Final CTA.
+ * Homepage (blueprint P01 v1.2) — 10 sections; booking CTAs → /book-a-call:
+ * Hero → Brands → Reviews → Services (name-only strip + THREE main cards) → Case studies → Methodology → Portfolio → Resources → FAQ → Final CTA.
  * Items marked TODO are PENDING in the blueprint (permissions, evidence, sign-off).
  */
 import Layout from '../layouts/Layout.astro';
@@ -17,15 +17,7 @@ import { homepageFaqs } from '../data/faqs';
 
 const title = 'Share It Studio | Amazon Listing & Ecommerce Social Media';
 const description =
-  'Explore Share It Studio’s Amazon listing creative, ecommerce social media and specialist services. See selected work, learn our process and book a call.';
-
-// 01 — the two flagship routes shown in the hero
-const listing = getService('amazon-listing-optimization');
-const social = getService('social-media-management');
-const routes = [
-  { label: 'Explore Amazon listing optimization', href: listing.href },
-  { label: 'Explore ecommerce social media management', href: social.href },
-];
+  'Explore Share It Studio’s social media, Amazon listing optimization and content performance services. See our work and book a call.';
 
 // 02 — TODO: only authorized client logos (D02); label partners separately. No stats until audited.
 const logoCount = 6;
@@ -49,46 +41,46 @@ const testimonials = [
   },
 ];
 
-// 04A — compact directory: the nine Services Hub titles plus the proposed tenth card, in blueprint order.
-// TODO (D14/D15/D16): owners approve the descriptions; the tenth card has no link until its name, scope and URL
-// are decided ("Content Performance Pillars" is not the source or Page Mapping name). Never link a dead URL.
-const directory = [
-  { id: 'social-media-management', title: 'Social Media Management', text: 'Ongoing social strategy, content production and account support for ecommerce brands.' },
-  { id: 'amazon-listing-optimization', title: 'Amazon Listing Optimization', text: 'Research-informed listing improvements across relevant creative components; tailored work, not a fixed package.' },
-  { id: 'amazon-a-plus-content', title: 'Amazon A+ Content Design', text: 'Basic or Premium A+ modules designed to clarify value and guide shopper decisions.' },
-  { id: 'amazon-listing-images', title: 'Amazon Listing Images', text: 'Main images, infographics and secondary listing visuals structured around product questions.' },
-  { id: 'amazon-product-photography', title: 'Amazon Product Photography', text: 'Real product and lifestyle photography, with production logistics agreed per brief.' },
-  { id: 'amazon-product-video-production', title: 'Amazon Product Video Production', text: 'Listing, instructional and sponsored-video creative. Ad management is not included.' },
-  { id: 'amazon-storefront-design', title: 'Amazon Storefront Design', text: 'Creative structure and assets for an Amazon Brand Store experience.' },
-  { id: 'amazon-brand-story-design', title: 'Amazon Brand Story Design', text: 'Amazon Brand Story modules and brand-led content, distinct from A+ Content.' },
-  { id: 'amazon-listing-copywriting', title: 'Amazon Listing Copywriting & SEO', text: 'Amazon listing titles, bullet points and content fields informed by shopper research.' },
-].map((c) => ({ ...c, href: getService(c.id).href }));
-const tenthCard = {
-  title: 'Content Performance Pillars',
-  text: 'Post-launch content tracking, creative iteration and updates. Contracted scope is confirmed per project.',
-};
+// 04A — name-only service strip: the ten labels, one row, no descriptions or media.
+// "Content Performance Pillars" has no link until its name, scope and URL are approved (D14/D15): never a dead link.
+const strip = [
+  ...[
+    'social-media-management',
+    'amazon-listing-optimization',
+    'amazon-a-plus-content',
+    'amazon-listing-images',
+    'amazon-product-photography',
+    'amazon-product-video-production',
+    'amazon-storefront-design',
+    'amazon-brand-story-design',
+    'amazon-listing-copywriting',
+  ].map((id) => {
+    const sv = getService(id);
+    return { name: sv.title, href: sv.href as string | undefined };
+  }),
+  { name: 'Content Performance Pillars', href: undefined },
+];
 
-// 04 — two equal-priority flagship cards
-const lines = [
+// 04B — exactly three main services, equal weight, fixed order. Copy is draft (D01, D14).
+// The third card links to /book-a-call until its own service page exists.
+const featured = [
   {
-    service: listing,
-    problem: 'Your Amazon listing content is unclear or underperforming.',
-    text: 'Listing images, A+ Content, Brand Story, product video and copy, planned around your product, customers and competitors.',
-    cta: 'Learn more about listing optimization',
-    chips: [
-      getService('amazon-listing-images'),
-      getService('amazon-a-plus-content'),
-      getService('amazon-product-video-production'),
-    ],
-    note: 'Hire individual components or a custom combination, quoted per project.',
+    title: 'Social Media Management',
+    text: 'Content planning, creation and management for ecommerce brands. Channels and inclusions are confirmed in your proposal.',
+    cta: 'Explore Social Media Management',
+    href: getService('social-media-management').href,
   },
   {
-    service: social,
-    problem: 'You want ongoing content and a consistent social presence.',
-    text: 'Content strategy, content creation and ongoing social support for ecommerce brands, on and off Amazon.',
-    cta: 'Learn more about social media management',
-    chips: [],
-    note: 'Scope and plans are confirmed on the service page.',
+    title: 'Amazon Listing Optimization',
+    text: 'Research-informed listing content that helps shoppers understand products through images, A+, video and copy, scoped to your need.',
+    cta: 'Explore Amazon Listing Optimization',
+    href: getService('amazon-listing-optimization').href,
+  },
+  {
+    title: 'Content Performance Pillars',
+    text: 'Continued improvement of content after launch through measurement and creative iteration. Tracking, testing and cadence are agreed per project.',
+    cta: 'Discuss Content Performance Pillars',
+    href: '/book-a-call',
   },
 ];
 
@@ -144,30 +136,18 @@ const resources = [
 ---
 
 <Layout title={title} description={description}>
-  <!-- 01 — Hero / two clear routes -->
+  <!-- 01 — Hero / three main service directions (no ten-service list) -->
   <PageHero
     size="lg"
     eyebrow="Share It Studio"
-    title="Amazon Listing Content and Ecommerce Social Media, Built Around Your Brand"
-    highlight="Built Around Your Brand"
-    subtitle="Share It Studio supports Amazon and ecommerce brands with listing creative, product video and social media content shaped by customer research and business goals."
+    title="Ecommerce Content That Connects, Converts and Improves"
+    highlight="Connects, Converts and Improves"
+    subtitle="Share It Studio supports ecommerce brands through social media management, Amazon listing optimization and continued content-performance improvement, with specialist creative services available separately."
     ctaLabel="Book a Call"
     ctaHref="/book-a-call"
     secondaryLabel="Explore Services"
-    secondaryHref="#services-heading"
+    secondaryHref="#services"
   >
-    <ul class="mt-8 grid gap-3 sm:grid-cols-2">
-      {routes.map((r) => (
-        <li>
-          <a
-            href={r.href}
-            class="flex min-h-[44px] items-center justify-between gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-brand-green shadow-sm transition hover:bg-brand-yellow-soft"
-          >
-            {r.label} <span aria-hidden="true">→</span>
-          </a>
-        </li>
-      ))}
-    </ul>
     <!-- TODO: HERO-01 — replace placeholders with approved client work (D12) -->
     <div slot="visual" class="relative">
       <div class="grid grid-cols-[1.4fr_1fr] gap-3">
@@ -218,86 +198,55 @@ const resources = [
     </div>
   </section>
 
-  <!-- 04 — Our services -->
-  <section class="py-16 md:py-24" aria-labelledby="services-heading">
+  <!-- 04 — Our services: name-only strip above exactly three main cards -->
+  <section id="services" class="scroll-mt-24 py-16 md:py-24" aria-labelledby="services-heading">
     <div class="container-x">
       <SectionHeading
         id="services-heading"
         title="Our Services"
-        text="The complete service menu at a glance. Pick the specialty you need, or start with one of the two main routes."
+        text="Pick one of our three main services, or jump straight to a specialist service."
       />
-      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {directory.map((c) => (
+
+      <nav aria-label="All services">
+        <ul
+          class="flex snap-x flex-nowrap gap-2 overflow-x-auto pb-3 [mask-image:linear-gradient(to_right,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)] [scrollbar-width:thin]"
+          tabindex="0"
+          aria-label="Services, scroll sideways for more"
+        >
+          {strip.map((c) => (
+            <li class="shrink-0 snap-start first:ml-4 last:mr-4">
+              {c.href ? (
+                <a
+                  href={c.href}
+                  class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full bg-brand-cream px-4 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
+                >
+                  {c.name}
+                </a>
+              ) : (
+                <span class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border border-dashed border-brand-green/30 px-4 text-sm font-semibold text-brand-green/60">
+                  {c.name}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {featured.map((f) => (
           <li class="flex">
-            <a
-              href={c.href}
-              class="group flex w-full flex-col rounded-[1.5rem] bg-brand-cream p-5 transition hover:-translate-y-0.5 hover:bg-brand-yellow-soft"
-            >
-              <h3 class="text-lg font-extrabold leading-snug text-brand-green">{c.title}</h3>
-              <p class="mt-2 flex-1 text-sm text-brand-ink/70">{c.text}</p>
-              <span class="mt-4 text-sm font-semibold text-brand-green">Explore {c.title} <span aria-hidden="true">→</span></span>
-            </a>
+            <article class="flex w-full flex-col rounded-[2rem] bg-brand-cream p-7 md:p-8">
+              <h3 class="text-2xl font-extrabold text-brand-green">{f.title}</h3>
+              <p class="mt-3 flex-1 text-brand-ink/70">{f.text}</p>
+              <a href={f.href} class="btn-dark mt-6 self-start">{f.cta}</a>
+            </article>
           </li>
         ))}
-        <li class="flex">
-          <div class="flex w-full flex-col rounded-[1.5rem] border border-dashed border-brand-green/30 p-5">
-            <h3 class="text-lg font-extrabold leading-snug text-brand-green">{tenthCard.title}</h3>
-            <p class="mt-2 flex-1 text-sm text-brand-ink/70">{tenthCard.text}</p>
-            <span class="mt-4 text-sm font-semibold text-brand-ink/50">Details coming soon</span>
-          </div>
-        </li>
       </ul>
-      <a href="/services" class="btn-outline mt-6">View All Services</a>
 
-      <h3 class="mt-16 text-2xl font-extrabold text-brand-green md:text-3xl">Our two main routes</h3>
-      <div class="mt-6 grid gap-4 md:grid-cols-2">
-        {lines.map((l, i) => {
-          const dark = i === 0;
-          return (
-            <article
-              class:list={[
-                'relative flex flex-col overflow-hidden rounded-[2rem] p-3',
-                dark ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
-              ]}
-            >
-              <div
-                class:list={[
-                  'placeholder aspect-[16/9] rounded-[1.6rem]',
-                  dark ? 'border-white/15 bg-white/5 text-white/40' : 'bg-white',
-                ]}
-              >
-                {l.service.title} project
-              </div>
-              <div class="flex flex-1 flex-col p-5 md:p-6">
-                <h3 class="text-3xl font-extrabold">{l.service.title}</h3>
-                <p
-                  class:list={['mt-2 text-sm font-semibold', dark ? 'text-brand-yellow' : 'text-brand-orange']}
-                >
-                  {l.problem}
-                </p>
-                <p class:list={['mt-3 flex-1', dark ? 'text-white/70' : 'text-brand-ink/65']}>{l.text}</p>
-                {l.chips.length > 0 && (
-                  <ul class="mt-5 flex flex-wrap gap-2">
-                    {l.chips.map((q) => (
-                      <li>
-                        <a
-                          href={q.href}
-                          class="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-brand-yellow hover:text-brand-green"
-                        >
-                          {q.title.replace('Amazon ', '')} →
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <p class:list={['mt-5 text-sm', dark ? 'text-white/70' : 'text-brand-ink/65']}>{l.note}</p>
-                <a href={l.service.href} class:list={['mt-6 self-start', dark ? 'btn-primary' : 'btn-dark']}>
-                  {l.cta}
-                </a>
-              </div>
-            </article>
-          );
-        })}
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/services" class="btn-outline">View All Services</a>
+        <a href="/book-a-call" class="btn-primary">Book a Call</a>
       </div>
     </div>
   </section>

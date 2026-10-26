@@ -100,10 +100,18 @@ const graph = {
     >
       Skip to content
     </a>
+    <div class="scroll-progress fixed left-0 top-0 z-[70] h-[3px] w-full bg-brand-orange" aria-hidden="true"></div>
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <a
+      href="#main"
+      class="back-to-top fixed bottom-6 right-6 z-40 h-12 w-12 place-items-center rounded-full bg-brand-green text-xl text-brand-yellow shadow-lg transition-colors hover:bg-brand-orange hover:text-white"
+      aria-label="Back to top"
+    >
+      <span aria-hidden="true">↑</span>
+    </a>
   </body>
 </html>
