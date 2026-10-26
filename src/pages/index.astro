@@ -226,27 +226,37 @@ const resources = [
         title="Our Services"
         text="The complete service menu at a glance. Pick the specialty you need, or start with one of the two main routes."
       />
-      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {directory.map((c) => (
-          <li class="flex">
-            <a
-              href={c.href}
-              class="group flex w-full flex-col rounded-[1.5rem] bg-brand-cream p-5 transition hover:-translate-y-0.5 hover:bg-brand-yellow-soft"
-            >
-              <h3 class="text-lg font-extrabold leading-snug text-brand-green">{c.title}</h3>
-              <p class="mt-2 flex-1 text-sm text-brand-ink/70">{c.text}</p>
-              <span class="mt-4 text-sm font-semibold text-brand-green">Explore {c.title} <span aria-hidden="true">→</span></span>
-            </a>
-          </li>
+    </div>
+    <!-- Auto-scrolling directory (left → right). The second copy is decorative, for the seamless loop. -->
+    <div class="marquee py-2" data-no-reveal style="--marquee-duration: 70s">
+      <div class="marquee-track">
+        {[false, true].map((copy) => (
+          <ul class="flex gap-3 pr-3" aria-hidden={copy ? 'true' : undefined}>
+            {directory.map((c) => (
+              <li class="flex w-72 shrink-0">
+                <a
+                  href={c.href}
+                  tabindex={copy ? -1 : undefined}
+                  class="group flex w-full flex-col rounded-[1.5rem] bg-brand-cream p-5 transition hover:-translate-y-1 hover:bg-brand-yellow-soft hover:shadow-lg"
+                >
+                  <h3 class="text-lg font-extrabold leading-snug text-brand-green">{c.title}</h3>
+                  <p class="mt-2 flex-1 text-sm text-brand-ink/70">{c.text}</p>
+                  <span class="mt-4 text-sm font-semibold text-brand-green">Explore {c.title} <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span></span>
+                </a>
+              </li>
+            ))}
+            <li class="flex w-72 shrink-0">
+              <div class="flex w-full flex-col rounded-[1.5rem] border border-dashed border-brand-green/30 p-5">
+                <h3 class="text-lg font-extrabold leading-snug text-brand-green">{tenthCard.title}</h3>
+                <p class="mt-2 flex-1 text-sm text-brand-ink/70">{tenthCard.text}</p>
+                <span class="mt-4 text-sm font-semibold text-brand-ink/50">Details coming soon</span>
+              </div>
+            </li>
+          </ul>
         ))}
-        <li class="flex">
-          <div class="flex w-full flex-col rounded-[1.5rem] border border-dashed border-brand-green/30 p-5">
-            <h3 class="text-lg font-extrabold leading-snug text-brand-green">{tenthCard.title}</h3>
-            <p class="mt-2 flex-1 text-sm text-brand-ink/70">{tenthCard.text}</p>
-            <span class="mt-4 text-sm font-semibold text-brand-ink/50">Details coming soon</span>
-          </div>
-        </li>
-      </ul>
+      </div>
+    </div>
+    <div class="container-x">
       <a href="/services" class="btn-outline mt-6">View All Services</a>
 
       <h3 class="mt-16 text-2xl font-extrabold text-brand-green md:text-3xl">Our two main routes</h3>

@@ -37,7 +37,7 @@ const hasVisual = Astro.slots.has('visual');
       size === 'lg' ? 'pb-20 pt-12 md:pb-28 md:pt-16' : 'pb-14 pt-10 md:pb-20 md:pt-14',
     ]}
   >
-    <div>
+    <div data-hero-intro>
       {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
       <h1
         class:list={[
@@ -72,15 +72,15 @@ const hasVisual = Astro.slots.has('visual');
     </div>
 
     {hasVisual ? (
-      <div>
+      <div data-hero-visual>
         <slot name="visual" />
       </div>
     ) : (
       <div class="relative hidden h-56 md:block" aria-hidden="true">
-        <div class="absolute right-10 top-0 h-40 w-40 rotate-12 rounded-[2.5rem] bg-brand-green"></div>
-        <div class="absolute right-40 top-20 h-28 w-28 -rotate-6 rounded-full bg-brand-yellow"></div>
-        <div class="absolute bottom-0 right-0 h-20 w-20 rotate-45 rounded-3xl bg-brand-orange"></div>
-        <div class="absolute right-24 top-28 h-10 w-10 rounded-full border-4 border-brand-green"></div>
+        <div data-float class="absolute right-10 top-0 h-40 w-40 rotate-12 rounded-[2.5rem] bg-brand-green"></div>
+        <div data-float class="absolute right-40 top-20 h-28 w-28 -rotate-6 rounded-full bg-brand-yellow"></div>
+        <div data-float class="absolute bottom-0 right-0 h-20 w-20 rotate-45 rounded-3xl bg-brand-orange"></div>
+        <div data-float class="absolute right-24 top-28 h-10 w-10 rounded-full border-4 border-brand-green"></div>
       </div>
     )}
   </div>
