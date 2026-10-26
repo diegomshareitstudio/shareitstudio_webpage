@@ -1,0 +1,24 @@
+---
+/** Decorative sticker with text running around a circle; it keeps spinning. */
+interface Props {
+  text?: string;
+  /** Unique per page, used by the SVG textPath */
+  id?: string;
+  class?: string;
+}
+
+const { text = 'Let’s talk • Let’s talk • ', id = 'badge', class: className } = Astro.props;
+---
+
+<span class:list={['grid h-28 w-28 place-items-center', className]} aria-hidden="true">
+  <svg class="badge-spin absolute inset-0 h-full w-full" viewBox="0 0 120 120">
+    <defs>
+      <path id={`${id}-circle`} d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"></path>
+    </defs>
+    <circle cx="60" cy="60" r="58" fill="currentColor" opacity="0.12"></circle>
+    <text font-size="12.5" font-weight="700" letter-spacing="1.5" fill="currentColor" style="text-transform:uppercase">
+      <textPath href={`#${id}-circle`} textLength="283" lengthAdjust="spacing">{text}</textPath>
+    </text>
+  </svg>
+  <span class="star-spin text-3xl">✦</span>
+</span>

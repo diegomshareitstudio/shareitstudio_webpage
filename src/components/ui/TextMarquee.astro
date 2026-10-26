@@ -1,0 +1,35 @@
+---
+/** Oversized words sliding across the screen, a lively divider between sections. Decorative only. */
+interface Props {
+  words: string[];
+  reverse?: boolean;
+  duration?: number;
+  /** Dark band (green) instead of the default yellow */
+  dark?: boolean;
+}
+
+const { words, reverse = false, duration = 35, dark = false } = Astro.props;
+const copies = [0, 1];
+---
+
+<div
+  class:list={['marquee marquee--text', dark ? 'bg-brand-green text-brand-yellow' : 'bg-brand-yellow text-brand-green']}
+  data-reverse={reverse || undefined}
+  style={`--marquee-duration:${duration}s`}
+  aria-hidden="true"
+>
+  <div class="marquee-track">
+    {copies.map(() => (
+      <ul class="marquee-list">
+        {words.map((w, i) => (
+          <li class="flex items-center gap-6 pr-6">
+            <span class:list={['font-display text-5xl font-extrabold uppercase tracking-tight md:text-7xl', i % 2 && 'text-outline']}>
+              {w}
+            </span>
+            <span class="star-spin text-4xl md:text-6xl">✦</span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>

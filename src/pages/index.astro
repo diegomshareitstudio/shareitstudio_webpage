@@ -10,6 +10,9 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
 import CaseStudyList from '../components/ui/CaseStudyList.astro';
+import Marquee from '../components/ui/Marquee.astro';
+import Badge from '../components/ui/Badge.astro';
+import TextMarquee from '../components/ui/TextMarquee.astro';
 import { listedCaseStudies } from '../data/caseStudies';
 import { getService } from '../data/services';
 import { getPost, postHref } from '../data/posts';
@@ -58,7 +61,7 @@ const strip = [
     const sv = getService(id);
     return { name: sv.title, href: sv.href as string | undefined };
   }),
-  { name: 'Content Performance Pillars', href: undefined },
+  { name: 'Content Performance Management', href: undefined },
 ];
 
 // 04B — exactly three main services, equal weight, fixed order. Copy is draft (D01, D14).
@@ -77,9 +80,9 @@ const featured = [
     href: getService('amazon-listing-optimization').href,
   },
   {
-    title: 'Content Performance Pillars',
+    title: 'Content Performance Management',
     text: 'Continued improvement of content after launch through measurement and creative iteration. Tracking, testing and cadence are agreed per project.',
-    cta: 'Discuss Content Performance Pillars',
+    cta: 'Discuss Content Performance Management',
     href: '/book-a-call',
   },
 ];
@@ -150,6 +153,7 @@ const resources = [
   >
     <!-- TODO: HERO-01 — replace placeholders with approved client work (D12) -->
     <div slot="visual" class="relative">
+      <Badge id="hero-badge" class="absolute -bottom-8 -left-4 z-10 h-32 w-32 -rotate-12 text-brand-orange lg:-left-12" />
       <div class="grid grid-cols-[1.4fr_1fr] gap-3">
         <div class="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[2.5rem] bg-brand-green">
           <div class="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-brand-green-light"></div>
@@ -161,14 +165,24 @@ const resources = [
   </PageHero>
 
   <!-- 02 — Brands & relationships -->
-  <section class="container-x py-10" aria-labelledby="brands-heading">
+  <section class="container-x pb-6 pt-10" aria-labelledby="brands-heading">
     <h2 id="brands-heading" class="eyebrow mb-6 text-center">Brands We’ve Worked With</h2>
-    <ul class="grid grid-cols-2 items-center justify-items-center gap-4 sm:grid-cols-3 lg:grid-cols-6">
-      {Array.from({ length: logoCount }).map((_, i) => (
-        <li class="placeholder h-14 w-full max-w-[9rem] rounded-xl text-xs">Logo {i + 1}</li>
-      ))}
-    </ul>
   </section>
+  <div class="pb-10">
+    <div class="marquee" data-reverse style="--marquee-duration:30s">
+      <div class="marquee-track">
+        {[false, true].map((dupe) => (
+          <ul class="marquee-list" aria-hidden={dupe || undefined} style="gap:1rem;padding-right:1rem">
+            {Array.from({ length: logoCount * 2 }).map((_, i) => (
+              <li class="placeholder h-14 w-36 shrink-0 rounded-xl text-xs">Logo {(i % logoCount) + 1}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <TextMarquee words={['Social media', 'Amazon listings', 'A+ content', 'Video', 'Photography']} />
 
   <!-- 03 — Client reviews -->
   <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="reviews-heading">
@@ -208,28 +222,7 @@ const resources = [
       />
 
       <nav aria-label="All services">
-        <ul
-          class="flex snap-x flex-nowrap gap-2 overflow-x-auto pb-3 [mask-image:linear-gradient(to_right,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)] [scrollbar-width:thin]"
-          tabindex="0"
-          aria-label="Services, scroll sideways for more"
-        >
-          {strip.map((c) => (
-            <li class="shrink-0 snap-start first:ml-4 last:mr-4">
-              {c.href ? (
-                <a
-                  href={c.href}
-                  class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full bg-brand-cream px-4 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
-                >
-                  {c.name}
-                </a>
-              ) : (
-                <span class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-full border border-dashed border-brand-green/30 px-4 text-sm font-semibold text-brand-green/60">
-                  {c.name}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
+        <Marquee items={strip} duration={45} />
       </nav>
 
       <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -250,6 +243,8 @@ const resources = [
       </div>
     </div>
   </section>
+
+  <TextMarquee dark reverse duration={40} words={['Connect', 'Convert', 'Improve', 'Repeat']} />
 
   <!-- 05 — Results / case study highlights -->
   <section class="container-x pb-16 md:pb-24" aria-labelledby="cases-heading">
@@ -273,16 +268,16 @@ const resources = [
         <h2 id="why-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
           Why <span class="marker">Share It Studio?</span>
         </h2>
-        <p class="mt-5 text-lg text-brand-ink/65">
+        <p class="scrub-text mt-5 text-lg text-brand-ink/65">
           We examine the market, buyer concerns and content gaps first, then create with intent. The exact scope
           depends on the project you hire.
         </p>
         <a href="/about-us" class="btn-outline mt-8">Learn more about Share It Studio</a>
       </div>
-      <ol class="space-y-4">
+      <ol class="stack-cards space-y-4">
         {steps.map((s, i) => (
-          <li class="flex gap-5 rounded-[1.75rem] bg-white p-6">
-            <span class="font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
+          <li class="flex gap-5 rounded-[1.75rem] bg-white p-6 md:min-h-[11rem]" style={`--i:${i}`}>
+            <span class="step-num font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
             <div>
               <h3 class="text-xl font-extrabold text-brand-green">{s.t}</h3>
               <p class="mt-1 text-brand-ink/65">{s.d}</p>
