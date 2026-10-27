@@ -12,6 +12,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
+import AskAi from '../components/ui/AskAi.astro';
 import type { Faq } from '../data/faqs';
 
 interface Group {
@@ -221,6 +222,8 @@ const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
         <FaqList faqs={g.faqs} variant="cream" headingLevel={3} openFirst={false} />
       </section>
     ))}
+
+    <AskAi />
   </div>
 
   <!-- 09 — Still need help -->

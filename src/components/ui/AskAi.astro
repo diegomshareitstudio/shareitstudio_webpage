@@ -1,0 +1,60 @@
+---
+/**
+ * "Ask your own question" box for the FAQs page. Posts to /api/ask, which answers with Claude
+ * using the company information in src/data/companyKnowledge.ts.
+ */
+---
+
+<section id="ask" class="scroll-mt-24 rounded-[1.5rem] bg-brand-green p-6 text-white md:p-8" aria-labelledby="ask-heading">
+  <h2 id="ask-heading" class="text-2xl font-extrabold md:text-3xl">Didn’t find your question?</h2>
+  <p class="mt-2 text-white/80">Ask it here and our AI assistant will answer using Share It Studio’s information.</p>
+
+  <form id="ask-form" class="mt-5 space-y-3">
+    <label for="ask-input" class="sr-only">Your question</label>
+    <textarea
+      id="ask-input"
+      name="question"
+      rows="3"
+      maxlength="500"
+      required
+      placeholder="e.g. Do you make videos for TikTok Shop?"
+      class="w-full rounded-xl border-0 bg-white p-4 text-brand-ink placeholder:text-brand-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow"
+    ></textarea>
+    <button type="submit" id="ask-submit" class="btn-primary disabled:opacity-60">Ask a question</button>
+  </form>
+
+  <div id="ask-answer" class="mt-5 hidden whitespace-pre-line rounded-xl bg-white p-5 leading-relaxed text-brand-ink" role="status" aria-live="polite"></div>
+  <p class="mt-4 text-xs text-white/60">
+    Answers are AI-generated and may contain mistakes. For anything important, <a href="/book-a-call" class="underline">book a call</a>.
+  </p>
+</section>
+
+<script>
+  const form = document.getElementById('ask-form') as HTMLFormElement;
+  const input = document.getElementById('ask-input') as HTMLTextAreaElement;
+  const submit = document.getElementById('ask-submit') as HTMLButtonElement;
+  const out = document.getElementById('ask-answer') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submit.disabled = true;
+    submit.textContent = 'Thinking…';
+    out.classList.remove('hidden');
+    out.textContent = '';
+
+    try {
+      const res = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: input.value }),
+      });
+      const data = await res.json();
+      out.textContent = data.answer ?? data.error ?? 'Something went wrong. Please try again.';
+    } catch {
+      out.textContent = 'Could not reach the assistant. Please try again.';
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'Ask a question';
+    }
+  });
+</script>
