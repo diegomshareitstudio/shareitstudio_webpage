@@ -10,6 +10,10 @@ import Spotlight from '../components/ui/Spotlight.astro';
 import '../styles/home.css';
 import { Image, getImage } from 'astro:assets';
 import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.png';
+// TODO: sample A+ images standing in until each case has its own (the selector crops them to a square from the top)
+import sampleBasket from '../assets/samples/A+ Content Jute Hanging Basket.jpg';
+import sampleBodyWash from '../assets/samples/Body-Wash-Cleanser_A+-Content.png';
+import sampleCream from '../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import Testimonials from '../components/ui/Testimonials.astro';
 import { getPost, postHref } from '../data/posts';
@@ -87,6 +91,7 @@ const work = [
     text: 'We built recurring content themes around audience interests, giving a new Instagram account a reason to be discovered beyond its existing followers. The reach and views are recorded for February 4–May 4, 2026.',
     cta: 'Explore the 90-Day Social Case',
     href: '/case-studies', // TODO: dedicated case-study page
+    image: { src: sampleBasket, alt: 'Sample A+ Content: jute hanging basket' },
   },
   {
     cat: 'Amazon | YUNGPRIME',
@@ -98,6 +103,7 @@ const work = [
     text: 'We connected listing images, A+ Content, Brand Story, Storefront, video and copy into a coordinated buying story that puts product benefits and buyer questions in a clearer order.',
     cta: 'See YUNGPRIME’s Transformation',
     href: '/case-studies/yungprime',
+    image: { src: sampleBodyWash, alt: 'Sample A+ Content: body wash cleanser' },
   },
   {
     cat: 'Amazon | Pink Miracle',
@@ -109,6 +115,7 @@ const work = [
     text: 'For an established product, a refresh needed more than new visuals. We explored customer preferences, creative alternatives and testing to communicate product value more clearly. These figures are observational, not a claim that creative caused all of the change.',
     cta: 'Explore Pink Miracle’s Before and After',
     href: '/case-studies/pink-miracle',
+    image: { src: sampleCream, alt: 'Sample A+ Content: progesterone cream' },
   },
   {
     cat: 'Amazon | Super Ninja',
@@ -133,6 +140,9 @@ const work = [
   href: string;
   image?: { src: ImageMetadata; alt: string };
 }[];
+
+/** Position of slide i relative to the active one, centred: 0 = middle, ±1 = beside it, further = out of view */
+const workOffset = (i: number, active: number, n: number) => ((((i - active + Math.floor(n / 2)) % n) + n) % n) - Math.floor(n / 2);
 
 // 06 — how we work
 const steps = [
@@ -339,65 +349,98 @@ const faqs: Faq[] = [
 
   <TextMarquee dark reverse duration={40} words={['Ask the right question', 'Make it clear', 'Give a reason to return']} />
 
-  <!-- 05 — Selected work -->
+  <!-- 05 — Selected work: a selector. The centred case is a card (image + result + story); its neighbours show only
+       their image. All cases are in the HTML (crawlable); scripts/home.ts only moves them. Initial positions are
+       rendered here, so nothing shifts when the script takes over. -->
   <section class="home-work" aria-labelledby="work-heading">
     <Spotlight id="work-spot" class="home-work-spot" />
     <div class="container-x relative">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at the numbers." />
-        <button type="button" class="work-toggle" data-band-toggle aria-pressed="false" hidden>
-          <span class="work-toggle-icon" aria-hidden="true"></span>
-          <span data-band-toggle-label>Pause motion</span>
-        </button>
-      </div>
+      <p class="eyebrow mb-3">Selected work</p>
+      <h2 id="work-heading" class="text-2xl font-extrabold leading-tight sm:text-3xl md:text-[2.4rem]">
+        Don’t just look at what we made. Look at the numbers.
+      </h2>
     </div>
-    <div class="work-band" data-band data-mode="manual" role="group" aria-label="Selected work">
-      <div class="work-track">
-        <ul class="work-set" data-band-set>
-          {work.map((w) => (
-            <li class="work-card">
-              <a href={w.href} class="work-link">
+
+    <div class="wk" data-wk role="region" aria-roledescription="carousel" aria-label="Case studies">
+      <ul class="wk-stage" data-wk-stage>
+        {work.map((w, i) => {
+          const o = workOffset(i, 0, work.length);
+          const pos = o === 0 ? 'center' : Math.abs(o) === 1 ? 'side' : 'hidden';
+          return (
+            <li
+              class="wk-slide"
+              data-wk-slide
+              data-pos={pos}
+              data-side={o < 0 ? 'left' : o > 0 ? 'right' : 'center'}
+              style={`--o:${o}`}
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${work.length}: ${w.cat}`}
+              aria-hidden={o === 0 ? undefined : 'true'}
+            >
+              <a href={w.href} class="wk-media" tabindex={o === 0 ? undefined : -1} aria-label={`${w.cat}: ${w.cta}`}>
                 {w.image ? (
-                  <Image src={w.image.src} alt={w.image.alt} class="work-visual work-img" widths={[400, 600, 800]} sizes="25rem" />
+                  <Image
+                    src={w.image.src}
+                    alt={w.image.alt}
+                    width={900}
+                    height={900}
+                    fit="cover"
+                    position="top"
+                    widths={[360, 600, 900]}
+                    sizes="(min-width: 1024px) 28rem, min(94vw, 34rem)"
+                    class="wk-img"
+                  />
                 ) : (
-                  <div class="media-fallback work-visual">
-                    <Spotlight id={`fb-${w.cat.replace(/\W+/g, '-').toLowerCase()}`} class="media-fallback-spot" />
+                  <div class="media-fallback wk-img">
+                    <Spotlight id={`fb-${i}`} class="media-fallback-spot" />
                     <span>{w.cat}</span>
                   </div>
                 )}
-                <div class="work-body">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
-                  <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
-                  <div class="work-stat">
-                    {w.before && (
-                      <p class="work-before">
-                        <span class="sr-only">From </span>{w.before} <span aria-hidden="true">→</span><span class="sr-only"> to</span>
-                      </p>
-                    )}
-                    <p class="work-stat-value">
-                      <span data-count={w.stat} class="block font-display font-extrabold leading-none">{w.stat}</span>
-                      <span class="mt-1 block text-lg font-extrabold leading-snug">{w.statLabel}</span>
-                    </p>
-                    <p class="mt-2 text-xs font-semibold text-brand-green/70">{w.detail}</p>
-                  </div>
-                  <p class="flex-1 text-sm text-brand-ink/70">{w.text}</p>
-                  <span class="mt-4 text-sm font-semibold text-brand-green">{w.cta} →</span>
-                </div>
               </a>
+              <div class="wk-panel" inert={o !== 0}>
+                <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
+                <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green lg:text-2xl">{w.title}</h3>
+                <div class="wk-result">
+                  {w.before && (
+                    <p class="wk-before">
+                      <span class="sr-only">From </span>{w.before} <span aria-hidden="true">→</span><span class="sr-only"> to</span>
+                    </p>
+                  )}
+                  <p>
+                    <span class="wk-stat-value" data-wk-count={w.stat}>{w.stat}</span>
+                    <span class="wk-stat-label">{w.statLabel}</span>
+                  </p>
+                  <p class="wk-stat-note">{w.detail}</p>
+                </div>
+                <p class="wk-text">{w.text}</p>
+                <a href={w.href} class="wk-cta">{w.cta} →</a>
+              </div>
             </li>
-          ))}
-        </ul>
+          );
+        })}
+      </ul>
+
+      <div class="container-x">
+        <div class="wk-foot">
+          <div class="wk-nav">
+            <button type="button" class="wk-arrow wk-arrow--prev" data-wk-prev aria-label="Previous case study"></button>
+            <div class="wk-dots" role="group" aria-label="Choose a case study">
+              {work.map((w, i) => (
+                <button type="button" class="wk-dot" data-wk-dot aria-label={`Show ${w.cat}`} aria-current={i === 0 ? 'true' : undefined}></button>
+              ))}
+            </div>
+            <button type="button" class="wk-arrow wk-arrow--next" data-wk-next aria-label="Next case study"></button>
+          </div>
+          <a href="/case-studies" class="btn-outline wk-all">Explore All Case Studies</a>
+        </div>
+        <p class="wk-note">
+          Individual case results reflect different products, markets and periods. Results are not guarantees, and factors
+          beyond creative work can influence performance.
+        </p>
+        <p class="sr-only" aria-live="polite" data-wk-status></p>
       </div>
     </div>
-    <div class="container-x relative">
-      <p class="max-w-3xl text-xs text-white/55">
-        Individual case results reflect different products, markets and periods. Results are not guarantees, and factors
-        beyond creative work can influence performance.
-      </p>
-      <a href="/case-studies" class="btn-primary mt-8">Explore All Case Studies</a>
-    </div>
   </section>
-  <span class="work-cursor" data-work-cursor aria-hidden="true">View</span>
 
   <!-- 06 — How we work -->
   <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="how-heading">

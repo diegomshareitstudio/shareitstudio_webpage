@@ -4,14 +4,14 @@
  * 1. Hero: the logo's spotlight grows from behind the headline until it floods the screen while the hero copy blurs
  *    out and the next message (the heading of “Results, up front”) comes in out of blur. The hero is pinned with
  *    plain CSS `position: sticky` for a short stretch; scroll progress drives everything (reversible, no timers).
- * 2. Selected work: bands of portrait cards drift right → left on their own inside the normal document flow.
+ * 2. Selected work: a selector; the centred case shows its image, result and story, the neighbours only their image.
  *
  * Everything is progressive enhancement: with no JS, with reduced motion, or when the hero does not fit the
  * viewport, the page keeps its static stacked layout and all text stays visible.
  */
 import { scroll } from 'motion';
 
-/** Every tunable number of the landing choreography. Pin length and band gap live in styles/home.css (--pin, --work-gap). */
+/** Every tunable number of the landing choreography. Pin length lives in styles/home.css (--pin); selector sizes in .wk. */
 export const HOME_MOTION = {
   spot: {
     /** scroll progress (0–1 of the pinned stretch) over which the spotlight grows; it covers the screen at the end */
@@ -38,21 +38,13 @@ export const HOME_MOTION = {
     /** share of its own height the spotlight tip retreats while services scrolls in */
     retreat: 0.92,
   },
-  band: {
-    /** px per second, desktop / narrow screens */
-    speed: [44, 32],
-    /** seconds for the band to glide to a stop on hover/focus/pause, and to pick up speed again */
-    ease: 0.2,
-  },
-  cursor: {
-    /** ms the “View” label stays on while the pointer crosses the gap between two cards */
-    linger: 140,
+  work: {
+    /** seconds the centred result takes to count up */
+    count: 1.1,
   },
 } as const;
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
-const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
 const narrow = () => window.innerWidth < 768;
 
 const clamp = (n: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, n));
@@ -68,7 +60,7 @@ const BOX_RATIO = 545 / 645;
 
 initHero();
 initExit();
-initBand();
+initWork();
 
 function initHero() {
   const intro = document.querySelector<HTMLElement>('[data-home-intro]');
@@ -225,208 +217,146 @@ function initExit() {
   reduced.addEventListener('change', sync);
 }
 
-/** Selected work: bands of portrait cards that scroll themselves right → left. */
-function initBand() {
-  const band = document.querySelector<HTMLElement>('[data-band]');
-  const track = band?.querySelector<HTMLElement>('.work-track');
-  const set = band?.querySelector<HTMLElement>('[data-band-set]');
-  const toggle = document.querySelector<HTMLButtonElement>('[data-band-toggle]');
-  const label = toggle?.querySelector<HTMLElement>('[data-band-toggle-label]');
-  if (!band || !track || !set) return;
+/**
+ * Selected work: a selector. Arrows, dots, keys, swipes or a click on a neighbour bring a case to the centre.
+ * Slides only change their `--o` offset and `data-pos`; CSS turns that into transform/opacity transitions.
+ */
+function initWork() {
+  const root = document.querySelector<HTMLElement>('[data-wk]');
+  if (!root) return;
+  const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-wk-slide]'));
+  const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-wk-dot]'));
+  const stage = root.querySelector<HTMLElement>('[data-wk-stage]');
+  const status = root.querySelector<HTMLElement>('[data-wk-status]');
+  const n = slides.length;
+  if (!stage || n < 2) return;
 
-  let paused = false;
-  let lastWidth = 0;
-  let token = 0;
-
-  const clearClones = () => track.querySelectorAll('[data-clone]').forEach((n) => n.remove());
-
-  /** Reduced motion and touch screens get a manual, swipeable gallery: no autoplay, no vertical-gesture capture. */
-  const canAutoplay = () => !reduced.matches && !coarse.matches;
-
-  const build = async () => {
-    const mine = ++token;
-    clearClones();
-    band.style.removeProperty('--shift');
-    band.scrollLeft = 0;
-
-    if (!canAutoplay()) {
-      band.dataset.mode = 'manual';
-      if (toggle) toggle.hidden = true;
-      return;
-    }
-
-    // Card widths come from CSS and images carry their own dimensions, so only fonts can change the measurement.
-    // (Waiting for the lazy images would delay the switch until the band is on screen: a visible layout shift.)
-    await document.fonts.ready;
-    if (mine !== token) return;
-
-    band.dataset.mode = 'auto'; // the seam padding is part of the measurement
-    const setWidth = set.getBoundingClientRect().width;
-    if (!setWidth) return;
-
-    // Enough copies that the visible window never runs out while one set slides away.
-    const copies = Math.ceil(window.innerWidth / setWidth);
-    for (let i = 0; i < Math.max(1, copies); i++) {
-      const clone = set.cloneNode(true) as HTMLElement;
-      clone.removeAttribute('data-band-set');
-      clone.dataset.clone = '';
-      // Duplicates stay clickable for the mouse, but are skipped by Tab and not announced by screen readers.
-      // (Not `inert`: that would also make them dead to the pointer.)
-      clone.setAttribute('aria-hidden', 'true');
-      clone.querySelectorAll('a, button').forEach((n) => n.setAttribute('tabindex', '-1'));
-      clone.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
-      // The count-up only runs on the original set, which may still read 0 or be mid-count: show the final figure.
-      clone.querySelectorAll<HTMLElement>('[data-count]').forEach((n) => {
-        if (n.dataset.count) n.textContent = n.dataset.count;
-      });
-      track.append(clone);
-    }
-
-    const speed = HOME_MOTION.band.speed[narrow() ? 1 : 0];
-    band.style.setProperty('--shift', `${setWidth}px`);
-    band.style.setProperty('--work-duration', `${setWidth / speed}s`);
-    if (toggle) toggle.hidden = false;
+  let active = 0;
+  // Visual offset of each slide, as rendered by pages/index.astro
+  const offsets = slides.map((s) => Number(s.style.getPropertyValue('--o')) || 0);
+  const centred = (i: number, a: number) => ((((i - a + Math.floor(n / 2)) % n) + n) % n) - Math.floor(n / 2);
+  const place = (slide: HTMLElement, o: number) => {
+    slide.style.setProperty('--o', String(o));
+    slide.dataset.pos = o === 0 ? 'center' : Math.abs(o) === 1 ? 'side' : 'hidden';
+    slide.dataset.side = o < 0 ? 'left' : o > 0 ? 'right' : 'center';
   };
 
-  const rebuildIfWidthChanged = () => {
-    if (Math.abs(window.innerWidth - lastWidth) < 1) return;
-    lastWidth = window.innerWidth;
-    build();
-  };
-  lastWidth = window.innerWidth;
-  build();
-  let t = 0;
-  window.addEventListener('resize', () => {
-    clearTimeout(t);
-    t = window.setTimeout(rebuildIfWidthChanged, 150);
-  });
-  reduced.addEventListener('change', build);
-  coarse.addEventListener('change', build);
+  const go = (target: number) => {
+    const next = ((target % n) + n) % n;
+    if (next === active) return;
+    const delta = centred(next, active);
+    const dir = Math.sign(delta) || 1;
 
-  // Hover, keyboard focus and the pause button all ease the band to a stop (and back), instead of freezing it:
-  // one loop eases the animation's playbackRate towards 0 or 1. Resuming continues from where it stopped.
-  let hovered = false;
-  let focused = false;
-  let rate = 1;
-  let last = 0;
-  let easing = false;
-  const ease = (now: number) => {
-    const anim = track.getAnimations()[0];
-    const target = hovered || focused || paused ? 0 : 1;
-    const dt = last ? Math.min((now - last) / 1000, 0.1) : 0.016;
-    last = now;
-    rate += (target - rate) * (1 - Math.exp(-dt / HOME_MOTION.band.ease));
-    if (Math.abs(target - rate) < 0.002) rate = target;
-    if (anim) anim.playbackRate = rate;
-    if (rate !== target) requestAnimationFrame(ease);
-    else easing = false;
-  };
-  const settle = () => {
-    if (easing) return;
-    easing = true;
-    last = 0;
-    requestAnimationFrame(ease);
+    slides.forEach((slide, i) => {
+      const old = offsets[i];
+      let o = centred(i, next);
+      if (Math.abs(o) <= 1) {
+        // Arriving from the far side or from out of view: start just outside the frame on its own side, unseen
+        if (Math.abs(o - old) > 1) {
+          slide.dataset.instant = '';
+          place(slide, o === 0 ? 2 * dir : o + Math.sign(o));
+          void slide.offsetWidth; // commit the start position before the transition
+          delete slide.dataset.instant;
+        }
+      } else {
+        // Leaving: fade out on the side it was already on (never fly across the centre)
+        o = Math.abs(old) >= 2 ? old : old !== 0 ? 2 * Math.sign(old) : -2 * dir;
+      }
+      offsets[i] = o;
+      place(slide, o);
+      const isActive = i === next;
+      slide.toggleAttribute('aria-hidden', !isActive);
+      slide.querySelector('a')?.setAttribute('tabindex', isActive ? '0' : '-1');
+      const panel = slide.querySelector<HTMLElement>('.wk-panel');
+      if (panel) panel.inert = !isActive;
+    });
+
+    dots.forEach((d, i) => d.setAttribute('aria-current', String(i === next)));
+    active = next;
+    countUp(slides[next]);
+    if (status) status.textContent = slides[next].getAttribute('aria-label') ?? '';
   };
 
-  band.addEventListener('pointerenter', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    hovered = true;
-    settle();
-  });
-  band.addEventListener('pointerleave', () => {
-    hovered = false;
-    settle();
-  });
-  band.addEventListener('focusin', () => {
-    focused = true;
-    settle();
-  });
-  band.addEventListener('focusout', (e) => {
-    if (band.contains(e.relatedTarget as Node)) return;
-    focused = false;
-    settle();
-    // undo the browser's scroll-into-view offset on the clipped band
-    if (band.dataset.mode === 'auto') band.scrollLeft = 0;
+  root.querySelector('[data-wk-prev]')?.addEventListener('click', () => go(active - 1));
+  root.querySelector('[data-wk-next]')?.addEventListener('click', () => go(active + 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+  root.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') go(active - 1);
+    else if (e.key === 'ArrowRight') go(active + 1);
   });
 
-  // Explicit pause control
-  toggle?.addEventListener('click', () => {
-    paused = !paused;
-    toggle.setAttribute('aria-pressed', String(paused));
-    if (label) label.textContent = paused ? 'Play motion' : 'Pause motion';
-    settle();
-  });
+  // A neighbour is selected, not opened; swipes move one step and never count as a click
+  let swiped = false;
+  slides.forEach((slide, i) =>
+    slide.addEventListener('click', (e) => {
+      if (swiped) {
+        e.preventDefault();
+        swiped = false;
+      } else if (i !== active) {
+        e.preventDefault();
+        go(i);
+      }
+    }),
+  );
+  let startX = 0;
+  let startY = 0;
+  stage.addEventListener(
+    'pointerdown',
+    (e) => {
+      startX = e.clientX;
+      startY = e.clientY;
+      swiped = false;
+    },
+    { passive: true },
+  );
+  stage.addEventListener(
+    'pointerup',
+    (e) => {
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - startY)) {
+        swiped = true;
+        go(active + (dx < 0 ? 1 : -1));
+      }
+    },
+    { passive: true },
+  );
 
-  // Don't animate what nobody can see
-  new IntersectionObserver(([entry]) => band.classList.toggle('is-offscreen', !entry.isIntersecting), { rootMargin: '100px' }).observe(band);
-
-  initCursor(band);
+  // Images out of view are lazy; fetch all of them once the section gets close, so a new case never pops in empty
+  new IntersectionObserver(
+    (entries, io) => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      root.querySelectorAll('img').forEach((img) => (img.loading = 'eager'));
+    },
+    { rootMargin: '400px 0px' },
+  ).observe(root);
+  // The first result counts up once the reader actually sees it
+  new IntersectionObserver(
+    (entries, io) => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      countUp(slides[active]);
+    },
+    { threshold: 0.5 },
+  ).observe(stage);
 }
 
-/**
- * Decorative “View” label that follows the pointer over a project card. Links keep working and keep their own names.
- * What is under the pointer is re-checked every frame, because the cards keep moving (and the page may scroll)
- * under a pointer that stands still.
- */
-function initCursor(band: HTMLElement) {
-  const cursor = document.querySelector<HTMLElement>('[data-work-cursor]');
-  if (!cursor || !finePointer.matches) return;
-  const half = () => cursor.offsetWidth / 2;
-  let x = 0;
-  let y = 0;
-  let tx = 0;
-  let ty = 0;
-  let inside = false;
-  let on = false;
-  let offAt = 0;
-  let running = false;
-
-  const overCard = () => {
-    const el = document.elementFromPoint(tx, ty);
-    return !!el && band.contains(el) && !!el.closest('.work-link');
-  };
-
+/** The result of the centred case counts up from zero; the final text is always restored at the end. */
+function countUp(slide: HTMLElement) {
+  const el = slide.querySelector<HTMLElement>('[data-wk-count]');
+  const final = el?.dataset.wkCount;
+  const match = final?.match(/\d[\d,]*(\.\d+)?/);
+  if (!el || !final || !match || reduced.matches) return;
+  const [raw] = match;
+  const to = parseFloat(raw.replace(/,/g, ''));
+  const decimals = raw.split('.')[1]?.length ?? 0;
+  const start = performance.now();
+  const duration = HOME_MOTION.work.count * 1000;
   const frame = (now: number) => {
-    const over = inside && overCard();
-    if (over) {
-      if (!on) {
-        x = tx; // appear right under the pointer, not sliding in from its last spot
-        y = ty;
-      }
-      on = true;
-      offAt = 0;
-    } else if (on) {
-      offAt ||= now;
-      if (!inside || now - offAt > HOME_MOTION.cursor.linger) on = false;
-    }
-    cursor.classList.toggle('is-on', on);
-
-    x += (tx - x) * 0.25;
-    y += (ty - y) * 0.25;
-    const h = half();
-    cursor.style.translate = `${x - h}px ${y - h}px`;
-
-    if (inside || on || Math.abs(tx - x) + Math.abs(ty - y) > 0.5) requestAnimationFrame(frame);
-    else running = false;
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = t < 1 ? final.replace(raw, (to * eased).toFixed(decimals)) : final;
+    if (t < 1) requestAnimationFrame(frame);
   };
-  const start = () => {
-    if (running) return;
-    running = true;
-    requestAnimationFrame(frame);
-  };
-
-  band.addEventListener('pointerenter', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    inside = true;
-    tx = e.clientX;
-    ty = e.clientY;
-    start();
-  });
-  band.addEventListener('pointermove', (e) => {
-    tx = e.clientX;
-    ty = e.clientY;
-  });
-  band.addEventListener('pointerleave', () => {
-    inside = false;
-  });
+  requestAnimationFrame(frame);
 }
