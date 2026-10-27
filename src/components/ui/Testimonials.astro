@@ -1,0 +1,294 @@
+---
+/**
+ * Client testimonials: the first entry is featured (media + large quote), the rest run in a
+ * snap-scrolling rail of full-bleed portrait cards, reel style.
+ * Videos load only their poster until played, carry captions and a readable transcript;
+ * each real video also gets a VideoObject node (see testimonialVideoSchema in lib/schema.ts).
+ */
+import { Image, getImage } from 'astro:assets';
+import Spotlight from './Spotlight.astro';
+import type { Testimonial } from '../../data/testimonials';
+
+interface Props {
+  testimonials: Testimonial[];
+}
+
+const { testimonials } = Astro.props;
+const [featured, ...rest] = testimonials;
+
+const posters = await Promise.all(
+  testimonials.map((t) =>
+    t.type === 'video' && t.video && !t.placeholder
+      ? getImage({ src: t.video.poster, width: 720, format: 'webp' })
+      : undefined,
+  ),
+);
+
+const who = (t: Testimonial) => `${t.name}, ${t.role} at ${t.company}`;
+---
+
+{featured && (
+  <figure class="tm-featured">
+    <div class="tm-frame tm-frame--featured">
+      {featured.type === 'video' && featured.video && !featured.placeholder ? (
+        <div class="tm-player" data-tm-player>
+          <video class="tm-media" controls playsinline preload="none" poster={posters[0]?.src} aria-label={`Video testimonial from ${who(featured)}`}>
+            <source src={featured.video.src} type="video/mp4" />
+            {featured.video.captions && <track kind="captions" src={featured.video.captions} srclang="en" label="English" default />}
+          </video>
+          <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(featured)}`} hidden></button>
+        </div>
+      ) : featured.type === 'photo' && featured.image && !featured.placeholder ? (
+        <Image src={featured.image.src} alt={featured.image.alt} class="tm-media" widths={[400, 800]} sizes="(min-width: 768px) 24rem, 100vw" />
+      ) : (
+        <div class="tm-media tm-empty" aria-hidden="true">
+          <Spotlight id="tm-spot-featured" class="tm-empty-spot" />
+          <span>{featured.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
+        </div>
+      )}
+    </div>
+
+    <div class="tm-featured-body">
+      <p class="eyebrow">{featured.service}</p>
+      <span class="tm-mark" aria-hidden="true">“</span>
+      <blockquote>
+        <p class="font-display text-3xl font-extrabold leading-tight text-brand-green md:text-[2.6rem]">{featured.quote}</p>
+      </blockquote>
+      <figcaption class="mt-8 flex items-center gap-4">
+        <span class="tm-rule" aria-hidden="true"></span>
+        <span>
+          <span class="block text-lg font-extrabold text-brand-green">{featured.name}</span>
+          <span class="text-sm text-brand-ink/60">{featured.role}, {featured.company}</span>
+        </span>
+      </figcaption>
+      {featured.type === 'video' && featured.transcript && !featured.placeholder && (
+        <details class="tm-transcript mt-6 text-sm">
+          <summary>Read the transcript</summary>
+          <p class="mt-2 text-brand-ink/70">{featured.transcript}</p>
+        </details>
+      )}
+      {featured.href && !featured.placeholder && (
+        <a href={featured.href} class="btn-dark mt-8 self-start">See {featured.company}’s case study</a>
+      )}
+    </div>
+  </figure>
+)}
+
+{rest.length > 0 && (
+  <ul class="tm-rail" role="list" aria-label="More client testimonials">
+    {rest.map((t, j) => {
+      const i = j + 1;
+      const isVideo = t.type === 'video' && t.video && !t.placeholder;
+      return (
+        <li class="tm-reel">
+          <figure class="tm-frame">
+            {t.type === 'video' && t.video && !t.placeholder ? (
+              <div class="tm-player" data-tm-player>
+                <video class="tm-media" controls playsinline preload="none" poster={posters[i]?.src} aria-label={`Video testimonial from ${who(t)}`}>
+                  <source src={t.video.src} type="video/mp4" />
+                  {t.video.captions && <track kind="captions" src={t.video.captions} srclang="en" label="English" default />}
+                </video>
+                <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(t)}`} hidden></button>
+              </div>
+            ) : t.type === 'photo' && t.image && !t.placeholder ? (
+              <Image src={t.image.src} alt={t.image.alt} class="tm-media" widths={[320, 640]} sizes="18rem" />
+            ) : (
+              <div class="tm-media tm-empty" aria-hidden="true">
+                <Spotlight id={`tm-spot-${i}`} class="tm-empty-spot" />
+                <span>{t.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
+              </div>
+            )}
+            <div class="tm-overlay" data-tm-overlay>
+              <p class="text-[0.7rem] font-semibold uppercase tracking-wider text-brand-yellow">{t.service}</p>
+              <blockquote class="mt-2">
+                <p class="font-display text-base font-extrabold leading-snug md:text-lg">“{t.quote}”</p>
+              </blockquote>
+              <figcaption class="mt-3 text-sm">
+                <span class="font-semibold">{t.name}</span>
+                <span class="text-white/70"> · {t.role}, {t.company}</span>
+              </figcaption>
+            </div>
+          </figure>
+          {isVideo && t.type === 'video' && t.transcript && (
+            <details class="tm-transcript mt-3 text-sm">
+              <summary>Read the transcript</summary>
+              <p class="mt-2 text-brand-ink/70">{t.transcript}</p>
+            </details>
+          )}
+          {t.href && !t.placeholder && (
+            <a href={t.href} class="mt-3 inline-block text-sm font-semibold text-brand-green">See the case study →</a>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+)}
+
+<style>
+  /* ---------- Featured ---------- */
+  .tm-featured {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .tm-featured {
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+      gap: 4rem;
+    }
+  }
+  .tm-featured-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .tm-mark {
+    display: block;
+    height: 4.5rem;
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 9rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-brand-yellow);
+  }
+  .tm-rule {
+    width: 3rem;
+    height: 3px;
+    border-radius: 9999px;
+    background: var(--color-brand-orange);
+  }
+
+  /* ---------- Shared media frame ---------- */
+  .tm-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2rem;
+    background: var(--color-brand-green);
+    box-shadow: 0 40px 60px -40px rgb(0 0 0 / 0.55);
+  }
+  .tm-frame--featured {
+    rotate: -2deg;
+  }
+  .tm-media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+  }
+  .tm-frame--featured .tm-media {
+    aspect-ratio: 4 / 5;
+  }
+  .tm-empty {
+    position: relative;
+    display: grid;
+    place-items: center;
+    background: var(--color-brand-green);
+    color: rgb(255 255 255 / 0.55);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tm-empty span {
+    position: relative;
+  }
+  .tm-empty-spot {
+    position: absolute;
+    height: 60%;
+    width: auto;
+    opacity: 0.25;
+  }
+
+  /* ---------- Play facade (shown only when JS runs) ---------- */
+  .tm-player {
+    position: relative;
+  }
+  .tm-play {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: 4.5rem;
+    height: 4.5rem;
+    translate: -50% -50%;
+    border-radius: 9999px;
+    background: var(--color-brand-yellow);
+    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.6);
+    transition: scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tm-play::before {
+    content: '';
+    position: absolute;
+    left: 54%;
+    top: 50%;
+    translate: -50% -50%;
+    border-block: 0.6rem solid transparent;
+    border-left: 1rem solid var(--color-brand-green);
+  }
+  .tm-play:hover {
+    scale: 1.08;
+  }
+  .tm-play:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+  .tm-play[hidden] {
+    display: none;
+  }
+
+  /* ---------- Row of reels: fits the container, no scrolling (extra entries wrap to a new row) ---------- */
+  .tm-rail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 4rem;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .tm-rail {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+    .tm-reel:nth-child(even) {
+      margin-top: 2rem;
+    }
+  }
+  .tm-rail .tm-frame {
+    border-radius: 1.5rem;
+  }
+  .tm-overlay {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 3rem 0.9rem 0.9rem;
+    background: linear-gradient(to top, rgb(14 38 38 / 0.92) 55%, transparent);
+    color: #fff;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .tm-frame.is-playing .tm-overlay {
+    opacity: 0;
+  }
+
+  .tm-transcript summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-brand-green);
+  }
+</style>
+
+<script>
+  // Swap native controls for a single play button until the viewer starts the video
+  document.querySelectorAll<HTMLElement>('[data-tm-player]').forEach((player) => {
+    const video = player.querySelector('video');
+    const play = player.querySelector<HTMLButtonElement>('[data-tm-play]');
+    if (!video || !play) return;
+    video.controls = false;
+    play.hidden = false;
+    play.addEventListener('click', () => {
+      play.hidden = true;
+      video.controls = true;
+      player.closest('.tm-frame')?.classList.add('is-playing');
+      void video.play();
+    });
+  });
+</script>

@@ -275,6 +275,10 @@ function initBand() {
       clone.setAttribute('aria-hidden', 'true');
       clone.querySelectorAll('a, button').forEach((n) => n.setAttribute('tabindex', '-1'));
       clone.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+      // The count-up only runs on the original set, which may still read 0 or be mid-count: show the final figure.
+      clone.querySelectorAll<HTMLElement>('[data-count]').forEach((n) => {
+        if (n.dataset.count) n.textContent = n.dataset.count;
+      });
       track.append(clone);
     }
 

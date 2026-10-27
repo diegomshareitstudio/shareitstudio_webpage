@@ -202,21 +202,6 @@ html.home-ready .home-results {
   pointer-events: none;
 }
 
-/* ---------- Section 04: a discreet spotlight ---------- */
-.home-question {
-  position: relative;
-  overflow: hidden;
-}
-.home-ghost-spot {
-  position: absolute;
-  left: -5rem;
-  top: -2rem;
-  height: 26rem;
-  width: auto;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
 /* ---------- Selected work: horizontal bands inside the normal flow ---------- */
 .home-work {
   position: relative;
@@ -316,14 +301,14 @@ html.home-ready .home-results {
 }
 .work-card {
   flex: none;
-  width: clamp(16.5rem, 21vw, 21rem);
+  width: clamp(18.5rem, 25vw, 25rem);
   scroll-snap-align: start;
 }
 .work-card:nth-child(3n + 2) {
-  margin-top: 3.5rem;
+  margin-top: 2.5rem;
 }
 .work-card:nth-child(3n) {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 .work-link {
   display: flex;
@@ -351,9 +336,38 @@ html.home-ready .home-results {
   outline-offset: 3px;
 }
 .work-visual {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   border-radius: 1.5rem;
   background: #fff;
+}
+/* The result, as loud as the title: a tilted yellow tab that breaks out past the card's left edge */
+.work-stat {
+  position: relative;
+  margin: 0.9rem 0 0.9rem -2.75rem; /* card + body padding are 1.75rem: the tab overhangs by 1rem */
+  rotate: -2deg;
+  border-radius: 1.25rem;
+  background: var(--color-brand-yellow);
+  padding: 0.85rem 1.25rem 0.8rem 2.75rem;
+  color: var(--color-brand-green);
+  box-shadow: 0 24px 34px -22px rgb(0 0 0 / 0.6);
+  transition: rotate 0.3s ease;
+}
+.work-link:hover .work-stat,
+.work-link:focus-visible .work-stat {
+  rotate: 0deg;
+}
+.work-before {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgb(28 58 58 / 0.5);
+}
+.work-before + .work-stat-value {
+  margin-top: 0.3rem;
+}
+.work-stat-value > :first-child {
+  font-size: clamp(2.6rem, 3.6vw, 3.4rem);
 }
 .work-body {
   display: flex;
@@ -526,18 +540,6 @@ html.home-ready .home-results {
       animation: work-open linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 45%;
-    }
-    @keyframes ghost-drift {
-      from {
-        transform: translateY(5rem);
-      }
-      to {
-        transform: translateY(-5rem);
-      }
-    }
-    .home-ghost-spot {
-      animation: ghost-drift linear both;
-      animation-timeline: view();
     }
     /* A dark panel retires to the left and uncovers the section: a brief lateral sweep while scrolling down */
     @keyframes sweep-left {

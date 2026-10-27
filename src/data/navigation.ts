@@ -17,6 +17,10 @@ export const portfolioNav: NavLink[] = [
 
 export const mainNav: NavLink[] = [
   {
+    label: 'Home',
+    href: '/',
+  },
+  {
     label: 'Services',
     href: '/services',
     children: [

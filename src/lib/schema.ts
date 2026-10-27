@@ -140,7 +140,30 @@ export const itemListSchema = (path: string, name: string, items: Crumb[]): Sche
   })),
 });
 
-export const webApplicationSchema = (opts: { path: string; name: string; description: string }): Schema => ({
+/**
+ * One VideoObject per published video testimonial. Deliberately no Review/AggregateRating:
+ * reviews a business shows about itself aren't eligible for review rich results.
+ */
+export const testimonialVideoSchema = (
+  path: string,
+  index: number,
+  t: { name: string; company: string; quote: string; transcript?: string },
+  video: { src: string; thumbnail: string; duration: string; uploadDate: string },
+): Schema => ({
+  '@type': 'VideoObject',
+  '@id': pageId(path, `testimonial-video-${index + 1}`),
+  name: `${t.company} on working with ${SITE.name}`,
+  description: `${t.name} of ${t.company}: “${t.quote}”`,
+  thumbnailUrl: absoluteUrl(video.thumbnail),
+  contentUrl: absoluteUrl(video.src),
+  uploadDate: video.uploadDate,
+  duration: video.duration,
+  inLanguage: SITE.language,
+  ...(t.transcript && { transcript: t.transcript }),
+  publisher: organizationRef,
+});
+
+export const webApplicationSchema =(opts: { path: string; name: string; description: string }): Schema => ({
   '@type': 'WebApplication',
   '@id': pageId(opts.path, 'app'),
   name: opts.name,

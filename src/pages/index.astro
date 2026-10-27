@@ -8,10 +8,13 @@ import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
 import Spotlight from '../components/ui/Spotlight.astro';
 import '../styles/home.css';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.png';
 import TextMarquee from '../components/ui/TextMarquee.astro';
+import Testimonials from '../components/ui/Testimonials.astro';
 import { getPost, postHref } from '../data/posts';
+import { testimonials } from '../data/testimonials';
+import { testimonialVideoSchema, type Schema } from '../lib/schema';
 import type { Faq } from '../data/faqs';
 
 const title = 'Share It Studio | Amazon Listing Optimization & Social Media Management';
@@ -64,47 +67,72 @@ const services = [
   },
 ];
 
-// 04 — the questions behind the creative
-const questions = [
-  {
-    q: 'Will this work for me?',
-    a: 'Show the product in use, at the right scale, and in a context the buyer recognizes.',
-  },
-  {
-    q: 'Why should I choose this one?',
-    a: 'Make the benefits, materials, differences, and proof easier to understand.',
-  },
-  {
-    q: 'Why should I follow this brand?',
-    a: 'Create useful, recognizable content themes that give people a reason to watch again.',
-  },
-];
+// 04 — testimonials: VideoObject markup for each published video (placeholders are skipped)
+const videoSchema: Schema[] = [];
+for (const [i, t] of testimonials.entries()) {
+  if (t.type !== 'video' || !t.video || t.placeholder) continue;
+  const thumb = await getImage({ src: t.video.poster, width: 1280, format: 'jpg' });
+  videoSchema.push(testimonialVideoSchema('/', i, t, { ...t.video, thumbnail: thumb.src }));
+}
 
-// 05 — selected work
+// 05 — selected work: image, title, the result (as prominent as the title), then the story.
+// `before` renders as the starting point of `stat`.
 const work = [
   {
-    cat: 'Pink Miracle',
+    cat: 'Social Media | Organic Discovery',
+    title: 'Creating reasons to come back',
+    stat: '2.2M',
+    statLabel: 'accounts reached (approx.)',
+    detail: '3,057,772 organic views in 90 days · $0 reported paid ad spend',
+    text: 'We built recurring content themes around audience interests, giving a new Instagram account a reason to be discovered beyond its existing followers. The reach and views are recorded for February 4–May 4, 2026.',
+    cta: 'Explore the 90-Day Social Case',
+    href: '/case-studies', // TODO: dedicated case-study page
+  },
+  {
+    cat: 'Amazon | YUNGPRIME',
+    title: 'One buying story across every listing touchpoint',
+    before: '2.74%',
+    stat: '2.96%',
+    statLabel: 'organic conversion rate',
+    detail: '+28.3% organic sales · $16,432 → $21,077 · May–June 2026',
+    text: 'We connected listing images, A+ Content, Brand Story, Storefront, video and copy into a coordinated buying story that puts product benefits and buyer questions in a clearer order.',
+    cta: 'See YUNGPRIME’s Transformation',
+    href: '/case-studies/yungprime',
+  },
+  {
+    cat: 'Amazon | Pink Miracle',
     title: 'Rethinking the creative for an established product',
-    text: 'An established product can have strong market recognition and still leave value unexplained. Rather than treating new images as a cosmetic refresh, we explored alternative creative directions informed by shopper preferences and feedback.',
-    cta: 'Explore the Before and After',
+    before: '$404K',
+    stat: '$606K',
+    statLabel: 'in reported monthly sales',
+    detail: 'July–August 2024 · Figures shown in the original case-study chart',
+    text: 'For an established product, a refresh needed more than new visuals. We explored customer preferences, creative alternatives and testing to communicate product value more clearly. These figures are observational, not a claim that creative caused all of the change.',
+    cta: 'Explore Pink Miracle’s Before and After',
     href: '/case-studies/pink-miracle',
   },
   {
-    cat: 'Super Ninja',
+    cat: 'Amazon | Super Ninja',
     title: 'One product category. Different markets. Different questions.',
-    text: 'The same product benefit may need a different explanation in a different country. Local competitor research, reviews, and buying objections informed market-specific creative decisions.',
-    cta: 'See the Market-Specific Work',
+    stat: '+91.5%',
+    statLabel: 'reported product sales — Germany',
+    detail: 'Main ASIN · August 2024 vs. August 2025 · Case-study deck figure',
+    text: 'We examined buying concerns across Germany, the UK and the US, then adapted the imagery and explanations to the questions that mattered in each market.',
+    cta: 'See the Market-Specific Case',
     href: '/case-studies/super-ninja',
     image: { src: superNinjaListing, alt: 'Super Ninja fruit fly trap Amazon listing images' },
   },
-  {
-    cat: 'Social Media',
-    title: 'Creating reasons to come back',
-    text: 'An organic content strategy built around audience interests and recurring themes gave a new account a clearer editorial direction than a feed made up only of product promotions.',
-    cta: 'See the Social Content',
-    href: '/portfolio/social-media',
-  },
-];
+] as {
+  cat: string;
+  title: string;
+  before?: string;
+  stat: string;
+  statLabel: string;
+  detail: string;
+  text: string;
+  cta: string;
+  href: string;
+  image?: { src: ImageMetadata; alt: string };
+}[];
 
 // 06 — how we work
 const steps = [
@@ -196,7 +224,7 @@ const faqs: Faq[] = [
 ];
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} schema={videoSchema}>
   <!-- 01 — Hero (scene A) + the heading of 02 (scene B). Pinned briefly on desktop/mobile while the spotlight expands. -->
   <div class="home-intro" data-home-intro>
     <div class="home-stage" data-stage>
@@ -290,34 +318,16 @@ const faqs: Faq[] = [
 
   <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
 
-  <!-- 04 — The question behind the creative -->
-  <section class="home-question bg-brand-cream py-16 md:py-24" aria-labelledby="question-heading">
-    <Spotlight id="q-spot" class="home-ghost-spot" />
-    <div class="container-x relative">
-      <div class="mx-auto max-w-3xl text-center">
-        <p class="eyebrow mb-4">The question behind the creative</p>
-        <h2 id="question-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
-          What does your customer still need to see, know, or believe?
-        </h2>
-        <p class="scrub-text mt-6 text-lg text-brand-ink/70">
-          Sometimes the most important product detail is missing from the images. Sometimes the difference between two
-          competing products is hard to understand. And sometimes a brand keeps publishing without giving anyone a reason
-          to return.
-        </p>
-      </div>
-      <ul class="mt-12 grid gap-5 md:grid-cols-3">
-        {questions.map((q) => (
-          <li class="flex">
-            <article class="flex w-full flex-col rounded-[2rem] bg-white p-8">
-              <p class="font-display text-3xl font-extrabold leading-tight text-brand-green">“{q.q}”</p>
-              <p class="mt-4 text-brand-ink/70">{q.a}</p>
-            </article>
-          </li>
-        ))}
-      </ul>
-      <p class="mt-12 text-center font-display text-2xl font-extrabold text-brand-green">
-        The question shapes the <span class="marker">creative</span>—not the other way around.
-      </p>
+  <!-- 04 — Testimonials (videos + photos; content lives in data/testimonials.ts) -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="testimonials-heading" id="testimonials">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Client testimonials"
+        id="testimonials-heading"
+        title="What ecommerce brands say about working with us."
+        text="Amazon sellers and ecommerce brands on what changed in their listings, their content, and the way they work with a creative team."
+      />
+      <Testimonials testimonials={testimonials} />
     </div>
   </section>
 
@@ -328,7 +338,7 @@ const faqs: Faq[] = [
     <Spotlight id="work-spot" class="home-work-spot" />
     <div class="container-x relative">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at why." />
+        <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at the numbers." />
         <button type="button" class="work-toggle" data-band-toggle aria-pressed="false" hidden>
           <span class="work-toggle-icon" aria-hidden="true"></span>
           <span data-band-toggle-label>Pause motion</span>
@@ -342,7 +352,7 @@ const faqs: Faq[] = [
             <li class="work-card">
               <a href={w.href} class="work-link">
                 {w.image ? (
-                  <Image src={w.image.src} alt={w.image.alt} class="work-visual work-img" widths={[320, 436]} sizes="21rem" />
+                  <Image src={w.image.src} alt={w.image.alt} class="work-visual work-img" widths={[400, 600, 800]} sizes="25rem" />
                 ) : (
                   <div class="media-fallback work-visual">
                     <Spotlight id={`fb-${w.cat.replace(/\W+/g, '-').toLowerCase()}`} class="media-fallback-spot" />
@@ -351,9 +361,21 @@ const faqs: Faq[] = [
                 )}
                 <div class="work-body">
                   <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
-                  <h3 class="mt-2 text-2xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
-                  <p class="mt-3 flex-1 text-sm text-brand-ink/70">{w.text}</p>
-                  <span class="mt-5 text-sm font-semibold text-brand-green">{w.cta} →</span>
+                  <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
+                  <div class="work-stat">
+                    {w.before && (
+                      <p class="work-before">
+                        <span class="sr-only">From </span>{w.before} <span aria-hidden="true">→</span><span class="sr-only"> to</span>
+                      </p>
+                    )}
+                    <p class="work-stat-value">
+                      <span data-count={w.stat} class="block font-display font-extrabold leading-none">{w.stat}</span>
+                      <span class="mt-1 block text-lg font-extrabold leading-snug">{w.statLabel}</span>
+                    </p>
+                    <p class="mt-2 text-xs font-semibold text-brand-green/70">{w.detail}</p>
+                  </div>
+                  <p class="flex-1 text-sm text-brand-ink/70">{w.text}</p>
+                  <span class="mt-4 text-sm font-semibold text-brand-green">{w.cta} →</span>
                 </div>
               </a>
             </li>
@@ -362,7 +384,11 @@ const faqs: Faq[] = [
       </div>
     </div>
     <div class="container-x relative">
-      <a href="/portfolio" class="btn-primary mt-12">Explore Our Work</a>
+      <p class="max-w-3xl text-xs text-white/55">
+        Individual case results reflect different products, markets and periods. Results are not guarantees, and factors
+        beyond creative work can influence performance.
+      </p>
+      <a href="/case-studies" class="btn-primary mt-8">Explore All Case Studies</a>
     </div>
   </section>
   <span class="work-cursor" data-work-cursor aria-hidden="true">View</span>
