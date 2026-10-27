@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
 
+import vercel from '@astrojs/vercel';
+
 /** Old route → new sitemap route (301) */
 const moved = {
   '/servicess': '/services',
@@ -47,6 +49,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  // Pages stay static; only routes with `prerender = false` (src/pages/api/ask.ts) run as Vercel functions
+  adapter: vercel(),
 
   // Generated on build only: /sitemap-index.xml → /sitemap-0.xml
   integrations: [sitemap()],
