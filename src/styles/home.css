@@ -1,0 +1,499 @@
+/*
+ * Landing page only (imported by pages/index.astro).
+ * Visual system: the logo's light-yellow spotlight is the protagonist; the orange of “it” is a secondary accent;
+ * the logo's dark green carries text. Tunable values live in the custom properties below and in HOME_MOTION (scripts/home.ts).
+ *
+ * Layering rule: the page works as a plain stacked layout (no JS, reduced motion, tiny viewports).
+ * `html.home-ready` (added by scripts/home.ts once it has measured everything) switches on the pinned hero.
+ */
+
+:root {
+  --spot-soft: #fff4d8; /* spotlight, lower-left of the shape */
+  --spot-final: #fde5ad; /* spotlight colour once it fills the screen (matches the gradient at its scale origin) */
+  --spot-rim: #fcdb8f; /* spotlight, upper-right of the shape */
+  --it-amber: #ffb20f; /* the “it” letters */
+  --pin: 1.15; /* extra scroll, in viewport heights, while the hero is pinned (desktop) */
+  --work-gap: 1.75rem;
+}
+@media (max-width: 767px) {
+  :root {
+    --pin: 0.8; /* shorter intro on phones */
+    --work-gap: 1.1rem;
+  }
+}
+
+/* The decorative text bands tilt slightly past the viewport edge; clip (not hide) so sticky keeps working */
+body.home main {
+  overflow-x: clip;
+}
+
+/* ---------- Hero stage (static layout first) ---------- */
+.home-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-brand-cream);
+}
+.home-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.home-atmos span {
+  position: absolute;
+  border-radius: 9999px;
+}
+.home-atmos span:nth-child(1) {
+  left: -18vw;
+  top: -22vw;
+  width: 62vw;
+  height: 62vw;
+  background: radial-gradient(closest-side, rgb(255 226 150 / 0.55), transparent);
+}
+.home-atmos span:nth-child(2) {
+  right: -22vw;
+  bottom: -26vw;
+  width: 64vw;
+  height: 64vw;
+  background: radial-gradient(closest-side, rgb(28 58 58 / 0.12), transparent);
+}
+.home-spot {
+  position: absolute;
+  z-index: 1;
+  right: 7%;
+  top: 16%;
+  height: min(60svh, 34rem);
+  width: auto;
+  aspect-ratio: 545 / 645;
+  pointer-events: none;
+}
+.scene {
+  position: relative;
+  z-index: 2;
+}
+.scene-inner {
+  margin-inline: auto;
+  max-width: 56rem;
+  text-align: center;
+}
+.scene-a {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: 7rem 1rem 4rem;
+}
+.scene-b {
+  background: var(--spot-final);
+  padding: 4rem 1rem 1rem;
+}
+.home-title {
+  margin-top: 1.25rem;
+  color: var(--color-brand-green);
+  font-size: clamp(2.35rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.home-title .marker {
+  background: none; /* the spotlight is the highlighter here */
+  padding: 0;
+}
+.home-lead {
+  margin: 1.5rem auto 0;
+  max-width: 40rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: rgb(31 42 42 / 0.72);
+}
+.scene-a .eyebrow {
+  justify-content: center;
+}
+.home-title-b {
+  color: var(--color-brand-green);
+  font-size: clamp(2.2rem, 5.6vw, 4.75rem);
+  font-weight: 800;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.scene-b .eyebrow {
+  color: rgb(28 58 58 / 0.75);
+  justify-content: center;
+}
+
+/* ---------- Pinned intro (enabled by scripts/home.ts) ---------- */
+html.home-ready .home-intro {
+  height: calc(100svh * (1 + var(--pin)));
+}
+html.home-ready .home-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+html.home-ready .home-stage.is-filled {
+  background: var(--spot-final);
+}
+html.home-ready .scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  min-height: 0;
+  place-items: center;
+}
+html.home-ready .scene-a {
+  padding: 6rem 1rem 2.5rem;
+}
+html.home-ready .scene-b {
+  background: transparent;
+  padding: 5rem 1rem 24svh; /* sits high so the cards that follow are not a screen away */
+  opacity: 0;
+}
+html.home-ready .home-spot {
+  right: auto;
+  /* position, size and transform-origin are set inline from the headline's geometry */
+  transform-origin: 60.55% 33.3%; /* the head circle's centre inside the 545×645 box */
+}
+
+/* The header floats over the hero and turns into a bar once the page scrolls */
+html.home-ready body.home > header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+}
+html.home-ready body.home > header:not(.is-scrolled) {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+/* ---------- Results (section 02) + the exit contour ---------- */
+.home-results {
+  position: relative;
+  overflow: hidden;
+  background: var(--spot-final);
+  padding: 1.5rem 0 calc(min(25vw, 360px) * 0.9 + 2rem);
+}
+html.home-ready .home-results {
+  padding-top: 0;
+}
+.home-results .btn-dark {
+  background: var(--color-brand-green);
+}
+.spot-edge {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1440 / 360;
+  pointer-events: none;
+}
+.spot-edge-path {
+  fill: var(--color-brand-yellow); /* the band that follows */
+}
+
+/* ---------- Section 04: a discreet spotlight ---------- */
+.home-question {
+  position: relative;
+  overflow: hidden;
+}
+.home-ghost-spot {
+  position: absolute;
+  left: -5rem;
+  top: -2rem;
+  height: 26rem;
+  width: auto;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---------- Selected work: horizontal bands inside the normal flow ---------- */
+.home-work {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-brand-green-dark);
+  color: #fff;
+  padding: 5rem 0 6rem;
+}
+.home-work h2 {
+  color: #fff;
+}
+.home-work .eyebrow {
+  color: rgb(255 255 255 / 0.7);
+}
+.home-work-spot {
+  position: absolute;
+  right: -6%;
+  top: -12%;
+  height: 125%;
+  width: auto;
+  opacity: 0.08; /* constant, brand-derived ambient light */
+  pointer-events: none;
+}
+.work-toggle {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 9999px;
+  padding: 0 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.work-toggle[hidden] {
+  display: none;
+}
+.work-toggle:hover {
+  background: var(--color-brand-yellow);
+  color: var(--color-brand-green);
+}
+.work-toggle:focus-visible {
+  outline: 3px solid var(--color-brand-yellow);
+  outline-offset: 3px;
+}
+.work-toggle-icon {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.8rem;
+  border-inline: 0.22rem solid currentColor; /* ❚❚ */
+}
+.work-toggle[aria-pressed='true'] .work-toggle-icon {
+  width: 0;
+  height: 0;
+  border-inline: 0;
+  border-block: 0.4rem solid transparent;
+  border-left: 0.7rem solid currentColor; /* ▶ */
+}
+
+.work-band {
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  padding-block: 0.5rem 3.5rem;
+}
+.work-band[data-mode='auto'] {
+  overflow: hidden;
+  scroll-snap-type: none;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+.work-track {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+}
+.work-band[data-mode='manual'] .work-track {
+  padding-inline: max(1rem, calc((100vw - 72rem) / 2 + 1.5rem));
+}
+.work-band[data-mode='manual'] [data-clone] {
+  display: none;
+}
+.work-set {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: var(--work-gap);
+}
+.work-band[data-mode='auto'] .work-set {
+  padding-right: var(--work-gap); /* identical gap at the seam between two sets */
+}
+.work-card {
+  flex: none;
+  width: clamp(16.5rem, 21vw, 21rem);
+  scroll-snap-align: start;
+}
+.work-card:nth-child(3n + 2) {
+  margin-top: 3.5rem;
+}
+.work-card:nth-child(3n) {
+  margin-top: 1.5rem;
+}
+.work-link {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2rem;
+  background: var(--color-brand-cream);
+  padding: 0.75rem;
+  color: var(--color-brand-ink);
+  box-shadow:
+    0 40px 60px -34px rgb(0 0 0 / 0.75),
+    0 0 0 1px rgb(255 255 255 / 0.06);
+  transition:
+    translate 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.work-link:hover,
+.work-link:focus-visible {
+  translate: 0 -6px;
+  box-shadow:
+    0 50px 70px -34px rgb(0 0 0 / 0.85),
+    0 0 0 1px rgb(255 255 255 / 0.1);
+}
+.work-link:focus-visible {
+  outline: 3px solid var(--color-brand-yellow);
+  outline-offset: 3px;
+}
+.work-visual {
+  aspect-ratio: 4 / 5;
+  border-radius: 1.5rem;
+  background: #fff;
+}
+.work-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.25rem 1rem 1rem;
+}
+/* cards stay upright and unclipped by the generic image effects */
+.work-band .placeholder {
+  transform: none !important;
+  animation: none !important;
+  clip-path: none !important;
+  scale: none !important;
+  rotate: none !important;
+}
+
+/* Cursor label over a card (fine pointers only) */
+.work-cursor {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .work-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 60;
+    display: grid;
+    width: 4.75rem;
+    height: 4.75rem;
+    place-items: center;
+    border-radius: 9999px;
+    background: var(--color-brand-yellow);
+    color: var(--color-brand-green);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    scale: 0.4;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .work-cursor.is-on {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* ---------- Motion (everything below is off for reduced-motion visitors) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes home-drift {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 3vw 2vw;
+    }
+  }
+  @keyframes home-float {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 -10px;
+    }
+  }
+  .home-atmos span:nth-child(1) {
+    animation: home-drift 26s ease-in-out infinite alternate;
+  }
+  .home-atmos span:nth-child(2) {
+    animation: home-drift 32s ease-in-out infinite alternate-reverse;
+  }
+  .home-spot {
+    animation: home-float 7s ease-in-out infinite alternate;
+  }
+  .scene-a .scene-inner > * {
+    animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .scene-a .scene-inner > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  .scene-a .scene-inner > :nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  .scene-a .scene-inner > :nth-child(4) {
+    animation-delay: 0.24s;
+  }
+  .scene-a .scene-inner > :nth-child(5) {
+    animation-delay: 0.3s;
+  }
+  .scene-a .btn-primary {
+    animation: none; /* the generic attention wiggle targets `main > header`, keep this CTA calm */
+  }
+
+  @keyframes work-run {
+    to {
+      transform: translate3d(calc(var(--shift, 0px) * -1), 0, 0);
+    }
+  }
+  .work-band[data-mode='auto'] .work-track {
+    animation: work-run var(--work-duration, 60s) linear infinite;
+    will-change: transform;
+  }
+  .work-band[data-mode='auto']:hover .work-track,
+  .work-band[data-mode='auto']:focus-within .work-track,
+  .work-band[data-mode='auto'].is-paused .work-track,
+  .work-band[data-mode='auto'].is-offscreen .work-track {
+    animation-play-state: paused;
+  }
+
+  /* Scroll-driven extras */
+  @supports (animation-timeline: view()) {
+    @keyframes ghost-drift {
+      from {
+        transform: translateY(5rem);
+      }
+      to {
+        transform: translateY(-5rem);
+      }
+    }
+    .home-ghost-spot {
+      animation: ghost-drift linear both;
+      animation-timeline: view();
+    }
+    /* A dark panel retires to the left and uncovers the section: a brief lateral sweep while scrolling down */
+    @keyframes sweep-left {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-101%);
+      }
+    }
+    .home-fit {
+      position: relative;
+      overflow: hidden;
+    }
+    .home-fit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: var(--color-brand-green);
+      border-right: 0.5rem solid var(--color-brand-yellow);
+      pointer-events: none;
+      animation: sweep-left linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 80%;
+    }
+  }
+}

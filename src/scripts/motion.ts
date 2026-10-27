@@ -235,7 +235,7 @@ function tilt() {
 /** Section headings: words rise in one by one as they scroll into view. */
 function splitHeadings() {
   $$('main h2').forEach((h2) => {
-    if (h2.closest('.prose-sis') || h2.classList.contains('sr-only') || h2.closest('header')) return;
+    if (h2.closest('.prose-sis, [data-no-split]') || h2.classList.contains('sr-only') || h2.closest('header')) return;
     const words: HTMLElement[] = [];
     const walk = (node: Node) => {
       Array.from(node.childNodes).forEach((child) => {

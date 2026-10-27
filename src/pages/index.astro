@@ -12,7 +12,8 @@ import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
-import Badge from '../components/ui/Badge.astro';
+import Spotlight from '../components/ui/Spotlight.astro';
+import '../styles/home.css';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import { getPost, postHref } from '../data/posts';
 import type { Faq } from '../data/faqs';
@@ -199,36 +200,41 @@ const faqs: Faq[] = [
 ---
 
 <Layout title={title} description={description}>
-  <!-- 01 — Hero -->
-  <PageHero
-    size="lg"
-    eyebrow="Amazon Listing Optimization + Social Media Management"
-    title="Amazon listings that show the difference. Social content worth following."
-    highlight="show the difference"
-    subtitle="We create Amazon listing images, A+ Content, video, and copy that help shoppers understand what makes your product worth choosing. We also plan, produce, and manage social media for ecommerce brands—whether they sell on Amazon or not."
-    ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
-    secondaryLabel="See Our Work"
-    secondaryHref="/portfolio"
-  >
-    <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team.</p>
-    <!-- TODO: HERO-01 — replace placeholders with approved client work (D12) -->
-    <div slot="visual" class="relative">
-      <Badge id="hero-badge" class="absolute -bottom-8 -left-4 z-10 h-32 w-32 -rotate-12 text-brand-orange lg:-left-12" />
-      <div class="grid grid-cols-[1.4fr_1fr] gap-3">
-        <div class="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[2.5rem] bg-brand-green">
-          <div class="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-brand-green-light"></div>
-          <p class="relative px-6 text-center text-sm text-white/60">Amazon listing project</p>
+  <!-- 01 — Hero (scene A) + the heading of 02 (scene B). Pinned briefly on desktop/mobile while the spotlight expands. -->
+  <div class="home-intro" data-home-intro>
+    <div class="home-stage" data-stage>
+      <div class="home-atmos" aria-hidden="true"><span></span><span></span></div>
+      <Spotlight id="hero-spot" class="home-spot" />
+
+      <section class="scene scene-a" data-scene-a aria-labelledby="hero-heading">
+        <div class="scene-inner">
+          <p class="eyebrow">Amazon Listing Optimization + Social Media Management</p>
+          <h1 id="hero-heading" class="home-title">
+            Amazon listings that <span class="marker" data-spot-anchor>show the difference</span>. Social content worth following.
+          </h1>
+          <p class="home-lead">
+            We create Amazon listing images, A+ Content, video, and copy that help shoppers understand what makes your product worth choosing. We also plan, produce, and manage social media for ecommerce brands—whether they sell on Amazon or not.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <a href={bookHref} class="btn-primary">Talk to a Human</a>
+            <a href="/portfolio" class="btn-outline">See Our Work</a>
+          </div>
+          <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team.</p>
         </div>
-        <div class="placeholder aspect-[9/16] self-end rounded-[2rem] bg-white">▶ Social video</div>
+      </section>
+
+      <div class="scene scene-b" data-scene-b data-no-split>
+        <div class="scene-inner">
+          <p class="eyebrow mb-4">Results, up front</p>
+          <h2 id="results-heading" class="home-title-b">Creative you can see. Results you can examine.</h2>
+        </div>
       </div>
     </div>
-  </PageHero>
+  </div>
 
-  <!-- 02 — Results, up front -->
-  <section class="py-16 md:py-24" aria-labelledby="results-heading">
+  <!-- 02 — Results, up front (heading lives in scene B above) -->
+  <section class="home-results" aria-labelledby="results-heading">
     <div class="container-x">
-      <SectionHeading eyebrow="Results, up front" id="results-heading" title="Creative you can see. Results you can examine." />
       <ul class="grid gap-5 md:grid-cols-2">
         {results.map((r) => (
           <li class="flex">
@@ -255,6 +261,14 @@ const faqs: Faq[] = [
         work.
       </p>
     </div>
+    <!-- Exit contour: the lower tip of the spotlight, scaled up, cuts into the next band -->
+    <svg class="spot-edge" viewBox="0 0 1440 360" aria-hidden="true" focusable="false">
+      <path
+        class="spot-edge-path"
+        fill-rule="evenodd"
+        d="M0 0H1440V360H0ZM494 -1659.6A860 860 0 1 1 1891.6 -735.6L891.6 212A540 540 0 0 1 14 -368Z"
+      ></path>
+    </svg>
   </section>
 
   <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
@@ -284,8 +298,9 @@ const faqs: Faq[] = [
   </section>
 
   <!-- 04 — The question behind the creative -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="question-heading">
-    <div class="container-x">
+  <section class="home-question bg-brand-cream py-16 md:py-24" aria-labelledby="question-heading">
+    <Spotlight id="q-spot" class="home-ghost-spot" />
+    <div class="container-x relative">
       <div class="mx-auto max-w-3xl text-center">
         <p class="eyebrow mb-4">The question behind the creative</p>
         <h2 id="question-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
@@ -316,26 +331,40 @@ const faqs: Faq[] = [
   <TextMarquee dark reverse duration={40} words={['Ask the right question', 'Make it clear', 'Give a reason to return']} />
 
   <!-- 05 — Selected work -->
-  <section class="py-16 md:py-24" aria-labelledby="work-heading">
-    <div class="container-x">
-      <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at why." />
-      <ul class="grid gap-6 md:grid-cols-3">
-        {work.map((w) => (
-          <li class="flex">
-            <a href={w.href} class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3">
-              <div class="placeholder aspect-[4/3] rounded-[1.6rem] bg-white">{w.cat}</div>
-              <div class="flex flex-1 flex-col p-5">
-                <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
-                <h3 class="mt-2 text-2xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
-                <p class="mt-3 flex-1 text-sm text-brand-ink/70">{w.text}</p>
-                <span class="mt-5 text-sm font-semibold text-brand-green">{w.cta} →</span>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a href="/portfolio" class="btn-outline mt-10">Explore Our Work</a>
+  <section class="home-work" aria-labelledby="work-heading">
+    <Spotlight id="work-spot" class="home-work-spot" />
+    <div class="container-x relative">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading eyebrow="Selected work" id="work-heading" title="Don’t just look at what we made. Look at why." />
+        <button type="button" class="work-toggle" data-band-toggle aria-pressed="false" hidden>
+          <span class="work-toggle-icon" aria-hidden="true"></span>
+          <span data-band-toggle-label>Pause motion</span>
+        </button>
+      </div>
     </div>
+    <div class="work-band" data-band data-mode="manual" role="group" aria-label="Selected work">
+      <div class="work-track">
+        <ul class="work-set" data-band-set>
+          {work.map((w) => (
+            <li class="work-card">
+              <a href={w.href} class="work-link">
+                <div class="placeholder work-visual">{w.cat}</div>
+                <div class="work-body">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
+                  <h3 class="mt-2 text-2xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
+                  <p class="mt-3 flex-1 text-sm text-brand-ink/70">{w.text}</p>
+                  <span class="mt-5 text-sm font-semibold text-brand-green">{w.cta} →</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="container-x relative">
+      <a href="/portfolio" class="btn-primary mt-12">Explore Our Work</a>
+    </div>
+    <span class="work-cursor" data-work-cursor aria-hidden="true">View</span>
   </section>
 
   <!-- 06 — How we work -->
@@ -367,7 +396,7 @@ const faqs: Faq[] = [
   </section>
 
   <!-- 07 — Where we fit -->
-  <section class="py-16 md:py-24" aria-labelledby="fit-heading">
+  <section class="home-fit py-16 md:py-24" aria-labelledby="fit-heading">
     <div class="container-x">
       <SectionHeading eyebrow="Where we fit" id="fit-heading" title="Start with what your brand actually needs." />
       <ul class="grid gap-5 md:grid-cols-3">
@@ -439,3 +468,7 @@ const faqs: Faq[] = [
     note="Choose a time to speak directly with our team."
   />
 </Layout>
+
+<script>
+  import '../scripts/home';
+</script>

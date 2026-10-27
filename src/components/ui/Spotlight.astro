@@ -1,0 +1,27 @@
+---
+/**
+ * The yellow "spotlight" that sits behind the “it” in the Share It Studio logo, rebuilt as a standalone SVG.
+ * Geometry: the convex hull of a large circle (top right) and a small one (bottom left), measured from the logo
+ * (tangent line ≈ 43° from the horizontal). It is a separate layer: the logo itself is never scaled or altered.
+ * ViewBox 545×645. Head circle centre = (330, 215) r 215; tail circle centre = (135, 510) r 135.
+ * Decorative only.
+ */
+interface Props {
+  /** Unique per page: the gradient id */
+  id?: string;
+  class?: string;
+}
+
+const { id = 'spot', class: className } = Astro.props;
+---
+
+<svg class:list={['spotlight', className]} viewBox="0 0 545 645" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id={`${id}-fill`} gradientUnits="userSpaceOnUse" x1="0" y1="645" x2="545" y2="0">
+      <stop offset="0" stop-color="#fff4d8"></stop>
+      <stop offset="0.64" stop-color="#fde5ad"></stop>
+      <stop offset="1" stop-color="#fcdb8f"></stop>
+    </linearGradient>
+  </defs>
+  <path d="M128.5 140.1A215 215 0 1 1 477.9 371.1L227.9 608A135 135 0 0 1 8.5 463Z" fill={`url(#${id}-fill)`}></path>
+</svg>
