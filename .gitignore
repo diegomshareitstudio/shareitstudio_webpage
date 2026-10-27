@@ -1,6 +1,5 @@
 # build output
 dist/
-.vercel/
 
 # generated types
 .astro/
@@ -23,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# camera originals of the testimonial videos (100+ MB, GitHub rejects them); the web versions live in public/testimonials
+src/assets/testimonials/mp4/
+src/assets/testimonials/webm/

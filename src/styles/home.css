@@ -4,7 +4,8 @@
  * the logo's dark green carries text. Tunable values live in the custom properties below and in HOME_MOTION (scripts/home.ts).
  *
  * Layering rule: the page works as a plain stacked layout (no JS, reduced motion, tiny viewports).
- * `html.home-ready` (added by scripts/home.ts once it has measured everything) switches on the pinned hero.
+ * `html.home-ready` switches on the pinned hero. It is set before the first paint by an inline script in
+ * pages/index.astro (no layout shift); scripts/home.ts removes it again if the hero turns out not to fit.
  */
 
 :root {
@@ -156,6 +157,11 @@ html.home-ready .home-spot {
   animation: none; /* nothing else may move the layer that scales */
   /* position, size and transform-origin are set inline from the headline's geometry */
   transform-origin: 60.55% 33.3%; /* the head circle's centre inside the 545×645 box */
+  transition: opacity 0.5s ease;
+}
+/* Until scripts/home.ts has anchored it to the headline, the spotlight waits unseen: it fades in already in place */
+html.home-ready .home-spot:not([data-placed]) {
+  opacity: 0;
 }
 
 /* The header floats over the hero and turns into a bar once the page scrolls */

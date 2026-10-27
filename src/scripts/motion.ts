@@ -1,12 +1,11 @@
 /**
  * Interaction layer (runs on every page, imported from Layout).
- * Built on `motion` (the framework-free build of Framer Motion) + Lenis for smooth scrolling.
+ * Built on `motion` (the framework-free build of Framer Motion); Lenis smooths wheel scrolling on desktop only.
  * CSS in styles/motion.css handles the rest (reveals, marquee, hover lifts).
  * Everything here is progressive enhancement: the page is fully usable without it,
  * and none of it runs for visitors who ask for reduced motion.
  */
 import { animate, inView, scroll, stagger } from 'motion';
-import Lenis from 'lenis';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -14,102 +13,94 @@ const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matc
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
 
+/** Work that can wait until the browser is idle, so it never competes with the first paint or the first tap. */
+const idle = (fn: () => void) =>
+  'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200);
+
 if (!reduced) {
-  const lenis = smoothScroll();
-  splitHeroTitle();
-  marqueeVelocity(lenis);
-  hideHeaderOnScroll(lenis);
-  popOnReveal();
+  // Smooth wheel scrolling only matters with a mouse/trackpad; touch screens keep native scrolling and skip the download
+  if (finePointer) import('lenis').then(({ default: Lenis }) => new Lenis({ autoRaf: true, anchors: true }));
+  hideHeaderOnScroll();
   splitHeadings();
-  decorateSections();
-  spinOnScroll();
-  scrubText();
-  footerSlide();
-  confetti();
   countUp();
+  scrubText();
+  popOnReveal();
   heroParallax();
-  ripple();
-  if (finePointer) {
-    magnetic();
-    tilt();
-  }
+  idle(() => {
+    marqueeVelocity();
+    decorateSections();
+    spinOnScroll();
+    footerSlide();
+    ripple();
+    confetti();
+    if (finePointer) {
+      magnetic();
+      tilt();
+    }
+  });
 }
 
-/** Inertial smooth scrolling; anchors (#services, back-to-top) glide too. */
-function smoothScroll() {
-  const lenis = new Lenis({ lerp: 0.1, anchors: true });
-  const raf = (time: number) => {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  };
-  requestAnimationFrame(raf);
-  return lenis;
-}
-
-/** Hero headline: each word springs up one after another. */
-function splitHeroTitle() {
-  const h1 = document.querySelector<HTMLElement>('main > header h1');
-  if (!h1) return;
-
-  const walk = (node: Node) => {
-    Array.from(node.childNodes).forEach((child) => {
-      if (child.nodeType === Node.ELEMENT_NODE) return walk(child);
-      if (child.nodeType !== Node.TEXT_NODE || !child.textContent?.trim()) return;
-      const frag = document.createDocumentFragment();
-      child.textContent.split(/(\s+)/).forEach((part) => {
-        if (!part.trim()) return frag.append(part);
-        const w = document.createElement('span');
-        w.className = 'split-word';
-        w.textContent = part;
-        frag.append(w);
-      });
-      child.replaceWith(frag);
-    });
-  };
-  walk(h1);
-
-  const words = $$('.split-word', h1);
-  animate(
-    words,
-    { opacity: [0, 1], y: ['0.6em', 0], rotate: [4, 0] },
-    { type: 'spring', stiffness: 220, damping: 18, delay: stagger(0.06, { startDelay: 0.1 }) },
-  );
-}
-
-/** Every marquee reacts to scroll: down speeds it up, up runs it backwards. */
-function marqueeVelocity(lenis: Lenis) {
+/**
+ * Every marquee reacts to scroll: down speeds it up, up runs it backwards.
+ * The frame loop only runs while the page is moving and stops once the belts have settled.
+ */
+function marqueeVelocity() {
   const tracks = $$('.marquee-track').map((el) => el.getAnimations()[0]).filter(Boolean);
   if (!tracks.length) return;
   const marquees = $$('.marquee');
   let rate = 1;
   let skew = 0;
+  let lastY = window.scrollY;
+  let running = false;
   const tick = () => {
-    const wantSkew = Math.max(-10, Math.min(-lenis.velocity * 0.45, 10));
+    const y = window.scrollY;
+    const velocity = y - lastY;
+    lastY = y;
+    const wantSkew = Math.max(-10, Math.min(-velocity * 0.45, 10));
     skew += (wantSkew - skew) * 0.12;
-    if (Math.abs(skew) > 0.02 || skew !== 0) {
-      const v = Math.abs(skew) < 0.02 ? 0 : skew;
-      skew = v;
-      marquees.forEach((m) => m.style.setProperty('--skew', `${v}deg`));
-    }
-    const target = 1 + Math.max(-7, Math.min(lenis.velocity * 0.6, 7));
+    if (Math.abs(skew) < 0.02) skew = 0;
+    marquees.forEach((m) => m.style.setProperty('--skew', `${skew}deg`));
+    const target = 1 + Math.max(-7, Math.min(velocity * 0.6, 7));
     rate += (target - rate) * 0.08;
+    if (Math.abs(rate - 1) < 0.01) rate = 1;
     tracks.forEach((a) => (a.playbackRate = rate));
-    requestAnimationFrame(tick);
+    running = velocity !== 0 || skew !== 0 || rate !== 1;
+    if (running) requestAnimationFrame(tick);
   };
-  requestAnimationFrame(tick);
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (running) return;
+      running = true;
+      lastY = window.scrollY;
+      requestAnimationFrame(tick);
+    },
+    { passive: true },
+  );
 }
 
 /** Sticky header tucks away while reading down and returns on scroll up. */
-function hideHeaderOnScroll(lenis: Lenis) {
+function hideHeaderOnScroll() {
   const header = document.querySelector<HTMLElement>('body > header');
   if (!header) return;
-  let last = 0;
-  lenis.on('scroll', ({ scroll: y }: { scroll: number }) => {
-    const menuOpen = document.getElementById('menu-toggle')?.getAttribute('aria-expanded') === 'true';
-    header.classList.toggle('is-scrolled', y > 24);
-    header.classList.toggle('is-hidden', y > last && y > 240 && !menuOpen);
-    last = y;
-  });
+  let last = window.scrollY;
+  let queued = false;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        const y = window.scrollY;
+        const menuOpen = document.getElementById('menu-toggle')?.getAttribute('aria-expanded') === 'true';
+        header.classList.toggle('is-scrolled', y > 24);
+        header.classList.toggle('is-hidden', y > last && y > 240 && !menuOpen);
+        last = y;
+      });
+    },
+    { passive: true },
+  );
 }
 
 /** Numbered badges (methodology steps) pop in with a little overshoot. */
@@ -158,15 +149,20 @@ function heroParallax() {
 
   if (finePointer) {
     const layers = $$('.motion-float, [data-depth]', hero);
+    let pointer: PointerEvent | undefined;
     window.addEventListener(
       'pointermove',
       (e) => {
-        const x = (e.clientX / innerWidth - 0.5) * 2;
-        const y = (e.clientY / innerHeight - 0.5) * 2;
-        layers.forEach((el, i) => {
-          const depth = Number(el.dataset.depth ?? 14 + (i % 3) * 10);
-          el.style.translate = `${-x * depth}px ${-y * depth}px`;
+        if (!pointer) requestAnimationFrame(() => {
+          const x = (pointer!.clientX / innerWidth - 0.5) * 2;
+          const y = (pointer!.clientY / innerHeight - 0.5) * 2;
+          pointer = undefined;
+          layers.forEach((el, i) => {
+            const depth = Number(el.dataset.depth ?? 14 + (i % 3) * 10);
+            el.style.translate = `${-x * depth}px ${-y * depth}px`;
+          });
         });
+        pointer = e;
       },
       { passive: true },
     );
@@ -201,8 +197,10 @@ function ripple() {
 /** Buttons lean toward the cursor. */
 function magnetic() {
   $$('.btn-primary, .btn-dark').forEach((btn) => {
+    let r: DOMRect | undefined;
+    btn.addEventListener('pointerenter', () => (r = btn.getBoundingClientRect()));
     btn.addEventListener('pointermove', (e) => {
-      const r = btn.getBoundingClientRect();
+      r ??= btn.getBoundingClientRect();
       const x = (e as PointerEvent).clientX - (r.left + r.width / 2);
       const y = (e as PointerEvent).clientY - (r.top + r.height / 2);
       btn.style.setProperty('--mx', `${x * 0.25}px`);
@@ -218,8 +216,10 @@ function magnetic() {
 /** Grid cards tilt in 3D toward the pointer. */
 function tilt() {
   $$('main :is(ul, ol).grid > li > :is(a, article, figure)').forEach((card) => {
+    let r: DOMRect | undefined;
+    card.addEventListener('pointerenter', () => (r = card.getBoundingClientRect()));
     card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
+      r ??= card.getBoundingClientRect();
       const px = ((e as PointerEvent).clientX - r.left) / r.width - 0.5;
       const py = ((e as PointerEvent).clientY - r.top) / r.height - 0.5;
       card.style.setProperty('--rx', `${-py * 8}deg`);
@@ -325,7 +325,10 @@ function scrubText() {
     scroll(
       (progress: number) => {
         const active = progress * (words.length + 4);
-        words.forEach((w, i) => (w.style.opacity = String(0.18 + 0.82 * Math.max(0, Math.min(active - i, 1)))));
+        words.forEach((w, i) => {
+          const o = String(Math.round((0.18 + 0.82 * Math.max(0, Math.min(active - i, 1))) * 100) / 100);
+          if (w.style.opacity !== o) w.style.opacity = o;
+        });
       },
       { target: p, offset: ['start 0.92', 'start 0.5'] },
     );

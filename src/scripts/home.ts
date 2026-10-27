@@ -25,13 +25,13 @@ export const HOME_MOTION = {
   sceneA: {
     /** hero copy fades and blurs out over this range (it holds still while the shape starts growing) */
     range: [0.3, 0.55],
-    blur: [18, 9], // px, desktop / mobile
+    blur: [18, 0], // px, desktop / mobile (a full-screen blur is too costly to repaint while scrolling on phones)
     lift: -26, // px
   },
   sceneB: {
     /** the next message resolves out of blur over this range, only once the old one is nearly gone */
     range: [0.5, 0.8],
-    blur: [16, 8],
+    blur: [16, 0],
     drop: 26,
   },
   exit: {
@@ -96,6 +96,7 @@ function initHero() {
       setInert(el, false);
     });
     spot.removeAttribute('style');
+    delete spot.dataset.placed;
     stage.classList.remove('is-filled');
   };
 
@@ -164,10 +165,14 @@ function initHero() {
     sceneB.style.visibility = inn <= 0 ? 'hidden' : '';
   };
 
+  // `home-ready` is usually already on <html>: an inline script in pages/index.astro sets it before the first paint,
+  // so the pinned layout never replaces the stacked one in front of the reader (layout shift). The scroll
+  // choreography is tracked separately and only starts once the spotlight has been measured.
   const enable = () => {
-    if (root.classList.contains('home-ready')) return;
+    if (stopScroll) return;
     root.classList.add('home-ready');
     layout();
+    spot.dataset.placed = '';
     stopScroll = scroll(update, { target: intro, offset: ['start start', 'end end'] }) as unknown as () => void;
     update(lastP);
   };
@@ -180,7 +185,7 @@ function initHero() {
 
   const sync = () => {
     if (reduced.matches || !fits()) return disable();
-    if (root.classList.contains('home-ready')) {
+    if (stopScroll) {
       layout();
       update(lastP);
     } else {
@@ -238,13 +243,6 @@ function initBand() {
   /** Reduced motion and touch screens get a manual, swipeable gallery: no autoplay, no vertical-gesture capture. */
   const canAutoplay = () => !reduced.matches && !coarse.matches;
 
-  const imagesReady = () =>
-    Promise.all(
-      Array.from(set.querySelectorAll('img')).map((img) =>
-        img.complete ? Promise.resolve() : new Promise((r) => (img.onload = img.onerror = () => r(null))),
-      ),
-    );
-
   const build = async () => {
     const mine = ++token;
     clearClones();
@@ -257,7 +255,9 @@ function initBand() {
       return;
     }
 
-    await Promise.all([document.fonts.ready, imagesReady()]);
+    // Card widths come from CSS and images carry their own dimensions, so only fonts can change the measurement.
+    // (Waiting for the lazy images would delay the switch until the band is on screen: a visible layout shift.)
+    await document.fonts.ready;
     if (mine !== token) return;
 
     band.dataset.mode = 'auto'; // the seam padding is part of the measurement

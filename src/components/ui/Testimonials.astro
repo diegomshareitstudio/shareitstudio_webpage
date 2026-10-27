@@ -1,7 +1,7 @@
 ---
 /**
- * Client testimonials: the first entry is featured (media + large quote), the rest run in a
- * snap-scrolling rail of full-bleed portrait cards, reel style.
+ * Client testimonials. Every published video is featured (media + large quote), alternating sides; vertical
+ * and horizontal videos both keep their own shape. Photos and empty slots run in a row of portrait cards below.
  * Videos load only their poster until played, carry captions and a readable transcript;
  * each real video also gets a VideoObject node (see testimonialVideoSchema in lib/schema.ts).
  */
@@ -14,77 +14,97 @@ interface Props {
 }
 
 const { testimonials } = Astro.props;
-const [featured, ...rest] = testimonials;
 
-const posters = await Promise.all(
-  testimonials.map((t) =>
-    t.type === 'video' && t.video && !t.placeholder
-      ? getImage({ src: t.video.poster, width: 720, format: 'webp' })
-      : undefined,
+const isRealVideo = (t: Testimonial) => t.type === 'video' && !!t.video && !t.placeholder;
+// Until a real video exists, the first entry keeps the featured spot so the layout can be previewed
+const featured = testimonials.some(isRealVideo) ? testimonials.filter(isRealVideo) : testimonials.slice(0, 1);
+const rest = testimonials.filter((t) => !featured.includes(t));
+
+const posters = new Map(
+  await Promise.all(
+    testimonials.filter(isRealVideo).map(async (t) => {
+      const poster = t.type === 'video' && t.video ? t.video.poster : undefined;
+      const wide = !!poster && poster.width > poster.height;
+      return [t, poster && (await getImage({ src: poster, width: wide ? 1280 : 720, format: 'webp' }))] as const;
+    }),
   ),
 );
+const ratio = (t: Testimonial) => (t.type === 'video' && t.video ? `${t.video.poster.width} / ${t.video.poster.height}` : undefined);
+const isWide = (t: Testimonial) => t.type === 'video' && !!t.video && t.video.poster.width > t.video.poster.height;
 
-const who = (t: Testimonial) => `${t.name}, ${t.role} at ${t.company}`;
+const affiliation = (t: Testimonial) => (t.company ? `${t.role}, ${t.company}` : t.role);
+const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.company}` : t.role}`;
 ---
 
-{featured && (
-  <figure class="tm-featured">
-    <div class="tm-frame tm-frame--featured">
-      {featured.type === 'video' && featured.video && !featured.placeholder ? (
-        <div class="tm-player" data-tm-player>
-          <video class="tm-media" controls playsinline preload="none" poster={posters[0]?.src} aria-label={`Video testimonial from ${who(featured)}`}>
-            <source src={featured.video.src} type="video/mp4" />
-            {featured.video.captions && <track kind="captions" src={featured.video.captions} srclang="en" label="English" default />}
-          </video>
-          <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(featured)}`} hidden></button>
-        </div>
-      ) : featured.type === 'photo' && featured.image && !featured.placeholder ? (
-        <Image src={featured.image.src} alt={featured.image.alt} class="tm-media" widths={[400, 800]} sizes="(min-width: 768px) 24rem, 100vw" />
-      ) : (
-        <div class="tm-media tm-empty" aria-hidden="true">
-          <Spotlight id="tm-spot-featured" class="tm-empty-spot" />
-          <span>{featured.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
-        </div>
-      )}
-    </div>
+<div class="tm-featured-list">
+  {featured.map((f, k) => (
+    <figure class:list={['tm-featured', isWide(f) && 'tm-featured--wide', k % 2 === 1 && 'tm-featured--flip']}>
+      <div class="tm-frame tm-frame--featured">
+        {f.type === 'video' && f.video && !f.placeholder ? (
+          <div class="tm-player" data-tm-player>
+            <video
+              class="tm-media"
+              style={`aspect-ratio: ${ratio(f)}`}
+              width={f.video.poster.width}
+              height={f.video.poster.height}
+              controls
+              playsinline
+              preload="none"
+              poster={posters.get(f)?.src}
+              aria-label={`Video testimonial from ${who(f)}`}
+            >
+              <source src={f.video.src} type="video/mp4" />
+              {f.video.captions && <track kind="captions" src={f.video.captions} srclang="en" label="English" default />}
+            </video>
+            <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(f)}`} hidden></button>
+          </div>
+        ) : f.type === 'photo' && f.image && !f.placeholder ? (
+          <Image src={f.image.src} alt={f.image.alt} class="tm-media" widths={[400, 800]} sizes="(min-width: 768px) 24rem, 100vw" />
+        ) : (
+          <div class="tm-media tm-empty" aria-hidden="true">
+            <Spotlight id={`tm-spot-featured-${k}`} class="tm-empty-spot" />
+            <span>{f.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
+          </div>
+        )}
+      </div>
 
-    <div class="tm-featured-body">
-      <p class="eyebrow">{featured.service}</p>
-      <span class="tm-mark" aria-hidden="true">“</span>
-      <blockquote>
-        <p class="font-display text-3xl font-extrabold leading-tight text-brand-green md:text-[2.6rem]">{featured.quote}</p>
-      </blockquote>
-      <figcaption class="mt-8 flex items-center gap-4">
-        <span class="tm-rule" aria-hidden="true"></span>
-        <span>
-          <span class="block text-lg font-extrabold text-brand-green">{featured.name}</span>
-          <span class="text-sm text-brand-ink/60">{featured.role}, {featured.company}</span>
-        </span>
-      </figcaption>
-      {featured.type === 'video' && featured.transcript && !featured.placeholder && (
-        <details class="tm-transcript mt-6 text-sm">
-          <summary>Read the transcript</summary>
-          <p class="mt-2 text-brand-ink/70">{featured.transcript}</p>
-        </details>
-      )}
-      {featured.href && !featured.placeholder && (
-        <a href={featured.href} class="btn-dark mt-8 self-start">See {featured.company}’s case study</a>
-      )}
-    </div>
-  </figure>
-)}
+      <div class="tm-featured-body">
+        <p class="eyebrow">{f.service}</p>
+        <span class="tm-mark" aria-hidden="true">“</span>
+        <blockquote>
+          <p class="font-display text-3xl font-extrabold leading-tight text-brand-green md:text-[2.4rem]">{f.quote}</p>
+        </blockquote>
+        <figcaption class="mt-8 flex items-center gap-4">
+          <span class="tm-rule" aria-hidden="true"></span>
+          <span>
+            <span class="block text-lg font-extrabold text-brand-green">{f.name}</span>
+            <span class="text-sm text-brand-ink/60">{affiliation(f)}</span>
+          </span>
+        </figcaption>
+        {f.type === 'video' && f.transcript && !f.placeholder && (
+          <details class="tm-transcript mt-6 text-sm">
+            <summary>Read the transcript</summary>
+            <p class="mt-2 text-brand-ink/70">{f.transcript}</p>
+          </details>
+        )}
+        {f.href && !f.placeholder && (
+          <a href={f.href} class="btn-dark mt-8 self-start">See {f.company ?? f.name}’s case study</a>
+        )}
+      </div>
+    </figure>
+  ))}
+</div>
 
 {rest.length > 0 && (
   <ul class="tm-rail" role="list" aria-label="More client testimonials">
     {rest.map((t, j) => {
-      const i = j + 1;
       const isVideo = t.type === 'video' && t.video && !t.placeholder;
       return (
         <li class="tm-reel">
           <figure class="tm-frame">
             {t.type === 'video' && t.video && !t.placeholder ? (
               <div class="tm-player" data-tm-player>
-                <video class="tm-media" controls playsinline preload="none" poster={posters[i]?.src} aria-label={`Video testimonial from ${who(t)}`}>
+                <video class="tm-media" controls playsinline preload="none" poster={posters.get(t)?.src} aria-label={`Video testimonial from ${who(t)}`}>
                   <source src={t.video.src} type="video/mp4" />
                   {t.video.captions && <track kind="captions" src={t.video.captions} srclang="en" label="English" default />}
                 </video>
@@ -94,7 +114,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.role} at ${t.company}`;
               <Image src={t.image.src} alt={t.image.alt} class="tm-media" widths={[320, 640]} sizes="18rem" />
             ) : (
               <div class="tm-media tm-empty" aria-hidden="true">
-                <Spotlight id={`tm-spot-${i}`} class="tm-empty-spot" />
+                <Spotlight id={`tm-spot-${j}`} class="tm-empty-spot" />
                 <span>{t.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
               </div>
             )}
@@ -105,7 +125,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.role} at ${t.company}`;
               </blockquote>
               <figcaption class="mt-3 text-sm">
                 <span class="font-semibold">{t.name}</span>
-                <span class="text-white/70"> · {t.role}, {t.company}</span>
+                <span class="text-white/70"> · {affiliation(t)}</span>
               </figcaption>
             </div>
           </figure>
@@ -131,11 +151,36 @@ const who = (t: Testimonial) => `${t.name}, ${t.role} at ${t.company}`;
     gap: 2rem;
     align-items: center;
   }
+  .tm-featured-list {
+    display: grid;
+    gap: 5rem;
+  }
   @media (min-width: 768px) {
     .tm-featured {
       grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
       gap: 4rem;
     }
+    /* horizontal videos get the wider column */
+    .tm-featured--wide {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    }
+    /* every other testimonial puts its video on the right */
+    .tm-featured--flip {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+    }
+    .tm-featured--flip.tm-featured--wide {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    }
+    .tm-featured--flip > .tm-frame {
+      order: 2;
+      rotate: 2deg;
+    }
+  }
+  /* a vertical video never gets taller than a phone screen */
+  .tm-featured:not(.tm-featured--wide) > .tm-frame {
+    justify-self: center;
+    width: 100%;
+    max-width: 22rem;
   }
   .tm-featured-body {
     position: relative;

@@ -219,6 +219,15 @@ html.lenis body {
   main > header .container-x > div:last-child {
     animation: rise 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
+  /* Headline glides up without ever being transparent: it stays the instantly painted LCP element */
+  @keyframes title-in {
+    from {
+      transform: translateY(0.35em);
+    }
+  }
+  main > header h1 {
+    animation: title-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 
   /* The yellow highlighter draws itself */
   .marker {
@@ -379,11 +388,6 @@ html.lenis body {
     transform: translateY(-4px) rotate(-2deg) scale(1.06);
   }
 
-  /* ---------- Hero title words ---------- */
-  .split-word {
-    display: inline-block;
-    will-change: transform;
-  }
 
   /* ---------- Buttons: ripple ---------- */
   .btn-primary,
@@ -527,7 +531,7 @@ html.lenis body {
   /* ---------- Scroll-driven effects ---------- */
   @supports (animation-timeline: view()) {
     /* Sections reveal as they scroll into view (not the hero, not long-form articles) */
-    main > section :is(h2, .reveal):not(.prose-sis *),
+    main > section h2:not(.prose-sis *),
     main > section :is(ul, ol).grid > li:not(.prose-sis *) {
       animation: rise linear both;
       animation-timeline: view();
@@ -543,7 +547,6 @@ html.lenis body {
     main > section :is(ul, ol).grid > li:nth-child(4n) {
       animation-range: entry 18% entry 58%;
     }
-
 
     /* Grid cards arrive with an alternating tilt, case-study rows slide in */
     main > section :is(ul, ol).grid > li:not(.prose-sis *) {

@@ -1,11 +1,9 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
-
-import vercel from '@astrojs/vercel';
 
 /** Old route → new sitemap route (301) */
 const moved = {
@@ -50,8 +48,30 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  // Pages stay static; only routes with `prerender = false` (src/pages/api/ask.ts) run as Vercel functions
-  adapter: vercel(),
+  // Self-hosted fonts: no request to Google at runtime, preloaded, with size-matched fallbacks (no layout shift on swap)
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Bricolage Grotesque',
+      cssVariable: '--font-bricolage',
+      weights: [600, 800],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'DM Sans',
+      cssVariable: '--font-dm-sans',
+      weights: [400, 500, 600, 700],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['sans-serif'],
+    },
+  ],
+
+  // Links are fetched on hover/touch, so the next page is usually ready before the click lands
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 
   // Generated on build only: /sitemap-index.xml → /sitemap-0.xml
   integrations: [sitemap()],

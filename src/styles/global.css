@@ -3,8 +3,9 @@
 
 /* Share It Studio brand tokens */
 @theme {
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  /* --font-dm-sans / --font-bricolage come from the Fonts API (astro.config.mjs) */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-green: #1c3a3a;
   --color-brand-green-dark: #132a2a;
