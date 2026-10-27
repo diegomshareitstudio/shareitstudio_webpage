@@ -14,8 +14,8 @@ import { scroll } from 'motion';
 /** Every tunable number of the landing choreography. Pin length and band gap live in styles/home.css (--pin, --work-gap). */
 export const HOME_MOTION = {
   spot: {
-    /** scroll progress (0–1 of the pinned stretch) over which the spotlight grows */
-    range: [0.05, 0.72],
+    /** scroll progress (0–1 of the pinned stretch) over which the spotlight grows; it covers the screen at the end */
+    range: [0.02, 0.6],
     /** head height as a share of the viewport height (desktop, mobile) and an absolute cap in px */
     heightVh: [0.6, 0.44],
     maxHeight: 560,
@@ -23,16 +23,20 @@ export const HOME_MOTION = {
     overshoot: 1.04,
   },
   sceneA: {
-    /** hero copy fades and blurs out over this range */
-    range: [0.16, 0.5],
+    /** hero copy fades and blurs out over this range (it holds still while the shape starts growing) */
+    range: [0.3, 0.55],
     blur: [18, 9], // px, desktop / mobile
     lift: -26, // px
   },
   sceneB: {
-    /** the next message resolves out of blur over this range */
-    range: [0.4, 0.78],
+    /** the next message resolves out of blur over this range, only once the old one is nearly gone */
+    range: [0.5, 0.8],
     blur: [16, 8],
     drop: 26,
+  },
+  exit: {
+    /** share of its own height the spotlight tip retreats while services scrolls in */
+    retreat: 0.92,
   },
   band: {
     /** px per second, desktop / narrow screens */
@@ -57,6 +61,7 @@ const HEAD = { cx: 330 / 545, cy: 215 / 645, r: 215 / 645 };
 const BOX_RATIO = 545 / 645;
 
 initHero();
+initExit();
 initBand();
 
 function initHero() {
@@ -73,8 +78,11 @@ function initHero() {
   let lastP = 0;
   let smax = 1;
 
-  /** Does the hero copy fit one screen? If not (landscape phones, huge text zoom) the static layout is kinder. */
-  const fits = () => inner.offsetHeight + 160 <= window.innerHeight;
+  /**
+   * Does the hero copy fit one screen under the header? The type scales with the viewport height, so this only
+   * fails on landscape phones or with heavy text zoom; the static layout is kinder there.
+   */
+  const fits = () => inner.offsetHeight + 96 <= window.innerHeight;
 
   const resetInline = () => {
     [sceneA, sceneB].forEach((el) => {
@@ -128,8 +136,10 @@ function initHero() {
     lastP = p;
     const mobile = narrow();
 
-    const grow = span(p, HOME_MOTION.spot.range);
-    spot.style.transform = grow > 0 ? `scale(${Math.exp(Math.log(smax) * grow)})` : '';
+    // Linear in log-scale: the shape zooms at a steady perceived rate, visibly from the first pixels of scroll.
+    const [g0, g1] = HOME_MOTION.spot.range;
+    const grow = clamp((p - g0) / (g1 - g0));
+    spot.style.transform = grow > 0 ? `scale(${Math.pow(smax, grow)})` : '';
     stage.classList.toggle('is-filled', grow >= 1);
 
     const out = span(p, HOME_MOTION.sceneA.range);
@@ -179,6 +189,28 @@ function initHero() {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(sync);
   });
+  reduced.addEventListener('change', sync);
+}
+
+/** Results → services: the enlarged lower tip of the spotlight retreats upward and uncovers the services surface. */
+function initExit() {
+  const tip = document.querySelector<SVGElement>('[data-spot-exit]');
+  const section = tip?.closest<HTMLElement>('section');
+  if (!tip || !section) return;
+  let stop: (() => void) | undefined;
+  const sync = () => {
+    stop?.();
+    stop = undefined;
+    tip.style.transform = '';
+    if (reduced.matches) return; // the tip stays as a still edge
+    stop = scroll(
+      (p: number) => {
+        tip.style.transform = `translate3d(0, ${-p * HOME_MOTION.exit.retreat * 100}%, 0)`;
+      },
+      { target: section, offset: ['start end', 'start start'] },
+    ) as unknown as () => void;
+  };
+  sync();
   reduced.addEventListener('change', sync);
 }
 

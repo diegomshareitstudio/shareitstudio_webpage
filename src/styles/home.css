@@ -8,16 +8,16 @@
  */
 
 :root {
-  --spot-soft: #fff4d8; /* spotlight, lower-left of the shape */
-  --spot-final: #fde5ad; /* spotlight colour once it fills the screen (matches the gradient at its scale origin) */
-  --spot-rim: #fcdb8f; /* spotlight, upper-right of the shape */
+  --spot-final: #fde5ad; /* spotlight colour once it fills the screen = the flat band of its gradient (Spotlight.astro) */
   --it-amber: #ffb20f; /* the “it” letters */
   --pin: 1.15; /* extra scroll, in viewport heights, while the hero is pinned (desktop) */
   --work-gap: 1.75rem;
+  --results-overlap: 30svh; /* how far the result cards rise into the last part of the pinned scene */
 }
 @media (max-width: 767px) {
   :root {
     --pin: 0.8; /* shorter intro on phones */
+    --results-overlap: 22svh;
     --work-gap: 1.1rem;
   }
 }
@@ -88,9 +88,9 @@ body.home main {
   padding: 4rem 1rem 1rem;
 }
 .home-title {
-  margin-top: 1.25rem;
+  margin-top: clamp(0.75rem, 2svh, 1.25rem);
   color: var(--color-brand-green);
-  font-size: clamp(2.35rem, 6vw, 5rem);
+  font-size: clamp(2.1rem, min(6vw, 8.2svh), 5rem);
   font-weight: 800;
   line-height: 1.02;
   text-wrap: balance;
@@ -100,14 +100,17 @@ body.home main {
   padding: 0;
 }
 .home-lead {
-  margin: 1.5rem auto 0;
-  max-width: 40rem;
-  font-size: 1.125rem;
+  margin: clamp(0.9rem, 2.4svh, 1.5rem) auto 0;
+  max-width: 42rem;
+  font-size: clamp(1rem, 2.5svh, 1.125rem);
   line-height: 1.6;
   color: rgb(31 42 42 / 0.72);
 }
 .scene-a .eyebrow {
   justify-content: center;
+}
+.home-ctas {
+  margin-top: clamp(1.25rem, 3.6svh, 2.25rem);
 }
 .home-title-b {
   color: var(--color-brand-green);
@@ -141,7 +144,7 @@ html.home-ready .scene {
   place-items: center;
 }
 html.home-ready .scene-a {
-  padding: 6rem 1rem 2.5rem;
+  padding: 5.25rem 1rem 1.5rem;
 }
 html.home-ready .scene-b {
   background: transparent;
@@ -150,6 +153,7 @@ html.home-ready .scene-b {
 }
 html.home-ready .home-spot {
   right: auto;
+  animation: none; /* nothing else may move the layer that scales */
   /* position, size and transform-origin are set inline from the headline's geometry */
   transform-origin: 60.55% 33.3%; /* the head circle's centre inside the 545×645 box */
 }
@@ -165,31 +169,37 @@ html.home-ready body.home > header:not(.is-scrolled) {
   backdrop-filter: none;
 }
 
-/* ---------- Results (section 02) + the exit contour ---------- */
+/* ---------- Results (section 02) ---------- */
 .home-results {
   position: relative;
-  overflow: hidden;
+  z-index: 1;
   background: var(--spot-final);
-  padding: 1.5rem 0 calc(min(25vw, 360px) * 0.9 + 2rem);
+  padding: 1.5rem 0 4rem;
 }
+/* The cards rise into the end of the pinned scene, so the heading and its cards are never a screen apart */
 html.home-ready .home-results {
+  margin-top: calc(var(--results-overlap) * -1);
   padding-top: 0;
 }
 .home-results .btn-dark {
   background: var(--color-brand-green);
 }
-.spot-edge {
+
+/* ---------- Services (03): the yellow surface leaves through the spotlight's enlarged lower tip ---------- */
+.home-services {
+  position: relative;
+  overflow: hidden;
+}
+.spot-exit {
   position: absolute;
+  top: -1px; /* overlap the results surface: no hairline seam */
   left: 0;
-  bottom: -1px;
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1440 / 360;
+  aspect-ratio: 1440 / 730;
+  fill: var(--spot-final);
   pointer-events: none;
-}
-.spot-edge-path {
-  fill: var(--color-brand-yellow); /* the band that follows */
 }
 
 /* ---------- Section 04: a discreet spotlight ---------- */
@@ -351,6 +361,36 @@ html.home-ready .home-results {
   flex-direction: column;
   padding: 1.25rem 1rem 1rem;
 }
+/* Fallback where no approved image exists yet: brand panel, clearly not a finished image */
+.media-fallback {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-brand-yellow-soft);
+  color: rgb(28 58 58 / 0.55);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.media-fallback span {
+  position: relative;
+}
+.media-fallback-spot {
+  position: absolute;
+  height: 70%;
+  width: auto;
+  opacity: 0.9;
+}
+.work-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
 /* cards stay upright and unclipped by the generic image effects */
 .work-band .placeholder {
   transform: none !important;
@@ -391,6 +431,23 @@ html.home-ready .home-results {
   .work-cursor.is-on {
     opacity: 1;
     scale: 1;
+  }
+}
+
+/* ---------- How we work: stacked steps that stay readable ---------- */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+  /* each card leaves the previous step's number and title visible, so the order stays clear */
+  body.home .stack-cards > li {
+    top: calc(6.5rem + var(--i, 0) * 3.5rem);
+    margin-bottom: 16vh;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) and (max-height: 719px) {
+  /* not enough height to stack four cards: plain list */
+  body.home .stack-cards > li {
+    position: static;
+    margin-bottom: 0;
+    box-shadow: none;
   }
 }
 
@@ -458,6 +515,20 @@ html.home-ready .home-results {
 
   /* Scroll-driven extras */
   @supports (animation-timeline: view()) {
+    /* Selected work: the dark surface opens out from a rounded inset as it arrives */
+    @keyframes work-open {
+      from {
+        clip-path: inset(0 5% 0 5% round 3rem);
+      }
+      to {
+        clip-path: inset(0 0 0 0 round 0);
+      }
+    }
+    .home-work {
+      animation: work-open linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
     @keyframes ghost-drift {
       from {
         transform: translateY(5rem);

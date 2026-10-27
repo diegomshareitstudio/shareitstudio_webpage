@@ -5,15 +5,16 @@
  * How we work → Where we fit → Resources → FAQ → Final CTA.
  * Primary CTA "Talk to a Human" → /book-a-call (Calendly scheduling lives there). Secondary CTA "See Our Work" → /portfolio.
  * TODO: the 90-day social case has no case-study page yet; its CTA points to the case-studies hub until it exists.
- * TODO: the work cards use placeholder visuals until approved assets are available.
+ * TODO: only Super Ninja has a real work image; Pink Miracle, Social Media and the three resource cards still use a fallback panel.
  */
 import Layout from '../layouts/Layout.astro';
-import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
 import Spotlight from '../components/ui/Spotlight.astro';
 import '../styles/home.css';
+import { Image } from 'astro:assets';
+import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.png';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import { getPost, postHref } from '../data/posts';
 import type { Faq } from '../data/faqs';
@@ -99,6 +100,7 @@ const work = [
     text: 'The same product benefit may need a different explanation in a different country. Local competitor research, reviews, and buying objections informed market-specific creative decisions.',
     cta: 'See the Market-Specific Work',
     href: '/case-studies/super-ninja',
+    image: { src: superNinjaListing, alt: 'Super Ninja fruit fly trap Amazon listing images' },
   },
   {
     cat: 'Social Media',
@@ -215,7 +217,7 @@ const faqs: Faq[] = [
           <p class="home-lead">
             We create Amazon listing images, A+ Content, video, and copy that help shoppers understand what makes your product worth choosing. We also plan, produce, and manage social media for ecommerce brands—whether they sell on Amazon or not.
           </p>
-          <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <div class="home-ctas flex flex-wrap items-center justify-center gap-3">
             <a href={bookHref} class="btn-primary">Talk to a Human</a>
             <a href="/portfolio" class="btn-outline">See Our Work</a>
           </div>
@@ -261,21 +263,15 @@ const faqs: Faq[] = [
         work.
       </p>
     </div>
-    <!-- Exit contour: the lower tip of the spotlight, scaled up, cuts into the next band -->
-    <svg class="spot-edge" viewBox="0 0 1440 360" aria-hidden="true" focusable="false">
-      <path
-        class="spot-edge-path"
-        fill-rule="evenodd"
-        d="M0 0H1440V360H0ZM494 -1659.6A860 860 0 1 1 1891.6 -735.6L891.6 212A540 540 0 0 1 14 -368Z"
-      ></path>
-    </svg>
   </section>
 
-  <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
-
   <!-- 03 — Two ways we help -->
-  <section class="py-16 md:py-24" aria-labelledby="services-heading" id="services">
-    <div class="container-x">
+  <section class="home-services py-16 md:py-24" aria-labelledby="services-heading" id="services">
+    <!-- Exit of the results surface: the spotlight's enlarged lower tip, retreating as services scrolls in -->
+    <svg class="spot-exit" data-spot-exit viewBox="0 0 1440 730" aria-hidden="true" focusable="false">
+      <path d="M454 -1299.6A860 860 0 1 1 1851.6 -375.6L851.6 572A540 540 0 0 1 -26 -8Z"></path>
+    </svg>
+    <div class="container-x relative">
       <SectionHeading
         eyebrow="Two ways we help"
         id="services-heading"
@@ -296,6 +292,8 @@ const faqs: Faq[] = [
       </ul>
     </div>
   </section>
+
+  <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
 
   <!-- 04 — The question behind the creative -->
   <section class="home-question bg-brand-cream py-16 md:py-24" aria-labelledby="question-heading">
@@ -348,7 +346,14 @@ const faqs: Faq[] = [
           {work.map((w) => (
             <li class="work-card">
               <a href={w.href} class="work-link">
-                <div class="placeholder work-visual">{w.cat}</div>
+                {w.image ? (
+                  <Image src={w.image.src} alt={w.image.alt} class="work-visual work-img" widths={[320, 436]} sizes="21rem" />
+                ) : (
+                  <div class="media-fallback work-visual">
+                    <Spotlight id={`fb-${w.cat.replace(/\W+/g, '-').toLowerCase()}`} class="media-fallback-spot" />
+                    <span>{w.cat}</span>
+                  </div>
+                )}
                 <div class="work-body">
                   <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{w.cat}</p>
                   <h3 class="mt-2 text-2xl font-extrabold leading-snug text-brand-green">{w.title}</h3>
@@ -364,8 +369,8 @@ const faqs: Faq[] = [
     <div class="container-x relative">
       <a href="/portfolio" class="btn-primary mt-12">Explore Our Work</a>
     </div>
-    <span class="work-cursor" data-work-cursor aria-hidden="true">View</span>
   </section>
+  <span class="work-cursor" data-work-cursor aria-hidden="true">View</span>
 
   <!-- 06 — How we work -->
   <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="how-heading">
@@ -432,7 +437,7 @@ const faqs: Faq[] = [
               href={postHref(r.post)}
               class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:bg-brand-yellow-soft"
             >
-              <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-brand-cream">Article image</div>
+              <div class="media-fallback aspect-[16/10] rounded-[1.6rem]"><span>Article image</span></div>
               <div class="flex flex-1 flex-col p-4">
                 <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{r.title}</h3>
                 <p class="mt-2 flex-1 text-sm text-brand-ink/65">{r.text}</p>

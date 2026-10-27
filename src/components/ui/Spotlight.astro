@@ -18,8 +18,11 @@ const { id = 'spot', class: className } = Astro.props;
 <svg class:list={['spotlight', className]} viewBox="0 0 545 645" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id={`${id}-fill`} gradientUnits="userSpaceOnUse" x1="0" y1="645" x2="545" y2="0">
-      <stop offset="0" stop-color="#fff4d8"></stop>
-      <stop offset="0.64" stop-color="#fde5ad"></stop>
+      <!-- Flat between 0.38 and 0.9: at full scale the viewport only sees that band, so the swap to a flat
+           background (--spot-final) is invisible. The ends keep the logo's lighter tail and richer rim. -->
+      <stop offset="0" stop-color="#fdeabb"></stop>
+      <stop offset="0.38" stop-color="#fde5ad"></stop>
+      <stop offset="0.9" stop-color="#fde5ad"></stop>
       <stop offset="1" stop-color="#fcdb8f"></stop>
     </linearGradient>
   </defs>
