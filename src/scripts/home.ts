@@ -41,6 +41,12 @@ export const HOME_MOTION = {
   band: {
     /** px per second, desktop / narrow screens */
     speed: [44, 32],
+    /** seconds for the band to glide to a stop on hover/focus/pause, and to pick up speed again */
+    ease: 0.2,
+  },
+  cursor: {
+    /** ms the “View” label stays on while the pointer crosses the gap between two cards */
+    linger: 140,
   },
 } as const;
 
@@ -264,8 +270,10 @@ function initBand() {
       const clone = set.cloneNode(true) as HTMLElement;
       clone.removeAttribute('data-band-set');
       clone.dataset.clone = '';
+      // Duplicates stay clickable for the mouse, but are skipped by Tab and not announced by screen readers.
+      // (Not `inert`: that would also make them dead to the pointer.)
       clone.setAttribute('aria-hidden', 'true');
-      clone.inert = true; // duplicates never take focus and are not announced
+      clone.querySelectorAll('a, button').forEach((n) => n.setAttribute('tabindex', '-1'));
       clone.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
       track.append(clone);
     }
@@ -291,17 +299,58 @@ function initBand() {
   reduced.addEventListener('change', build);
   coarse.addEventListener('change', build);
 
-  // Keyboard focus pauses the band (CSS :focus-within); undo the browser's scroll-into-view offset afterwards.
-  band.addEventListener('focusout', () => {
+  // Hover, keyboard focus and the pause button all ease the band to a stop (and back), instead of freezing it:
+  // one loop eases the animation's playbackRate towards 0 or 1. Resuming continues from where it stopped.
+  let hovered = false;
+  let focused = false;
+  let rate = 1;
+  let last = 0;
+  let easing = false;
+  const ease = (now: number) => {
+    const anim = track.getAnimations()[0];
+    const target = hovered || focused || paused ? 0 : 1;
+    const dt = last ? Math.min((now - last) / 1000, 0.1) : 0.016;
+    last = now;
+    rate += (target - rate) * (1 - Math.exp(-dt / HOME_MOTION.band.ease));
+    if (Math.abs(target - rate) < 0.002) rate = target;
+    if (anim) anim.playbackRate = rate;
+    if (rate !== target) requestAnimationFrame(ease);
+    else easing = false;
+  };
+  const settle = () => {
+    if (easing) return;
+    easing = true;
+    last = 0;
+    requestAnimationFrame(ease);
+  };
+
+  band.addEventListener('pointerenter', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    hovered = true;
+    settle();
+  });
+  band.addEventListener('pointerleave', () => {
+    hovered = false;
+    settle();
+  });
+  band.addEventListener('focusin', () => {
+    focused = true;
+    settle();
+  });
+  band.addEventListener('focusout', (e) => {
+    if (band.contains(e.relatedTarget as Node)) return;
+    focused = false;
+    settle();
+    // undo the browser's scroll-into-view offset on the clipped band
     if (band.dataset.mode === 'auto') band.scrollLeft = 0;
   });
 
   // Explicit pause control
   toggle?.addEventListener('click', () => {
     paused = !paused;
-    band.classList.toggle('is-paused', paused);
     toggle.setAttribute('aria-pressed', String(paused));
     if (label) label.textContent = paused ? 'Play motion' : 'Pause motion';
+    settle();
   });
 
   // Don't animate what nobody can see
@@ -310,37 +359,70 @@ function initBand() {
   initCursor(band);
 }
 
-/** Decorative label that follows the pointer over a project's image. Links keep working and keep their own names. */
+/**
+ * Decorative “View” label that follows the pointer over a project card. Links keep working and keep their own names.
+ * What is under the pointer is re-checked every frame, because the cards keep moving (and the page may scroll)
+ * under a pointer that stands still.
+ */
 function initCursor(band: HTMLElement) {
   const cursor = document.querySelector<HTMLElement>('[data-work-cursor]');
   if (!cursor || !finePointer.matches) return;
+  const half = () => cursor.offsetWidth / 2;
   let x = 0;
   let y = 0;
   let tx = 0;
   let ty = 0;
+  let inside = false;
+  let on = false;
+  let offAt = 0;
   let running = false;
 
-  const frame = () => {
-    x += (tx - x) * 0.22;
-    y += (ty - y) * 0.22;
-    cursor.style.translate = `${x - 38}px ${y - 38}px`;
-    if (Math.abs(tx - x) + Math.abs(ty - y) > 0.5 || cursor.classList.contains('is-on')) requestAnimationFrame(frame);
-    else running = false;
+  const overCard = () => {
+    const el = document.elementFromPoint(tx, ty);
+    return !!el && band.contains(el) && !!el.closest('.work-link');
   };
 
+  const frame = (now: number) => {
+    const over = inside && overCard();
+    if (over) {
+      if (!on) {
+        x = tx; // appear right under the pointer, not sliding in from its last spot
+        y = ty;
+      }
+      on = true;
+      offAt = 0;
+    } else if (on) {
+      offAt ||= now;
+      if (!inside || now - offAt > HOME_MOTION.cursor.linger) on = false;
+    }
+    cursor.classList.toggle('is-on', on);
+
+    x += (tx - x) * 0.25;
+    y += (ty - y) * 0.25;
+    const h = half();
+    cursor.style.translate = `${x - h}px ${y - h}px`;
+
+    if (inside || on || Math.abs(tx - x) + Math.abs(ty - y) > 0.5) requestAnimationFrame(frame);
+    else running = false;
+  };
+  const start = () => {
+    if (running) return;
+    running = true;
+    requestAnimationFrame(frame);
+  };
+
+  band.addEventListener('pointerenter', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    inside = true;
+    tx = e.clientX;
+    ty = e.clientY;
+    start();
+  });
   band.addEventListener('pointermove', (e) => {
     tx = e.clientX;
     ty = e.clientY;
-    const over = !!(e.target as Element).closest('.work-visual');
-    if (over && !cursor.classList.contains('is-on')) {
-      x = tx;
-      y = ty;
-    }
-    cursor.classList.toggle('is-on', over);
-    if (!running) {
-      running = true;
-      requestAnimationFrame(frame);
-    }
   });
-  band.addEventListener('pointerleave', () => cursor.classList.remove('is-on'));
+  band.addEventListener('pointerleave', () => {
+    inside = false;
+  });
 }

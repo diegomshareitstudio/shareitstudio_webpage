@@ -506,9 +506,7 @@ html.home-ready .home-results {
     animation: work-run var(--work-duration, 60s) linear infinite;
     will-change: transform;
   }
-  .work-band[data-mode='auto']:hover .work-track,
-  .work-band[data-mode='auto']:focus-within .work-track,
-  .work-band[data-mode='auto'].is-paused .work-track,
+  /* hover, focus and the pause button ease the speed down in scripts/home.ts; off-screen it can simply stop */
   .work-band[data-mode='auto'].is-offscreen .work-track {
     animation-play-state: paused;
   }
