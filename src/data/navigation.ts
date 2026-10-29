@@ -2,32 +2,17 @@ export interface NavLink {
   label: string;
   href: string;
   children?: NavLink[];
-  /** Desktop header shows the structured Services panel (servicesMenu) instead of the plain list of children */
+  /** Desktop header shows the nested Services dropdown (servicesMenu) instead of the plain list of children */
   mega?: boolean;
 }
 
-/** The desktop "Services" mega menu: the two main services side by side, then the individual Amazon services. */
-export const servicesMenu = {
-  all: { label: 'All Services', href: '/services' },
-  main: [
-    {
-      label: 'Social Media Management',
-      href: '/services/social-media-management',
-      audience: 'For Ecommerce Brands',
-      text: 'Strategy, content creation, publishing and management.',
-      cta: 'Explore Plans & Pricing',
-    },
-    {
-      label: 'Amazon Listing Optimization',
-      href: '/services/amazon-listing-optimization',
-      audience: 'For Amazon Brands',
-      text: 'Individual creative services or custom packages tailored to your needs.',
-      cta: 'Explore Listing Optimization',
-    },
-  ],
-  creative: {
-    label: 'Amazon Creative Services',
-    links: [
+/** The desktop "Services" dropdown: the two main services; hovering Amazon Listing Optimization opens the individual Amazon services. */
+export const servicesMenu: NavLink[] = [
+  { label: 'Social Media Management', href: '/services/social-media-management' },
+  {
+    label: 'Amazon Listing Optimization',
+    href: '/services/amazon-listing-optimization',
+    children: [
       { label: 'Listing Images', href: '/services/amazon-listing-images' },
       { label: 'A+ Content Design', href: '/services/amazon-a-plus-content' },
       { label: 'Brand Story Design', href: '/services/amazon-brand-story-design' },
@@ -37,7 +22,7 @@ export const servicesMenu = {
       { label: 'Amazon Storefront Design', href: '/services/amazon-storefront-design' },
     ],
   },
-};
+];
 
 /** Portfolio categories — also used for "Explore more of our work" on portfolio pages. */
 export const portfolioNav: NavLink[] = [
