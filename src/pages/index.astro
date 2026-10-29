@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
+import AskAi from '../components/ui/AskAi.astro';
 import Spotlight from '../components/ui/Spotlight.astro';
 import '../styles/home.css';
 import { Image, getImage } from 'astro:assets';
@@ -14,6 +15,8 @@ import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.pn
 import sampleBasket from '../assets/samples/A+ Content Jute Hanging Basket.jpg';
 import sampleBodyWash from '../assets/samples/Body-Wash-Cleanser_A+-Content.png';
 import sampleCream from '../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
+import resourceStandOut from '../assets/resources/Stand-out.png';
+import resourceAPlusExamples from '../assets/resources/amazon-a-content-examples.png';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import Testimonials from '../components/ui/Testimonials.astro';
 import { getPost, postHref } from '../data/posts';
@@ -164,48 +167,32 @@ const steps = [
   },
 ];
 
-// 07 — where we fit
-const fits = [
-  {
-    t: 'Launching something new?',
-    d: 'Help people understand the product, how it works, and why it deserves a closer look.',
-    tone: 'bg-brand-yellow-soft text-brand-green',
-  },
-  {
-    t: 'Already selling on Amazon?',
-    d: 'Make the value clearer across the content shoppers use to compare and decide.',
-    tone: 'bg-brand-cream text-brand-green',
-  },
-  {
-    t: 'Building a stronger social presence?',
-    d: 'Turn disconnected posting into a more intentional, consistently managed content plan.',
-    tone: 'bg-brand-green text-white',
-  },
-];
-
-// 08 — resources (existing guides; the card copy is new)
+// 07 — resources (existing guides; the card copy is new)
 const resources = [
   {
     post: getPost('a-plus-content-templates'),
     title: 'A+ Content Templates',
     text: 'Explore ways to structure the content shoppers see below the product listing.',
     cta: 'Explore Templates',
+    image: resourceStandOut,
   },
   {
     post: getPost('amazon-a-plus-content-examples'),
     title: 'Amazon A+ Content Examples',
     text: 'See how different brands communicate benefits through their A+ Content.',
     cta: 'See Examples',
+    image: resourceAPlusExamples,
   },
   {
     post: getPost('amazon-images-requirements'),
     title: 'Amazon Image Requirements',
     text: 'Understand the requirements behind Amazon product imagery before creating or updating your listing.',
     cta: 'Read the Guide',
+    image: undefined as ImageMetadata | undefined, // TODO: article image
   },
 ];
 
-// 09 — FAQ
+// 08 — FAQ
 const faqs: Faq[] = [
   {
     q: 'Can I hire you for just A+ Content, listing images, or another Amazon deliverable?',
@@ -335,13 +322,13 @@ const faqs: Faq[] = [
   <TextMarquee words={['See the difference', 'Worth following', 'Look at why', 'Talk to a human']} />
 
   <!-- 04 — Testimonials (videos + photos; content lives in data/testimonials.ts) -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="testimonials-heading" id="testimonials">
+  <section class="home-testimonials bg-brand-cream py-10" aria-labelledby="testimonials-heading" id="testimonials" data-no-deco>
     <div class="container-x">
       <SectionHeading
         eyebrow="Client testimonials"
         id="testimonials-heading"
         title="What ecommerce brands say about working with us."
-        text="Amazon sellers and ecommerce brands on what changed in their listings, their content, and the way they work with a creative team."
+        align="left"
       />
       <Testimonials testimonials={testimonials} />
     </div>
@@ -470,29 +457,7 @@ const faqs: Faq[] = [
     </div>
   </section>
 
-  <!-- 07 — Where we fit -->
-  <section class="home-fit py-16 md:py-24" aria-labelledby="fit-heading">
-    <div class="container-x">
-      <SectionHeading eyebrow="Where we fit" id="fit-heading" title="Start with what your brand actually needs." />
-      <ul class="grid gap-5 md:grid-cols-3">
-        {fits.map((f) => (
-          <li class="flex">
-            <article class:list={['flex w-full flex-col rounded-[2rem] p-8', f.tone]}>
-              <h3 class="text-2xl font-extrabold leading-snug">{f.t}</h3>
-              <p class="mt-3 opacity-80">{f.d}</p>
-            </article>
-          </li>
-        ))}
-      </ul>
-      <p class="mt-8 max-w-3xl text-brand-ink/70">
-        Amazon services are available individually or in custom combinations. Social Media Management runs through monthly
-        plans. If your brand needs both, we can connect the creative direction across touchpoints—but neither service
-        requires the other.
-      </p>
-    </div>
-  </section>
-
-  <!-- 08 — Resources -->
+  <!-- 07 — Resources -->
   <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="resources-heading">
     <div class="container-x">
       <SectionHeading
@@ -507,7 +472,17 @@ const faqs: Faq[] = [
               href={postHref(r.post)}
               class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:bg-brand-yellow-soft"
             >
-              <div class="media-fallback aspect-[16/10] rounded-[1.6rem]"><span>Article image</span></div>
+              {r.image ? (
+                <Image
+                  src={r.image}
+                  alt=""
+                  widths={[400, 768]}
+                  sizes="(min-width: 768px) 24rem, 100vw"
+                  class="aspect-[16/9] w-full rounded-[1.6rem] object-cover"
+                />
+              ) : (
+                <div class="media-fallback aspect-[16/9] rounded-[1.6rem]"><span>Article image</span></div>
+              )}
               <div class="flex flex-1 flex-col p-4">
                 <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{r.title}</h3>
                 <p class="mt-2 flex-1 text-sm text-brand-ink/65">{r.text}</p>
@@ -521,7 +496,7 @@ const faqs: Faq[] = [
     </div>
   </section>
 
-  <!-- 09 — FAQ (no FAQPage markup: not needed for eligibility) -->
+  <!-- 08 — FAQ (no FAQPage markup: not needed for eligibility) -->
   <section class="py-16 md:py-24" aria-labelledby="faq-heading">
     <div class="container-x grid gap-12 md:grid-cols-[1fr_1.6fr]">
       <div>
@@ -530,7 +505,10 @@ const faqs: Faq[] = [
           A few things worth knowing before we talk.
         </h2>
       </div>
-      <FaqList faqs={faqs} variant="cream" />
+      <div class="space-y-8">
+        <FaqList faqs={faqs} variant="cream" />
+        <AskAi />
+      </div>
     </div>
   </section>
 
@@ -541,6 +519,8 @@ const faqs: Faq[] = [
     ctaLabel="Talk to a Human"
     ctaHref={bookHref}
     note="Choose a time to speak directly with our team."
+    badge={false}
+    prominent
   />
 </Layout>
 

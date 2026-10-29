@@ -2,7 +2,42 @@ export interface NavLink {
   label: string;
   href: string;
   children?: NavLink[];
+  /** Desktop header shows the structured Services panel (servicesMenu) instead of the plain list of children */
+  mega?: boolean;
 }
+
+/** The desktop "Services" mega menu: the two main services side by side, then the individual Amazon services. */
+export const servicesMenu = {
+  all: { label: 'All Services', href: '/services' },
+  main: [
+    {
+      label: 'Social Media Management',
+      href: '/services/social-media-management',
+      audience: 'For Ecommerce Brands',
+      text: 'Strategy, content creation, publishing and management.',
+      cta: 'Explore Plans & Pricing',
+    },
+    {
+      label: 'Amazon Listing Optimization',
+      href: '/services/amazon-listing-optimization',
+      audience: 'For Amazon Brands',
+      text: 'Individual creative services or custom packages tailored to your needs.',
+      cta: 'Explore Listing Optimization',
+    },
+  ],
+  creative: {
+    label: 'Amazon Creative Services',
+    links: [
+      { label: 'Listing Images', href: '/services/amazon-listing-images' },
+      { label: 'A+ Content Design', href: '/services/amazon-a-plus-content' },
+      { label: 'Brand Story Design', href: '/services/amazon-brand-story-design' },
+      { label: 'Listing Copywriting & SEO', href: '/services/amazon-listing-copywriting' },
+      { label: 'Product Photography', href: '/services/amazon-product-photography' },
+      { label: 'Product Video Production', href: '/services/amazon-product-video-production' },
+      { label: 'Amazon Storefront Design', href: '/services/amazon-storefront-design' },
+    ],
+  },
+};
 
 /** Portfolio categories — also used for "Explore more of our work" on portfolio pages. */
 export const portfolioNav: NavLink[] = [
@@ -23,6 +58,7 @@ export const mainNav: NavLink[] = [
   {
     label: 'Services',
     href: '/services',
+    mega: true,
     children: [
       { label: 'All Services', href: '/services' },
       { label: 'Social Media Management', href: '/services/social-media-management' },

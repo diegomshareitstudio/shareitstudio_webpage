@@ -15,6 +15,8 @@
 import type { ImageMetadata } from 'astro';
 import derciliaPoster from '../assets/testimonials/posters/dercilia-ventura.jpg';
 import rickyPoster from '../assets/testimonials/posters/ricky-amaranto.jpg';
+import amarantoLogo from '../assets/testimonials/logos/amaranto.png';
+import yungprimeLogo from '../assets/testimonials/logos/yungprime.png';
 
 interface TestimonialBase {
   /** Short, approved quote shown on the card */
@@ -28,6 +30,8 @@ interface TestimonialBase {
   service: 'Amazon Listing Optimization' | 'Social Media Management';
   /** Optional link to the related case study */
   href?: string;
+  /** Brand logo shown beside the name (transparent PNG in src/assets/testimonials/logos/, trimmed to its edges) */
+  logo?: { src: ImageMetadata; alt: string };
   /** Frame with no real media yet: rendered as an empty slot, excluded from structured data */
   placeholder?: boolean;
 }
@@ -67,6 +71,7 @@ export const testimonials: Testimonial[] = [
     name: 'Dercilia Ventura',
     role: 'Amazon Seller & Private Label Brand Owner',
     service: 'Amazon Listing Optimization',
+    logo: { src: yungprimeLogo, alt: 'YUNGPRIME' },
     video: {
       src: '/testimonials/dercilia-ventura.mp4',
       poster: derciliaPoster,
@@ -84,6 +89,7 @@ export const testimonials: Testimonial[] = [
     role: 'Founder',
     company: 'Amaranto',
     service: 'Amazon Listing Optimization',
+    logo: { src: amarantoLogo, alt: 'Amaranto' },
     video: {
       src: '/testimonials/ricky-amaranto.mp4',
       poster: rickyPoster,

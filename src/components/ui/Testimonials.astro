@@ -1,7 +1,8 @@
 ---
 /**
  * Client testimonials. Every published video is featured (media + large quote), alternating sides; vertical
- * and horizontal videos both keep their own shape. Photos and empty slots run in a row of portrait cards below.
+ * and horizontal videos both keep their own shape. With JS the featured ones become a slideshow (arrows, dots,
+ * keyboard, swipe); without it they stay a list. Photos and empty slots run in a row of portrait cards below.
  * Videos load only their poster until played, carry captions and a readable transcript;
  * each real video also gets a VideoObject node (see testimonialVideoSchema in lib/schema.ts).
  */
@@ -36,9 +37,15 @@ const affiliation = (t: Testimonial) => (t.company ? `${t.role}, ${t.company}` :
 const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.company}` : t.role}`;
 ---
 
+<div class="tm-slider" data-tm-slider>
 <div class="tm-featured-list">
   {featured.map((f, k) => (
-    <figure class:list={['tm-featured', isWide(f) && 'tm-featured--wide', k % 2 === 1 && 'tm-featured--flip']}>
+    <figure
+      class:list={['tm-featured', isWide(f) && 'tm-featured--wide', k % 2 === 1 && 'tm-featured--flip', k === 0 && 'is-active']}
+      style={ratio(f) && `--ar: ${ratio(f)}`}
+      data-tm-slide
+      aria-label={`Testimonial ${k + 1} of ${featured.length}`}
+    >
       <div class="tm-frame tm-frame--featured">
         {f.type === 'video' && f.video && !f.placeholder ? (
           <div class="tm-player" data-tm-player>
@@ -72,27 +79,47 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
         <p class="eyebrow">{f.service}</p>
         <span class="tm-mark" aria-hidden="true">“</span>
         <blockquote>
-          <p class="font-display text-3xl font-extrabold leading-tight text-brand-green md:text-[2.4rem]">{f.quote}</p>
+          <p class="tm-quote font-display text-xl font-extrabold leading-snug text-brand-green md:text-[1.55rem]">
+            <span class="sr-only">{f.quote}</span>
+            <span aria-hidden="true" data-tm-type>{f.quote}</span>
+          </p>
         </blockquote>
-        <figcaption class="mt-8 flex items-center gap-4">
-          <span class="tm-rule" aria-hidden="true"></span>
-          <span>
+        <figcaption class="mt-5 flex items-center gap-4">
+          {f.logo && (
+            <Image src={f.logo.src} alt={`${f.logo.alt} logo`} height={72} densities={[1, 2]} class="tm-logo" />
+          )}
+          <span class:list={[f.logo && 'tm-who']}>
             <span class="block text-lg font-extrabold text-brand-green">{f.name}</span>
             <span class="text-sm text-brand-ink/60">{affiliation(f)}</span>
           </span>
         </figcaption>
         {f.type === 'video' && f.transcript && !f.placeholder && (
-          <details class="tm-transcript mt-6 text-sm">
+          <details class="tm-transcript mt-4 text-sm">
             <summary>Read the transcript</summary>
             <p class="mt-2 text-brand-ink/70">{f.transcript}</p>
           </details>
         )}
         {f.href && !f.placeholder && (
-          <a href={f.href} class="btn-dark mt-8 self-start">See {f.company ?? f.name}’s case study</a>
+          <a href={f.href} class="btn-dark mt-6 self-start">See {f.company ?? f.name}’s case study</a>
         )}
       </div>
     </figure>
   ))}
+</div>
+
+{featured.length > 1 && (
+  <div class="tm-nav" data-tm-nav hidden>
+    <button type="button" class="tm-arrow tm-arrow--prev" data-tm-prev aria-label="Previous testimonial"></button>
+    <div class="tm-dots" role="group" aria-label="Choose a testimonial">
+      {featured.map((f, i) => (
+        <button type="button" class="tm-dot" data-tm-dot aria-label={`Show ${f.name}’s testimonial`} aria-current={i === 0 ? 'true' : undefined}></button>
+      ))}
+    </div>
+    <button type="button" class="tm-arrow tm-arrow--next" data-tm-next aria-label="Next testimonial"></button>
+    <span class="tm-count" aria-hidden="true"><span data-tm-current>01</span> / {String(featured.length).padStart(2, '0')}</span>
+  </div>
+)}
+<p class="sr-only" aria-live="polite" data-tm-status></p>
 </div>
 
 {rest.length > 0 && (
@@ -156,9 +183,11 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
     gap: 5rem;
   }
   @media (min-width: 768px) {
+    /* video and text sit together in the middle instead of drifting to opposite edges */
     .tm-featured {
-      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-      gap: 4rem;
+      grid-template-columns: auto minmax(0, 34rem);
+      justify-content: center;
+      gap: 3rem;
     }
     /* horizontal videos get the wider column */
     .tm-featured--wide {
@@ -166,7 +195,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
     }
     /* every other testimonial puts its video on the right */
     .tm-featured--flip {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+      grid-template-columns: minmax(0, 34rem) auto;
     }
     .tm-featured--flip.tm-featured--wide {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
@@ -176,11 +205,115 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
       rotate: 2deg;
     }
   }
-  /* a vertical video never gets taller than a phone screen */
+  /* a vertical video is as tall as the screen allows once the heading and arrows have their room (~15rem) */
   .tm-featured:not(.tm-featured--wide) > .tm-frame {
     justify-self: center;
-    width: 100%;
-    max-width: 22rem;
+    width: min(100%, 26rem, (100svh - 15rem) * (var(--ar, 4 / 5)));
+  }
+
+  /* ---------- Slideshow (only once the script runs; without it the testimonials stay a list) ---------- */
+  .tm-slider.is-ready .tm-featured-list {
+    gap: 0;
+  }
+  /* all slides share one cell, so the slider is as tall as the tallest one and never jumps */
+  .tm-slider.is-ready .tm-featured {
+    grid-area: 1 / 1;
+    transition:
+      opacity 0.5s ease,
+      scale 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+  .tm-slider.is-ready .tm-featured:not(.is-active) {
+    opacity: 0;
+    scale: 0.97;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.35s ease,
+      scale 0.35s ease,
+      visibility 0s 0.35s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tm-slider.is-ready .tm-featured {
+      transition: none !important;
+    }
+  }
+  .tm-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .tm-nav[hidden] {
+    display: none;
+  }
+  .tm-arrow {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border-radius: 9999px;
+    box-shadow: inset 0 0 0 1px rgb(28 58 58 / 0.3);
+    color: var(--color-brand-green);
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
+  }
+  .tm-arrow::before {
+    content: '';
+    width: 0.6rem;
+    height: 0.6rem;
+    border-top: 2.5px solid currentColor;
+    border-right: 2.5px solid currentColor;
+    rotate: 45deg;
+    translate: -0.1rem 0;
+  }
+  .tm-arrow--prev::before {
+    rotate: -135deg;
+    translate: 0.1rem 0;
+  }
+  .tm-arrow:hover {
+    background: var(--color-brand-green);
+    box-shadow: none;
+    color: #fff;
+  }
+  .tm-arrow:focus-visible,
+  .tm-dot:focus-visible {
+    outline: 3px solid var(--color-brand-orange);
+    outline-offset: 3px;
+  }
+  .tm-dots {
+    display: flex;
+  }
+  .tm-dot {
+    display: grid;
+    width: 2.25rem;
+    height: 2.75rem;
+    place-items: center;
+  }
+  .tm-dot::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 9999px;
+    background: rgb(28 58 58 / 0.25);
+    transition:
+      width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.3s;
+  }
+  .tm-dot[aria-current='true']::before {
+    width: 1.6rem;
+    background: var(--color-brand-orange);
+  }
+  .tm-count {
+    margin-left: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: rgb(28 58 58 / 0.55);
+    font-variant-numeric: tabular-nums;
   }
   .tm-featured-body {
     position: relative;
@@ -189,19 +322,53 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
   }
   .tm-mark {
     display: block;
-    height: 4.5rem;
-    margin-top: 0.5rem;
+    height: 2.5rem;
+    margin-top: 0.25rem;
     font-family: var(--font-display);
-    font-size: 9rem;
+    font-size: 5rem;
     font-weight: 800;
     line-height: 1;
     color: var(--color-brand-yellow);
   }
-  .tm-rule {
-    width: 3rem;
-    height: 3px;
+  /* Typewriter (only once the script has split the quote into letters). :global because the script creates
+     the letter spans, so they never get Astro's scoping attribute. */
+  :global(.tm-ch) {
+    opacity: 0;
+  }
+  :global(.tm-ch.is-on) {
+    opacity: 1;
+  }
+  /* the blinking cursor rides on the last letter typed */
+  :global(.tm-ch.is-caret) {
+    position: relative;
+  }
+  :global(.tm-ch.is-caret)::after {
+    content: '';
+    position: absolute;
+    right: -0.08em;
+    top: 0.1em;
+    bottom: 0.05em;
+    width: 0.08em;
     border-radius: 9999px;
     background: var(--color-brand-orange);
+    animation: tm-blink 0.9s steps(1) infinite;
+  }
+  @keyframes tm-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  /* the client's brand logo, separated from the name by a thin rule */
+  .tm-logo {
+    width: auto;
+    height: 2.25rem;
+    max-width: 8.5rem;
+    object-fit: contain;
+    object-position: left center;
+  }
+  .tm-who {
+    border-left: 1px solid rgb(28 58 58 / 0.2);
+    padding-left: 1rem;
   }
 
   /* ---------- Shared media frame ---------- */
@@ -335,5 +502,111 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
       player.closest('.tm-frame')?.classList.add('is-playing');
       void video.play();
     });
+  });
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /** Splits a quote into letters once; play() types it out, reset() hides it again. */
+  function typewriter(el: HTMLElement) {
+    const chars = Array.from(el.textContent ?? '').map((c) => {
+      const span = document.createElement('span');
+      span.className = 'tm-ch';
+      span.textContent = c;
+      return span;
+    });
+    el.replaceChildren(...chars);
+    let frame = 0;
+    const set = (n: number) =>
+      chars.forEach((c, i) => {
+        c.classList.toggle('is-on', i < n);
+        c.classList.toggle('is-caret', i === n - 1 && n < chars.length);
+      });
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      set(0);
+    };
+    const play = () => {
+      reset();
+      // the whole quote takes at most ~2.4s, short ones type a little slower
+      const perChar = Math.min(32, 2400 / chars.length);
+      const start = performance.now();
+      const tick = (now: number) => {
+        const n = Math.min(chars.length, Math.floor((now - start) / perChar) + 1);
+        set(n);
+        if (n < chars.length) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    };
+    reset();
+    return { play, reset };
+  }
+
+  // Featured testimonials become a slideshow: one at a time, arrows, dots and the keyboard move between them.
+  // The visible quote types itself out every time it comes on screen or its slide is shown.
+  document.querySelectorAll<HTMLElement>('[data-tm-slider]').forEach((slider) => {
+    const slides = Array.from(slider.querySelectorAll<HTMLElement>('[data-tm-slide]'));
+    const typers = reduceMotion
+      ? []
+      : slides.map((s) => {
+          const el = s.querySelector<HTMLElement>('[data-tm-type]');
+          return el ? typewriter(el) : undefined;
+        });
+    let active = 0;
+    let onScreen = false;
+    const typeActive = () => typers.forEach((t, i) => (i === active && onScreen ? t?.play() : t?.reset()));
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting === onScreen) return;
+        onScreen = entry.isIntersecting;
+        typeActive();
+      },
+      { threshold: 0.35 },
+    ).observe(slider);
+
+    const nav = slider.querySelector<HTMLElement>('[data-tm-nav]');
+    if (slides.length < 2 || !nav) return;
+    const dots = Array.from(nav.querySelectorAll<HTMLButtonElement>('[data-tm-dot]'));
+    const current = nav.querySelector('[data-tm-current]');
+    const status = slider.querySelector('[data-tm-status]');
+
+    const setCurrent = (el: HTMLElement, yes: boolean) =>
+      yes ? el.setAttribute('aria-current', 'true') : el.removeAttribute('aria-current');
+    const show = (next: number, announce = true) => {
+      active = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const on = i === active;
+        slide.classList.toggle('is-active', on);
+        slide.inert = !on;
+        // a video never keeps playing out of sight
+        if (!on) slide.querySelectorAll('video').forEach((v) => v.pause());
+      });
+      dots.forEach((d, i) => setCurrent(d, i === active));
+      if (current) current.textContent = String(active + 1).padStart(2, '0');
+      if (announce && status) status.textContent = slides[active].getAttribute('aria-label') ?? '';
+      typeActive();
+    };
+
+    nav.querySelector('[data-tm-prev]')?.addEventListener('click', () => show(active - 1));
+    nav.querySelector('[data-tm-next]')?.addEventListener('click', () => show(active + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+    slider.addEventListener('keydown', (e) => {
+      if ((e.target as HTMLElement).closest('video, details')) return;
+      if (e.key === 'ArrowLeft') show(active - 1);
+      if (e.key === 'ArrowRight') show(active + 1);
+    });
+
+    // Horizontal swipes on touch screens
+    let startX = 0;
+    let startY = 0;
+    slider.addEventListener('touchstart', (e) => ([startX, startY] = [e.touches[0].clientX, e.touches[0].clientY]), { passive: true });
+    slider.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(active + (dx < 0 ? 1 : -1));
+    });
+
+    nav.hidden = false;
+    slider.classList.add('is-ready');
+    show(0, false);
   });
 </script>

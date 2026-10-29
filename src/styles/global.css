@@ -32,24 +32,35 @@
 }
 
 @layer components {
-  /* Pill buttons with a trailing arrow */
+  /* Pill buttons with a trailing arrow. On hover --fill floods in from the left (animated in motion.css). */
+  .btn-primary,
+  .btn-dark,
+  .btn-outline {
+    background-image: linear-gradient(var(--fill), var(--fill));
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 0% 100%;
+  }
+  .btn-primary:hover,
+  .btn-dark:hover,
+  .btn-outline:hover {
+    background-size: 100% 100%;
+  }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-yellow py-3 pl-6 pr-5 font-semibold text-brand-green transition hover:bg-brand-orange hover:text-white;
+    --fill: var(--color-brand-orange);
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-yellow py-3 pl-6 pr-5 font-semibold text-brand-green transition hover:text-white;
   }
   .btn-primary::after,
   .btn-dark::after {
     content: '→';
-    @apply transition-transform;
-  }
-  .btn-primary:hover::after,
-  .btn-dark:hover::after {
-    @apply translate-x-1;
   }
   .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-green py-2.5 pl-5 pr-4 text-sm font-semibold text-white transition hover:bg-brand-green-light;
+    --fill: var(--color-brand-green-light);
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-green py-2.5 pl-5 pr-4 text-sm font-semibold text-white transition;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-brand-green/25 px-6 py-3 font-semibold text-brand-green transition hover:border-brand-green hover:bg-white;
+    --fill: var(--color-brand-green);
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-brand-green/25 px-6 py-3 font-semibold text-brand-green transition hover:border-brand-green hover:text-white;
   }
   /* Small label with a yellow dash before it */
   .eyebrow {

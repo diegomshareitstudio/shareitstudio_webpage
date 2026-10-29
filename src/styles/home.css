@@ -185,8 +185,26 @@ html.home-ready .home-results {
   margin-top: calc(var(--results-overlap) * -1);
   padding-top: 0;
 }
+/* Testimonials: a one-line heading so the slideshow (and its video) fits in one screen */
+.home-testimonials .container-x > div:first-child {
+  max-width: none;
+  margin-bottom: 1.5rem;
+}
+.home-testimonials .container-x > div:first-child .eyebrow {
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 768px) {
+  .home-testimonials .container-x > div:first-child h2 {
+    font-size: 2.1rem;
+  }
+}
+
 .home-results .btn-dark {
-  background: var(--color-brand-green);
+  /* Same size as the btn-primary in the neighbouring card */
+  padding: 0.75rem 1.25rem 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  background-color: var(--color-brand-green);
 }
 
 /* ---------- Services (03): the yellow surface leaves through the spotlight's enlarged lower tip ---------- */
@@ -632,10 +650,9 @@ html.home-ready .home-results {
 
 /* ---------- How we work: stacked steps that stay readable ---------- */
 @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-  /* each card leaves the previous step's number and title visible, so the order stays clear */
-  body.home .stack-cards > li {
-    top: calc(6.5rem + var(--i, 0) * 3.5rem);
-    margin-bottom: 16vh;
+  /* the cards sit closer together than the generic stack in motion.css */
+  main .stack-cards > li {
+    margin-bottom: 6vh;
   }
 }
 @media (prefers-reduced-motion: no-preference) and (min-width: 768px) and (max-height: 719px) {
@@ -708,31 +725,6 @@ html.home-ready .home-results {
       animation: work-open linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 45%;
-    }
-    /* A dark panel retires to the left and uncovers the section: a brief lateral sweep while scrolling down */
-    @keyframes sweep-left {
-      from {
-        transform: translateX(0);
-      }
-      to {
-        transform: translateX(-101%);
-      }
-    }
-    .home-fit {
-      position: relative;
-      overflow: hidden;
-    }
-    .home-fit::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      background: var(--color-brand-green);
-      border-right: 0.5rem solid var(--color-brand-yellow);
-      pointer-events: none;
-      animation: sweep-left linear both;
-      animation-timeline: view();
-      animation-range: entry 10% entry 80%;
     }
   }
 }

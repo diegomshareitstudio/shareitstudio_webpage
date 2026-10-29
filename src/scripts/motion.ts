@@ -33,10 +33,6 @@ if (!reduced) {
     footerSlide();
     ripple();
     confetti();
-    if (finePointer) {
-      magnetic();
-      tilt();
-    }
   });
 }
 
@@ -116,7 +112,7 @@ function popOnReveal() {
   );
 }
 
-/** Metrics ("+120%", "$1.2M", "3.4x") count up from zero when they scroll into view. */
+/** Metrics ("+120%", "$1.2M", "3.4x") count up from zero every time they scroll into view. */
 function countUp() {
   const targets = $$('.prose-sis dd, [data-count]');
   targets.forEach((el) => {
@@ -135,7 +131,12 @@ function countUp() {
     inView(
       el,
       () => {
-        animate(0, to, { duration: 1.4, ease: [0.22, 1, 0.36, 1], onUpdate: render });
+        const counting = animate(0, to, { duration: 1.4, ease: [0.22, 1, 0.36, 1], onUpdate: render });
+        // Returning a leave handler keeps the element observed, so the count replays on every re-entry
+        return () => {
+          counting.stop();
+          render(0);
+        };
       },
       { amount: 0.6 },
     );
@@ -194,44 +195,6 @@ function ripple() {
   });
 }
 
-/** Buttons lean toward the cursor. */
-function magnetic() {
-  $$('.btn-primary, .btn-dark').forEach((btn) => {
-    let r: DOMRect | undefined;
-    btn.addEventListener('pointerenter', () => (r = btn.getBoundingClientRect()));
-    btn.addEventListener('pointermove', (e) => {
-      r ??= btn.getBoundingClientRect();
-      const x = (e as PointerEvent).clientX - (r.left + r.width / 2);
-      const y = (e as PointerEvent).clientY - (r.top + r.height / 2);
-      btn.style.setProperty('--mx', `${x * 0.25}px`);
-      btn.style.setProperty('--my', `${y * 0.35}px`);
-    });
-    btn.addEventListener('pointerleave', () => {
-      btn.style.removeProperty('--mx');
-      btn.style.removeProperty('--my');
-    });
-  });
-}
-
-/** Grid cards tilt in 3D toward the pointer. */
-function tilt() {
-  $$('main :is(ul, ol).grid > li > :is(a, article, figure)').forEach((card) => {
-    let r: DOMRect | undefined;
-    card.addEventListener('pointerenter', () => (r = card.getBoundingClientRect()));
-    card.addEventListener('pointermove', (e) => {
-      r ??= card.getBoundingClientRect();
-      const px = ((e as PointerEvent).clientX - r.left) / r.width - 0.5;
-      const py = ((e as PointerEvent).clientY - r.top) / r.height - 0.5;
-      card.style.setProperty('--rx', `${-py * 8}deg`);
-      card.style.setProperty('--ry', `${px * 10}deg`);
-    });
-    card.addEventListener('pointerleave', () => {
-      card.style.removeProperty('--rx');
-      card.style.removeProperty('--ry');
-    });
-  });
-}
-
 /** Section headings: words rise in one by one as they scroll into view. */
 function splitHeadings() {
   $$('main h2').forEach((h2) => {
@@ -278,7 +241,7 @@ function decorateSections() {
     '<span class="deco deco-star" style="right:7%;bottom:12%">✦</span>',
   ];
   $$('main > section.bg-brand-cream').forEach((section, i) => {
-    if (section.querySelector('.prose-sis')) return;
+    if (section.querySelector('.prose-sis') || section.hasAttribute('data-no-deco')) return;
     section.classList.add('has-deco');
     section.insertAdjacentHTML('afterbegin', shapes.slice(i % 2 ? 2 : 0, i % 2 ? 4 : 2).join(''));
     $$('.deco', section).forEach((el, n) => {
