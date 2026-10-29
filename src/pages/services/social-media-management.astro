@@ -1,5 +1,9 @@
 ---
-/** Main service line #2 — monthly social media management plans and pricing. */
+/**
+ * Social Media Management (copy V2): P1 commercial landing page for "ecommerce social media agency".
+ * Hero → Problems → What we manage (+ portfolio) → Monthly plans (cards, comparison, sample week) → Purpose
+ * → Questions → Final CTA. Pricing, scope and buyer questions live here, not on /services or the homepage.
+ */
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
@@ -9,44 +13,83 @@ import PackageComparison from '../../components/packages/PackageComparison.astro
 import PostingSchedule from '../../components/packages/PostingSchedule.astro';
 import FaqList from '../../components/ui/FaqList.astro';
 import type { Faq } from '../../data/faqs';
-import { socialPackages, formatPrice } from '../../data/socialPackages';
+import { socialPackages } from '../../data/socialPackages';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 
 const path = '/services/social-media-management';
+const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
 
-const pillars = [
+// 02 — the problems we help solve
+const problems = [
   {
-    title: 'Strategy & scripting',
-    text: 'Research, a monthly content plan and scripts built around your products, launches and Amazon goals.',
+    t: 'Your customers have questions. Your feed isn’t answering them.',
+    d: 'People want to know how products work, whether they fit their lives, and why they should trust them. A stream of product promotions can leave those concerns unanswered — and give people little reason to return.',
   },
   {
-    title: 'Filming, AI & editing',
-    text: 'Real filming, AI-enhanced content and repurposed assets, edited in-house by the team that makes your listing content.',
+    t: 'Your next launch is coming. Your audience isn’t.',
+    d: 'If you start the conversation when your product is ready to sell, you’re starting late. Educational and entertaining content can help people discover your brand and become familiar with it before launch day.',
   },
   {
-    title: 'Posting, ads & reporting',
-    text: 'We upload and post, manage ads on higher plans and report on what drives traffic and sales.',
+    t: 'Your team can’t be the content department every week.',
+    d: 'Ideas, scripts, production, edits, approvals, and publishing all compete with running the business. Without an ongoing system, consistency becomes another task on your plate.',
   },
 ];
 
-const priceRange = `${formatPrice(socialPackages[0].price)} to ${formatPrice(socialPackages[socialPackages.length - 1].price)}`;
+// 03 — what we manage
+const steps = [
+  {
+    t: 'Find what your audience cares about',
+    d: 'We look at your customers, product, competitors, and the questions people ask. Those signals help shape content themes, hooks, and a direction that makes sense for your brand.',
+  },
+  {
+    t: 'Turn the ideas into content',
+    d: 'We script, repurpose, design, edit, and produce Reels, carousels, Stories, and other agreed formats. Production may combine existing footage, AI-assisted creative, or real filming depending on the plan.',
+  },
+  {
+    t: 'Publish, review, and refine',
+    d: 'We upload and publish the approved content, review the available performance signals, and use what we learn to inform the next content cycle. Reporting cadence depends on your plan.',
+  },
+];
+// TODO: three approved, real delivered pieces (with rights) replace these placeholders
+const examples = ['Educational Reel', 'Audience-led carousel', 'Product-led short-form video'];
 
+// 05 — why every post has a purpose
+const purposes = [
+  { t: 'Build an audience.', d: 'Give people useful or entertaining reasons to discover and follow your brand.' },
+  { t: 'Build trust.', d: 'Answer buyer questions, explain product benefits, and share the knowledge behind your brand.' },
+  { t: 'Create opportunities to sell.', d: 'Connect audience interest to your products when the message and timing make sense.' },
+  { t: 'Keep it moving.', d: 'Make consistent publishing possible without putting every post on your team’s to-do list.' },
+];
+
+// 06 — questions worth answering
 const faqs: Faq[] = [
   {
-    q: 'How much does Share It Studio charge for social media management?',
-    a: `Our monthly e-commerce social media management packages go from ${priceRange} per month: Light (${formatPrice(socialPackages[0].price)}, 20 posts), Grow (${formatPrice(socialPackages[1].price)}, 40+ posts), Scale (${formatPrice(socialPackages[2].price)}, 60+ posts) and Dominate (${formatPrice(socialPackages[3].price)}, 80+ posts).`,
+    q: 'Do you manage social media for ecommerce brands that don’t sell on Amazon?',
+    a: 'Yes. We work with ecommerce brands on Amazon and beyond. The social platforms and number of accounts covered depend on your agreed plan.',
   },
   {
-    q: 'Which package is right for my Amazon brand?',
-    a: 'Light covers a consistent presence with repurposed and AI-enhanced content. Grow adds ads management and product integration. Scale adds real filming and sales-focused product integration. Dominate adds full filming, weekly tracking and conversion testing.',
+    q: 'Can we build an audience before our product launches?',
+    a: 'Yes. We can develop a pre-launch content direction around customer questions, education, entertainment, and brand familiarity, so you’re not introducing yourself for the first time on launch day. Audience or sales growth isn’t guaranteed.',
   },
   {
-    q: 'What is avatar creation?',
-    a: 'A recurring on-screen character created for your brand’s content. It is included in Scale and Dominate, and available on Grow for an extra fee.',
+    q: 'What does the monthly post count include?',
+    a: 'Each plan has a stated monthly volume, but the mix of Reels, carousels, Stories, and cross-platform placements is set in your proposal. We’ll confirm what counts as a post, including repurposed and cross-posted content, before work begins.',
   },
   {
-    q: 'Do you also manage our Amazon listing?',
-    a: 'Yes. Social media is one of our services; we also create listing images, A+ Content, Storefronts and product videos, so your brand looks the same on social and on Amazon.',
+    q: 'Is paid advertising included in every plan?',
+    a: 'No. Ads Management is listed with Grow, Scale, and Dominate, not Light. The platforms, campaign responsibilities, and media budget are agreed separately. Paying for ads is not the same as paying for ads management.',
+  },
+  {
+    q: 'Will you film real content, or is everything made with AI?',
+    a: 'It depends on the plan and creative brief. Light includes basic AI-enhanced content. Scale adds basic real filming, while Dominate lists real-content filming. Grow includes AI-enhanced content, with avatar creation available for an additional fee. We apply human creative direction and review to the work.',
+  },
+  {
+    q: 'Will you reply to our comments and DMs?',
+    a: 'Content production and publishing are different from customer service and community moderation. Comment and DM management, lead-routing automations, and support workflows are not automatically included in the listed plans; we can discuss those needs when defining your scope.',
+  },
+  {
+    q: 'How do you know whether the content is working?',
+    a: 'We review the signals relevant to your goals and available access, such as reach, engagement, audience responses, and traffic. Ads performance can be reviewed where ads management is included. Reporting is monthly for Light, Grow, and Scale; Dominate lists weekly tracking and conversion trend testing. These signals inform decisions but don’t prove every result was caused by content alone.',
   },
 ];
 
@@ -57,10 +100,10 @@ const breadcrumbs = [
 const schema = [
   serviceSchema({
     path,
-    name: 'E-commerce Social Media Management',
+    name: 'Social Media Management for Ecommerce Brands',
     serviceType: 'Social media management',
     description:
-      'Monthly e-commerce social media management for Amazon brands: strategy, content creation, filming, editing, posting and reporting for Instagram and TikTok.',
+      'Monthly social media management for ecommerce brands on Amazon and beyond: research, strategy, scripting, Reels, carousels and Stories, editing, publishing and reporting.',
     offers: socialPackages.map((p) => ({
       '@type': 'Offer',
       name: `${p.name} — ${p.posts}`,
@@ -79,75 +122,141 @@ const schema = [
 ---
 
 <Layout
-  title="E-commerce Social Media Management Packages | Share It Studio"
-  description={`Monthly social media management packages for Amazon and e-commerce brands, from ${priceRange}/month: strategy, scripting, filming, editing, posting, ads and reporting.`}
+  title="Ecommerce Social Media Agency & Management | Share It Studio"
+  description="Social media management for ecommerce brands: strategy, Reels, editing, posting, and monthly plans from $999. Compare Light, Grow, Scale and Dominate."
   breadcrumbs={breadcrumbs}
   schema={schema}
 >
+  <!-- 01 — Hero -->
   <PageHero
-    eyebrow="E-commerce social media management"
-    title="Social media management for Amazon brands"
-    highlight="Amazon brands"
-    subtitle={`Monthly content packages from ${formatPrice(socialPackages[0].price)}/mo — strategy, scripting, filming, editing, posting and reporting, from the team that already knows your listing.`}
-    ctaLabel="Compare packages"
-    ctaHref="#packages"
-    secondaryLabel="See our videos"
-    secondaryHref="/portfolio/social-media"
-  />
+    eyebrow="Ecommerce social media agency"
+    title="Social Media Management for Ecommerce Brands"
+    highlight="Ecommerce Brands"
+    subtitle={`<strong class="block font-display text-xl font-extrabold leading-snug text-brand-green md:text-2xl">Give people a reason to follow. Let us handle the content behind it.</strong><span class="mt-4 block">Your customers have questions, interests, and reasons to care beyond your next promotion. We turn those insights into a social content plan — then handle research, creative production, editing, and publishing according to the monthly plan you choose.</span><span class="mt-3 block text-sm font-semibold text-brand-green">For ecommerce brands on Amazon and beyond.</span>`}
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    secondaryLabel="Compare Monthly Plans"
+    secondaryHref="#monthly-plans"
+  >
+    <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team.</p>
+  </PageHero>
 
-  <section class="container-x py-16 md:py-20">
-    <SectionHeading
-      eyebrow="What we do"
-      title="Everything a monthly social media team does, in one place"
-      text="Your listing, your ads and your social content share one message, so shoppers recognize your brand wherever they find it."
-    />
-    <ul class="grid gap-6 md:grid-cols-3">
-      {pillars.map((p) => (
-        <li class="rounded-[2rem] border border-black/5 p-7 shadow-sm">
-          <div class="placeholder mb-5 aspect-[9/16] max-h-64 w-full">Vertical video</div>
-          <h3 class="text-xl font-extrabold text-brand-green">{p.title}</h3>
-          <p class="mt-2 text-brand-ink/70">{p.text}</p>
+  <!-- 02 — The problems we help solve -->
+  <section class="container-x py-16 md:py-24" aria-labelledby="problems-heading">
+    <SectionHeading eyebrow="The problems we help solve" id="problems-heading" title="Your brand has more to say than “Buy now.”" />
+    <ul class="grid gap-4 md:grid-cols-3">
+      {problems.map((p) => (
+        <li class="rounded-[1.75rem] bg-brand-cream p-7">
+          <h3 class="text-xl font-extrabold leading-snug text-brand-green">{p.t}</h3>
+          <p class="mt-3 text-brand-ink/70">{p.d}</p>
         </li>
       ))}
     </ul>
+    <p class="mt-8 max-w-3xl font-display text-2xl font-extrabold leading-snug text-brand-green md:text-[1.75rem]">
+      You don’t need more posts just to fill a calendar. <span class="marker">You need content with a purpose</span> — and a team to produce it.
+    </p>
   </section>
 
-  <section id="packages" class="scroll-mt-24 bg-brand-cream py-16 md:py-24">
-    <div class="container-x">
-      <SectionHeading
-        eyebrow="Packages"
-        title="Monthly social media content packages"
-        text="Four plans, billed monthly. Pick the posting volume and production level your brand needs."
-      />
-      <PackageCards />
-
-      <div class="mt-20">
-        <h3 class="mb-6 text-2xl font-extrabold text-brand-green md:text-3xl">Compare the packages</h3>
-        <PackageComparison />
+  <!-- 03 — What we manage -->
+  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="manage-heading">
+    <div class="container-x grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+      <div>
+        <SectionHeading eyebrow="What we manage" id="manage-heading" title="From the right questions to a feed that keeps moving." align="left" />
+        <ol class="space-y-4">
+          {steps.map((s, i) => (
+            <li class="flex gap-5 rounded-[1.75rem] bg-white p-6">
+              <span class="font-display text-3xl font-extrabold text-brand-yellow" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-lg font-extrabold text-brand-green">{s.t}</h3>
+                <p class="mt-1 text-brand-ink/70">{s.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <ul class="grid grid-cols-3 gap-3">
+          {examples.map((e, i) => (
+            <li class:list={['placeholder aspect-[9/16] rounded-[1.25rem] px-2 text-xs', i === 1 && 'translate-y-8']}>{e}</li>
+          ))}
+        </ul>
+        <a href="/portfolio/social-media" class="mt-14 inline-block font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+          See Social Content We’ve Created →
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="bg-brand-green py-16 md:py-24">
+  <!-- 04 — Monthly plans: cards, one shared CTA, comparison, sample week -->
+  <section id="monthly-plans" class="scroll-mt-24 py-16 md:py-24" aria-labelledby="plans-heading">
     <div class="container-x">
-      <p class="eyebrow mb-4 text-brand-yellow">Posting cadence</p>
-      <h2 class="mb-10 text-4xl font-extrabold text-white md:text-5xl">Content schedule by plan</h2>
-      <PostingSchedule />
+      <SectionHeading
+        eyebrow="Monthly social media management plans"
+        id="plans-heading"
+        title="Choose the level of support your brand needs."
+        text="From a consistent social presence to a higher-volume content operation with real filming and closer performance tracking, our monthly plans offer different levels of creative and management support."
+      />
+      <PackageCards />
+      <p class="mt-6 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
+        Prices and scopes are subject to customization. The post count, formats, channels, filming logistics, revision process, platform access, and advertising budget will be clarified in your proposal. Ads management does not include media spend unless expressly agreed.
+      </p>
+      <a href={bookHref} class="btn-dark mt-6">Talk Through the Right Plan</a>
+
+      <div class="mt-20">
+        <h3 class="text-2xl font-extrabold text-brand-green md:text-3xl">Compare what changes between plans</h3>
+        <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
+          The essential difference isn’t just how often we publish. It’s the type of production, product integration, and ongoing management included.
+        </p>
+        <PackageComparison />
+        <p class="mt-4 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
+          All four plans include core research/strategy, content editing, uploading and posting. The exact deliverables are set by your contract. Paid advertising budgets are separate from management fees unless stated otherwise.
+        </p>
+      </div>
+
+      <div class="mt-20 rounded-[2rem] bg-brand-cream p-6 md:p-10">
+        <h3 class="text-2xl font-extrabold text-brand-green md:text-3xl">See what a week could look like.</h3>
+        <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
+          Choose a plan to explore an <strong class="text-brand-green">illustrative</strong> weekly mix of Reels, Stories, and carousels. Your actual content calendar will reflect your audience, goals, platforms, approvals, and contracted plan.
+        </p>
+        <PostingSchedule initial="grow" />
+        <p class="mt-5 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
+          Sample publishing patterns only. They illustrate possible cadence, not guaranteed weekly deliverables or a fixed content mix. Duplicate Reel entries indicate multiple Reels on that day in the original example.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="container-x grid gap-12 py-16 md:grid-cols-[1fr_1.6fr] md:py-24">
+  <!-- 05 — Why every post has a purpose -->
+  <section class="bg-brand-green py-16 md:py-20" aria-labelledby="purpose-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-4 text-brand-yellow">Why every post has a purpose</p>
+      <h2 id="purpose-heading" class="text-3xl font-extrabold text-white md:text-4xl">Every Post Should Have a Purpose.</h2>
+      <ul class="mt-10 grid gap-px overflow-hidden rounded-[1.75rem] bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+        {purposes.map((p) => (
+          <li class="bg-brand-green p-6 md:p-7">
+            <h3 class="text-lg font-extrabold text-brand-yellow">{p.t}</h3>
+            <p class="mt-2 text-sm text-white/75">{p.d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 — Questions worth answering -->
+  <section class="container-x grid gap-12 py-16 md:grid-cols-[1fr_1.6fr] md:py-24" aria-labelledby="faq-heading">
     <div>
-      <p class="eyebrow mb-4">FAQ</p>
-      <h2 class="text-4xl font-extrabold leading-tight text-brand-green">Social media packages, answered</h2>
+      <p class="eyebrow mb-4">Questions worth answering</p>
+      <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">What should you know before choosing a plan?</h2>
     </div>
     <FaqList faqs={faqs} variant="cream" />
   </section>
 
+  <!-- 07 — Final CTA -->
   <CtaBanner
-    title="Not sure which package fits?"
-    text="Book a call and we’ll recommend a plan based on your products, channels and goals."
-    ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
+    title="Your next month of content starts with a clearer plan."
+    text="Tell us what you sell, who you’re trying to reach, and what keeps your content from moving forward. We’ll help you explore the monthly scope and creative approach that make sense for your brand."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    note="Choose a time to speak directly with our team."
   />
 </Layout>
