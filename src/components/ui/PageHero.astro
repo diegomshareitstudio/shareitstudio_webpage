@@ -32,17 +32,17 @@ const hasVisual = Astro.slots.has('visual');
 <header class="relative overflow-hidden bg-brand-cream">
   <div
     class:list={[
-      'container-x relative grid items-center gap-12',
+      'container-x relative grid items-center gap-8 md:gap-12',
       hasVisual ? 'lg:grid-cols-[1.1fr_1fr]' : 'md:grid-cols-[1.6fr_1fr]',
-      size === 'lg' ? 'pb-20 pt-12 md:pb-28 md:pt-16' : 'pb-14 pt-10 md:pb-20 md:pt-14',
+      size === 'lg' ? 'pb-14 pt-8 md:pb-28 md:pt-16' : 'pb-12 pt-8 md:pb-20 md:pt-14',
     ]}
   >
     <div>
-      {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
+      {eyebrow && <p class="eyebrow mb-4 sm:mb-5">{eyebrow}</p>}
       <h1
         class:list={[
-          'font-extrabold leading-[1.02] text-brand-green',
-          size === 'lg' ? 'text-5xl sm:text-6xl lg:text-7xl' : 'text-4xl sm:text-5xl lg:text-6xl',
+          'font-extrabold leading-[1.05] text-brand-green',
+          size === 'lg' ? 'text-[2.5rem] sm:text-6xl lg:text-7xl' : 'text-[2.15rem] sm:text-5xl lg:text-6xl',
         ]}
       >
         {before}
@@ -53,9 +53,9 @@ const hasVisual = Astro.slots.has('visual');
           </>
         )}
       </h1>
-      {subtitle && <p class="mt-6 max-w-xl text-lg leading-relaxed text-brand-ink/70" set:html={subtitle} />}
+      {subtitle && <p class="mt-5 max-w-xl text-base leading-relaxed text-brand-ink/70 sm:mt-6 sm:text-lg" set:html={subtitle} />}
       {(ctaLabel || secondaryLabel) && (
-        <div class="mt-9 flex flex-wrap items-center gap-3">
+        <div class="mt-7 flex flex-wrap items-center gap-3 sm:mt-9">
           {ctaLabel && (
             <a href={ctaHref} class="btn-primary">
               {ctaLabel}

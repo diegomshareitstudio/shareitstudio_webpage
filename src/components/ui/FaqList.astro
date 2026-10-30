@@ -25,7 +25,7 @@ const outline = variant === 'outline';
     <details
       class:list={[
         'group',
-        outline ? 'rounded-xl border border-black/10 p-5 open:bg-brand-cream' : 'rounded-[1.5rem] p-6',
+        outline ? 'rounded-xl border border-black/10 p-5 open:bg-brand-cream' : 'rounded-[1.25rem] p-5 sm:rounded-[1.5rem] sm:p-6',
         variant === 'card' && 'bg-white shadow-sm',
         variant === 'cream' && 'bg-brand-cream',
       ]}
@@ -34,7 +34,7 @@ const outline = variant === 'outline';
       <summary
         class:list={[
           'flex cursor-pointer list-none items-center justify-between gap-4 text-brand-green',
-          outline ? 'font-bold' : 'font-display text-lg font-extrabold',
+          outline ? 'font-bold' : 'font-display text-[1.0625rem] font-extrabold sm:text-lg',
         ]}
       >
         <Heading class="font-[inherit] text-[length:inherit] tracking-normal">{f.q}</Heading>

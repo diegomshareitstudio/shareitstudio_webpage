@@ -142,33 +142,33 @@ const schema = [
   </PageHero>
 
   <!-- 02 — The problems we help solve -->
-  <section class="container-x py-16 md:py-24" aria-labelledby="problems-heading">
+  <section class="container-x py-12 md:py-24" aria-labelledby="problems-heading">
     <SectionHeading eyebrow="The problems we help solve" id="problems-heading" title="Your brand has more to say than “Buy now.”" />
     <ul class="grid gap-4 md:grid-cols-3">
       {problems.map((p) => (
-        <li class="rounded-[1.75rem] bg-brand-cream p-7">
-          <h3 class="text-xl font-extrabold leading-snug text-brand-green">{p.t}</h3>
-          <p class="mt-3 text-brand-ink/70">{p.d}</p>
+        <li class="rounded-[1.5rem] bg-brand-cream p-6 sm:rounded-[1.75rem] sm:p-7">
+          <h3 class="text-lg font-extrabold leading-snug text-brand-green sm:text-xl">{p.t}</h3>
+          <p class="mt-2 text-[0.9375rem] leading-relaxed text-brand-ink/70 sm:mt-3 sm:text-base">{p.d}</p>
         </li>
       ))}
     </ul>
-    <p class="mt-8 max-w-3xl font-display text-2xl font-extrabold leading-snug text-brand-green md:text-[1.75rem]">
+    <p class="mt-8 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl md:text-[1.75rem]">
       You don’t need more posts just to fill a calendar. <span class="marker">You need content with a purpose</span> — and a team to produce it.
     </p>
   </section>
 
   <!-- 03 — What we manage -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="manage-heading">
-    <div class="container-x grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="manage-heading">
+    <div class="container-x grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-12">
       <div>
         <SectionHeading eyebrow="What we manage" id="manage-heading" title="From the right questions to a feed that keeps moving." align="left" />
-        <ol class="space-y-4">
+        <ol class="space-y-3 sm:space-y-4">
           {steps.map((s, i) => (
-            <li class="flex gap-5 rounded-[1.75rem] bg-white p-6">
-              <span class="font-display text-3xl font-extrabold text-brand-yellow" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <li class="flex gap-4 rounded-[1.5rem] bg-white p-5 sm:gap-5 sm:rounded-[1.75rem] sm:p-6">
+              <span class="font-display text-2xl font-extrabold text-brand-yellow sm:text-3xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <div>
                 <h3 class="text-lg font-extrabold text-brand-green">{s.t}</h3>
-                <p class="mt-1 text-brand-ink/70">{s.d}</p>
+                <p class="mt-1 text-[0.9375rem] text-brand-ink/70 sm:text-base">{s.d}</p>
               </div>
             </li>
           ))}
@@ -177,10 +177,10 @@ const schema = [
       <div>
         <ul class="grid grid-cols-3 gap-3">
           {examples.map((e, i) => (
-            <li class:list={['placeholder aspect-[9/16] rounded-[1.25rem] px-2 text-xs', i === 1 && 'translate-y-8']}>{e}</li>
+            <li class:list={['placeholder aspect-[4/5] rounded-[1rem] px-2 text-xs sm:aspect-[9/16] sm:rounded-[1.25rem]', i === 1 && 'translate-y-3 sm:translate-y-8']}>{e}</li>
           ))}
         </ul>
-        <a href="/portfolio/social-media" class="mt-14 inline-block font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+        <a href="/portfolio/social-media" class="mt-7 inline-flex min-h-11 items-center sm:mt-14 font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
           See Social Content We’ve Created →
         </a>
       </div>
@@ -188,7 +188,7 @@ const schema = [
   </section>
 
   <!-- 04 — Monthly plans: cards, one shared CTA, comparison, sample week -->
-  <section id="monthly-plans" class="scroll-mt-24 py-16 md:py-24" aria-labelledby="plans-heading">
+  <section id="monthly-plans" class="scroll-mt-24 py-12 md:py-24" aria-labelledby="plans-heading">
     <div class="container-x">
       <SectionHeading
         eyebrow="Monthly social media management plans"
@@ -202,8 +202,8 @@ const schema = [
       </p>
       <a href={bookHref} class="btn-dark mt-6">Talk Through the Right Plan</a>
 
-      <div class="mt-20">
-        <h3 class="text-2xl font-extrabold text-brand-green md:text-3xl">Compare what changes between plans</h3>
+      <div class="mt-14 md:mt-20">
+        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">Compare what changes between plans</h3>
         <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
           The essential difference isn’t just how often we publish. It’s the type of production, product integration, and ongoing management included.
         </p>
@@ -213,8 +213,8 @@ const schema = [
         </p>
       </div>
 
-      <div class="mt-20 rounded-[2rem] bg-brand-cream p-6 md:p-10">
-        <h3 class="text-2xl font-extrabold text-brand-green md:text-3xl">See what a week could look like.</h3>
+      <div class="mt-14 rounded-[1.75rem] bg-brand-cream p-5 sm:rounded-[2rem] sm:p-6 md:mt-20 md:p-10">
+        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">See what a week could look like.</h3>
         <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
           Choose a plan to explore an <strong class="text-brand-green">illustrative</strong> weekly mix of Reels, Stories, and carousels. Your actual content calendar will reflect your audience, goals, platforms, approvals, and contracted plan.
         </p>
@@ -227,15 +227,15 @@ const schema = [
   </section>
 
   <!-- 05 — Why every post has a purpose -->
-  <section class="bg-brand-green py-16 md:py-20" aria-labelledby="purpose-heading">
+  <section class="bg-brand-green py-12 md:py-20" aria-labelledby="purpose-heading">
     <div class="container-x">
       <p class="eyebrow mb-4 text-brand-yellow">Why every post has a purpose</p>
-      <h2 id="purpose-heading" class="text-3xl font-extrabold text-white md:text-4xl">Every Post Should Have a Purpose.</h2>
-      <ul class="mt-10 grid gap-px overflow-hidden rounded-[1.75rem] bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+      <h2 id="purpose-heading" class="text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">Every Post Should Have a Purpose.</h2>
+      <ul class="mt-8 grid gap-px sm:mt-10 overflow-hidden rounded-[1.75rem] bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
         {purposes.map((p) => (
-          <li class="bg-brand-green p-6 md:p-7">
+          <li class="bg-brand-green px-5 py-5 sm:p-6 md:p-7">
             <h3 class="text-lg font-extrabold text-brand-yellow">{p.t}</h3>
-            <p class="mt-2 text-sm text-white/75">{p.d}</p>
+            <p class="mt-1.5 text-[0.9375rem] text-white/80 sm:mt-2 sm:text-sm">{p.d}</p>
           </li>
         ))}
       </ul>
@@ -243,10 +243,10 @@ const schema = [
   </section>
 
   <!-- 06 — Questions worth answering -->
-  <section class="container-x grid gap-12 py-16 md:grid-cols-[1fr_1.6fr] md:py-24" aria-labelledby="faq-heading">
+  <section class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24" aria-labelledby="faq-heading">
     <div>
       <p class="eyebrow mb-4">Questions worth answering</p>
-      <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">What should you know before choosing a plan?</h2>
+      <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">What should you know before choosing a plan?</h2>
     </div>
     <FaqList faqs={faqs} variant="cream" />
   </section>

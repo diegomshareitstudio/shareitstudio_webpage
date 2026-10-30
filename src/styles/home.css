@@ -89,7 +89,7 @@ body.home main {
 .home-title {
   margin-top: clamp(0.75rem, 2svh, 1.25rem);
   color: var(--color-brand-green);
-  font-size: clamp(2.1rem, min(6vw, 8.2svh), 5rem);
+  font-size: clamp(1.95rem, min(6vw, 8.2svh), 5rem);
   font-weight: 800;
   line-height: 1.02;
   text-wrap: balance;
@@ -113,7 +113,7 @@ body.home main {
 }
 .home-title-b {
   color: var(--color-brand-green);
-  font-size: clamp(2.2rem, 5.6vw, 4.75rem);
+  font-size: clamp(1.85rem, 5.6vw, 4.75rem);
   font-weight: 800;
   line-height: 1.04;
   text-wrap: balance;
@@ -429,7 +429,7 @@ html.home-ready .home-results {
 }
 .wk-stat-note {
   margin-top: 0.3rem;
-  font-size: 0.7rem;
+  font-size: max(12px, 0.75rem);
   font-weight: 600;
   line-height: 1.35;
   color: rgb(28 58 58 / 0.7);
@@ -508,6 +508,12 @@ html.home-ready .home-results {
   .wk-text {
     -webkit-line-clamp: 2;
     margin-top: 0.75rem;
+  }
+}
+/* Phones: a wider, shorter image so the centred case (image + result) fits in one screen */
+@media (max-width: 639px) {
+  .wk-img {
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -601,7 +607,7 @@ html.home-ready .home-results {
 .wk-note {
   max-width: 62rem;
   margin: 0.75rem auto 0;
-  font-size: 0.7rem;
+  font-size: max(12px, 0.75rem);
   line-height: 1.4;
   color: rgb(255 255 255 / 0.45);
 }

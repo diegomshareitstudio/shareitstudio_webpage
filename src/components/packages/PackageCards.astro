@@ -8,13 +8,13 @@ import { socialPackages, formatPrice } from '../../data/socialPackages';
     <article
       id={`plan-${p.id}`}
       class:list={[
-        'relative flex flex-col overflow-hidden rounded-[2rem]',
+        'relative flex flex-col overflow-hidden rounded-[1.75rem] sm:rounded-[2rem]',
         p.featured ? 'bg-brand-green text-white shadow-2xl ring-4 ring-brand-yellow' : 'bg-white text-brand-green shadow-sm ring-1 ring-black/5',
       ]}
       aria-labelledby={`plan-${p.id}-name`}
     >
-      <header class:list={['p-7 pb-6', p.featured ? 'border-b border-white/10' : 'border-b border-black/5']}>
-        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.7rem] font-semibold uppercase tracking-wider">
+      <header class:list={['p-6 pb-5 sm:p-7 sm:pb-6', p.featured ? 'border-b border-white/10' : 'border-b border-black/5']}>
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-wider">
           <span
             class:list={[
               'inline-block rounded-full px-3 py-1',
@@ -29,26 +29,32 @@ import { socialPackages, formatPrice } from '../../data/socialPackages';
           </span>
           <span class:list={[p.featured ? 'text-white/60' : 'text-brand-ink/55']}>{p.posts}</span>
         </p>
-        <h3 id={`plan-${p.id}-name`} class:list={['mt-4 text-3xl font-extrabold', p.featured && 'text-brand-yellow']}>{p.name}</h3>
-        <p class="mt-2 flex items-baseline gap-1">
-          <span class="font-display text-5xl font-extrabold tracking-tight">{formatPrice(p.price)}</span>
+        <h3 id={`plan-${p.id}-name`} class:list={['mt-3 text-[1.65rem] font-extrabold sm:mt-4 sm:text-3xl', p.featured && 'text-brand-yellow']}>{p.name}</h3>
+        <p class="mt-1 flex items-baseline gap-1 sm:mt-2">
+          <span class="font-display text-[2.6rem] font-extrabold tracking-tight sm:text-5xl">{formatPrice(p.price)}</span>
           <span class:list={['whitespace-nowrap text-sm', p.featured ? 'text-white/60' : 'text-brand-ink/55']}>/ mo</span>
         </p>
-        <p class="mt-4 font-display text-lg font-extrabold leading-snug">{p.tagline}</p>
+        <p class="mt-2 font-display text-lg font-extrabold leading-snug sm:mt-4">{p.tagline}</p>
         <p class:list={['mt-2 text-sm', p.featured ? 'text-white/75' : 'text-brand-ink/70']}>
           <strong class:list={[p.featured ? 'text-white' : 'text-brand-green']}>{p.forLabel ?? 'For'}:</strong>{' '}
           {p.forWho}
         </p>
       </header>
 
-      <div class="flex flex-1 flex-col p-7">
+      <div class="flex flex-1 flex-col p-6 sm:p-7">
         <p class:list={['text-xs font-semibold uppercase tracking-wider', p.featured ? 'text-brand-yellow' : 'text-brand-ink/50']}>Included</p>
-        <ul class="mt-3 flex-1 space-y-2.5 text-sm">
+        {/* phones: features flow as chips so a long plan doesn't fill the screen; a checklist from sm up */}
+        <ul class="mt-3 flex flex-1 flex-wrap content-start gap-1.5 text-sm sm:block sm:space-y-2.5">
           {p.features.map((f) => (
-            <li class="flex items-start gap-3">
+            <li
+              class:list={[
+                'flex items-start gap-3 rounded-full px-3 py-1 sm:rounded-none sm:bg-transparent sm:p-0',
+                p.featured ? 'bg-white/10' : 'bg-brand-cream',
+              ]}
+            >
               <span
                 class:list={[
-                  'mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[0.65rem] font-bold',
+                  'mt-0.5 hidden h-5 w-5 shrink-0 place-items-center rounded-full text-[0.65rem] font-bold sm:grid',
                   p.featured ? 'bg-brand-yellow text-brand-green' : 'bg-brand-yellow-soft text-brand-green',
                 ]}
                 aria-hidden="true"

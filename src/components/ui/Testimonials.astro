@@ -210,6 +210,15 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
     justify-self: center;
     width: min(100%, 26rem, (100svh - 15rem) * (var(--ar, 4 / 5)));
   }
+  /* phones: the video is a preview, not the whole screen, so the quote is in view right below it */
+  @media (max-width: 639px) {
+    .tm-featured {
+      gap: 1.5rem;
+    }
+    .tm-featured:not(.tm-featured--wide) > .tm-frame {
+      width: min(58%, 13.5rem);
+    }
+  }
 
   /* ---------- Slideshow (only once the script runs; without it the testimonials stay a list) ---------- */
   .tm-slider.is-ready .tm-featured-list {

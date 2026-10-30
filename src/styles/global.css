@@ -21,6 +21,14 @@
   html {
     scroll-behavior: smooth;
   }
+  /* Phones: every rem-based size (type, spacing, buttons, radii) is 12.5% smaller, so more fits on screen.
+     The smallest text size keeps a 12px floor so it stays readable. */
+  @media (max-width: 639px) {
+    html {
+      font-size: 87.5%;
+      --text-xs: 0.8572rem;
+    }
+  }
   body {
     @apply bg-white font-sans text-brand-ink antialiased;
   }

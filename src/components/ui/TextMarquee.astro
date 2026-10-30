@@ -23,10 +23,10 @@ const copies = [0, 1];
       <ul class="marquee-list">
         {words.map((w, i) => (
           <li class="flex items-center gap-6 pr-6">
-            <span class:list={['font-display text-5xl font-extrabold uppercase tracking-tight md:text-7xl', i % 2 && 'text-outline']}>
+            <span class:list={['font-display text-4xl font-extrabold uppercase tracking-tight sm:text-5xl md:text-7xl', i % 2 && 'text-outline']}>
               {w}
             </span>
-            <span class="star-spin text-4xl md:text-6xl">✦</span>
+            <span class="star-spin text-3xl sm:text-4xl md:text-6xl">✦</span>
           </li>
         ))}
       </ul>

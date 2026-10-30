@@ -144,15 +144,15 @@ const schema = [
   />
 
   <!-- 02 — Two ways to work with us -->
-  <section class="container-x py-16 md:py-24" aria-labelledby="lines-heading">
+  <section class="container-x py-12 md:py-24" aria-labelledby="lines-heading">
     <SectionHeading eyebrow="Two ways to work with us" id="lines-heading" title="Two services. Built around what your brand needs." />
-    <div class="space-y-6">
+    <div class="space-y-4 sm:space-y-6">
       {lines.map((l, i) => {
         const dark = i === 0;
         return (
           <article
             class:list={[
-              'grid items-center gap-8 overflow-hidden rounded-[2rem] p-8 md:p-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12',
+              'grid items-center gap-5 overflow-hidden rounded-[1.75rem] p-5 sm:gap-8 sm:rounded-[2rem] sm:p-8 md:p-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12',
               dark ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
             ]}
             aria-labelledby={`line-${l.num}`}
@@ -161,14 +161,14 @@ const schema = [
               <p class:list={['text-xs font-bold uppercase tracking-[0.18em]', dark ? 'text-brand-yellow' : 'text-brand-orange']}>
                 {l.num} / {l.label}
               </p>
-              <h3 id={`line-${l.num}`} class="mt-4 text-3xl font-extrabold leading-tight md:text-[2.1rem]">{l.title}</h3>
-              <p class:list={['mt-4', dark ? 'text-white/80' : 'text-brand-ink/75']}>{l.text}</p>
+              <h3 id={`line-${l.num}`} class="mt-3 text-[1.5rem] font-extrabold leading-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">{l.title}</h3>
+              <p class:list={['mt-3 text-[0.9375rem] leading-relaxed sm:mt-4 sm:text-base', dark ? 'text-white/80' : 'text-brand-ink/75']}>{l.text}</p>
               <p class:list={['mt-3 text-sm font-semibold', dark ? 'text-white' : 'text-brand-green']}>{l.note}</p>
-              <p class:list={['mt-5 inline-flex flex-wrap gap-x-2 rounded-2xl px-4 py-2 text-sm', dark ? 'bg-white/10 text-white/85' : 'bg-white text-brand-ink/75']}>
+              <p class:list={['mt-4 inline-flex flex-wrap gap-x-2 rounded-2xl px-4 py-2 text-sm sm:mt-5', dark ? 'bg-white/10 text-white/85' : 'bg-white text-brand-ink/75']}>
                 <strong class:list={[dark ? 'text-brand-yellow' : 'text-brand-green']}>How it works:</strong>
                 {l.how}
               </p>
-              <div class="mt-7">
+              <div class="mt-6 sm:mt-7">
                 <a href={l.href} class:list={[dark ? 'btn-primary' : 'btn-dark']}>{l.cta}</a>
               </div>
             </div>
@@ -179,31 +179,31 @@ const schema = [
                   {socialPreview.map((kind, k) => (
                     <li
                       class:list={[
-                        'grid aspect-[9/16] place-items-center rounded-[1.25rem] border-2 border-dashed border-white/20 bg-white/5 text-xs font-medium text-white/50 transition group-hover:border-brand-yellow/60',
-                        k === 1 && 'translate-y-6',
+                        'grid aspect-square place-items-center rounded-[1rem] border-2 border-dashed sm:aspect-[9/16] sm:rounded-[1.25rem] border-white/20 bg-white/5 text-xs font-medium text-white/50 transition group-hover:border-brand-yellow/60',
+                        k === 1 && 'sm:translate-y-6',
                       ]}
                     >
                       {kind}
                     </li>
                   ))}
                 </ul>
-                <span class="mt-10 inline-block text-sm font-semibold text-white/85 transition group-hover:text-brand-yellow">
+                <span class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-white/85 sm:mt-10 transition group-hover:text-brand-yellow">
                   See Reels and carousels →
                 </span>
               </a>
             ) : (
               <a href={l.portfolio} class="group block lg:order-1" aria-label="See Amazon listing transformations">
                 <div class="grid grid-cols-2 gap-3">
-                  <figure>
-                    <Image src={oldListing} alt="Super Ninja Amazon listing images before the redesign" width={435} class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2" />
-                    <figcaption class="mt-2 text-xs font-semibold uppercase tracking-wider text-brand-ink/50">Before</figcaption>
+                  <figure class="relative">
+                    <Image src={oldListing} alt="Super Ninja Amazon listing images before the redesign" width={435} class="aspect-[4/3] w-full rounded-[1rem] bg-white object-contain p-1.5 sm:aspect-square sm:rounded-[1.25rem] sm:p-2" />
+                    <figcaption class="absolute left-2 top-2 rounded-full bg-brand-green/85 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-white sm:static sm:mt-2 sm:bg-transparent sm:p-0 sm:text-brand-ink/50">Before</figcaption>
                   </figure>
-                  <figure>
-                    <Image src={newListing} alt="Super Ninja Amazon listing images after the redesign" width={436} class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2 shadow-lg ring-2 ring-brand-yellow transition group-hover:-translate-y-1" />
-                    <figcaption class="mt-2 text-xs font-semibold uppercase tracking-wider text-brand-orange">After</figcaption>
+                  <figure class="relative">
+                    <Image src={newListing} alt="Super Ninja Amazon listing images after the redesign" width={436} class="aspect-[4/3] w-full rounded-[1rem] bg-white object-contain p-1.5 shadow-lg sm:aspect-square sm:rounded-[1.25rem] sm:p-2 ring-2 ring-brand-yellow transition group-hover:-translate-y-1" />
+                    <figcaption class="absolute left-2 top-2 rounded-full bg-brand-yellow px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-brand-green sm:static sm:mt-2 sm:bg-transparent sm:p-0 sm:text-brand-orange">After</figcaption>
                   </figure>
                 </div>
-                <span class="mt-4 inline-block text-sm font-semibold text-brand-green transition group-hover:text-brand-orange">
+                <span class="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand-green transition group-hover:text-brand-orange">
                   See Amazon listing transformations →
                 </span>
               </a>
@@ -215,7 +215,7 @@ const schema = [
   </section>
 
   <!-- 03 — Need one specific deliverable? (part of the Amazon line, not a third business line) -->
-  <section id="amazon-creative-services" class="scroll-mt-24 bg-brand-cream py-16 md:py-24" aria-labelledby="creative-heading">
+  <section id="amazon-creative-services" class="scroll-mt-24 bg-brand-cream py-12 md:py-24" aria-labelledby="creative-heading">
     <div class="container-x">
       <SectionHeading
         eyebrow="Need one specific deliverable?"
@@ -226,12 +226,12 @@ const schema = [
       <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {creative.map((c) => (
           <li class="flex">
-            <article class="flex w-full flex-col rounded-[1.75rem] bg-white p-7 shadow-sm">
+            <article class="flex w-full flex-col rounded-[1.5rem] bg-white p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
               <h3 class="text-xl font-extrabold text-brand-green">{c.service.title}</h3>
               <p class="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-orange">Best when</p>
-              <p class="mt-1.5 text-sm leading-relaxed text-brand-ink/75">{c.bestWhen}</p>
+              <p class="mt-1.5 text-[0.9375rem] leading-relaxed text-brand-ink/75 sm:text-sm">{c.bestWhen}</p>
               <p class="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">What you get</p>
-              <p class="mt-1.5 flex-1 text-sm leading-relaxed text-brand-ink/75">{c.get}</p>
+              <p class="mt-1.5 flex-1 text-[0.9375rem] leading-relaxed text-brand-ink/75 sm:text-sm">{c.get}</p>
               <a
                 href={c.service.href}
                 class="mt-5 inline-flex min-h-[44px] items-center self-start text-sm font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
@@ -242,7 +242,7 @@ const schema = [
           </li>
         ))}
         <li class="flex md:col-span-2 lg:col-span-2">
-          <aside class="flex w-full flex-col justify-center rounded-[1.75rem] bg-brand-green p-7 text-white md:p-9" aria-labelledby="not-sure-heading">
+          <aside class="flex w-full flex-col justify-center rounded-[1.75rem] bg-brand-green p-6 text-white sm:p-7 md:p-9" aria-labelledby="not-sure-heading">
             <h3 id="not-sure-heading" class="text-2xl font-extrabold">Not sure which service you need?</h3>
             <p class="mt-3 max-w-xl text-white/75">
               Tell us about your product and the challenges you’re facing. We’ll help you identify which creative services are worth exploring.
@@ -255,7 +255,7 @@ const schema = [
   </section>
 
   <!-- 04 — Why choose Share It Studio? -->
-  <section class="container-x py-16 md:py-24" aria-labelledby="why-heading">
+  <section class="container-x py-12 md:py-24" aria-labelledby="why-heading">
     <SectionHeading
       eyebrow="Why choose Share It Studio?"
       id="why-heading"
@@ -263,8 +263,8 @@ const schema = [
     />
     <ol class="grid gap-4 md:grid-cols-3">
       {reasons.map((r, i) => (
-        <li class="rounded-[1.75rem] border border-black/5 p-7 shadow-sm">
-          <span class="font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <li class="rounded-[1.5rem] border border-black/5 p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
+          <span class="font-display text-3xl font-extrabold text-brand-yellow sm:text-4xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="mt-3 text-xl font-extrabold text-brand-green">{r.t}</h3>
           <p class="mt-2 text-brand-ink/70">{r.d}</p>
         </li>
@@ -273,18 +273,18 @@ const schema = [
   </section>
 
   <!-- 05 — Brands we've worked with -->
-  <section class="bg-brand-cream py-14 md:py-20" aria-labelledby="brands-heading">
+  <section class="bg-brand-cream py-12 md:py-20" aria-labelledby="brands-heading">
     <div class="container-x text-center">
       <p class="eyebrow justify-center">Brands we’ve worked with</p>
-      <h2 id="brands-heading" class="mt-4 text-3xl font-extrabold text-brand-green md:text-4xl">In good company.</h2>
-      <ul class="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-4 md:grid-cols-4">
+      <h2 id="brands-heading" class="mt-4 text-[1.7rem] font-extrabold text-brand-green sm:text-3xl md:text-4xl">In good company.</h2>
+      <ul class="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-3 sm:mt-10 sm:gap-4 md:grid-cols-4">
         {logos.map((l) => (
-          <li class="grid h-24 place-items-center rounded-[1.25rem] bg-white px-6">
+          <li class="grid h-20 place-items-center rounded-[1.25rem] bg-white px-5 sm:h-24 sm:px-6">
             <Image src={l.src} alt={`${l.alt} logo`} height={80} densities={[1, 2]} class="max-h-10 w-auto object-contain opacity-80" />
           </li>
         ))}
         {Array.from({ length: logoSlots }, () => (
-          <li class="placeholder h-24 rounded-[1.25rem] text-xs" aria-hidden="true">Client logo</li>
+          <li class="placeholder h-20 rounded-[1.25rem] text-xs sm:h-24" aria-hidden="true">Client logo</li>
         ))}
       </ul>
     </div>

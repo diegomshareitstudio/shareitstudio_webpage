@@ -263,23 +263,23 @@ const faqs: Faq[] = [
   <!-- 02 — Results, up front (heading lives in scene B above) -->
   <section class="home-results" aria-labelledby="results-heading">
     <div class="container-x">
-      <ul class="grid gap-5 md:grid-cols-2">
+      <ul class="grid gap-4 sm:gap-5 md:grid-cols-2">
         {results.map((r) => (
           <li class="flex">
             <article
               class:list={[
-                'flex w-full flex-col rounded-[2rem] p-8 md:p-10',
+                'flex w-full flex-col rounded-[1.75rem] p-6 sm:rounded-[2rem] sm:p-8 md:p-10',
                 r.tone === 'dark' ? 'bg-brand-green text-white' : 'bg-brand-yellow text-brand-green',
               ]}
             >
               <p class="text-xs font-semibold uppercase tracking-[0.18em] opacity-70">{r.label}</p>
-              <p data-count class="mt-6 font-display text-7xl font-extrabold leading-none md:text-8xl">{r.stat}</p>
-              <p class="mt-2 text-2xl font-extrabold">{r.statLabel}</p>
+              <p data-count class="mt-4 font-display text-[3.25rem] font-extrabold leading-none sm:mt-6 sm:text-7xl md:text-8xl">{r.stat}</p>
+              <p class="mt-2 text-xl font-extrabold sm:text-2xl">{r.statLabel}</p>
               <p class:list={['mt-2 text-sm font-semibold', r.tone === 'dark' ? 'text-brand-yellow' : 'text-brand-green/70']}>
                 {r.detail}
               </p>
-              <p class:list={['mt-5 flex-1', r.tone === 'dark' ? 'text-white/75' : 'text-brand-green/80']}>{r.text}</p>
-              <a href={r.href} class:list={['mt-7 self-start', r.tone === 'dark' ? 'btn-primary' : 'btn-dark']}>{r.cta}</a>
+              <p class:list={['mt-4 flex-1 text-[0.9375rem] leading-relaxed sm:mt-5 sm:text-base', r.tone === 'dark' ? 'text-white/75' : 'text-brand-green/80']}>{r.text}</p>
+              <a href={r.href} class:list={['mt-6 self-start sm:mt-7', r.tone === 'dark' ? 'btn-primary' : 'btn-dark']}>{r.cta}</a>
             </article>
           </li>
         ))}
@@ -292,7 +292,7 @@ const faqs: Faq[] = [
   </section>
 
   <!-- 03 — Two ways we help -->
-  <section class="home-services py-16 md:py-24" aria-labelledby="services-heading" id="services">
+  <section class="home-services py-12 md:py-24" aria-labelledby="services-heading" id="services">
     <!-- Exit of the results surface: the spotlight's enlarged lower tip, retreating as services scrolls in -->
     <svg class="spot-exit" data-spot-exit viewBox="0 0 1440 730" aria-hidden="true" focusable="false">
       <path d="M454 -1299.6A860 860 0 1 1 1851.6 -375.6L851.6 572A540 540 0 0 1 -26 -8Z"></path>
@@ -303,15 +303,15 @@ const faqs: Faq[] = [
         id="services-heading"
         title="Different needs. Creative built around the people you’re trying to reach."
       />
-      <ul class="grid gap-5 md:grid-cols-2">
+      <ul class="grid gap-4 sm:gap-5 md:grid-cols-2">
         {services.map((s) => (
           <li class="flex">
-            <article class="flex w-full flex-col rounded-[2rem] bg-brand-cream p-8 md:p-10">
+            <article class="flex w-full flex-col rounded-[1.75rem] bg-brand-cream p-6 sm:rounded-[2rem] sm:p-8 md:p-10">
               <p class="eyebrow">{s.label}</p>
-              <h3 class="mt-5 text-3xl font-extrabold leading-tight text-brand-green">{s.title}</h3>
-              <p class="mt-4 text-brand-ink/70">{s.text}</p>
+              <h3 class="mt-4 text-[1.5rem] font-extrabold leading-tight text-brand-green sm:mt-5 sm:text-3xl">{s.title}</h3>
+              <p class="mt-3 text-[0.9375rem] leading-relaxed text-brand-ink/70 sm:mt-4 sm:text-base">{s.text}</p>
               <p class="mt-4 flex-1 text-sm font-semibold text-brand-green">{s.note}</p>
-              <a href={s.href} class="btn-dark mt-7 self-start">{s.cta}</a>
+              <a href={s.href} class="btn-dark mt-6 self-start sm:mt-7">{s.cta}</a>
             </article>
           </li>
         ))}
@@ -430,26 +430,26 @@ const faqs: Faq[] = [
   </section>
 
   <!-- 06 — How we work -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="how-heading">
-    <div class="container-x grid gap-12 md:grid-cols-2">
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="how-heading">
+    <div class="container-x grid gap-8 md:grid-cols-2 md:gap-12">
       <div class="md:sticky md:top-28 md:self-start">
         <p class="eyebrow mb-4">How we work</p>
-        <h2 id="how-heading" class="text-4xl font-extrabold leading-tight text-brand-green md:text-5xl">
+        <h2 id="how-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl md:text-5xl">
           From the right question to the <span class="marker">right creative.</span>
         </h2>
-        <p class="scrub-text mt-5 text-lg text-brand-ink/65">
+        <p class="scrub-text mt-4 text-base text-brand-ink/65 sm:mt-5 sm:text-lg">
           You know what we’re creating, why it belongs in the project, and what to expect from the agreed scope.
         </p>
       </div>
-      <ol class="stack-cards space-y-4">
+      <ol class="stack-cards space-y-3 sm:space-y-4">
         {steps.map((s, i) => (
-          <li class="flex gap-5 rounded-[1.75rem] bg-white p-6 md:min-h-[11rem]" style={`--i:${i}`}>
-            <span class="step-num font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">
+          <li class="flex gap-4 rounded-[1.5rem] bg-white p-5 sm:gap-5 sm:rounded-[1.75rem] sm:p-6 md:min-h-[11rem]" style={`--i:${i}`}>
+            <span class="step-num font-display text-3xl font-extrabold text-brand-yellow sm:text-4xl" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
             </span>
             <div>
-              <h3 class="text-xl font-extrabold text-brand-green">{s.t}</h3>
-              <p class="mt-1 text-brand-ink/65">{s.d}</p>
+              <h3 class="text-lg font-extrabold text-brand-green sm:text-xl">{s.t}</h3>
+              <p class="mt-1 text-[0.9375rem] text-brand-ink/65 sm:text-base">{s.d}</p>
             </div>
           </li>
         ))}
@@ -458,19 +458,19 @@ const faqs: Faq[] = [
   </section>
 
   <!-- 07 — Resources -->
-  <section class="bg-brand-cream py-16 md:py-24" aria-labelledby="resources-heading">
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="resources-heading">
     <div class="container-x">
       <SectionHeading
         eyebrow="Resources"
         id="resources-heading"
         title="Useful answers, whether or not we’re working together yet."
       />
-      <ul class="grid gap-6 md:grid-cols-3">
+      <ul class="grid gap-3 sm:gap-6 md:grid-cols-3">
         {resources.map((r) => (
           <li class="flex">
             <a
               href={postHref(r.post)}
-              class="group flex w-full flex-col rounded-[2rem] bg-white p-3 transition hover:bg-brand-yellow-soft"
+              class="group flex w-full items-center gap-4 rounded-[1.5rem] bg-white p-3 transition hover:bg-brand-yellow-soft sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[2rem]"
             >
               {r.image ? (
                 <Image
@@ -478,30 +478,30 @@ const faqs: Faq[] = [
                   alt=""
                   widths={[400, 768]}
                   sizes="(min-width: 768px) 24rem, 100vw"
-                  class="aspect-[16/9] w-full rounded-[1.6rem] object-cover"
+                  class="aspect-square w-24 shrink-0 rounded-[1rem] object-cover sm:aspect-[16/9] sm:w-full sm:rounded-[1.6rem]"
                 />
               ) : (
-                <div class="media-fallback aspect-[16/9] rounded-[1.6rem]"><span>Article image</span></div>
+                <div class="media-fallback aspect-square w-24 shrink-0 rounded-[1rem] sm:aspect-[16/9] sm:w-full sm:rounded-[1.6rem]"><span class="hidden sm:inline">Article image</span></div>
               )}
-              <div class="flex flex-1 flex-col p-4">
-                <h3 class="mt-2 text-xl font-extrabold leading-snug text-brand-green">{r.title}</h3>
-                <p class="mt-2 flex-1 text-sm text-brand-ink/65">{r.text}</p>
-                <span class="mt-5 text-sm font-semibold text-brand-green">{r.cta} →</span>
+              <div class="flex min-w-0 flex-1 flex-col py-1 pr-1 sm:p-4">
+                <h3 class="text-[1.0625rem] font-extrabold leading-snug text-brand-green sm:mt-2 sm:text-xl">{r.title}</h3>
+                <p class="mt-1 flex-1 text-sm text-brand-ink/65 sm:mt-2">{r.text}</p>
+                <span class="mt-2 text-sm font-semibold sm:mt-5 text-brand-green">{r.cta} →</span>
               </div>
             </a>
           </li>
         ))}
       </ul>
-      <a href="/blog" class="btn-outline mt-8">Explore All Resources</a>
+      <a href="/blog" class="btn-outline mt-6 sm:mt-8">Explore All Resources</a>
     </div>
   </section>
 
   <!-- 08 — FAQ (no FAQPage markup: not needed for eligibility) -->
-  <section class="py-16 md:py-24" aria-labelledby="faq-heading">
-    <div class="container-x grid gap-12 md:grid-cols-[1fr_1.6fr]">
+  <section class="py-12 md:py-24" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-8 md:grid-cols-[1fr_1.6fr] md:gap-12">
       <div>
         <p class="eyebrow mb-4">FAQ</p>
-        <h2 id="faq-heading" class="text-4xl font-extrabold leading-tight text-brand-green">
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">
           A few things worth knowing before we talk.
         </h2>
       </div>
