@@ -1,0 +1,122 @@
+---
+/**
+ * Our Work: the single hub for client work. Combines the former Portfolio and Case Studies hubs.
+ * Sections: Hero → Case-study directory → Creative work by format → Final CTA.
+ * Cards describe the work only; no metrics until each is evidence-approved (baseline, period, source).
+ * TODO: client publication permission and assets are PENDING per case; replace format tiles with approved work.
+ */
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import { getCaseStudy, caseStudyHref, listedCaseStudies } from '../data/caseStudies';
+import { itemListSchema } from '../lib/schema';
+
+// super-ninja keeps its existing legacy slug
+const order = ['yungprime', 'pink-miracle', 'super-ninja', 'paper2eat'];
+const cases = order.map(getCaseStudy).filter((c) => listedCaseStudies.includes(c));
+
+const formats = [
+  { name: 'A+ Content', text: 'Desktop and mobile A+ modules for Amazon product pages.' },
+  { name: 'Hero Images', text: 'Main listing images designed for Amazon search results.' },
+  { name: 'Amazon Infographics', text: 'Listing images that explain features and benefits.' },
+  { name: 'Lifestyle Photography', text: 'Product photography shown in use.' },
+  { name: 'Video Production', text: 'Listing videos and Sponsored Brands video ads.' },
+  { name: 'Social Media', text: 'Reels, carousels and social content for ecommerce brands.' },
+  { name: 'Other Services', text: 'Other Amazon creative work, such as Brand Story and Storefront design.' },
+];
+
+const breadcrumbs = [{ name: 'Our Work', path: '/our-work' }];
+const schema = [
+  itemListSchema(
+    '/our-work',
+    'Share It Studio case studies',
+    cases.map((c) => ({ name: `${c.client} case study`, path: caseStudyHref(c) })),
+  ),
+];
+---
+
+<Layout
+  title="Our Work | Amazon & Ecommerce Case Studies and Creative | Share It Studio"
+  description="Explore Share It Studio’s work: client case studies and Amazon and ecommerce creative, from A+ Content and hero images to product photography, video and social media."
+  breadcrumbs={breadcrumbs}
+  pageType="CollectionPage"
+  schema={schema}
+>
+  <!-- 01 — Hero -->
+  <PageHero
+    eyebrow="Share It Studio"
+    title="Our Work"
+    highlight="Work"
+    subtitle="Real client projects and the creative behind them. Read the challenge, the work Share It Studio delivered and the results we can document, then browse our work by format."
+    ctaLabel="Explore Case Studies"
+    ctaHref="#case-studies"
+    secondaryLabel="View Services"
+    secondaryHref="/services"
+  />
+
+  <!-- 02 — Case-study directory -->
+  <section id="case-studies" class="container-x scroll-mt-24 py-16 md:py-20" aria-labelledby="cases-heading">
+    <SectionHeading id="cases-heading" title="Case Studies" align="left" />
+    <ul class="grid gap-6 md:grid-cols-2">
+      {cases.map((c) => (
+        <li class="flex">
+          <a
+            href={caseStudyHref(c)}
+            class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3 transition hover:-translate-y-1 hover:shadow-xl"
+          >
+            {c.image ? (
+              <div class="grid aspect-[16/10] place-items-center overflow-hidden rounded-[1.6rem] bg-white p-4">
+                <Image src={c.image.src} alt={c.image.alt} class="max-h-full w-auto object-contain" loading="lazy" />
+              </div>
+            ) : (
+              <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-white">{c.client} project visual</div>
+            )}
+            <div class="flex flex-1 flex-col p-5">
+              <p class="text-xs font-semibold uppercase tracking-wider text-brand-orange">{c.niche}</p>
+              <h3 class="mt-2 text-3xl font-extrabold text-brand-green">{c.client}</h3>
+              <p class="mt-2 flex-1 text-brand-ink/70">{c.focus}</p>
+              <span class="mt-5 font-semibold text-brand-green transition group-hover:translate-x-1">
+                Read Case Study →
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- 03 — Creative work by format -->
+  <section id="creative-work" class="bg-brand-cream py-16 md:py-20" aria-labelledby="creative-heading">
+    <div class="container-x">
+      <SectionHeading id="creative-heading" title="Creative Work by Format" align="left" />
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {formats.map((f) => (
+          <li class="flex">
+            <div class="flex w-full flex-col overflow-hidden rounded-[2rem] bg-white p-3">
+              <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-brand-cream">{f.name} preview</div>
+              <div class="p-5">
+                <h3 class="text-xl font-extrabold text-brand-green">{f.name}</h3>
+                <p class="mt-1 text-sm text-brand-ink/70">{f.text}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-6 text-xs text-brand-ink/50">
+        Creative samples show our work. They are not measured results; see the case studies above for documented outcomes.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 — Final CTA -->
+  <CtaBanner
+    title="Let’s Talk About Your Project"
+    text="Book a call to discuss your own brand and goals. Results from other clients are not a forecast for yours."
+    ctaLabel="Book a Call"
+    ctaHref="/book-a-call"
+    altLabel="Explore Services"
+    altHref="/services"
+  />
+</Layout>

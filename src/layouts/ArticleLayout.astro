@@ -43,7 +43,7 @@ const stats = cs?.stats ?? [];
 const pills = isCase ? [cs!.client, cs!.niche, ...tags] : [post!.category, `${post!.readTime} read`, ...tags];
 const path = isCase ? caseStudyHref(cs!) : postHref(post!);
 
-const parent = isCase ? { name: 'Case Studies', path: '/case-studies' } : { name: 'Resources', path: '/blog' };
+const parent = isCase ? { name: 'Our Work', path: '/our-work' } : { name: 'Resources', path: '/blog' };
 const breadcrumbs = [parent, { name: isCase ? `${cs!.client} Case Study` : post!.title, path }];
 
 const schema = [

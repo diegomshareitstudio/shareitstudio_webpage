@@ -46,7 +46,7 @@ export const faqs: Faq[] = [
   },
   {
     q: 'Can you provide examples of your past work for Amazon sellers?',
-    a: 'Absolutely! You can look in our portfolio. There you will find examples of our work.',
+    a: 'Absolutely! You can look in our Our Work page. There you will find examples of our work.',
   },
   {
     q: 'Will I have access to performance reports and analytics?',

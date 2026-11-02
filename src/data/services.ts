@@ -48,7 +48,7 @@ export const services: ServiceItem[] = [
     tags: ['4 monthly plans', 'Reels & TikToks', 'From $999/mo'],
     priority: 'P1',
     line: 'social',
-    portfolio: '/portfolio/social-media',
+    portfolio: '/our-work',
   },
   {
     slug: 'amazon-listing-optimization',
@@ -58,7 +58,7 @@ export const services: ServiceItem[] = [
     tags: ['Listing images', 'A+ Content', 'Videos', 'Copy & SEO'],
     priority: 'P1',
     line: 'amazon',
-    portfolio: '/portfolio',
+    portfolio: '/our-work',
   },
   {
     slug: 'amazon-a-plus-content',
@@ -68,7 +68,7 @@ export const services: ServiceItem[] = [
     tags: ['A+ Content', 'Premium A+', 'Comparison charts'],
     priority: 'P1',
     line: 'amazon',
-    portfolio: '/portfolio/a-plus-content',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-a-plus-content.astro), so no `page` here
     faqs: [
       {
@@ -114,7 +114,7 @@ export const services: ServiceItem[] = [
     tags: ['Hero images', 'Infographics', 'Lifestyles'],
     priority: 'P1',
     line: 'amazon',
-    portfolio: '/portfolio/hero-images',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-listing-images.astro), so no `page` here
     faqs: [
       {
@@ -157,7 +157,7 @@ export const services: ServiceItem[] = [
     tags: ['Studio', 'Lifestyle', 'White background'],
     priority: 'P2',
     line: 'amazon',
-    portfolio: '/portfolio/lifestyle-photography',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-product-photography.astro), so no `page` here
     faqs: [
       {
@@ -192,7 +192,7 @@ export const services: ServiceItem[] = [
     tags: ['Listing videos', 'Sponsored Ads', 'UGC'],
     priority: 'P2',
     line: 'amazon',
-    portfolio: '/portfolio/video-production',
+    portfolio: '/our-work',
     page: {
       metaTitle: 'Amazon Product Video Production | Share It Studio',
       description:
@@ -232,7 +232,7 @@ export const services: ServiceItem[] = [
     tags: ['Amazon Stores', 'Category pages'],
     priority: 'P2',
     line: 'amazon',
-    portfolio: '/portfolio/other-services',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-storefront-design.astro), so no `page` here
     faqs: [
       {
@@ -279,7 +279,7 @@ export const services: ServiceItem[] = [
     tags: ['Brand Story', 'Cross-sell'],
     priority: 'P2',
     line: 'amazon',
-    portfolio: '/portfolio/other-services',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-brand-story-design.astro), so no `page` here
     faqs: [
       {
@@ -325,7 +325,7 @@ export const services: ServiceItem[] = [
     tags: ['Keyword research', 'Titles & bullets', 'Backend terms'],
     priority: 'P2',
     line: 'amazon',
-    portfolio: '/portfolio',
+    portfolio: '/our-work',
     // Hand-built page (src/pages/services/amazon-listing-copywriting.astro), so no `page` here
     faqs: [
       {

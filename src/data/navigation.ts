@@ -24,17 +24,6 @@ export const servicesMenu: NavLink[] = [
   },
 ];
 
-/** Portfolio categories — also used for "Explore more of our work" on portfolio pages. */
-export const portfolioNav: NavLink[] = [
-  { label: 'A+ Content', href: '/portfolio/a-plus-content' },
-  { label: 'Hero Images', href: '/portfolio/hero-images' },
-  { label: 'Amazon Infographics', href: '/portfolio/amazon-infographics' },
-  { label: 'Lifestyle Photography', href: '/portfolio/lifestyle-photography' },
-  { label: 'Video Production', href: '/portfolio/video-production' },
-  { label: 'Social Media', href: '/portfolio/social-media' },
-  { label: 'Other Services', href: '/portfolio/other-services' },
-];
-
 export const mainNav: NavLink[] = [
   {
     label: 'Home',
@@ -59,12 +48,7 @@ export const mainNav: NavLink[] = [
   },
   {
     label: 'Our Work',
-    href: '/portfolio',
-    children: [
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Case Studies', href: '/case-studies' },
-      ...portfolioNav,
-    ],
+    href: '/our-work',
   },
   {
     label: 'Resources',
@@ -102,14 +86,9 @@ export const footerNav: NavLink[] = [
     ],
   },
   {
-    label: 'Portfolio',
-    href: '/portfolio',
-    children: [
-      { label: 'Case Studies', href: '/case-studies' },
-      { label: 'A+ Content', href: '/portfolio/a-plus-content' },
-      { label: 'Video Production', href: '/portfolio/video-production' },
-      { label: 'Social Media', href: '/portfolio/social-media' },
-    ],
+    label: 'Our Work',
+    href: '/our-work',
+    children: [{ label: 'Case Studies & Portfolio', href: '/our-work' }],
   },
   {
     label: 'Resources',
