@@ -1,0 +1,224 @@
+---
+/**
+ * Amazon Product Photography (copy V1): P2 commercial landing page for "amazon product photography services".
+ * Hero → Selected work → What we photograph → How we work → FAQ → Final CTA.
+ * Hiring physical photography of the real product only: not an AI image offer and not infographic design (that is
+ * /services/amazon-listing-images, linked from How we work and the FAQ). Image rules live in the blog guides.
+ * Shorter and more visual than /services/amazon-listing-optimization: no methodology, case studies or sales claims.
+ */
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import { getService } from '../../data/services';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+const path = '/services/amazon-product-photography';
+const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
+const service = getService('amazon-product-photography');
+const faqs = service.faqs!;
+
+// 02 — three approved, real photos from completed projects, captioned with the buyer question each one answers.
+// TODO: real photos with permission (descriptive file names + accurate alt text). Never proposed shots from consultations.
+const work = [
+  { kind: 'Clean studio photography', question: 'What does it actually look like?' },
+  { kind: 'Material & component close-up', question: 'Is the finish as good as it looks?' },
+  { kind: 'Lifestyle & scale', question: 'How big is it in my hands or home?' },
+];
+
+// 03 — what we photograph
+const types = [
+  {
+    t: 'Studio & White-Background Photography',
+    d: 'Clear, accurate photographs that show the product itself, including views suitable for Amazon’s main-image requirements when specified in the shoot.',
+  },
+  {
+    t: 'Product Details & Materials',
+    d: 'Close-ups that reveal finishes, textures, hardware, attachments, and other details that can be hard to judge in a standard product photo.',
+  },
+  {
+    t: 'Lifestyle & In-Use Photography',
+    d: 'Real scenes that help shoppers picture where the product belongs and how it is used.',
+  },
+  {
+    t: 'Scale & Model Photography',
+    d: 'People, hands, or other suitable size references that help customers judge proportions and practical use. Talent, styling, and locations are planned and quoted when needed.',
+  },
+];
+
+// 04 — how we work
+const steps = [
+  {
+    t: 'Understand what needs to be shown',
+    d: 'We review your product, existing photos, reference images, and the questions shoppers may still have. We identify the materials, colors, angles, and features the photos must represent accurately.',
+  },
+  {
+    t: 'Plan the shoot',
+    d: 'We agree on the shot list and practical needs — such as product samples, backgrounds, props, models, locations, and retouching — before production. Sample shipping and handling are confirmed for your project.',
+  },
+  {
+    t: 'Photograph, review & deliver',
+    d: 'We photograph the real product, complete the agreed post-production work without changing its essential attributes, and deliver the approved image files in the formats covered by your scope.',
+  },
+];
+
+// Related pages: parent offer, the design service photos feed into, and the guides that own the informational intent
+const related = [
+  { label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization', primary: true },
+  { label: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+  { label: 'Amazon Image Requirements', href: '/blog/amazon-images-requirements' },
+  { label: 'Amazon Product Image Best Practices', href: '/blog/amazon-product-images-best-practices' },
+];
+
+const description =
+  'Professional Amazon product photography for real products: studio shots, close-ups, lifestyle images and model photography. Request a custom quote.';
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: 'Amazon Listing Optimization', path: '/services/amazon-listing-optimization' },
+  { name: 'Amazon Product Photography', path },
+];
+const schema = [
+  serviceSchema({
+    path,
+    name: 'Amazon Product Photography Services',
+    serviceType: 'Amazon product photography',
+    description:
+      'Photography of the real product for Amazon listings: studio and white-background shots, detail and material close-ups, lifestyle and in-use scenes, and scale and model photography.',
+  }),
+  faqSchema(path, faqs),
+];
+---
+
+<Layout title="Amazon Product Photography Services | Share It Studio" description={description} breadcrumbs={breadcrumbs} schema={schema}>
+  <!-- 01 — Hero -->
+  <PageHero
+    eyebrow="Amazon product photography services"
+    title="Amazon Product Photography That Makes Quality Easy to See"
+    highlight="Quality Easy to See"
+    subtitle={`Your product may look better in person than it does online. The right photographs help shoppers see the materials, details, scale, and real-world use they can’t inspect through a screen.<span class="mt-3 block">We create professional studio and lifestyle product photos for Amazon sellers, with real product photography planned around what buyers need to see.</span><span class="mt-3 block text-sm font-semibold text-brand-green">Need only a photo shoot? You don’t have to purchase a complete listing optimization project.</span>`}
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    secondaryLabel="See Our Photography Work"
+    secondaryHref="#photography-work"
+  >
+    <p class="mt-4 text-sm text-brand-ink/60">Tell us about your product and the photographs you need.</p>
+
+    <!-- TODO: an approved real product photo paired with a close-up of texture, finishing or a functional detail (no renders) -->
+    <div slot="visual" class="relative pb-8" aria-hidden="true">
+      <div class="placeholder aspect-[4/3] border-solid border-brand-green/10 bg-white shadow-xl">Product photo</div>
+      <div class="placeholder absolute -bottom-2 -right-2 aspect-square w-2/5 rotate-3 border-solid border-brand-yellow bg-brand-yellow-soft text-xs shadow-2xl sm:-right-6">
+        Detail close-up
+      </div>
+    </div>
+  </PageHero>
+
+  <!-- 02 — Selected product photography work -->
+  <section id="photography-work" class="container-x scroll-mt-24 py-12 md:py-24" aria-labelledby="work-heading">
+    <SectionHeading
+      eyebrow="Selected product photography work"
+      id="work-heading"
+      title="Show the details shoppers would notice in person."
+      text="A premium finish can look ordinary under the wrong light. A small component can disappear in a wide shot. And without a size reference, buyers may struggle to picture the product in their hands or home."
+    />
+    <ul class="grid gap-6 sm:grid-cols-3">
+      {work.map((w, i) => (
+        <li>
+          <figure>
+            <div class:list={['placeholder text-xs', i === 1 ? 'aspect-square bg-brand-yellow-soft' : 'aspect-[4/5]']}>{w.kind}</div>
+            <figcaption class="mt-3">
+              <span class="block text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">{w.kind}</span>
+              <span class="mt-1 block font-display text-lg font-extrabold leading-snug text-brand-green">“{w.question}”</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-10 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl">
+      We plan photographs around the details that make your product easier to judge — <span class="marker">not just a picture that looks polished.</span>
+    </p>
+    <a href={service.portfolio} class="mt-6 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+      View More Product Photography Work →
+    </a>
+  </section>
+
+  <!-- 03 — What we photograph -->
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="photograph-heading">
+    <div class="container-x">
+      <SectionHeading eyebrow="What we photograph" id="photograph-heading" title="The right shots for the questions your buyers have." align="left" />
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {types.map((t) => (
+          <li class="rounded-[1.5rem] bg-white p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
+            <h3 class="text-lg font-extrabold leading-snug text-brand-green sm:text-xl">{t.t}</h3>
+            <p class="mt-2 text-[0.9375rem] leading-relaxed text-brand-ink/70 sm:text-base">{t.d}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-3xl text-sm leading-relaxed text-brand-ink/60">
+        We recommend the shot types your product needs. Retouching, props, models, and the number of final images are defined in your quote — not automatically included in every shoot.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 — How we work -->
+  <section class="container-x py-12 md:py-24" aria-labelledby="process-heading">
+    <SectionHeading eyebrow="How we work" id="process-heading" title="Real products. The details that matter. A clear shoot plan." align="left" />
+    <ol class="grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-brand-green/20">
+      {steps.map((s, i) => (
+        <li class="md:px-8 md:first:pl-0 md:last:pr-0">
+          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green">{s.t}</h3>
+          <p class="mt-2 text-brand-ink/70">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
+      Need finished infographics or an Amazon image gallery designed around the photos? We can add
+      <a href="/services/amazon-listing-images" class="font-bold text-brand-green underline underline-offset-4">Amazon Listing Images</a>
+      as a separate service rather than assuming every photography project includes graphic design.
+    </p>
+  </section>
+
+  <!-- 05 — Frequently asked questions -->
+  <section class="bg-brand-cream" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24">
+      <div>
+        <p class="eyebrow mb-4">Frequently asked questions</p>
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">Questions About Amazon Product Photography</h2>
+      </div>
+      <FaqList faqs={faqs} variant="card" />
+    </div>
+  </section>
+
+  <!-- Related pages: parent offer and guides -->
+  <nav class="container-x pt-12 md:pt-16" aria-labelledby="related-heading">
+    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">Part of our Amazon Listing Optimization services</h2>
+    <ul class="flex flex-wrap justify-center gap-3">
+      {related.map((r) => (
+        <li>
+          <a
+            href={r.href}
+            class:list={[
+              'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
+              r.primary
+                ? 'bg-brand-green text-white hover:bg-brand-yellow hover:text-brand-green'
+                : 'border border-brand-green/20 text-brand-green hover:border-brand-yellow hover:bg-brand-yellow',
+            ]}
+          >
+            {r.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <!-- 06 — Final CTA -->
+  <CtaBanner
+    title="If your product looks better in real life, your photos should show it."
+    text="Show us your product and tell us what current images aren’t capturing. We’ll help you explore the shots that could make the quality, details, and use easier to understand."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    note="Choose a time to speak directly with our team."
+  />
+</Layout>

@@ -20,7 +20,7 @@ const words = (text: string) => new Set(text.toLowerCase().match(/[a-z0-9áéí�
 /** Picks the stored FAQ that shares the most words with the question. Only for local testing. */
 const mockAnswer = (question: string) => {
   const asked = words(question);
-  const pool = [...faqs, ...services.flatMap((s) => s.page?.faqs ?? [])];
+  const pool = [...faqs, ...services.flatMap((s) => s.page?.faqs ?? s.faqs ?? [])];
   let best = { score: 0, a: '' };
   for (const f of pool) {
     const score = [...words(`${f.q} ${f.a}`)].filter((w) => asked.has(w)).length;

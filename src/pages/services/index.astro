@@ -30,9 +30,8 @@ const lines = [
     num: '01',
     label: 'Social Media Management',
     title: 'Your social content, handled. Your brand, consistently present.',
-    text: 'We turn audience insights and brand knowledge into a managed content plan, with strategy, scripting, creative production, editing, and publishing according to your monthly package.',
-    note: 'Built for ecommerce brands, whether they sell on Amazon or not.',
-    how: 'Ongoing monthly plans.',
+    text: 'Strategy, scripts, production, editing and publishing. For ecommerce brands, on Amazon or not.',
+    how: 'Monthly plans',
     cta: 'Explore Social Media Management',
     href: '/services/social-media-management',
     portfolio: '/portfolio/social-media',
@@ -41,9 +40,8 @@ const lines = [
     num: '02',
     label: 'Amazon Listing Optimization',
     title: 'Make your product’s value easier to see—and easier to understand.',
-    text: 'We develop Amazon listing content around your product’s benefits, buyer questions, and competitive context, helping shoppers understand what makes your product worth choosing.',
-    note: 'Whether you need one creative asset or several working together, we’ll help define the right scope for your listing.',
-    how: 'Individual services or custom projects.',
+    text: 'Listing content built around your product’s benefits and your buyers’ questions. One asset or a full project.',
+    how: 'Individual services or custom projects',
     cta: 'Explore Amazon Listing Optimization',
     href: '/services/amazon-listing-optimization',
     portfolio: '/portfolio',
@@ -58,44 +56,44 @@ const socialPreview = ['Reel', 'Carousel', 'Reel'];
 const creative = ([
   {
     slug: 'amazon-listing-images',
-    bestWhen: 'Your product has more to offer than your images show. When shoppers can’t see the difference, cheaper competitors can become the easier choice.',
-    get: 'Main images, infographics, and lifestyle visuals that communicate your product’s benefits and differentiation.',
+    bestWhen: 'Your product is better than your images show.',
+    get: 'Main images, infographics and lifestyle visuals.',
     cta: 'Explore Listing Images',
   },
   {
     slug: 'amazon-a-plus-content',
-    bestWhen: 'Shoppers visit your listing but still have questions about quality, benefits, or product fit. Without clear answers, they may leave without buying.',
-    get: 'Basic or Premium A+ Content, where eligible, designed to explain benefits, address objections, and reinforce product value.',
+    bestWhen: 'Shoppers reach the bottom of your listing with questions left.',
+    get: 'Basic or Premium A+ Content that answers them.',
     cta: 'Explore A+ Content',
   },
   {
     slug: 'amazon-product-photography',
-    bestWhen: 'Your product looks better in person than it does online. Inaccurate colors, materials, or details can make its quality harder to trust.',
-    get: 'Professional studio and lifestyle photography that accurately captures your product’s quality, features, and real-world use.',
+    bestWhen: 'Your product looks better in person than online.',
+    get: 'Studio and lifestyle photos that show its real quality.',
     cta: 'Explore Photography',
   },
   {
     slug: 'amazon-product-video-production',
-    bestWhen: 'Shoppers can’t fully understand how your product works or what makes it useful from photos alone. That uncertainty can delay their purchase decision.',
-    get: 'Product demonstrations, instructional videos, and Amazon video creative that show your product in action.',
+    bestWhen: 'Photos alone don’t show how your product works.',
+    get: 'Demos, how-tos and Amazon video creative.',
     cta: 'Explore Product Videos',
   },
   {
     slug: 'amazon-storefront-design',
-    bestWhen: 'You sell multiple products, but shoppers see disconnected listings instead of a brand they can explore. Related products and your wider catalog may go unnoticed.',
-    get: 'A branded Amazon Storefront that organizes your catalog, connects product collections, and helps customers explore your range.',
+    bestWhen: 'Shoppers see separate listings, not a brand to explore.',
+    get: 'A branded Storefront that connects your catalog.',
     cta: 'Explore Storefront Design',
   },
   {
     slug: 'amazon-brand-story-design',
-    bestWhen: 'You’re competing with cheaper alternatives, but shoppers don’t know the brand, quality, or values behind your products. Without that context, price may become their main comparison.',
-    get: 'Amazon Brand Story modules that communicate your identity, build brand familiarity, and connect your product range.',
+    bestWhen: 'Shoppers compare you on price because they don’t know your brand.',
+    get: 'Brand Story modules that show who’s behind the product.',
     cta: 'Explore Brand Story',
   },
   {
     slug: 'amazon-listing-copywriting',
-    bestWhen: 'Your titles and bullet points don’t reflect how customers search or what makes your product different. That can make your listing harder to discover and your benefits easier to overlook.',
-    get: 'Keyword-informed titles, bullet points, and listing copy that connect relevant search terms with clear product benefits.',
+    bestWhen: 'Your titles and bullets don’t match how buyers search.',
+    get: 'Keyword-informed titles, bullets and listing copy.',
     cta: 'Explore Listing Copywriting',
   },
 ] as { slug: string; bestWhen: string; get: string; cta: string; image?: { src: ImageMetadata; alt: string } }[]
@@ -103,18 +101,9 @@ const creative = ([
 
 // 04 — why choose us
 const reasons = [
-  {
-    t: 'Buyer-informed creative',
-    d: 'We look beyond how content appears to what shoppers and audiences need to understand. Product research, customer questions, and competitive context help guide creative decisions when relevant to your project.',
-  },
-  {
-    t: 'Creative support that fits your needs',
-    d: 'From individual Amazon deliverables to custom listing projects and ongoing social media plans, you can choose the level of support that makes sense for your brand.',
-  },
-  {
-    t: 'Human judgment behind the work',
-    d: 'From photography and video to design and AI-assisted production, our team brings human direction, creative judgment, and review to the content we create.',
-  },
+  { t: 'Buyer-informed creative', d: 'Built on what shoppers need to understand.' },
+  { t: 'Support that fits', d: 'One deliverable, a custom project or a monthly plan.' },
+  { t: 'Human judgment behind the work', d: 'People direct and review everything, AI included.' },
 ];
 
 // 05 — TODO: 4–6 confirmed client logos with display permission; empty slots render as placeholders
@@ -145,72 +134,64 @@ const schema = [
   <PageHero
     eyebrow="Our Services"
     title="Amazon Listing Optimization & Social Media Management"
-    subtitle="One team for two different needs: Amazon creative content that helps shoppers understand your product, and ongoing social media management that keeps ecommerce brands connected with their audiences."
+    subtitle="Amazon creative that helps shoppers understand your product. Social media that keeps your brand present."
     ctaLabel="Explore Our Services"
     ctaHref="#amazon-creative-services"
   />
 
-  <!-- 02 — Two ways to work with us -->
+  <!-- 02 — Two ways to work with us: two open rows (no boxes), text and visual swapping sides, visuals slightly tilted -->
   <section class="container-x py-12 md:py-24" aria-labelledby="lines-heading">
-    <SectionHeading eyebrow="Two ways to work with us" id="lines-heading" title="Two services. Built around what your brand needs." />
-    <div class="space-y-4 sm:space-y-6">
+    <SectionHeading eyebrow="Two ways to work with us" id="lines-heading" title="Two services. Built around your brand." align="left" />
+    <div class="divide-y divide-dashed divide-brand-green/20">
       {lines.map((l, i) => {
-        const dark = i === 0;
+        const social = i === 0;
         return (
-          <article
-            class:list={[
-              'grid items-center gap-5 overflow-hidden rounded-[1.75rem] p-5 sm:gap-8 sm:rounded-[2rem] sm:p-8 md:p-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12',
-              dark ? 'bg-brand-green text-white' : 'bg-brand-cream text-brand-green',
-            ]}
-            aria-labelledby={`line-${l.num}`}
-          >
-            <div class:list={[!dark && 'lg:order-2']}>
-              <p class:list={['text-xs font-bold uppercase tracking-[0.18em]', dark ? 'text-brand-yellow' : 'text-brand-orange']}>
-                {l.num} / {l.label}
+          <article class="grid items-center gap-8 py-10 first:pt-0 last:pb-0 sm:py-14 lg:grid-cols-[1.1fr_1fr] lg:gap-16" aria-labelledby={`line-${l.num}`}>
+            <div class:list={['relative', !social && 'lg:order-2']}>
+              <span class="step-num font-display text-5xl font-extrabold leading-none text-brand-orange sm:text-6xl" aria-hidden="true">
+                {l.num}
+              </span>
+              <p class="relative mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">
+                {l.label} <span class="text-brand-green/50">· {l.how}</span>
               </p>
-              <h3 id={`line-${l.num}`} class="mt-3 text-[1.5rem] font-extrabold leading-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">{l.title}</h3>
-              <p class:list={['mt-3 text-[0.9375rem] leading-relaxed sm:mt-4 sm:text-base', dark ? 'text-white/80' : 'text-brand-ink/75']}>{l.text}</p>
-              <p class:list={['mt-3 text-sm font-semibold', dark ? 'text-white' : 'text-brand-green']}>{l.note}</p>
-              <p class:list={['mt-4 inline-flex flex-wrap gap-x-2 rounded-2xl px-4 py-2 text-sm sm:mt-5', dark ? 'bg-white/10 text-white/85' : 'bg-white text-brand-ink/75']}>
-                <strong class:list={[dark ? 'text-brand-yellow' : 'text-brand-green']}>How it works:</strong>
-                {l.how}
-              </p>
-              <div class="mt-6 sm:mt-7">
-                <a href={l.href} class:list={[dark ? 'btn-primary' : 'btn-dark']}>{l.cta}</a>
-              </div>
+              <h3 id={`line-${l.num}`} class="relative mt-3 text-[1.6rem] font-extrabold leading-[1.1] text-brand-green sm:text-4xl">{l.title}</h3>
+              <p class="relative mt-4 max-w-lg text-brand-ink/65">{l.text}</p>
+              <a href={l.href} class:list={[i === 0 ? 'btn-primary' : 'btn-dark', 'relative mt-6']}>{l.cta}</a>
             </div>
 
-            {dark ? (
+            {social ? (
               <a href={l.portfolio} class="group block" aria-label="See social media work: Reels and carousels">
-                <ul class="grid grid-cols-3 gap-3">
+                <ul class="flex items-end justify-center gap-3 sm:gap-4">
                   {socialPreview.map((kind, k) => (
                     <li
                       class:list={[
-                        'grid aspect-square place-items-center rounded-[1rem] border-2 border-dashed sm:aspect-[9/16] sm:rounded-[1.25rem] border-white/20 bg-white/5 text-xs font-medium text-white/50 transition group-hover:border-brand-yellow/60',
-                        k === 1 && 'sm:translate-y-6',
+                        'grid aspect-[9/16] w-1/4 max-w-[9rem] place-items-center rounded-[1.25rem] border-2 border-dashed border-brand-green/20 bg-brand-cream text-xs font-medium text-brand-green/50 transition group-hover:border-brand-orange/60',
+                        k === 0 && '-rotate-6',
+                        k === 1 && 'mb-8 rotate-2 bg-brand-yellow-soft',
+                        k === 2 && 'rotate-6',
                       ]}
                     >
                       {kind}
                     </li>
                   ))}
                 </ul>
-                <span class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-white/85 sm:mt-10 transition group-hover:text-brand-yellow">
+                <span class="mt-4 flex min-h-11 items-center justify-center text-sm font-semibold text-brand-green transition group-hover:text-brand-orange">
                   See Reels and carousels →
                 </span>
               </a>
             ) : (
               <a href={l.portfolio} class="group block lg:order-1" aria-label="See Amazon listing transformations">
-                <div class="grid grid-cols-2 gap-3">
-                  <figure class="relative">
-                    <Image src={oldListing} alt="Super Ninja Amazon listing images before the redesign" width={435} class="aspect-[4/3] w-full rounded-[1rem] bg-white object-contain p-1.5 sm:aspect-square sm:rounded-[1.25rem] sm:p-2" />
-                    <figcaption class="absolute left-2 top-2 rounded-full bg-brand-green/85 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-white sm:static sm:mt-2 sm:bg-transparent sm:p-0 sm:text-brand-ink/50">Before</figcaption>
+                <div class="grid grid-cols-2 items-center gap-4">
+                  <figure class="-rotate-3">
+                    <Image src={oldListing} alt="Super Ninja Amazon listing images before the redesign" width={435} class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2 opacity-80" />
+                    <figcaption class="mt-2 text-center text-xs font-semibold uppercase tracking-wider text-brand-ink/50">Before</figcaption>
                   </figure>
-                  <figure class="relative">
-                    <Image src={newListing} alt="Super Ninja Amazon listing images after the redesign" width={436} class="aspect-[4/3] w-full rounded-[1rem] bg-white object-contain p-1.5 shadow-lg sm:aspect-square sm:rounded-[1.25rem] sm:p-2 ring-2 ring-brand-yellow transition group-hover:-translate-y-1" />
-                    <figcaption class="absolute left-2 top-2 rounded-full bg-brand-yellow px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-brand-green sm:static sm:mt-2 sm:bg-transparent sm:p-0 sm:text-brand-orange">After</figcaption>
+                  <figure class="rotate-2">
+                    <Image src={newListing} alt="Super Ninja Amazon listing images after the redesign" width={436} class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2 shadow-lg ring-2 ring-brand-yellow transition group-hover:-translate-y-1" />
+                    <figcaption class="mt-2 text-center text-xs font-semibold uppercase tracking-wider text-brand-orange">After</figcaption>
                   </figure>
                 </div>
-                <span class="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand-green transition group-hover:text-brand-orange">
+                <span class="mt-2 flex min-h-11 items-center justify-center text-sm font-semibold text-brand-green transition group-hover:text-brand-orange">
                   See Amazon listing transformations →
                 </span>
               </a>
@@ -230,7 +211,7 @@ const schema = [
         eyebrow="Need one specific deliverable?"
         id="creative-heading"
         title="Amazon Creative Services"
-        text="Every product has a different challenge. Find the creative service that fits yours, or combine several into a custom project."
+        text="Pick the one that fits, or combine several."
       />
     </div>
 
@@ -297,9 +278,7 @@ const schema = [
           <aside class="flex max-w-xl flex-wrap items-center gap-x-5 gap-y-3" aria-labelledby="not-sure-heading">
             <div class="min-w-0 flex-1 basis-64">
               <h3 id="not-sure-heading" class="text-lg font-extrabold text-brand-green">Not sure which service you need?</h3>
-              <p class="mt-1 text-sm text-brand-ink/65">
-                Tell us about your product and the challenges you’re facing. We’ll help you identify which creative services are worth exploring.
-              </p>
+              <p class="mt-1 text-sm text-brand-ink/65">Tell us about your product. We’ll point you to the right one.</p>
             </div>
             <a href={bookHref} class="btn-dark">Talk to a Human</a>
           </aside>
@@ -312,37 +291,32 @@ const schema = [
   <!-- Brand Diagnosis quiz -->
   <BrandDiagnosisSection />
 
-  <!-- 04 — Why choose Share It Studio? -->
+  <!-- 04 — Why choose Share It Studio? Three short claims side by side, no boxes -->
   <section class="container-x py-12 md:py-24" aria-labelledby="why-heading">
-    <SectionHeading
-      eyebrow="Why choose Share It Studio?"
-      id="why-heading"
-      title="The right thinking. The right creative. The right scope."
-    />
-    <ol class="grid gap-4 md:grid-cols-3">
+    <SectionHeading eyebrow="Why choose Share It Studio?" id="why-heading" title="The right thinking. The right creative. The right scope." align="left" />
+    <ol class="grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-brand-green/20">
       {reasons.map((r, i) => (
-        <li class="rounded-[1.5rem] border border-black/5 p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
-          <span class="font-display text-3xl font-extrabold text-brand-yellow sm:text-4xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="mt-3 text-xl font-extrabold text-brand-green">{r.t}</h3>
-          <p class="mt-2 text-brand-ink/70">{r.d}</p>
+        <li class="md:px-8 md:first:pl-0 md:last:pr-0">
+          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green">{r.t}</h3>
+          <p class="mt-2 text-brand-ink/60">{r.d}</p>
         </li>
       ))}
     </ol>
   </section>
 
-  <!-- 05 — Brands we've worked with -->
-  <section class="bg-brand-cream py-12 md:py-20" aria-labelledby="brands-heading">
-    <div class="container-x text-center">
-      <p class="eyebrow justify-center">Brands we’ve worked with</p>
-      <h2 id="brands-heading" class="mt-4 text-[1.7rem] font-extrabold text-brand-green sm:text-3xl md:text-4xl">In good company.</h2>
-      <ul class="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-3 sm:mt-10 sm:gap-4 md:grid-cols-4">
+  <!-- 05 — Brands we've worked with: logos loose on one line, placeholders as pills -->
+  <section class="bg-brand-cream py-12 md:py-16" aria-labelledby="brands-heading">
+    <div class="container-x flex flex-col items-center gap-8 md:flex-row md:justify-between">
+      <h2 id="brands-heading" class="text-[1.7rem] font-extrabold text-brand-green sm:text-3xl">In good company.</h2>
+      <ul class="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
         {logos.map((l) => (
-          <li class="grid h-20 place-items-center rounded-[1.25rem] bg-white px-5 sm:h-24 sm:px-6">
-            <Image src={l.src} alt={`${l.alt} logo`} height={80} densities={[1, 2]} class="max-h-10 w-auto object-contain opacity-80" />
+          <li>
+            <Image src={l.src} alt={`${l.alt} logo`} height={80} densities={[1, 2]} class="max-h-10 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
           </li>
         ))}
         {Array.from({ length: logoSlots }, () => (
-          <li class="placeholder h-20 rounded-[1.25rem] text-xs sm:h-24" aria-hidden="true">Client logo</li>
+          <li class="grid h-10 w-32 place-items-center rounded-full border-2 border-dashed border-brand-green/15 text-xs font-medium text-brand-green/40" aria-hidden="true">Client logo</li>
         ))}
       </ul>
     </div>
@@ -351,10 +325,9 @@ const schema = [
   <!-- 06 — Final CTA -->
   <CtaBanner
     title="Not sure where to start?"
-    text="Tell us what you’re selling, what your content needs to accomplish, or where you’re looking for support. We’ll help you explore the right creative approach for your brand."
+    text="Tell us what you’re selling and what you need. We’ll help you find the right approach."
     ctaLabel="Talk to a Human"
     ctaHref={bookHref}
-    note="Choose a time to speak directly with our team."
   />
 </Layout>
 

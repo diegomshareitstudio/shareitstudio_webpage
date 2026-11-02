@@ -27,7 +27,7 @@ const packagesText = socialPackages
   .map((p) => `- ${p.name} (${p.tier}): ${formatPrice(p.price)}/mo, ${p.posts}. Includes: ${p.features.join(', ')}.${p.note ? ` ${p.note}` : ''}`)
   .join('\n');
 
-const faqsText = [...faqs, ...services.flatMap((s) => s.page?.faqs ?? [])]
+const faqsText = [...faqs, ...services.flatMap((s) => s.page?.faqs ?? s.faqs ?? [])]
   .map((f) => `Q: ${f.q}\nA: ${f.a}`)
   .join('\n\n');
 

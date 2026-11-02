@@ -94,9 +94,39 @@ body.home main {
   line-height: 1.02;
   text-wrap: balance;
 }
-.home-title .marker {
-  background: none; /* the spotlight is the highlighter here */
-  padding: 0;
+/* Logo above the headline: the letters over a copy of the spotlight, placed where the logo has it
+   (measured from brand/share-it-studio-logo.png, relative to the trimmed wordmark) */
+.home-logo {
+  --spot-l: 65.8%;
+  --spot-t: -8%;
+  --spot-w: 30.8%;
+  --logo-w: min(80vw, 30rem, 58svh); /* the wordmark is 5.24:1: at most ~11svh tall, so the hero always fits */
+  position: relative;
+  width: var(--logo-w);
+  /* room for the spotlight's tail, which hangs ~0.9 logo-heights below the letters */
+  margin: 0 auto calc(var(--logo-w) / 5.24 * 1.05);
+}
+.home-logo-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.home-logo-spot {
+  position: absolute;
+  left: var(--spot-l);
+  top: var(--spot-t);
+  width: var(--spot-w);
+  height: auto;
+  aspect-ratio: 545 / 645;
+}
+/* Static layout (no JS, reduced motion, tiny screens): the logo's own spotlight is the only one */
+html:not(.home-ready) .home-spot {
+  display: none;
+}
+/* Once scripts/home.ts has laid the big spotlight exactly over this copy, the big one takes over (same frame) */
+html.home-ready [data-spot-placed] .home-logo-spot {
+  visibility: hidden;
 }
 .home-lead {
   margin: clamp(0.9rem, 2.4svh, 1.5rem) auto 0;
@@ -141,6 +171,8 @@ html.home-ready .scene {
   display: grid;
   min-height: 0;
   place-items: center;
+  /* Each scene is its own GPU layer: fading, lifting and blurring it on scroll never repaints the text */
+  will-change: opacity, transform, filter;
 }
 html.home-ready .scene-a {
   padding: 5.25rem 1rem 1.5rem;
@@ -153,13 +185,12 @@ html.home-ready .scene-b {
 html.home-ready .home-spot {
   right: auto;
   animation: none; /* nothing else may move the layer that scales */
-  /* position, size and transform-origin are set inline from the headline's geometry */
+  /* position and size are set inline from the logo's geometry */
   transform-origin: 60.55% 33.3%; /* the head circle's centre inside the 545×645 box */
-  transition: opacity 0.5s ease;
 }
-/* Until scripts/home.ts has anchored it to the headline, the spotlight waits unseen: it fades in already in place */
+/* Until scripts/home.ts has laid it over the logo's copy, the big spotlight stays hidden (the copy shows meanwhile) */
 html.home-ready .home-spot:not([data-placed]) {
-  opacity: 0;
+  visibility: hidden;
 }
 
 /* The header floats over the hero and turns into a bar once the page scrolls */
@@ -200,7 +231,7 @@ html.home-ready .home-results {
 }
 
 .home-results .btn-dark {
-  /* Same size as the btn-primary in the neighbouring card */
+  /* Same size as the site's btn-primary */
   padding: 0.75rem 1.25rem 0.75rem 1.5rem;
   font-size: 1rem;
   line-height: 1.5rem;
@@ -306,22 +337,6 @@ html.home-ready .home-results {
 }
 
 
-/* ---------- How we work: stacked steps that stay readable ---------- */
-@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-  /* the cards sit closer together than the generic stack in motion.css */
-  main .stack-cards > li {
-    margin-bottom: 6vh;
-  }
-}
-@media (prefers-reduced-motion: no-preference) and (min-width: 768px) and (max-height: 719px) {
-  /* not enough height to stack four cards: plain list */
-  body.home .stack-cards > li {
-    position: static;
-    margin-bottom: 0;
-    box-shadow: none;
-  }
-}
-
 /* ---------- Motion (everything below is off for reduced-motion visitors) ---------- */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes home-drift {
@@ -351,6 +366,19 @@ html.home-ready .home-results {
   }
   .scene-a .scene-inner > * {
     animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  /* The logo only fades in: it never moves, so the spotlight laid over it is right from the first frame */
+  @keyframes home-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  .scene-a .scene-inner > .home-logo {
+    animation-name: home-fade;
+  }
+  /* …and the big spotlight that stands in for the logo's copy fades in with it */
+  html.home-ready .home-spot[data-placed] {
+    animation: home-fade 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .scene-a .scene-inner > :nth-child(2) {
     animation-delay: 0.08s;

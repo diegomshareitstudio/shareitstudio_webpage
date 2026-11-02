@@ -1,0 +1,269 @@
+---
+/**
+ * Amazon A+ Content Design (copy V1): P1 commercial landing page for "amazon a+ content design services".
+ * Hero → Selected work → Basic vs Premium → How we work → FAQ → Final CTA.
+ * Hiring intent only: examples, templates and how-to content live in the blog guides (linked below the FAQ).
+ * Premium stays a section, not its own URL. No sales-uplift claims, no Amazon statistics, no fixed package prices.
+ */
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import { getService } from '../../data/services';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+import sampleBodyWash from '../../assets/samples/Body-Wash-Cleanser_A+-Content.png';
+import sampleBasket from '../../assets/samples/A+ Content Jute Hanging Basket.jpg';
+import sampleCream from '../../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
+
+const path = '/services/amazon-a-plus-content';
+const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
+const service = getService('amazon-a-plus-content');
+const faqs = service.faqs!;
+
+// 02 — real A+ projects (already shown on the homepage), each labelled with the shopper question it answers.
+// TODO: confirm client permission, and label Basic / comparison / Premium once confirmed; add a Premium example if available
+const work = [
+  {
+    src: sampleBodyWash,
+    alt: 'dryyd Face & Body Wash A+ Content: ingredient benefits for sensitive skin, uses and the rest of the product range',
+    product: 'dryyd Face & Body Wash',
+    question: 'What’s in it, and is it gentle enough for sensitive skin?',
+  },
+  {
+    src: sampleBasket,
+    alt: 'The Dom Jute Hanging Basket A+ Content: rooms it fits, natural jute material and a 5 lb capacity',
+    product: 'The Dom Jute Hanging Basket',
+    question: 'Where can I use it, and how much will it hold?',
+  },
+  {
+    src: sampleCream,
+    alt: 'Wild Yam Balance Cream A+ Content: how much to apply, when, and its key ingredients',
+    product: 'Wild Yam Balance Cream',
+    question: 'How and when am I supposed to use it?',
+  },
+];
+
+// 03 — Basic or Premium
+const formats = [
+  {
+    t: 'Basic A+ Content',
+    d: 'Product-benefit sections, lifestyle visuals, feature explanations, and comparison charts that give shoppers more context than the image gallery and bullet points alone.',
+    best: 'Your product needs clearer explanations and comparisons, without the added complexity of interactive features.',
+  },
+  {
+    t: 'Premium A+ Content',
+    d: 'A richer product story with larger visuals and, when appropriate and available, video, interactive hotspots, carousels, and enhanced comparisons. Premium features require Amazon account eligibility; individual deliverables depend on your selected scope.',
+    best: 'Your product has technical details, multiple uses, or important differences that are easier to demonstrate than describe.',
+  },
+];
+
+// 04 — how we work
+const steps = [
+  {
+    t: 'Understand the product and the buyer',
+    d: 'We review your product information, existing content, customer questions, and relevant competitor examples to identify what shoppers still need to understand.',
+  },
+  {
+    t: 'Plan the story, not just the layout',
+    d: 'We choose the key messages, module sequence, visuals, and comparisons that best explain your product. Every module has a purpose.',
+  },
+  {
+    t: 'Design, review & deliver',
+    d: 'We create the agreed A+ modules, check product accuracy and applicable Amazon requirements, and prepare the approved assets for your project. Mobile-specific adaptations and uploading support are defined in the quote.',
+  },
+];
+
+// Related pages: parent offer, sibling services and the guides that own the informational intent
+const related = [
+  { label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization', primary: true },
+  { label: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+  { label: 'Amazon Brand Story Design', href: '/services/amazon-brand-story-design' },
+  { label: 'A+ Content Examples', href: '/blog/amazon-a-plus-content-examples' },
+  { label: 'A+ Content Templates', href: '/blog/a-plus-content-templates' },
+];
+
+const description =
+  'Basic and Premium Amazon A+ Content design built around buyer questions. Explore real examples, compare options, and request a custom project quote.';
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: 'Amazon Listing Optimization', path: '/services/amazon-listing-optimization' },
+  { name: 'Amazon A+ Content Design', path },
+];
+const schema = [
+  serviceSchema({
+    path,
+    name: 'Amazon A+ Content Design Services',
+    serviceType: 'Amazon A+ Content design',
+    description:
+      'Basic and Premium Amazon A+ Content design: product-benefit modules, lifestyle visuals, feature explanations and comparison charts planned around buyer questions.',
+  }),
+  faqSchema(path, faqs),
+];
+---
+
+<Layout title="Amazon A+ Content Design Services | Share It Studio" description={description} breadcrumbs={breadcrumbs} schema={schema}>
+  <!-- 01 — Hero -->
+  <PageHero
+    eyebrow="Amazon A+ Content design services"
+    title="Amazon A+ Content Design That Helps Shoppers See the Difference"
+    highlight="See the Difference"
+    subtitle={`Your product has benefits a few images and bullet points can’t fully explain. We create Basic and Premium Amazon A+ Content around the questions buyers still have — using product visuals, comparisons, and clear storytelling to help them understand what makes your product worth choosing.<span class="mt-3 block text-sm font-semibold text-brand-green">Need A+ Content on its own? You don’t have to buy a full listing refresh.</span>`}
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    secondaryLabel="See Our A+ Content Work"
+    secondaryHref="#a-plus-work"
+  >
+    <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team about your product.</p>
+
+    <!-- TODO: an approved real detail page showing the A+ section; until then, the top of a real A+ project -->
+    <div slot="visual" class="relative pb-6">
+      <div class="aplus-frame aspect-[4/3] rounded-[1.75rem] bg-white shadow-xl">
+        <Image src={sampleBasket} alt="" width={900} widths={[480, 900]} sizes="(min-width: 1024px) 34rem, 92vw" loading="eager" class="aplus-img" />
+      </div>
+      <span class="absolute -right-2 top-6 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">Basic &amp; Premium A+</span>
+    </div>
+  </PageHero>
+
+  <!-- 02 — Selected A+ Content work -->
+  <section id="a-plus-work" class="container-x scroll-mt-24 py-12 md:py-24" aria-labelledby="work-heading">
+    <SectionHeading
+      eyebrow="Selected A+ Content work"
+      id="work-heading"
+      title="More than extra space on your listing. A clearer reason to choose your product."
+      text="Shoppers may understand what your product is and still wonder whether it fits their needs, justifies its price, or solves their problem. The best A+ modules answer those questions instead of repeating the image gallery."
+    />
+    <ul class="grid gap-6 sm:grid-cols-3">
+      {work.map((w) => (
+        <li>
+          <figure>
+            <div class="aplus-frame aspect-[3/4] rounded-[1.5rem] bg-brand-cream">
+              <Image src={w.src} alt={w.alt} width={600} widths={[360, 600]} sizes="(min-width: 640px) 30vw, 92vw" class="aplus-img" />
+            </div>
+            <figcaption class="mt-3">
+              <span class="block text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">{w.product}</span>
+              <span class="mt-1 block font-display text-lg font-extrabold leading-snug text-brand-green">“{w.question}”</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+    <a href={service.portfolio} class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+      View More A+ Content Work →
+    </a>
+  </section>
+
+  <!-- 03 — Basic or Premium -->
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="formats-heading">
+    <div class="container-x">
+      <SectionHeading eyebrow="What we design" id="formats-heading" title="Basic or Premium? The right format depends on what your buyers need to know." align="left" />
+      <ul class="grid gap-4 md:grid-cols-2">
+        {formats.map((f, i) => (
+          <li class:list={['flex flex-col rounded-[1.5rem] p-6 sm:rounded-[1.75rem] sm:p-8', i === 1 ? 'bg-brand-green text-white' : 'bg-white shadow-sm']}>
+            <h3 class:list={['text-xl font-extrabold sm:text-2xl', i === 1 ? 'text-brand-yellow' : 'text-brand-green']}>{f.t}</h3>
+            <p class:list={['mt-3 flex-1 leading-relaxed', i === 1 ? 'text-white/80' : 'text-brand-ink/70']}>{f.d}</p>
+            <p class:list={['mt-5 border-t border-dashed pt-4 text-sm', i === 1 ? 'border-white/20 text-white/80' : 'border-brand-green/20 text-brand-ink/70']}>
+              <strong class:list={['font-bold uppercase tracking-[0.14em]', i === 1 ? 'text-brand-yellow' : 'text-brand-orange']}>Best when:</strong>
+              {f.best}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-4 rounded-[1.5rem] bg-white p-6 shadow-sm sm:rounded-[1.75rem] sm:p-8">
+        <h3 class="text-xl font-extrabold text-brand-green sm:text-2xl">Built around buyer questions</h3>
+        <p class="mt-2 max-w-3xl leading-relaxed text-brand-ink/70">
+          From dimensions and compatibility to materials, setup, performance, and what makes the product different, each module should answer something useful.
+        </p>
+      </div>
+      <p class="mt-8 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl">
+        We recommend the format and modules that make sense for your product. <span class="marker">Premium isn’t automatically the better choice.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 — How we work -->
+  <section class="container-x py-12 md:py-24" aria-labelledby="process-heading">
+    <SectionHeading eyebrow="How we work" id="process-heading" title="Every module starts with a question worth answering." align="left" />
+    <ol class="grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-brand-green/20">
+      {steps.map((s, i) => (
+        <li class="md:px-8 md:first:pl-0 md:last:pr-0">
+          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green">{s.t}</h3>
+          <p class="mt-2 text-brand-ink/70">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
+      Already have good photography? We can build from approved assets. If new
+      <a href="/services/amazon-product-photography" class="font-bold text-brand-green underline underline-offset-4">product photography</a>
+      or
+      <a href="/services/amazon-product-video-production" class="font-bold text-brand-green underline underline-offset-4">video</a>
+      is needed, we’ll discuss it separately — not add it by default.
+    </p>
+  </section>
+
+  <!-- 05 — Frequently asked questions -->
+  <section class="bg-brand-cream" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24">
+      <div>
+        <p class="eyebrow mb-4">Frequently asked questions</p>
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">Questions About Amazon A+ Content Design</h2>
+      </div>
+      <FaqList faqs={faqs} variant="card" />
+    </div>
+  </section>
+
+  <!-- Related pages: parent offer, sibling services and guides -->
+  <nav class="container-x pt-12 md:pt-16" aria-labelledby="related-heading">
+    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">Part of our Amazon Listing Optimization services</h2>
+    <ul class="flex flex-wrap justify-center gap-3">
+      {related.map((r) => (
+        <li>
+          <a
+            href={r.href}
+            class:list={[
+              'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
+              r.primary
+                ? 'bg-brand-green text-white hover:bg-brand-yellow hover:text-brand-green'
+                : 'border border-brand-green/20 text-brand-green hover:border-brand-yellow hover:bg-brand-yellow',
+            ]}
+          >
+            {r.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <!-- 06 — Final CTA -->
+  <CtaBanner
+    title="Your product has more to explain. Let’s make it worth reading."
+    text="Show us your Amazon listing and tell us what buyers still need to understand. We’ll help you explore the A+ Content worth creating — whether it’s a focused Basic layout or a more detailed Premium experience."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    note="Choose a time to speak directly with our team."
+  />
+</Layout>
+
+<style>
+  /* A+ projects are tall strips (~2.2–2.5× their width): show the top and scroll down on hover.
+     -40% stays inside the image for both frames (3/4 cards and the 4/3 hero). */
+  .aplus-frame {
+    overflow: hidden;
+  }
+  .aplus-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .aplus-img {
+      transition: transform 6s ease-in-out;
+    }
+    .aplus-frame:hover .aplus-img {
+      transform: translateY(-40%);
+    }
+  }
+</style>

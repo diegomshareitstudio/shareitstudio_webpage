@@ -1,0 +1,237 @@
+---
+/**
+ * Amazon Listing Copywriting & SEO (copy V1): P2 commercial landing page for "amazon listing copywriting services".
+ * Hero → Selected work → What we write → How we work → FAQ → Final CTA.
+ * Amazon product search only: not Google SEO, PPC, catalog troubleshooting or guaranteed rankings. The broad offer
+ * lives on /services/amazon-listing-optimization; images and A+ Content have their own pages.
+ * Field limits (75-char titles, 125-char Item Highlights, backend terms under 250 bytes) follow Amazon's 2026 rules:
+ * don't reuse the 200/500 limits from the old rate sheet.
+ */
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import CtaBanner from '../../components/ui/CtaBanner.astro';
+import FaqList from '../../components/ui/FaqList.astro';
+import { getService } from '../../data/services';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+const path = '/services/amazon-listing-copywriting';
+const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
+const service = getService('amazon-listing-copywriting');
+const faqs = service.faqs!;
+
+// 02 — two or three genuine, approved copy examples (real delivered text; redact client data and keywords if needed).
+// TODO: replace these placeholders with the real text. No fabricated rewrites, rankings or conversion gains.
+const work = [
+  { kind: 'Product title & Item Highlights', note: 'A concise title shoppers recognize at a glance.', lines: 2 },
+  { kind: 'Benefit-led bullet points', note: 'Features rewritten so the benefit is clear.', lines: 5 },
+  { kind: 'Keyword → copy', note: 'How customer search terms shaped the wording (anonymized).', lines: 3 },
+];
+
+// 03 — what we write
+const fields = [
+  {
+    t: 'Search-Informed Product Titles',
+    d: 'Clear product names that reflect relevant Amazon search language while making the item easy to recognize. We write to the requirements that apply to your category and marketplace. Amazon’s newer <em>Item Highlights</em> field can be addressed when included in your quote.',
+  },
+  {
+    t: 'Benefit-Led Bullet Points',
+    d: 'Product features translated into reasons they matter — including fit, use, materials, compatibility, and other details shoppers may be comparing. Our English title-and-bullets service is built around five bullet points, subject to the listing’s requirements.',
+  },
+  {
+    t: 'Backend Search Terms',
+    d: 'Relevant synonyms and alternative product terms that don’t belong naturally in customer-facing copy, prepared for Amazon’s hidden search-term field and its applicable limits.',
+  },
+  {
+    t: 'Keyword Research Behind the Copy',
+    d: 'We examine product facts, buyer search language, and relevant competitor listings before deciding which terms belong in each field. Product descriptions, additional Item Highlights work, Spanish-language copy, or ongoing testing can be scoped separately.',
+  },
+];
+
+// 04 — how we work
+const steps = [
+  {
+    t: 'Understand the product and search intent',
+    d: 'We review your product information, existing listing, buyer questions, and relevant competitors to identify the search terms and benefits worth prioritizing.',
+  },
+  {
+    t: 'Give every field a job',
+    d: 'We decide what shoppers need to recognize in the title, what benefits the bullets should explain, and which relevant terms can be reserved for backend search fields. We don’t rewrite a working listing just to make it longer.',
+  },
+  {
+    t: 'Write, review & deliver',
+    d: 'We prepare the agreed copy for your review, check the wording against supplied product facts and the applicable Amazon requirements, and deliver the approved text. Seller Central upload support, experiments, and additional variations are defined separately in the proposal.',
+  },
+];
+
+// Related pages: parent offer and the sibling services for the rest of the listing
+const related = [
+  { label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization', primary: true },
+  { label: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+  { label: 'Amazon A+ Content Design', href: '/services/amazon-a-plus-content' },
+];
+
+const description =
+  'Amazon listing copywriting and SEO for product titles, bullet points, and backend keywords. Keyword research included. Hire one service or request a quote.';
+
+const breadcrumbs = [
+  { name: 'Services', path: '/services' },
+  { name: 'Amazon Listing Optimization', path: '/services/amazon-listing-optimization' },
+  { name: 'Amazon Listing Copywriting & SEO', path },
+];
+const schema = [
+  serviceSchema({
+    path,
+    name: 'Amazon Listing Copywriting & SEO Services',
+    serviceType: 'Amazon listing copywriting',
+    description:
+      'Amazon listing copywriting informed by keyword research: product titles, benefit-led bullet points and backend search terms for Amazon product search.',
+  }),
+  faqSchema(path, faqs),
+];
+---
+
+<Layout title="Amazon Listing Copywriting & SEO Services | Share It Studio" description={description} breadcrumbs={breadcrumbs} schema={schema}>
+  <!-- 01 — Hero -->
+  <PageHero
+    eyebrow="Amazon listing copywriting services"
+    title="Amazon Listing Copywriting That Makes Every Word Count"
+    highlight="Every Word Count"
+    subtitle={`<strong class="block font-display text-xl font-extrabold leading-snug text-brand-green md:text-2xl">Your product needs the right keywords. But shoppers also need a clear reason to choose it.</strong><span class="mt-4 block">We research how people search on Amazon, then write product titles, bullet points, and backend search terms that connect relevant searches with the benefits of your product — without turning your listing into a wall of keywords.</span><span class="mt-3 block text-sm font-semibold text-brand-green">Need copywriting on its own? You don’t have to purchase a full Amazon listing refresh.</span>`}
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    secondaryLabel="See Our Copywriting Work"
+    secondaryHref="#copywriting-work"
+  >
+    <p class="mt-4 text-sm text-brand-ink/60">Share your Amazon listing and tell us what shoppers need to understand.</p>
+
+    <!-- TODO: an approved real product detail page (title, Item Highlights where applicable, readable bullets) -->
+    <div slot="visual" class="rounded-[1.75rem] bg-white p-5 shadow-xl sm:p-7" aria-hidden="true">
+      <div class="grid grid-cols-[2fr_3fr] gap-4 sm:gap-6">
+        <div class="placeholder aspect-square rounded-[1.25rem] text-xs">Product</div>
+        <div>
+          <p class="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-brand-orange">Title</p>
+          <div class="mt-2 h-3 w-full rounded-full bg-brand-green/80"></div>
+          <div class="mt-1.5 h-3 w-3/4 rounded-full bg-brand-green/80"></div>
+          <p class="mt-4 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-brand-orange">Item Highlights</p>
+          <div class="mt-2 h-2.5 w-5/6 rounded-full bg-brand-yellow"></div>
+        </div>
+      </div>
+      <p class="mt-5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-brand-orange">About this item</p>
+      <ul class="mt-2 space-y-2">
+        {[92, 84, 96, 78, 88].map((w) => (
+          <li class="flex items-center gap-2">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green"></span>
+            <span class="h-2 rounded-full bg-brand-green/15" style={`width:${w}%`}></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </PageHero>
+
+  <!-- 02 — Selected listing copy work -->
+  <section id="copywriting-work" class="container-x scroll-mt-24 py-12 md:py-24" aria-labelledby="work-heading">
+    <SectionHeading
+      eyebrow="Selected listing copy work"
+      id="work-heading"
+      title="Your product shouldn’t get lost in its own description."
+      text="A long title can still leave shoppers confused. Five bullet points can still miss the one benefit that matters most. Good Amazon copy makes it easier to recognize the product, understand its advantages, and decide whether it’s the right fit."
+    />
+    <ul class="grid gap-4 md:grid-cols-3">
+      {work.map((w, i) => (
+        <li class:list={['rounded-[1.5rem] border-2 border-dashed border-brand-green/15 p-6 sm:rounded-[1.75rem] sm:p-7', i === 1 ? 'bg-brand-yellow-soft' : 'bg-brand-cream']}>
+          <h3 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">{w.kind}</h3>
+          <div class="mt-4 space-y-2" aria-hidden="true">
+            {Array.from({ length: w.lines }, (_, l) => (
+              <span class="block h-2.5 rounded-full bg-brand-green/15" style={`width:${l % 2 ? 82 : 96}%`}></span>
+            ))}
+          </div>
+          <p class="mt-5 font-display text-lg font-extrabold leading-snug text-brand-green">{w.note}</p>
+        </li>
+      ))}
+    </ul>
+    <a href={service.portfolio} class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+      Explore Our Amazon Creative Work →
+    </a>
+  </section>
+
+  <!-- 03 — What we write -->
+  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="write-heading">
+    <div class="container-x">
+      <SectionHeading eyebrow="What we write" id="write-heading" title="The right words, in the right places." align="left" />
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {fields.map((f) => (
+          <li class="rounded-[1.5rem] bg-white p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
+            <h3 class="text-lg font-extrabold leading-snug text-brand-green sm:text-xl">{f.t}</h3>
+            <p class="mt-2 text-[0.9375rem] leading-relaxed text-brand-ink/70 sm:text-base" set:html={f.d} />
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl">
+        We focus on the words your listing needs — <span class="marker">not keyword stuffing or a guaranteed ranking position.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 — How we work -->
+  <section class="container-x py-12 md:py-24" aria-labelledby="process-heading">
+    <SectionHeading eyebrow="How we work" id="process-heading" title="Research first. Then write what matters." align="left" />
+    <ol class="grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-brand-green/20">
+      {steps.map((s, i) => (
+        <li class="md:px-8 md:first:pl-0 md:last:pr-0">
+          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green">{s.t}</h3>
+          <p class="mt-2 text-brand-ink/70">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
+      Already have
+      <a href="/services/amazon-listing-images" class="font-bold text-brand-green underline underline-offset-4">listing images</a>
+      and
+      <a href="/services/amazon-a-plus-content" class="font-bold text-brand-green underline underline-offset-4">A+ Content</a>? We can focus on the copy without redesigning the rest of your page.
+    </p>
+  </section>
+
+  <!-- 05 — Frequently asked questions -->
+  <section class="bg-brand-cream" aria-labelledby="faq-heading">
+    <div class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24">
+      <div>
+        <p class="eyebrow mb-4">Frequently asked questions</p>
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">Questions About Amazon Listing Copywriting &amp; SEO</h2>
+      </div>
+      <FaqList faqs={faqs} variant="card" />
+    </div>
+  </section>
+
+  <!-- Related pages: parent offer and sibling services -->
+  <nav class="container-x pt-12 md:pt-16" aria-labelledby="related-heading">
+    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">Part of our Amazon Listing Optimization services</h2>
+    <ul class="flex flex-wrap justify-center gap-3">
+      {related.map((r) => (
+        <li>
+          <a
+            href={r.href}
+            class:list={[
+              'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
+              r.primary
+                ? 'bg-brand-green text-white hover:bg-brand-yellow hover:text-brand-green'
+                : 'border border-brand-green/20 text-brand-green hover:border-brand-yellow hover:bg-brand-yellow',
+            ]}
+          >
+            {r.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <!-- 06 — Final CTA -->
+  <CtaBanner
+    title="Your product deserves more than a list of keywords."
+    text="Share your Amazon listing and tell us what feels unclear, outdated, or overlooked. We’ll help you explore copy that connects how customers search with why your product is worth considering."
+    ctaLabel="Talk to a Human"
+    ctaHref={bookHref}
+    note="Choose a time to speak directly with our team."
+  />
+</Layout>

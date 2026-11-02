@@ -34,6 +34,8 @@ export interface ServiceItem {
   portfolio: string;
   /** Content for services rendered by /services/[slug].astro */
   page?: ServicePageContent;
+  /** FAQs of services with a hand-built page (no `page`), shared with the page and the site assistant */
+  faqs?: Faq[];
 }
 
 /** Every service Share It Studio offers. Order = priority on the site. */
@@ -61,137 +63,126 @@ export const services: ServiceItem[] = [
   {
     slug: 'amazon-a-plus-content',
     title: 'Amazon A+ Content Design',
-    text: 'Basic and Premium A+ Content that answers objections and cross-sells below the fold.',
+    text: 'Basic and Premium A+ Content built around the questions buyers still have, with product visuals, comparisons and clear storytelling.',
     href: '/services/amazon-a-plus-content',
     tags: ['A+ Content', 'Premium A+', 'Comparison charts'],
     priority: 'P1',
     line: 'amazon',
     portfolio: '/portfolio/a-plus-content',
-    page: {
-      metaTitle: 'Amazon A+ Content Design Services | Share It Studio',
-      description:
-        'Amazon A+ Content and Premium A+ Content design for brands: modules planned from your reviews and competitors to answer objections and cross-sell your catalog.',
-      eyebrow: 'Amazon A+ Content design',
-      heroTitle: 'A+ Content that keeps selling below the fold',
-      highlight: 'below the fold',
-      subtitle:
-        'We design Basic and Premium A+ Content modules that explain your product, answer buyers’ doubts and guide them to the rest of your catalog.',
-      problemTitle: 'Generic A+ Content wastes your best space',
-      problemText:
-        'Shoppers who scroll past the images are still deciding. If your A+ Content repeats the bullet points or looks like every competitor, it doesn’t move them. We plan every module around the questions buyers ask in reviews.',
-      points: [
-        'Review mining & competitor A+ audit',
-        'Module-by-module content plan',
-        'Basic and Premium A+ layouts',
-        'Built to Amazon’s A+ guidelines',
-      ],
-      deliverables: [
-        { title: 'Basic A+ Content', text: 'Standard image and text modules designed as one narrative.' },
-        { title: 'Premium A+ Content', text: 'Full-width, video, carousel and hotspot modules for eligible brands.' },
-        {
-          title: 'Comparison charts',
-          text: 'Cross-sell modules that move shoppers to the right product in your catalog.',
-        },
-      ],
-      faqs: [
-        {
-          q: 'Can I hire Share It Studio for A+ Content only?',
-          a: 'Yes. A+ Content can be a standalone project, or part of a full listing optimization.',
-        },
-        {
-          q: 'What is the difference between Basic and Premium A+ Content?',
-          a: 'Basic A+ uses standard image and text modules. Premium A+ adds larger, interactive modules such as video, carousels and hotspots.',
-        },
-        {
-          q: 'Will my A+ Content be approved by Amazon?',
-          a: 'We design to Amazon’s A+ guidelines and avoid the most common rejection reasons, such as unsupported claims and pricing references.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-a-plus-content.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What is Amazon A+ Content?',
+        a: 'Amazon A+ Content adds enhanced images, text, and other modules to the product-description area of eligible Amazon product detail pages. It helps shoppers understand features, benefits, and product differences beyond the standard listing information.',
+      },
+      {
+        q: 'What’s the difference between Basic and Premium A+ Content?',
+        a: 'Basic A+ uses text, images, and product comparisons. Premium A+ offers additional options such as larger imagery, video, interactive hotspots, and carousels. Amazon controls Premium eligibility, and the exact creative elements depend on your project scope.',
+      },
+      {
+        q: 'How do I know if my brand qualifies for Premium A+ Content?',
+        a: 'Check your A+ Content Manager in Seller Central. Premium access is enabled by Amazon when your account meets its current eligibility requirements; we can help you discuss a suitable design scope once you know which options are available.',
+      },
+      {
+        q: 'Can I hire Share It Studio only for A+ Content?',
+        a: 'Yes. Basic or Premium A+ Content can be commissioned as a standalone service. Listing images, Brand Story, photography, video, and other Amazon creative services are optional.',
+      },
+      {
+        q: 'How is A+ Content different from listing images and Brand Story?',
+        a: 'Listing images are part of the product gallery. A+ Content explains the specific product in more depth within the product-description area. Brand Story is a separate “From the brand” section focused on the company and its wider product range.',
+        link: { label: 'About Amazon Brand Story Design', href: '/services/amazon-brand-story-design' },
+      },
+      {
+        q: 'Can A+ Content improve my Amazon conversion rate?',
+        a: 'Clear, relevant A+ Content can help shoppers make a more informed decision, but it cannot guarantee higher conversion or sales. Performance also depends on traffic, price, reviews, competition, and other factors.',
+      },
+      {
+        q: 'How much does Amazon A+ Content design cost?',
+        a: 'Amazon provides the A+ publishing tool at no additional cost to eligible sellers, but professional content creation is a separate service. Our quote depends on Basic versus Premium, the number and type of modules, available assets, and any photography, video, mobile adaptations, or other production needs.',
+      },
+      {
+        q: 'Will you upload the A+ Content to Amazon for me?',
+        a: 'Upload and publishing assistance can be discussed as part of your project scope. Amazon reviews submitted content and controls final approval and display.',
+      },
+    ],
   },
   {
     slug: 'amazon-listing-images',
     title: 'Amazon Listing Images',
-    text: 'Main image, infographics and lifestyles planned as one sequence that answers buyers’ questions.',
+    text: 'Main images, product infographics and lifestyle visuals that show shoppers what they’re buying, how it works and what makes it different.',
     href: '/services/amazon-listing-images',
     tags: ['Hero images', 'Infographics', 'Lifestyles'],
     priority: 'P1',
     line: 'amazon',
     portfolio: '/portfolio/hero-images',
-    page: {
-      metaTitle: 'Amazon Listing Images Design Services | Share It Studio',
-      description:
-        'Amazon listing images designed to convert: compliant main images, infographics and lifestyle images planned from your reviews, competitors and sales data.',
-      eyebrow: 'Amazon listing images',
-      heroTitle: 'Listing images that win the click and the sale',
-      highlight: 'the click and the sale',
-      subtitle:
-        'A main image, infographics and lifestyle images planned as one sequence — each one answering a question that stops shoppers from buying.',
-      problemTitle: 'Shoppers decide from your images',
-      problemText:
-        'Most shoppers skim the image gallery instead of reading bullets. If your images don’t show size, quality and use clearly, they leave. We plan the full image stack from your data before anything is designed.',
-      points: [
-        'Competitor image audit',
-        'Image-by-image content plan',
-        'Compliant main image',
-        'Designed for mobile thumbnails',
-      ],
-      deliverables: [
-        { title: 'Hero image', text: 'A compliant main image designed to stand out in search results.' },
-        { title: 'Infographics', text: 'Features turned into benefits shoppers understand in seconds.' },
-        { title: 'Lifestyle images', text: 'Scenes planned around your buyer persona, by photography or 3D.' },
-      ],
-      faqs: [
-        {
-          q: 'How many images do you design per listing?',
-          a: 'Usually a full stack of 7 to 9 images, but the scope is defined after reviewing your listing.',
-        },
-        {
-          q: 'Do you use real photography or 3D?',
-          a: 'We choose per image: real photography where trust and detail matter most, 3D or AI-assisted work where it is just as accurate.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-listing-images.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What are Amazon listing images?',
+        a: 'Amazon listing images are the main and additional gallery visuals on a product detail page. They show the product, its features, size, and uses to help shoppers evaluate what they’re buying.',
+      },
+      {
+        q: 'Can I order listing images without a full Amazon listing optimization package?',
+        a: 'Yes. You can hire Share It Studio for individual main images, infographics, or a complete image-gallery refresh. A+ Content, video, and other Amazon services are optional.',
+      },
+      {
+        q: 'What’s the difference between Amazon listing images and A+ Content?',
+        a: 'Listing images appear in the product image gallery. A+ Content is a separate section of the product detail page that can explain benefits and comparisons in greater depth. You can purchase either service on its own.',
+        link: { label: 'About A+ Content Design', href: '/services/amazon-a-plus-content' },
+      },
+      {
+        q: 'Do I need professional product photography first?',
+        a: 'Not always. We can work with suitable existing photos and approved assets. If your product needs new, accurate photographs, we can scope a separate shoot or a combined project.',
+      },
+      {
+        q: 'Will the images meet Amazon’s requirements?',
+        a: 'We design with the applicable Amazon image guidelines in mind. Main images generally require an accurate photograph of the product on a pure white background without added promotional text. Secondary images can communicate more detail, subject to category rules. Amazon makes the final display and acceptance decisions.',
+        link: { label: 'Read our guide to Amazon image requirements', href: '/blog/amazon-images-requirements' },
+      },
+      {
+        q: 'Will better listing images increase my Amazon sales?',
+        a: 'Clearer images may help customers evaluate your product, but sales also depend on price, reviews, traffic, and other factors. We cannot guarantee a particular conversion or sales increase.',
+      },
+      {
+        q: 'How much does Amazon listing image design cost?',
+        a: 'Pricing depends on the number and type of images, the assets you already have, product variations, and whether photography or models are needed. We’ll confirm the deliverables and provide a custom quote before production.',
+      },
+    ],
   },
   {
     slug: 'amazon-product-photography',
     title: 'Amazon Product Photography',
-    text: 'Studio and lifestyle product photography shot for Amazon’s image requirements.',
+    text: 'Studio, detail, lifestyle and scale photography of your real product, planned around what Amazon shoppers need to see.',
     href: '/services/amazon-product-photography',
     tags: ['Studio', 'Lifestyle', 'White background'],
     priority: 'P2',
     line: 'amazon',
     portfolio: '/portfolio/lifestyle-photography',
-    page: {
-      metaTitle: 'Amazon Product Photography Services | Share It Studio',
-      description:
-        'Amazon product photography: white-background, detail and lifestyle shots planned for your listing images and A+ Content.',
-      eyebrow: 'Amazon product photography',
-      heroTitle: 'Product photography shot for Amazon',
-      highlight: 'for Amazon',
-      subtitle:
-        'White-background, detail and lifestyle photography planned around the images and A+ modules your listing actually needs.',
-      problemTitle: 'Good photos start with a shot list',
-      problemText:
-        'Generic product shoots leave gaps in the listing. We plan every shot from the image sequence and A+ Content, so each photo has a job.',
-      points: [
-        'Shot list from your content plan',
-        'White-background compliant shots',
-        'Lifestyle scenes for your buyer persona',
-        'Retouching included',
-      ],
-      deliverables: [
-        { title: 'White-background photos', text: 'Main image and angle shots that meet Amazon’s requirements.' },
-        { title: 'Detail shots', text: 'Close-ups of materials, textures and features.' },
-        { title: 'Lifestyle photography', text: 'Your product in use, in the setting your customer imagines.' },
-      ],
-      faqs: [
-        {
-          q: 'Do I need to send you my product?',
-          a: 'Yes, for photography we need physical samples. We share shipping details when the project starts.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-product-photography.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What is Amazon product photography?',
+        a: 'Amazon product photography is the creation of photographs showing the actual product for use in its listing and related brand content. It can include studio shots, close-ups, lifestyle scenes, and images that demonstrate size or use.',
+      },
+      {
+        q: 'How is product photography different from Amazon listing image design?',
+        a: 'Photography captures the physical product. Listing image design uses photographs and other approved assets to build final gallery visuals, such as infographics and lifestyle compositions with messaging. You can hire photography without purchasing listing image design.',
+        link: { label: 'About Amazon Listing Images', href: '/services/amazon-listing-images' },
+      },
+      {
+        q: 'Do you photograph real products or use AI-generated images?',
+        a: 'This service is centered on photographing the real product. If a project also calls for AI-assisted backgrounds, compositing, or other digital creative, we’ll discuss that separately and make sure the product is represented accurately. A generated product render is not presented as a real photograph.',
+      },
+      {
+        q: 'Can you shoot on a white background for Amazon’s main image?',
+        a: 'Yes, we can plan clean studio photographs for that purpose. Amazon generally requires main images to show the actual product on pure white (RGB 255, 255, 255), without added promotional text or confusing props. The requirements of your category and marketplace take precedence, and Amazon controls image acceptance and display.',
+        link: { label: 'Read our guide to Amazon image requirements', href: '/blog/amazon-images-requirements' },
+      },
+      {
+        q: 'How much does Amazon product photography cost?',
+        a: 'Pricing depends on the product, number and type of shots, samples or variations, studio or lifestyle requirements, models, props, locations, retouching, and usage rights. We provide a custom quote for the work you actually need. No specific sales or conversion increase is guaranteed.',
+      },
+    ],
   },
   {
     slug: 'amazon-product-video-production',
@@ -236,120 +227,144 @@ export const services: ServiceItem[] = [
   {
     slug: 'amazon-storefront-design',
     title: 'Amazon Storefront Design',
-    text: 'Amazon Store design with clear navigation and no competitor ads.',
+    text: 'Branded Amazon Stores with clear navigation, product collections and visuals that make your catalog easier to explore.',
     href: '/services/amazon-storefront-design',
     tags: ['Amazon Stores', 'Category pages'],
     priority: 'P2',
     line: 'amazon',
     portfolio: '/portfolio/other-services',
-    page: {
-      metaTitle: 'Amazon Storefront Design Services | Share It Studio',
-      description:
-        'Amazon Storefront design: a branded, multi-page Amazon Store with clear navigation and no competitor ads.',
-      eyebrow: 'Amazon Storefront design',
-      heroTitle: 'An Amazon Store that sells your whole catalog',
-      highlight: 'your whole catalog',
-      subtitle: 'A branded, multi-page Storefront with clear navigation — and no competitor ads.',
-      problemTitle: 'Your Storefront is a landing page',
-      problemText:
-        'Brand Story links and Sponsored Brands ads send shoppers to your Store. If it’s hard to navigate, they leave. We design the structure, banners and tiles around how your customers shop.',
-      points: [
-        'Page structure and navigation',
-        'Banners and tiles',
-        'Category and campaign pages',
-        'Ready for Sponsored Brands traffic',
-      ],
-      deliverables: [
-        { title: 'Store structure', text: 'Pages and categories planned around how customers shop.' },
-        { title: 'Banners & tiles', text: 'Designs that keep your brand consistent across the Store.' },
-        { title: 'Campaign pages', text: 'Seasonal and promotion pages for ads and launches.' },
-      ],
-      faqs: [
-        {
-          q: 'Do I need Brand Registry for a Storefront?',
-          a: 'Yes. Amazon Stores are available to brands enrolled in Amazon Brand Registry.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-storefront-design.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What is an Amazon Brand Store?',
+        a: 'An Amazon Brand Store is a shopping destination where eligible brands present their products through a homepage and optional additional pages. It is different from an Amazon Influencer storefront, which showcases an influencer’s recommendations.',
+        link: { label: 'Read our guide to Amazon Storefronts', href: '/blog/amazon-storefront' },
+      },
+      {
+        q: 'Who can have an Amazon Storefront?',
+        a: 'Eligible Brand Registry sellers and vendors can use Amazon Brand Stores. Sellers need the appropriate selling account and Store builder access; we’ll confirm your permissions before quoting.',
+      },
+      {
+        q: 'Is creating an Amazon Brand Store free?',
+        a: 'Amazon doesn’t charge a separate Store creation or maintenance fee. Our professional design, production, and any agreed publishing assistance are paid services.',
+      },
+      {
+        q: 'How is Storefront Design different from A+ Content and Brand Story?',
+        a: 'A+ Content explains one product. Brand Story introduces the brand on the product page. A Brand Store is a separate destination with navigation and product collections. Storefront Design can be purchased on its own.',
+        link: { label: 'About Amazon Brand Story Design', href: '/services/amazon-brand-story-design' },
+      },
+      {
+        q: 'Can you redesign an existing Amazon Storefront?',
+        a: 'Yes. We can scope updates to your existing Store’s pages, product collections, or navigation without automatically rebuilding everything.',
+      },
+      {
+        q: 'Will you upload the Storefront and submit it to Amazon?',
+        a: 'Upload and submission support can be included if agreed in the quote. Amazon reviews submitted Stores and controls final approval and display.',
+      },
+      {
+        q: 'Does an Amazon Storefront bring more traffic or guarantee sales?',
+        a: 'A Store gives visitors from product pages, ads, or shared links a place to explore your catalog. Better design can’t guarantee more traffic or sales; PPC management isn’t included by default.',
+      },
+      {
+        q: 'How much does Amazon Storefront Design cost?',
+        a: 'Pricing depends on the number of Store pages, catalog size, assets available, and any new creative or publishing support required. You’ll receive a custom quote before production.',
+      },
+    ],
   },
   {
     slug: 'amazon-brand-story-design',
     title: 'Amazon Brand Story Design',
-    text: 'A catalog-wide Brand Story carousel that introduces your brand and cross-sells.',
+    text: 'A Brand Story carousel that introduces your brand, shows what makes it different and helps shoppers discover more of your products.',
     href: '/services/amazon-brand-story-design',
     tags: ['Brand Story', 'Cross-sell'],
     priority: 'P2',
     line: 'amazon',
     portfolio: '/portfolio/other-services',
-    page: {
-      metaTitle: 'Amazon Brand Story Design | Share It Studio',
-      description:
-        'Amazon Brand Story design: a catalog-wide carousel that introduces your brand, shows your product range and sends shoppers to your Storefront.',
-      eyebrow: 'Amazon Brand Story design',
-      heroTitle: 'A Brand Story on every product you sell',
-      highlight: 'every product',
-      subtitle:
-        'One carousel, shown across your catalog, that tells shoppers who you are and moves them to the rest of your products.',
-      problemTitle: 'Shoppers buy from brands they trust',
-      problemText:
-        'The Brand Story appears on every ASIN. Designed well, it builds trust and sends shoppers to your Storefront instead of a competitor.',
-      points: [
-        'Brand message and structure',
-        'Carousel card design',
-        'Links to Store and products',
-        'Consistent with your A+ Content',
-      ],
-      deliverables: [
-        { title: 'Brand Story carousel', text: 'Mission, values and product range cards.' },
-        { title: 'Store links', text: 'Cards that send shoppers to your Storefront and best sellers.' },
-      ],
-      faqs: [
-        {
-          q: 'Is the Brand Story the same as A+ Content?',
-          a: 'No. The Brand Story is a separate carousel shown across your catalog; A+ Content is specific to each product.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-brand-story-design.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What is Amazon Brand Story?',
+        a: 'Amazon Brand Story is a branded carousel that appears in the “From the brand” section of eligible product detail pages. It uses images and text to introduce your brand and can include links to other products and your Amazon Brand Store.',
+      },
+      {
+        q: 'How is Brand Story different from A+ Content and an Amazon Storefront?',
+        a: 'A+ Content explains a specific product in more depth. Brand Story introduces the company behind the product in a separate carousel. An Amazon Storefront is a dedicated place to explore your brand’s catalog. They can work together, but each serves a different purpose.',
+        link: { label: 'About A+ Content Design', href: '/services/amazon-a-plus-content' },
+      },
+      {
+        q: 'Do I need a big company history to have a Brand Story?',
+        a: 'No. A useful Brand Story can focus on your identity, product philosophy, authentic values, or the products you make. We work with the facts and assets you can support — not invented claims.',
+      },
+      {
+        q: 'Who can use Amazon Brand Story?',
+        a: 'Amazon makes Brand Story available through A+ Content Manager to eligible sellers and authorized brand representatives with the required Brand Registry access. Check your Seller Central account for the content options available to your brand.',
+      },
+      {
+        q: 'Can the same Brand Story be used across multiple products?',
+        a: 'Amazon supports applying Brand Story content to multiple eligible ASINs, subject to brand ownership or permissions and Amazon review. The number of products and any upload assistance included in your project will be confirmed in the quote.',
+      },
+      {
+        q: 'What do I need to provide to get started?',
+        a: 'Your brand name and logo, existing visual guidelines, accurate brand information, approved product imagery, and the products or Store you want to feature are a good start. If assets are missing, we can discuss what needs to be created.',
+      },
+      {
+        q: 'Will Amazon Brand Story increase my sales?',
+        a: 'Brand Story can provide more brand context and help customers explore related products, but it cannot guarantee higher conversion or sales. Traffic, product relevance, price, reviews, and other factors also influence results.',
+      },
+      {
+        q: 'How much does Amazon Brand Story design cost?',
+        a: 'Pricing depends on the number and type of cards, the assets available, the creative production required, and whether photography or upload assistance is needed. We’ll confirm the scope and provide a custom quote before work begins.',
+      },
+    ],
   },
   {
     slug: 'amazon-listing-copywriting',
     title: 'Amazon Listing Copywriting & SEO',
-    text: 'Keyword research, titles, bullet points, descriptions and backend search terms.',
+    text: 'Keyword research, product titles, bullet points and backend search terms that connect how shoppers search with why your product is worth choosing.',
     href: '/services/amazon-listing-copywriting',
     tags: ['Keyword research', 'Titles & bullets', 'Backend terms'],
     priority: 'P2',
     line: 'amazon',
     portfolio: '/portfolio',
-    page: {
-      metaTitle: 'Amazon Listing Copywriting & SEO | Share It Studio',
-      description:
-        'Amazon listing copywriting and SEO: keyword research, titles, bullet points, descriptions and backend search terms written to rank and convert.',
-      eyebrow: 'Amazon listing copywriting & SEO',
-      heroTitle: 'Listing copy written to rank and convert',
-      highlight: 'rank and convert',
-      subtitle:
-        'Keyword research, titles, bullet points and backend search terms — written for the algorithm and for the shopper.',
-      problemTitle: 'Keywords bring traffic, copy closes the sale',
-      problemText:
-        'A listing stuffed with keywords can rank and still not sell. We research the terms that matter and write copy that answers what buyers need to know.',
-      points: [
-        'Keyword research',
-        'Title and bullet points',
-        'Description and backend terms',
-        'Aligned with your images',
-      ],
-      deliverables: [
-        { title: 'Keyword research', text: 'Search terms prioritized by relevance and volume.' },
-        { title: 'Title & bullet points', text: 'Clear, benefit-led copy within Amazon’s limits.' },
-        { title: 'Backend search terms', text: 'Indexing for the terms that don’t fit in visible copy.' },
-      ],
-      faqs: [
-        {
-          q: 'Can you work alongside my existing Amazon PPC agency?',
-          a: 'Yes. We handle listing content and copy; your PPC agency keeps managing campaigns.',
-        },
-      ],
-    },
+    // Hand-built page (src/pages/services/amazon-listing-copywriting.astro), so no `page` here
+    faqs: [
+      {
+        q: 'What is Amazon listing copywriting and SEO?',
+        a: 'It’s writing product listing text around relevant Amazon searches and the questions shoppers need answered. It can include the product title, bullet points, and backend search terms, with the goal of making the listing easier to find and understand. This service focuses on Amazon’s product search, not Google website SEO.',
+      },
+      {
+        q: 'Does your copywriting service include keyword research?',
+        a: 'Yes. Keyword research and product analysis inform the copy we create. We prioritize relevant terms that fit your product and the way customers search instead of repeating keywords unnecessarily.',
+      },
+      {
+        q: 'What copywriting deliverables are included?',
+        a: 'Our English title-and-bullets offering includes a product title, five bullet points, keyword research, and backend search terms, subject to the agreed category and listing scope. Item Highlights, descriptions, language adaptations, and other fields can be discussed separately.',
+      },
+      {
+        q: 'What are Amazon Item Highlights?',
+        a: 'Item Highlights is a searchable field introduced alongside Amazon’s 2026 title changes. In most non-media categories, Amazon now limits the product title to 75 characters and provides up to 125 characters for Item Highlights. We can discuss how to use that space when defining your project.',
+      },
+      {
+        q: 'What are backend search terms?',
+        a: 'Backend search terms are hidden keywords entered in Amazon Seller Central. They can include relevant synonyms or alternative names that would sound unnatural in a title or bullet point. Amazon controls how these terms are used, and they must follow its current limits and content rules.',
+      },
+      {
+        q: 'Can I hire you for copywriting without images or A+ Content?',
+        a: 'Yes. Amazon Listing Copywriting & SEO is available as a standalone service. Images, A+ Content, and other creative work can be added only if your listing needs them.',
+      },
+      {
+        q: 'Can you write Amazon listings in Spanish?',
+        a: 'Spanish-language titles and bullet points are available as a separately scoped offering. We’ll confirm the marketplace, language needs, deliverables, and approval process before quoting.',
+      },
+      {
+        q: 'Will new copy improve my Amazon rankings or sales?',
+        a: 'Relevant, clear copy may help shoppers find and evaluate your product, but rankings and sales depend on many factors, including competition, pricing, traffic, reviews, and catalog information. We don’t guarantee a specific result.',
+      },
+      {
+        q: 'How much does Amazon listing copywriting cost?',
+        a: 'Pricing depends on the number of ASINs, product variations, language, research needs, and fields included. We’ll confirm your deliverables and provide a quote before writing begins.',
+      },
+    ],
   },
 ];
 
