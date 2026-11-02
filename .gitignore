@@ -26,3 +26,4 @@ pnpm-debug.log*
 # camera originals of the testimonial videos (100+ MB, GitHub rejects them); the web versions live in public/testimonials
 src/assets/testimonials/mp4/
 src/assets/testimonials/webm/
+.vercel

@@ -1,0 +1,28 @@
+---
+/**
+ * Stand-in for an approved image that isn't available yet: dashed frame, picture icon and a label saying what goes
+ * there. Replace with <Image> once the real asset (with permission and alt text) exists.
+ */
+interface Props {
+  label: string;
+  tone?: 'cream' | 'yellow' | 'white' | 'green';
+  class?: string;
+}
+
+const { label, tone = 'cream', class: className } = Astro.props;
+const tones = {
+  cream: '',
+  yellow: 'border-brand-yellow/70 bg-brand-yellow-soft',
+  white: 'bg-white',
+  green: 'border-white/20 bg-brand-green-light text-white/60',
+};
+---
+
+<div class:list={['placeholder flex-col gap-2 px-4', tones[tone], className]}>
+  <svg class="h-7 w-7 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+    <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+    <circle cx="9" cy="10" r="1.8"></circle>
+    <path d="m4 18 5.5-5.5 4 4L16 14l4 4"></path>
+  </svg>
+  <span>{label}</span>
+</div>

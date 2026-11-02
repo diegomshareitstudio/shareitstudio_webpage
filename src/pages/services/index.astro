@@ -21,6 +21,7 @@ import oldListing from '../../assets/case-studies/super-ninja/old-listing.png';
 import newListing from '../../assets/case-studies/super-ninja/new-listing.png';
 import amarantoLogo from '../../assets/testimonials/logos/amaranto.png';
 import yungprimeLogo from '../../assets/testimonials/logos/yungprime.png';
+import giftest from '../../assets//giftest.gif';
 
 const bookHref = '/book-a-call'; // TODO: verified Calendly booking destination
 
@@ -49,7 +50,11 @@ const lines = [
 ];
 
 // TODO: approved Reels and carousels (with permissions) replace these placeholders
-const socialPreview = ['Reel', 'Carousel', 'Reel'];
+const socialPreview = [
+  { type: 'text', label: 'Reel' },
+  { type: 'text', label: 'Carousel' },
+  { type: 'text', label: 'Reel' },
+];
 
 // 03 — the individual Amazon services, in the order of the copy. One selector slide each.
 // TODO: an approved image per service (import it from src/assets and set `image`); until then the slide shows a placeholder
@@ -162,7 +167,7 @@ const schema = [
             {social ? (
               <a href={l.portfolio} class="group block" aria-label="See social media work: Reels and carousels">
                 <ul class="flex items-end justify-center gap-3 sm:gap-4">
-                  {socialPreview.map((kind, k) => (
+                    {socialPreview.map((item, k) => (
                     <li
                       class:list={[
                         'grid aspect-[9/16] w-1/4 max-w-[9rem] place-items-center rounded-[1.25rem] border-2 border-dashed border-brand-green/20 bg-brand-cream text-xs font-medium text-brand-green/50 transition group-hover:border-brand-orange/60',
@@ -171,7 +176,7 @@ const schema = [
                         k === 2 && 'rotate-6',
                       ]}
                     >
-                      {kind}
+                      {item.label}
                     </li>
                   ))}
                 </ul>
