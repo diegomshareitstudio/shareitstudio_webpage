@@ -181,7 +181,7 @@ const faqs: Faq[] = [
   <!-- Pick the pinned hero layout before the first paint, so it never swaps in later (CLS). Mirrors the checks in
        scripts/home.ts, which has the final word: reduced motion and very short viewports keep the stacked layout. -->
   <script is:inline>
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && innerHeight >= 480)
+    if (innerHeight >= 480)
       document.documentElement.classList.add('home-ready');
   </script>
   <!-- 01 — Hero (scene A) + the heading of 02 (scene B). Pinned briefly on desktop/mobile while the spotlight expands. -->

@@ -85,7 +85,7 @@
 }
 
 /* Screens */
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   .bdq .screen {
     animation: bdq-in 0.4s var(--ease) both;
   }

@@ -242,12 +242,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
       scale 0.35s ease,
       visibility 0s 0.35s;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .tm-slider.is-ready .tm-featured {
-      transition: none !important;
-    }
-  }
-  .tm-nav {
+    .tm-nav {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -513,7 +508,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
     });
   });
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = false;
 
   /** Splits a quote into letters once; play() types it out, reset() hides it again. */
   function typewriter(el: HTMLElement) {

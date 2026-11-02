@@ -151,7 +151,7 @@
     object-position: 50% 100%;
   }
 }
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   .wk-img--scroll {
     animation: wk-scroll var(--scroll-dur, 30s) linear infinite alternate;
   }
@@ -376,13 +376,3 @@
   opacity: 0.9;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .wk-slide,
-  .wk-slide::before,
-  .wk-slide[data-pos='hidden'],
-  .wk-panel,
-  .wk-slide[data-pos='center'] .wk-panel {
-    transition-duration: 0s;
-    transition-delay: 0s;
-  }
-}

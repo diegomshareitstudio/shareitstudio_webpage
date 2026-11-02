@@ -7,7 +7,7 @@
  */
 import { animate, inView, scroll, stagger } from 'motion';
 
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced = false; // animations are always on, regardless of the OS reduced-motion setting
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>

@@ -45,7 +45,8 @@ export const HOME_MOTION = {
   },
 } as const;
 
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+// Animations are always on, regardless of the OS reduced-motion setting
+const reduced = { matches: false, addEventListener: (_type: string, _fn: () => void) => {} };
 const narrow = () => window.innerWidth < 768;
 
 const clamp = (n: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, n));

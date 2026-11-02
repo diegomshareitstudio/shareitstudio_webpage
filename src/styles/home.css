@@ -338,7 +338,7 @@ html.home-ready .home-results {
 
 
 /* ---------- Motion (everything below is off for reduced-motion visitors) ---------- */
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   @keyframes home-drift {
     from {
       translate: 0 0;
