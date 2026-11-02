@@ -70,13 +70,9 @@
     --fill: var(--color-brand-green);
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-brand-green/25 px-6 py-3 font-semibold text-brand-green transition hover:border-brand-green hover:text-white;
   }
-  /* Small label with a yellow dash before it */
+  /* Small uppercase label above a heading */
   .eyebrow {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-green/70;
-  }
-  .eyebrow::before {
-    content: '';
-    @apply h-0.5 w-6 rounded-full bg-brand-orange;
   }
   /* Highlighter-marker effect for key words */
   .marker {

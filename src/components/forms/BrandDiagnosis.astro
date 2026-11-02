@@ -1,0 +1,26 @@
+---
+/**
+ * SIS Brand Diagnosis quiz (build v0.15, master document v0.4), compact card for the services page:
+ * Welcome → Q1 (and 1b) → Path A, B or C (problem → mirror → case study → your brand → more case study →
+ * what you have → your plan) → client details → result → invoice or talk to a real person.
+ * Screens are rendered by scripts/brand-diagnosis.js; styles in styles/brand-diagnosis.css (scoped to .bdq).
+ * Before launch: sending the talk request, quote brief and invoice block needs a backend, and the internal test
+ * panels must be removed (master doc, open question 11).
+ */
+import '../../styles/brand-diagnosis.css';
+---
+
+<div class="bdq" data-bd>
+  <div class="bd-bar" aria-hidden="true"><div class="bd-bar-fill" data-bd-bar></div></div>
+  <div class="bd-top">
+    <p class="bd-phase" data-bd-phase></p>
+    <div data-bd-talk></div>
+  </div>
+  <div class="bd-screen" data-bd-screen aria-live="polite"></div>
+</div>
+
+<script>
+  import { initBrandDiagnosis } from '../../scripts/brand-diagnosis.js';
+  const root = document.querySelector<HTMLElement>('[data-bd]');
+  if (root) initBrandDiagnosis(root);
+</script>

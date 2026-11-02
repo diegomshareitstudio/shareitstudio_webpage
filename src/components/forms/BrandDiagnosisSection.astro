@@ -1,0 +1,23 @@
+---
+/**
+ * Brand Diagnosis section (services page and landing): the quiz's welcome copy as the intro on the left, the quiz
+ * card (BrandDiagnosis.astro) on the right. One per page.
+ */
+import BrandDiagnosis from './BrandDiagnosis.astro';
+---
+
+<section id="brand-diagnosis" class="container-x scroll-mt-24 py-12 md:py-24" aria-labelledby="diagnosis-heading">
+  <div class="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
+    <div class="lg:sticky lg:top-28">
+      <p class="eyebrow mb-4">Brand diagnosis</p>
+      <h2 id="diagnosis-heading" class="text-[1.7rem] font-extrabold leading-tight text-brand-green sm:text-3xl md:text-[2.6rem]">
+        Let's find what's holding your <span class="marker">brand back.</span>
+      </h2>
+      <p class="mt-4 text-base text-brand-ink/65 sm:text-lg">
+        Tell us what you see in your own words. In about 3 minutes you'll get a diagnosis and a plan built around your answers.
+      </p>
+      <p class="mt-6 text-sm font-semibold text-brand-green">Social Media Management for E-Com Brands &amp; Optimization.</p>
+    </div>
+    <BrandDiagnosis />
+  </div>
+</section>

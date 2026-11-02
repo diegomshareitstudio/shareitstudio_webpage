@@ -7,19 +7,19 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
 import AskAi from '../components/ui/AskAi.astro';
+import BrandDiagnosisSection from '../components/forms/BrandDiagnosisSection.astro';
 import Spotlight from '../components/ui/Spotlight.astro';
+import '../styles/selector.css';
 import '../styles/home.css';
+import { slideOffset, slidePos, slideSide } from '../lib/selector';
 import { Image, getImage } from 'astro:assets';
 import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.png';
 // TODO: sample A+ images standing in until each case has its own (the selector crops them to a square from the top)
 import sampleBasket from '../assets/samples/A+ Content Jute Hanging Basket.jpg';
 import sampleBodyWash from '../assets/samples/Body-Wash-Cleanser_A+-Content.png';
 import sampleCream from '../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
-import resourceStandOut from '../assets/resources/Stand-out.png';
-import resourceAPlusExamples from '../assets/resources/amazon-a-content-examples.png';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import Testimonials from '../components/ui/Testimonials.astro';
-import { getPost, postHref } from '../data/posts';
 import { testimonials } from '../data/testimonials';
 import { testimonialVideoSchema, type Schema } from '../lib/schema';
 import type { Faq } from '../data/faqs';
@@ -144,9 +144,6 @@ const work = [
   image?: { src: ImageMetadata; alt: string };
 }[];
 
-/** Position of slide i relative to the active one, centred: 0 = middle, ±1 = beside it, further = out of view */
-const workOffset = (i: number, active: number, n: number) => ((((i - active + Math.floor(n / 2)) % n) + n) % n) - Math.floor(n / 2);
-
 // 06 — how we work
 const steps = [
   {
@@ -164,31 +161,6 @@ const steps = [
   {
     t: 'Review, deliver, and improve',
     d: 'We work through the agreed review and delivery process. For ongoing engagements, reporting and feedback can guide the next round of creative decisions.',
-  },
-];
-
-// 07 — resources (existing guides; the card copy is new)
-const resources = [
-  {
-    post: getPost('a-plus-content-templates'),
-    title: 'A+ Content Templates',
-    text: 'Explore ways to structure the content shoppers see below the product listing.',
-    cta: 'Explore Templates',
-    image: resourceStandOut,
-  },
-  {
-    post: getPost('amazon-a-plus-content-examples'),
-    title: 'Amazon A+ Content Examples',
-    text: 'See how different brands communicate benefits through their A+ Content.',
-    cta: 'See Examples',
-    image: resourceAPlusExamples,
-  },
-  {
-    post: getPost('amazon-images-requirements'),
-    title: 'Amazon Image Requirements',
-    text: 'Understand the requirements behind Amazon product imagery before creating or updating your listing.',
-    cta: 'Read the Guide',
-    image: undefined as ImageMetadata | undefined, // TODO: article image
   },
 ];
 
@@ -351,14 +323,14 @@ const faqs: Faq[] = [
     <div class="wk" data-wk role="region" aria-roledescription="carousel" aria-label="Case studies">
       <ul class="wk-stage" data-wk-stage>
         {work.map((w, i) => {
-          const o = workOffset(i, 0, work.length);
-          const pos = o === 0 ? 'center' : Math.abs(o) === 1 ? 'side' : 'hidden';
+          const o = slideOffset(i, 0, work.length);
+          const pos = slidePos(o);
           return (
             <li
               class="wk-slide"
               data-wk-slide
               data-pos={pos}
-              data-side={o < 0 ? 'left' : o > 0 ? 'right' : 'center'}
+              data-side={slideSide(o)}
               style={`--o:${o}`}
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${work.length}: ${w.cat}`}
@@ -370,12 +342,10 @@ const faqs: Faq[] = [
                     src={w.image.src}
                     alt={w.image.alt}
                     width={900}
-                    height={900}
-                    fit="cover"
-                    position="top"
                     widths={[360, 600, 900]}
                     sizes="(min-width: 1024px) 28rem, min(94vw, 34rem)"
-                    class="wk-img"
+                    class="wk-img wk-img--scroll"
+                    style={`--scroll-dur:${Math.max(10, (w.image.src.height / w.image.src.width - 1) * 25).toFixed(1)}s`}
                   />
                 ) : (
                   <div class="media-fallback wk-img">
@@ -457,44 +427,8 @@ const faqs: Faq[] = [
     </div>
   </section>
 
-  <!-- 07 — Resources -->
-  <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="resources-heading">
-    <div class="container-x">
-      <SectionHeading
-        eyebrow="Resources"
-        id="resources-heading"
-        title="Useful answers, whether or not we’re working together yet."
-      />
-      <ul class="grid gap-3 sm:gap-6 md:grid-cols-3">
-        {resources.map((r) => (
-          <li class="flex">
-            <a
-              href={postHref(r.post)}
-              class="group flex w-full items-center gap-4 rounded-[1.5rem] bg-white p-3 transition hover:bg-brand-yellow-soft sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-[2rem]"
-            >
-              {r.image ? (
-                <Image
-                  src={r.image}
-                  alt=""
-                  widths={[400, 768]}
-                  sizes="(min-width: 768px) 24rem, 100vw"
-                  class="aspect-square w-24 shrink-0 rounded-[1rem] object-cover sm:aspect-[16/9] sm:w-full sm:rounded-[1.6rem]"
-                />
-              ) : (
-                <div class="media-fallback aspect-square w-24 shrink-0 rounded-[1rem] sm:aspect-[16/9] sm:w-full sm:rounded-[1.6rem]"><span class="hidden sm:inline">Article image</span></div>
-              )}
-              <div class="flex min-w-0 flex-1 flex-col py-1 pr-1 sm:p-4">
-                <h3 class="text-[1.0625rem] font-extrabold leading-snug text-brand-green sm:mt-2 sm:text-xl">{r.title}</h3>
-                <p class="mt-1 flex-1 text-sm text-brand-ink/65 sm:mt-2">{r.text}</p>
-                <span class="mt-2 text-sm font-semibold sm:mt-5 text-brand-green">{r.cta} →</span>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a href="/blog" class="btn-outline mt-6 sm:mt-8">Explore All Resources</a>
-    </div>
-  </section>
+  <!-- 07 — Brand Diagnosis quiz (same section as the services page) -->
+  <BrandDiagnosisSection />
 
   <!-- 08 — FAQ (no FAQPage markup: not needed for eligibility) -->
   <section class="py-12 md:py-24" aria-labelledby="faq-heading">
