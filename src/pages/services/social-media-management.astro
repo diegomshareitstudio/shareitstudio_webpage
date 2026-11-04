@@ -15,9 +15,9 @@ import FaqList from '../../components/ui/FaqList.astro';
 import type { Faq } from '../../data/faqs';
 import { socialPackages } from '../../data/socialPackages';
 import { faqSchema, serviceSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 const path = '/services/social-media-management';
-const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
 
 // 02 — the problems we help solve
 const problems = [
@@ -56,9 +56,18 @@ const examples = ['Educational Reel', 'Audience-led carousel', 'Product-led shor
 // 05 — why every post has a purpose
 const purposes = [
   { t: 'Build an audience.', d: 'Give people useful or entertaining reasons to discover and follow your brand.' },
-  { t: 'Build trust.', d: 'Answer buyer questions, explain product benefits, and share the knowledge behind your brand.' },
-  { t: 'Create opportunities to sell.', d: 'Connect audience interest to your products when the message and timing make sense.' },
-  { t: 'Keep it moving.', d: 'Make consistent publishing possible without putting every post on your team’s to-do list.' },
+  {
+    t: 'Build trust.',
+    d: 'Answer buyer questions, explain product benefits, and share the knowledge behind your brand.',
+  },
+  {
+    t: 'Create opportunities to sell.',
+    d: 'Connect audience interest to your products when the message and timing make sense.',
+  },
+  {
+    t: 'Keep it moving.',
+    d: 'Make consistent publishing possible without putting every post on your team’s to-do list.',
+  },
 ];
 
 // 06 — questions worth answering
@@ -134,7 +143,7 @@ const schema = [
     highlight="Ecommerce Brands"
     subtitle={`<strong class="block font-display text-xl font-extrabold leading-snug text-brand-green md:text-2xl">Give people a reason to follow. Let us handle the content behind it.</strong><span class="mt-4 block">Your customers have questions, interests, and reasons to care beyond your next promotion. We turn those insights into a social content plan — then handle research, creative production, editing, and publishing according to the monthly plan you choose.</span><span class="mt-3 block text-sm font-semibold text-brand-green">For ecommerce brands on Amazon and beyond.</span>`}
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     secondaryLabel="Compare Monthly Plans"
     secondaryHref="#monthly-plans"
   >
@@ -143,7 +152,11 @@ const schema = [
 
   <!-- 02 — The problems we help solve -->
   <section class="container-x py-12 md:py-24" aria-labelledby="problems-heading">
-    <SectionHeading eyebrow="The problems we help solve" id="problems-heading" title="Your brand has more to say than “Buy now.”" />
+    <SectionHeading
+      eyebrow="The problems we help solve"
+      id="problems-heading"
+      title="Your brand has more to say than “Buy now.”"
+    />
     <ul class="grid gap-4 md:grid-cols-3">
       {problems.map((p) => (
         <li class="rounded-[1.5rem] bg-brand-cream p-6 sm:rounded-[1.75rem] sm:p-7">
@@ -153,7 +166,8 @@ const schema = [
       ))}
     </ul>
     <p class="mt-8 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl md:text-[1.75rem]">
-      You don’t need more posts just to fill a calendar. <span class="marker">You need content with a purpose</span> — and a team to produce it.
+      You don’t need more posts just to fill a calendar. <span class="marker">You need content with a purpose</span> —
+      and a team to produce it.
     </p>
   </section>
 
@@ -161,11 +175,18 @@ const schema = [
   <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="manage-heading">
     <div class="container-x grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-12">
       <div>
-        <SectionHeading eyebrow="What we manage" id="manage-heading" title="From the right questions to a feed that keeps moving." align="left" />
+        <SectionHeading
+          eyebrow="What we manage"
+          id="manage-heading"
+          title="From the right questions to a feed that keeps moving."
+          align="left"
+        />
         <ol class="space-y-3 sm:space-y-4">
           {steps.map((s, i) => (
             <li class="flex gap-4 rounded-[1.5rem] bg-white p-5 sm:gap-5 sm:rounded-[1.75rem] sm:p-6">
-              <span class="font-display text-2xl font-extrabold text-brand-yellow sm:text-3xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-display text-2xl font-extrabold text-brand-yellow sm:text-3xl" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
               <div>
                 <h3 class="text-lg font-extrabold text-brand-green">{s.t}</h3>
                 <p class="mt-1 text-[0.9375rem] text-brand-ink/70 sm:text-base">{s.d}</p>
@@ -177,10 +198,20 @@ const schema = [
       <div>
         <ul class="grid grid-cols-3 gap-3">
           {examples.map((e, i) => (
-            <li class:list={['placeholder aspect-[4/5] rounded-[1rem] px-2 text-xs sm:aspect-[9/16] sm:rounded-[1.25rem]', i === 1 && 'translate-y-3 sm:translate-y-8']}>{e}</li>
+            <li
+              class:list={[
+                'placeholder aspect-[4/5] rounded-[1rem] px-2 text-xs sm:aspect-[9/16] sm:rounded-[1.25rem]',
+                i === 1 && 'translate-y-3 sm:translate-y-8',
+              ]}
+            >
+              {e}
+            </li>
           ))}
         </ul>
-        <a href="/our-work" class="mt-7 inline-flex min-h-11 items-center sm:mt-14 font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+        <a
+          href="/our-work"
+          class="mt-7 inline-flex min-h-11 items-center sm:mt-14 font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
+        >
           See Social Content We’ve Created →
         </a>
       </div>
@@ -198,29 +229,42 @@ const schema = [
       />
       <PackageCards />
       <p class="mt-6 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
-        Prices and scopes are subject to customization. The post count, formats, channels, filming logistics, revision process, platform access, and advertising budget will be clarified in your proposal. Ads management does not include media spend unless expressly agreed.
+        Prices and scopes are subject to customization. The post count, formats, channels, filming logistics, revision
+        process, platform access, and advertising budget will be clarified in your proposal. Ads management does not
+        include media spend unless expressly agreed.
       </p>
-      <a href={bookHref} class="btn-dark mt-6">Talk Through the Right Plan</a>
+      <a href={BOOKING_PAGE} class="btn-dark mt-6">
+        Talk Through the Right Plan
+      </a>
 
       <div class="mt-14 md:mt-20">
-        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">Compare what changes between plans</h3>
+        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">
+          Compare what changes between plans
+        </h3>
         <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
-          The essential difference isn’t just how often we publish. It’s the type of production, product integration, and ongoing management included.
+          The essential difference isn’t just how often we publish. It’s the type of production, product integration,
+          and ongoing management included.
         </p>
         <PackageComparison />
         <p class="mt-4 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
-          All four plans include core research/strategy, content editing, uploading and posting. The exact deliverables are set by your contract. Paid advertising budgets are separate from management fees unless stated otherwise.
+          All four plans include core research/strategy, content editing, uploading and posting. The exact deliverables
+          are set by your contract. Paid advertising budgets are separate from management fees unless stated otherwise.
         </p>
       </div>
 
       <div class="mt-14 rounded-[1.75rem] bg-brand-cream p-5 sm:rounded-[2rem] sm:p-6 md:mt-20 md:p-10">
-        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">See what a week could look like.</h3>
+        <h3 class="text-[1.4rem] font-extrabold leading-tight text-brand-green sm:text-2xl md:text-3xl">
+          See what a week could look like.
+        </h3>
         <p class="mb-6 mt-3 max-w-2xl text-brand-ink/70">
-          Choose a plan to explore an <strong class="text-brand-green">illustrative</strong> weekly mix of Reels, Stories, and carousels. Your actual content calendar will reflect your audience, goals, platforms, approvals, and contracted plan.
+          Choose a plan to explore an <strong class="text-brand-green">illustrative</strong> weekly mix of Reels,
+          Stories, and carousels. Your actual content calendar will reflect your audience, goals, platforms, approvals,
+          and contracted plan.
         </p>
         <PostingSchedule initial="grow" />
         <p class="mt-5 max-w-3xl text-xs leading-relaxed text-brand-ink/55">
-          Sample publishing patterns only. They illustrate possible cadence, not guaranteed weekly deliverables or a fixed content mix. Duplicate Reel entries indicate multiple Reels on that day in the original example.
+          Sample publishing patterns only. They illustrate possible cadence, not guaranteed weekly deliverables or a
+          fixed content mix. Duplicate Reel entries indicate multiple Reels on that day in the original example.
         </p>
       </div>
     </div>
@@ -230,7 +274,9 @@ const schema = [
   <section class="bg-brand-green py-12 md:py-20" aria-labelledby="purpose-heading">
     <div class="container-x">
       <p class="eyebrow mb-4 text-brand-yellow">Why every post has a purpose</p>
-      <h2 id="purpose-heading" class="text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">Every Post Should Have a Purpose.</h2>
+      <h2 id="purpose-heading" class="text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
+        Every Post Should Have a Purpose.
+      </h2>
       <ul class="mt-8 grid gap-px sm:mt-10 overflow-hidden rounded-[1.75rem] bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
         {purposes.map((p) => (
           <li class="bg-brand-green px-5 py-5 sm:p-6 md:p-7">
@@ -243,10 +289,15 @@ const schema = [
   </section>
 
   <!-- 06 — Questions worth answering -->
-  <section class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24" aria-labelledby="faq-heading">
+  <section
+    class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24"
+    aria-labelledby="faq-heading"
+  >
     <div>
       <p class="eyebrow mb-4">Questions worth answering</p>
-      <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">What should you know before choosing a plan?</h2>
+      <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">
+        What should you know before choosing a plan?
+      </h2>
     </div>
     <FaqList faqs={faqs} variant="cream" />
   </section>
@@ -256,7 +307,7 @@ const schema = [
     title="Your next month of content starts with a clearer plan."
     text="Tell us what you sell, who you’re trying to reach, and what keeps your content from moving forward. We’ll help you explore the monthly scope and creative approach that make sense for your brand."
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     note="Choose a time to speak directly with our team."
   />
 </Layout>

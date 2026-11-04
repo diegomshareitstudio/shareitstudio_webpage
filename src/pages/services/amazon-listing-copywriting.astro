@@ -14,9 +14,9 @@ import CtaBanner from '../../components/ui/CtaBanner.astro';
 import FaqList from '../../components/ui/FaqList.astro';
 import { getService } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 const path = '/services/amazon-listing-copywriting';
-const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
 const service = getService('amazon-listing-copywriting');
 const faqs = service.faqs!;
 
@@ -91,7 +91,12 @@ const schema = [
 ];
 ---
 
-<Layout title="Amazon Listing Copywriting & SEO Services | Share It Studio" description={description} breadcrumbs={breadcrumbs} schema={schema}>
+<Layout
+  title="Amazon Listing Copywriting & SEO Services | Share It Studio"
+  description={description}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
   <!-- 01 — Hero -->
   <PageHero
     eyebrow="Amazon listing copywriting services"
@@ -99,11 +104,13 @@ const schema = [
     highlight="Every Word Count"
     subtitle={`<strong class="block font-display text-xl font-extrabold leading-snug text-brand-green md:text-2xl">Your product needs the right keywords. But shoppers also need a clear reason to choose it.</strong><span class="mt-4 block">We research how people search on Amazon, then write product titles, bullet points, and backend search terms that connect relevant searches with the benefits of your product — without turning your listing into a wall of keywords.</span><span class="mt-3 block text-sm font-semibold text-brand-green">Need copywriting on its own? You don’t have to purchase a full Amazon listing refresh.</span>`}
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     secondaryLabel="See Our Copywriting Work"
     secondaryHref="#copywriting-work"
   >
-    <p class="mt-4 text-sm text-brand-ink/60">Share your Amazon listing and tell us what shoppers need to understand.</p>
+    <p class="mt-4 text-sm text-brand-ink/60">
+      Share your Amazon listing and tell us what shoppers need to understand.
+    </p>
 
     <!-- TODO: an approved real product detail page (title, Item Highlights where applicable, readable bullets) -->
     <div slot="visual" class="rounded-[1.75rem] bg-white p-5 shadow-xl sm:p-7" aria-hidden="true">
@@ -139,7 +146,12 @@ const schema = [
     />
     <ul class="grid gap-4 md:grid-cols-3">
       {work.map((w, i) => (
-        <li class:list={['rounded-[1.5rem] border-2 border-dashed border-brand-green/15 p-6 sm:rounded-[1.75rem] sm:p-7', i === 1 ? 'bg-brand-yellow-soft' : 'bg-brand-cream']}>
+        <li
+          class:list={[
+            'rounded-[1.5rem] border-2 border-dashed border-brand-green/15 p-6 sm:rounded-[1.75rem] sm:p-7',
+            i === 1 ? 'bg-brand-yellow-soft' : 'bg-brand-cream',
+          ]}
+        >
           <h3 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">{w.kind}</h3>
           <div class="mt-4 space-y-2" aria-hidden="true">
             {Array.from({ length: w.lines }, (_, l) => (
@@ -150,7 +162,10 @@ const schema = [
         </li>
       ))}
     </ul>
-    <a href={service.portfolio} class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+    <a
+      href={service.portfolio}
+      class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
+    >
       Explore Our Amazon Creative Work →
     </a>
   </section>
@@ -158,7 +173,12 @@ const schema = [
   <!-- 03 — What we write -->
   <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="write-heading">
     <div class="container-x">
-      <SectionHeading eyebrow="What we write" id="write-heading" title="The right words, in the right places." align="left" />
+      <SectionHeading
+        eyebrow="What we write"
+        id="write-heading"
+        title="The right words, in the right places."
+        align="left"
+      />
       <ul class="grid gap-4 sm:grid-cols-2">
         {fields.map((f) => (
           <li class="rounded-[1.5rem] bg-white p-6 shadow-sm sm:rounded-[1.75rem] sm:p-7">
@@ -168,18 +188,26 @@ const schema = [
         ))}
       </ul>
       <p class="mt-8 max-w-3xl font-display text-xl font-extrabold leading-snug text-brand-green sm:text-2xl">
-        We focus on the words your listing needs — <span class="marker">not keyword stuffing or a guaranteed ranking position.</span>
+        We focus on the words your listing needs —{' '}
+        <span class="marker">not keyword stuffing or a guaranteed ranking position.</span>
       </p>
     </div>
   </section>
 
   <!-- 04 — How we work -->
   <section class="container-x py-12 md:py-24" aria-labelledby="process-heading">
-    <SectionHeading eyebrow="How we work" id="process-heading" title="Research first. Then write what matters." align="left" />
+    <SectionHeading
+      eyebrow="How we work"
+      id="process-heading"
+      title="Research first. Then write what matters."
+      align="left"
+    />
     <ol class="grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-brand-green/20">
       {steps.map((s, i) => (
         <li class="md:px-8 md:first:pl-0 md:last:pr-0">
-          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span class="step-num font-display text-5xl font-extrabold text-brand-yellow sm:text-6xl" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
           <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green">{s.t}</h3>
           <p class="mt-2 text-brand-ink/70">{s.d}</p>
         </li>
@@ -187,9 +215,14 @@ const schema = [
     </ol>
     <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
       Already have
-      <a href="/services/amazon-listing-images" class="font-bold text-brand-green underline underline-offset-4">listing images</a>
+      <a href="/services/amazon-listing-images" class="font-bold text-brand-green underline underline-offset-4">
+        listing images
+      </a>
       and
-      <a href="/services/amazon-a-plus-content" class="font-bold text-brand-green underline underline-offset-4">A+ Content</a>? We can focus on the copy without redesigning the rest of your page.
+      <a href="/services/amazon-a-plus-content" class="font-bold text-brand-green underline underline-offset-4">
+        A+ Content
+      </a>
+      ? We can focus on the copy without redesigning the rest of your page.
     </p>
   </section>
 
@@ -198,7 +231,9 @@ const schema = [
     <div class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24">
       <div>
         <p class="eyebrow mb-4">Frequently asked questions</p>
-        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">Questions About Amazon Listing Copywriting &amp; SEO</h2>
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">
+          Questions About Amazon Listing Copywriting &amp; SEO
+        </h2>
       </div>
       <FaqList faqs={faqs} variant="card" />
     </div>
@@ -206,7 +241,9 @@ const schema = [
 
   <!-- Related pages: parent offer and sibling services -->
   <nav class="container-x pt-12 md:pt-16" aria-labelledby="related-heading">
-    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">Part of our Amazon Listing Optimization services</h2>
+    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">
+      Part of our Amazon Listing Optimization services
+    </h2>
     <ul class="flex flex-wrap justify-center gap-3">
       {related.map((r) => (
         <li>
@@ -231,7 +268,7 @@ const schema = [
     title="Your product deserves more than a list of keywords."
     text="Share your Amazon listing and tell us what feels unclear, outdated, or overlooked. We’ll help you explore copy that connects how customers search with why your product is worth considering."
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     note="Choose a time to speak directly with our team."
   />
 </Layout>

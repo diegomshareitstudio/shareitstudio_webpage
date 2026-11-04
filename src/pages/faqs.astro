@@ -14,6 +14,7 @@ import CtaBanner from '../components/ui/CtaBanner.astro';
 import FaqList from '../components/ui/FaqList.astro';
 import AskAi from '../components/ui/AskAi.astro';
 import type { Faq } from '../data/faqs';
+import { BOOKING_PAGE } from '../config/site';
 
 interface Group {
   id: string;
@@ -39,7 +40,7 @@ const groups: Group[] = [
       {
         q: 'How are your services priced?',
         a: 'Pricing depends on the service and the scope of your project, so we discuss it on a call and confirm it in a proposal. We don’t publish prices on this page.',
-        link: { label: 'Book a Call', href: '/book-a-call' },
+        link: { label: 'Book a Call', href: BOOKING_PAGE },
       },
       {
         q: 'How long does a project take?',
@@ -48,12 +49,12 @@ const groups: Group[] = [
       {
         q: 'What happens after I book a call?',
         a: 'We talk through your brand, your products and what you need. If there’s a fit, we prepare a tailored proposal for you.',
-        link: { label: 'Book a Call', href: '/book-a-call' },
+        link: { label: 'Book a Call', href: BOOKING_PAGE },
       },
       {
         q: 'How do I get a proposal or speak with your team?',
         a: 'Contact us to start a conversation about your brand. We’ll take it from there.',
-        link: { label: 'Book a Call', href: '/book-a-call' },
+        link: { label: 'Book a Call', href: BOOKING_PAGE },
       },
     ],
   },
@@ -195,7 +196,7 @@ const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
     highlight="Questions"
     subtitle="Answers about Share It Studio’s Amazon content and ecommerce social media services: how projects work, what to expect and how to get started."
     ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
+    ctaHref={BOOKING_PAGE}
   >
     <nav aria-label="FAQ topics" class="mt-8">
       <p class="mb-3 text-sm font-semibold text-brand-green">What do you need help with?</p>
@@ -218,7 +219,9 @@ const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
   <div class="container-x max-w-3xl space-y-14 py-16 md:py-20">
     {groups.map((g) => (
       <section id={g.id} class="scroll-mt-24" aria-labelledby={`${g.id}-heading`}>
-        <h2 id={`${g.id}-heading`} class="mb-5 text-2xl font-extrabold text-brand-green md:text-3xl">{g.title}</h2>
+        <h2 id={`${g.id}-heading`} class="mb-5 text-2xl font-extrabold text-brand-green md:text-3xl">
+          {g.title}
+        </h2>
         <FaqList faqs={g.faqs} variant="cream" headingLevel={3} openFirst={false} />
       </section>
     ))}
@@ -231,7 +234,7 @@ const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
     title="Didn’t find your answer?"
     text="Every brand is different. Book a call and we’ll talk through your situation and what makes sense for it."
     ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
+    ctaHref={BOOKING_PAGE}
     altLabel="Explore Services"
     altHref="/services"
   />

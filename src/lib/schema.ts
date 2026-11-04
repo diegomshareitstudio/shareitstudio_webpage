@@ -163,7 +163,7 @@ export const testimonialVideoSchema = (
   publisher: organizationRef,
 });
 
-export const webApplicationSchema =(opts: { path: string; name: string; description: string }): Schema => ({
+export const webApplicationSchema = (opts: { path: string; name: string; description: string }): Schema => ({
   '@type': 'WebApplication',
   '@id': pageId(opts.path, 'app'),
   name: opts.name,

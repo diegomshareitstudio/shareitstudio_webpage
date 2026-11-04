@@ -1,16 +1,26 @@
 ---
+import { BOOKING_PAGE } from '../../config/site';
+
 /**
  * "Ask your own question" box for the FAQs page. Posts to /api/ask, which answers with Claude
  * using the company information in src/data/companyKnowledge.ts.
  */
 ---
 
-<section id="ask" class="scroll-mt-24 rounded-[1.5rem] bg-brand-green p-5 text-white sm:p-6 md:p-8" aria-labelledby="ask-heading">
-  <h2 id="ask-heading" class="text-2xl font-extrabold md:text-3xl">Didn’t find your question?</h2>
+<section
+  id="ask"
+  class="scroll-mt-24 rounded-[1.5rem] bg-brand-green p-5 text-white sm:p-6 md:p-8"
+  aria-labelledby="ask-heading"
+>
+  <h2 id="ask-heading" class="text-2xl font-extrabold md:text-3xl">
+    Didn’t find your question?
+  </h2>
   <p class="mt-2 text-white/80">Ask it here and our AI assistant will answer using Share It Studio’s information.</p>
 
   <form id="ask-form" class="mt-5 space-y-3">
-    <label for="ask-input" class="sr-only">Your question</label>
+    <label for="ask-input" class="sr-only">
+      Your question
+    </label>
     <textarea
       id="ask-input"
       name="question"
@@ -20,12 +30,23 @@
       placeholder="e.g. Do you make videos for TikTok Shop?"
       class="w-full rounded-xl border-0 bg-white p-4 text-brand-ink placeholder:text-brand-ink/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow"
     ></textarea>
-    <button type="submit" id="ask-submit" class="btn-primary disabled:opacity-60">Ask a question</button>
+    <button type="submit" id="ask-submit" class="btn-primary disabled:opacity-60">
+      Ask a question
+    </button>
   </form>
 
-  <div id="ask-answer" class="mt-5 hidden whitespace-pre-line rounded-xl bg-white p-5 leading-relaxed text-brand-ink" role="status" aria-live="polite"></div>
+  <div
+    id="ask-answer"
+    class="mt-5 hidden whitespace-pre-line rounded-xl bg-white p-5 leading-relaxed text-brand-ink"
+    role="status"
+    aria-live="polite"
+  ></div>
   <p class="mt-4 text-xs text-white/60">
-    Answers are AI-generated and may contain mistakes. For anything important, <a href="/book-a-call" class="underline">book a call</a>.
+    Answers are AI-generated and may contain mistakes. For anything important,{' '}
+    <a href={BOOKING_PAGE} class="underline">
+      book a call
+    </a>
+    .
   </p>
 </section>
 

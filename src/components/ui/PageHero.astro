@@ -53,7 +53,9 @@ const hasVisual = Astro.slots.has('visual');
           </>
         )}
       </h1>
-      {subtitle && <p class="mt-5 max-w-xl text-base leading-relaxed text-brand-ink/70 sm:mt-6 sm:text-lg" set:html={subtitle} />}
+      {subtitle && (
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-brand-ink/70 sm:mt-6 sm:text-lg" set:html={subtitle} />
+      )}
       {(ctaLabel || secondaryLabel) && (
         <div class="mt-7 flex flex-wrap items-center gap-3 sm:mt-9">
           {ctaLabel && (

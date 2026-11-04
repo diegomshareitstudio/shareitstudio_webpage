@@ -1,82 +1,126 @@
 ---
-/** Main service line #1 — commercial target for "Amazon listing optimization services". */
+/** Main service line #1 — commercial target for "Amazon listing optimization services". Copy: SIS_Amazon_Listing_Copy_V1. */
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
 import CtaBanner from '../../components/ui/CtaBanner.astro';
 import FaqList from '../../components/ui/FaqList.astro';
+import PackageBuilder from '../../components/packages/PackageBuilder.astro';
 import type { Faq } from '../../data/faqs';
 import { faqSchema, serviceSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 const path = '/services/amazon-listing-optimization';
 const description =
-  'Amazon listing optimization services for established brands: listing images, A+ Content, video and Amazon SEO copy built to raise conversion rate. Get a free audit.';
+  'Explore Amazon listing optimization services for images, A+ Content, product videos, photography, Storefronts and copy. Hire one service or a custom project.';
 
-const points = [
-  'Listing audit: sessions, CVR, competitors',
-  'Keyword research & Amazon SEO',
-  'Buyer persona & image-by-image plan',
-  'Shopper testing and before/after tracking',
+const problems = [
+  {
+    title: 'You’re getting traffic, but not enough orders.',
+    text: 'Your ads or search visibility bring shoppers to the listing, but sales aren’t keeping pace. The reason may involve your content, price, reviews, inventory, or traffic quality. We focus on the buyer questions your creative can help answer rather than assuming another redesign is the whole solution.',
+  },
+  {
+    title: 'Your product costs more, but doesn’t look different.',
+    text: 'When materials, craftsmanship, comfort, or performance are hard to judge on-screen, a premium product can look interchangeable with a cheaper alternative.',
+  },
+  {
+    title: 'You have images and A+ Content. Shoppers still have questions.',
+    text: 'A full gallery doesn’t necessarily explain fit, scale, setup, benefits, or what makes your product different. Every asset needs a job beyond filling space.',
+  },
+  {
+    title: 'Your listing has history. You can’t afford change for change’s sake.',
+    text: 'Established product images can be familiar to loyal buyers. We can prioritize specific improvements and discuss staged changes or testing when the project scope and Amazon eligibility allow.',
+  },
 ];
 
-const deliverables = [
+const approach = [
   {
-    title: 'Amazon Listing Images',
-    text: 'Main image, infographics and lifestyles planned as one sequence that answers buyers’ questions.',
-    href: '/services/amazon-listing-images',
+    title: 'Find the friction',
+    text: 'We examine the product, customer questions, reviews, competitor messaging, and — when provided and included in scope — available listing or customer-journey data. What do shoppers need to know before they feel ready to choose?',
   },
   {
-    title: 'A+ Content Design',
-    text: 'Basic and Premium A+ Content designed to handle objections and cross-sell below the fold.',
-    href: '/services/amazon-a-plus-content',
+    title: 'Prioritize what needs to change',
+    text: 'Maybe the main image isn’t communicating the difference. Maybe the product needs a real close-up, a demonstration, better A+ Content, or clearer bullet points. We recommend the relevant deliverables rather than defaulting to every service.',
   },
   {
-    title: 'Copywriting & Amazon SEO',
-    text: 'Keyword research, titles, bullet points, descriptions and backend search terms.',
-    href: '/services/amazon-listing-copywriting',
+    title: 'Create with the product in mind',
+    text: 'We turn the creative direction into visuals and copy intended for their specific Amazon placements. Depending on the project, that may involve real photography, human talent, existing assets, AI-assisted production, or a combination — with attention to product accuracy and the mobile shopping experience.',
   },
   {
-    title: 'Product Video Production',
-    text: 'Listing videos and Sponsored Brands videos that show size, quality and use in seconds.',
-    href: '/services/amazon-product-video-production',
+    title: 'Review before moving forward',
+    text: 'We agree on deliverables, approvals, and revisions before production. For suitable projects, testing or a staged rollout can be scoped separately; neither is automatically included with every creative asset.',
+  },
+];
+
+const services = [
+  { title: 'Amazon Listing Images', href: '/services/amazon-listing-images' },
+  { title: 'Amazon A+ Content Design', href: '/services/amazon-a-plus-content' },
+  { title: 'Amazon Product Photography', href: '/services/amazon-product-photography' },
+  { title: 'Amazon Product Video Production', href: '/services/amazon-product-video-production' },
+  { title: 'Amazon Storefront Design', href: '/services/amazon-storefront-design' },
+  { title: 'Amazon Brand Story Design', href: '/services/amazon-brand-story-design' },
+  { title: 'Amazon Listing Copywriting & SEO', href: '/services/amazon-listing-copywriting' },
+];
+
+const startOptions = [
+  {
+    title: 'Start with one service.',
+    text: 'If the problem is specific — inaccurate photography, an unclear gallery, missing A+ Content, or weak copy — you can hire that service individually.',
   },
   {
-    title: 'Product Photography',
-    text: 'White-background, detail and lifestyle shots planned for your listing.',
-    href: '/services/amazon-product-photography',
+    title: 'Build a custom creative refresh.',
+    text: 'If several touchpoints need to tell the same story, we’ll help define a coordinated scope across the assets that matter. No preset bundle is required.',
   },
   {
-    title: 'Brand Story Design',
-    text: 'A catalog-wide carousel that introduces your brand and cross-sells.',
-    href: '/services/amazon-brand-story-design',
+    title: 'Protect what already works.',
+    text: 'For established listings, we can discuss a more selective approach, including staged creative updates or testing when suitable and agreed, instead of changing everything at once.',
+  },
+];
+
+const nextSteps = [
+  { title: 'Share the product', text: 'Send your ASIN or listing link and tell us what you’re trying to improve.' },
+  {
+    title: 'Agree on the scope',
+    text: 'We discuss priorities, creative approach, deliverables, variations, approvals, timing, and price.',
   },
   {
-    title: 'Storefront Design',
-    text: 'A branded multi-page shop with zero competitor ads.',
-    href: '/services/amazon-storefront-design',
+    title: 'Create and review',
+    text: 'Our team produces the agreed assets for your feedback and delivers them according to your approved project scope.',
   },
 ];
 
 const faqs: Faq[] = [
   {
     q: 'What is Amazon listing optimization?',
-    a: 'It is the process of improving every element of a product page — images, A+ Content, video, title, bullets and backend keywords — so more shoppers find the product and more of them buy it.',
+    a: 'Amazon listing optimization is the process of improving how a product is presented to shoppers through relevant listing content. Depending on the product and scope, that can include images, keyword-informed titles and bullets, A+ Content, video, photography, and related branded Amazon experiences. The goal is to help shoppers find, understand, and evaluate the product more easily.',
   },
   {
-    q: 'What is included in your Amazon listing optimization services?',
-    a: 'A listing and data audit, keyword research, a content plan, new listing images, A+ Content, video when it makes sense, SEO copy, and before/after tracking of sessions and conversion rate.',
+    q: 'Can I hire just one Amazon creative service?',
+    a: 'Yes. You can commission listing images, A+ Content, photography, video, Storefront design, Brand Story, or listing copy individually. We can also combine services into a tailored project when more than one area needs work.',
   },
   {
-    q: 'How much does Amazon listing optimization cost?',
-    a: 'Pricing depends on the number of ASINs and the deliverables (images, A+ modules, photography, video). We send a quote after the free listing audit.',
+    q: 'What’s the difference between product photography and listing image design?',
+    a: 'Photography captures the physical product, including details and real-world use. Listing image design turns approved photography or other suitable assets into the final gallery creative — such as a main image, infographic, or lifestyle composition. A project may need one or both.',
   },
   {
-    q: 'Can you work alongside our PPC agency?',
-    a: 'Yes. We focus on the listing and creative; your PPC agency keeps running campaigns. A higher conversion rate makes the same ad budget go further.',
+    q: 'What’s the difference between A+ Content and Brand Story?',
+    a: 'A+ Content helps explain a specific product’s benefits, features, and comparisons in greater depth. Amazon Brand Story introduces the brand behind the product and its broader collection. They can complement one another, but they do different jobs.',
   },
   {
-    q: 'What should I look for before hiring an Amazon listing optimization agency?',
-    a: 'Public case studies with real metrics, a research process before design, in-house creative production, and a clear way to test and measure results.',
+    q: 'Do you use real photography or AI-assisted creative?',
+    a: 'Both are available, depending on the product and scope. When materials, proportions, product details, or real human interaction are important, physical photography may be the better fit. AI-assisted production can support selected creative tasks, but our team remains responsible for direction and review.',
+  },
+  {
+    q: 'Can you improve an established listing without replacing everything?',
+    a: 'Yes. A refresh can focus on individual assets while preserving familiar brand elements. Where appropriate, eligible, and included in the proposal, we can discuss testing or staged updates. No change is completely risk-free, and results depend on factors beyond creative work.',
+  },
+  {
+    q: 'How much do Amazon listing optimization services cost?',
+    a: 'Pricing depends on the deliverables, number of products and variations, whether real photography or models are needed, video format, and the agreed production and review scope. We’ll prepare a custom quote rather than requiring a fixed full-listing package. The package builder on this page shows rates by production style.',
+  },
+  {
+    q: 'Do you manage Amazon PPC advertising, too?',
+    a: 'PPC campaign management is not included in Amazon Listing Optimization by default. We can create advertising video assets and coordinate creative work with your existing PPC team when that is part of the agreed project.',
   },
 ];
 
@@ -90,7 +134,7 @@ const schema = [
     name: 'Amazon Listing Optimization Services',
     serviceType: 'Amazon listing optimization',
     description:
-      'Amazon listing optimization services for established brands: listing images, A+ Content design, product video and Amazon SEO copy, built to increase conversion rate.',
+      'Amazon listing optimization services: listing images, A+ Content, photography, product video, Storefront, Brand Story and listing copy. Hire one service or a custom project.',
   }),
   faqSchema(path, faqs),
 ];
@@ -103,80 +147,151 @@ const schema = [
   schema={schema}
 >
   <PageHero
-    eyebrow="Amazon listing optimization services"
-    title="Amazon listings rebuilt to convert"
-    highlight="to convert"
-    subtitle="We improve the conversion rate of your Amazon listings with new images, A+ Content, video and SEO copy — planned from your reviews, competitors and sales data."
-    ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
-    secondaryLabel="See case studies"
-    secondaryHref="/our-work"
+    eyebrow="Amazon listing optimization agency"
+    title="Amazon Listing Optimization Services That Make Your Product’s Value Clear"
+    highlight="Make Your Product’s Value Clear"
+    subtitle="<strong>Your product may be better than your listing makes it look.</strong> Shoppers can find your product and still miss the reasons to choose it. We research the questions buyers ask, identify what your content needs to explain, and create Amazon listing images, A+ Content, photography, videos, copy, and branded shopping experiences that make those answers easier to see.<br /><br />Hire one creative service or bring several together in a custom Amazon listing project. No fixed package required."
+    ctaLabel="Talk to a Human"
+    ctaHref={BOOKING_PAGE}
+    secondaryLabel="Explore Our Amazon Services"
+    secondaryHref="#amazon-creative-services"
   >
+    <p class="mt-4 text-sm italic text-brand-ink/60">
+      Share your Amazon listing and tell us what you’re trying to improve.
+    </p>
     <div slot="visual" class="relative pb-6">
       <div class="placeholder aspect-[16/11] border-solid border-brand-green/10 bg-white shadow-xl">
-        Desktop listing mockup
+        Real client listing gallery
       </div>
       <div class="placeholder absolute -bottom-2 -left-2 aspect-[9/16] w-1/4 rotate-[-5deg] border-solid border-brand-green bg-brand-green text-xs text-white/60 shadow-2xl sm:-left-6">
         Mobile
       </div>
-      <span class="absolute -right-2 top-6 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">
-        Before → After
-      </span>
     </div>
   </PageHero>
 
-  <section class="container-x grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
-    <div>
-      <p class="eyebrow mb-3">The problem</p>
-      <h2 class="text-3xl font-bold leading-tight text-brand-green md:text-4xl">
-        Traffic without conversion is expensive
-      </h2>
-      <p class="mt-5 text-lg text-brand-ink/75">
-        If your listing gets sessions but not sales, more ad spend won’t fix it. Shoppers leave when images and A+
-        Content don’t answer their questions. We rebuild the listing around what buyers look for, using review mining,
-        competitor analysis, keyword research and your Seller Central data.
-      </p>
-      <ul class="mt-6 space-y-3">
-        {points.map((i) => (
-          <li class="flex items-center gap-3">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-yellow text-xs font-bold text-brand-green">
-              ✓
-            </span>
-            {i}
+  <section class="container-x py-16 md:py-24">
+    <SectionHeading eyebrow="The problems we help solve" title="A better product deserves a clearer reason to buy." />
+    <ul class="grid gap-6 md:grid-cols-2">
+      {problems.map((p) => (
+        <li class="rounded-2xl border border-black/10 p-7">
+          <h3 class="text-xl font-bold text-brand-green">{p.title}</h3>
+          <p class="mt-2 text-brand-ink/75">{p.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-8 text-center text-lg font-bold text-brand-green">
+      We start with a reason to change something — not an assumption that everything needs replacing.
+    </p>
+  </section>
+
+  <section class="bg-brand-cream py-16 md:py-20">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="How we approach listing optimization"
+        title="Every creative decision should answer a buyer question."
+      />
+      <ol class="grid gap-6 sm:grid-cols-2">
+        {approach.map((a, i) => (
+          <li class="rounded-2xl bg-white p-7 shadow-sm">
+            <p class="text-sm font-extrabold tracking-widest text-brand-orange">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="mt-1 text-xl font-bold text-brand-green">{a.title}</h3>
+            <p class="mt-2 text-brand-ink/70">{a.text}</p>
           </li>
         ))}
-      </ul>
+      </ol>
+      <p class="mt-8 text-center text-lg font-bold text-brand-green">
+        Research sets the direction. The deliverables make it visible.
+      </p>
     </div>
-    <div class="grid grid-cols-2 gap-4">
-      <div class="placeholder aspect-square">Before</div>
-      <div class="placeholder aspect-square border-brand-yellow bg-brand-yellow-soft text-brand-green">After</div>
+  </section>
+
+  <section class="container-x scroll-mt-24 py-16 md:py-24" id="amazon-creative-services">
+    <SectionHeading
+      eyebrow="Amazon creative services"
+      title="What does your Amazon listing need?"
+      text="Each service solves a different communication problem. Choose one deliverable or connect several into a custom project."
+    />
+    <ul class="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+      {services.map((s) => (
+        <li class="flex">
+          <a
+            href={s.href}
+            class="w-full rounded-2xl bg-brand-cream p-3 transition hover:-translate-y-1 hover:shadow-lg sm:p-4"
+          >
+            <div class="placeholder aspect-[4/3] text-sm">Real {s.title} sample</div>
+            <h3 class="mt-3 text-base font-bold text-brand-green sm:text-lg">{s.title}</h3>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href="/our-work" class="btn-outline mt-10">
+      See our portfolio
+    </a>
+  </section>
+
+  <PackageBuilder />
+
+  <section class="container-x py-16 md:py-24">
+    <SectionHeading
+      eyebrow="Proof in the work"
+      title="Seven assets can work together without telling seven different stories."
+    />
+    <div class="grid items-center gap-10 md:grid-cols-2">
+      <div>
+        <p class="text-sm font-extrabold uppercase tracking-widest text-brand-green/60">
+          YUNGPRIME — Connected Amazon content
+        </p>
+        <p class="mt-3 text-lg text-brand-ink/75">
+          A coordinated project brought listing images, A+ Content, Brand Story, Storefront, copy, and video into a
+          clearer product story built around benefits and buyer questions.
+        </p>
+        <p class="mt-5 text-3xl font-extrabold text-brand-green">
+          +28.3% reported organic Amazon sales — May to June 2026
+        </p>
+        <p class="mt-2 text-sm italic text-brand-ink/60">
+          Client-reported organic Amazon sales: $16,432 to $21,077, May–June 2026. Other factors may have contributed;
+          results are not guaranteed.
+        </p>
+        <a href="/case-studies/yungprime" class="btn-primary mt-6">
+          See the YUNGPRIME Project
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="placeholder aspect-square">YUNGPRIME artifact</div>
+        <div class="placeholder aspect-square">YUNGPRIME artifact</div>
+      </div>
     </div>
   </section>
 
   <section class="bg-brand-cream py-16 md:py-20">
     <div class="container-x">
-      <SectionHeading eyebrow="What’s included" title="Every piece of your listing, working together" />
-      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {deliverables.map((d) => (
-          <li class="flex">
-            <a
-              href={d.href}
-              class="w-full rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <h3 class="text-xl font-bold text-brand-green">{d.title}</h3>
-              <p class="mt-2 text-brand-ink/70">{d.text}</p>
-            </a>
+      <SectionHeading eyebrow="How to start" title="One weak asset? Or a listing that needs to work together?" />
+      <ul class="grid gap-6 md:grid-cols-3">
+        {startOptions.map((o) => (
+          <li class="rounded-2xl bg-white p-7 shadow-sm">
+            <h3 class="text-xl font-bold text-brand-green">{o.title}</h3>
+            <p class="mt-2 text-brand-ink/70">{o.text}</p>
           </li>
         ))}
       </ul>
-      <a href="/our-work" class="btn-outline mt-10">
-        See our portfolio
+      <h3 class="mt-14 text-2xl font-bold text-brand-green">What happens after you contact us?</h3>
+      <ol class="mt-6 grid gap-6 md:grid-cols-3">
+        {nextSteps.map((n, i) => (
+          <li>
+            <p class="text-sm font-extrabold tracking-widest text-brand-orange">{String(i + 1).padStart(2, '0')}</p>
+            <p class="mt-1 font-bold text-brand-green">{n.title}</p>
+            <p class="mt-1 text-brand-ink/70">{n.text}</p>
+          </li>
+        ))}
+      </ol>
+      <a href={BOOKING_PAGE} class="btn-primary mt-10">
+        Talk Through Your Listing
       </a>
     </div>
   </section>
 
   <section class="container-x max-w-3xl py-16 md:py-20">
-    <SectionHeading eyebrow="FAQ" title="Amazon listing optimization, answered" align="left" />
+    <SectionHeading eyebrow="FAQ" title="Questions before you invest in new Amazon content" align="left" />
     <FaqList faqs={faqs} variant="outline" />
     <p class="mt-6 text-center text-sm">
       <a href="/faqs" class="font-bold text-brand-orange hover:underline">
@@ -186,8 +301,9 @@ const schema = [
   </section>
 
   <CtaBanner
-    title="Find out what’s holding your listing back"
-    text="Get a free audit of your images, A+ Content and copy on a 30-minute call."
-    ctaLabel="Book a free listing audit"
+    title="Show us what your customers see."
+    text="Send us your listing, tell us what shoppers may be missing, and we’ll help you explore the creative changes worth considering — whether that’s one stronger asset or a connected Amazon content refresh."
+    ctaLabel="Talk to a Human"
+    note="Choose a time to speak directly with our team."
   />
 </Layout>

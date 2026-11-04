@@ -1,4 +1,4 @@
-import { SITE } from '../config/site';
+import { BOOKING_PAGE, SITE } from '../config/site';
 import { faqs } from './faqs';
 import { services } from './services';
 import { socialPackages, formatPrice } from './socialPackages';
@@ -16,15 +16,16 @@ const COMPANY_NOTES = `
 - We create content and creative. We are not Amazon and we don't run account operations.
 - Amazon listing work is quoted per project, after a call. Do not give prices for it.
 - We don't guarantee sales lifts or ranking increases.
-- Next step for anyone interested: book a call at ${SITE.url}/book-a-call. General contact: ${SITE.email}, ${SITE.phone.display}.
+- Next step for anyone interested: book a call at ${SITE.url}${BOOKING_PAGE}. General contact: ${SITE.email}, ${SITE.phone.display}.
 `.trim();
 
-const servicesText = services
-  .map((s) => `- ${s.title} (${SITE.url}${s.href}): ${s.text}`)
-  .join('\n');
+const servicesText = services.map((s) => `- ${s.title} (${SITE.url}${s.href}): ${s.text}`).join('\n');
 
 const packagesText = socialPackages
-  .map((p) => `- ${p.name} (${p.tier}): ${formatPrice(p.price)}/mo, ${p.posts}. Includes: ${p.features.join(', ')}.${p.note ? ` ${p.note}` : ''}`)
+  .map(
+    (p) =>
+      `- ${p.name} (${p.tier}): ${formatPrice(p.price)}/mo, ${p.posts}. Includes: ${p.features.join(', ')}.${p.note ? ` ${p.note}` : ''}`,
+  )
   .join('\n');
 
 const faqsText = [...faqs, ...services.flatMap((s) => s.page?.faqs ?? s.faqs ?? [])]

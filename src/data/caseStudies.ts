@@ -76,7 +76,8 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'paper2eat',
     listed: true,
-    focus: 'Listing, A+ Content, video and Storefront connected into one shopping experience, plus Spanish localization.',
+    focus:
+      'Listing, A+ Content, video and Storefront connected into one shopping experience, plus Spanish localization.',
     client: 'Paper2eat',
     niche: 'Edible frosting sheets',
     summary:

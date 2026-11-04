@@ -1,0 +1,432 @@
+---
+/**
+ * Package builder (Amazon listing optimization page): pick a style (Fully AI / Hybrid / Organic), tick services,
+ * and see the total plus what each one includes in that style. Compact on purpose: one row per service, three tabs,
+ * and a breakdown where only the latest pick is open.
+ * Data: data/amazonPackages.ts. Behaviour: scripts/package-builder.ts.
+ */
+import { tiers, packageServices, packageTabs } from '../../data/amazonPackages';
+import { BOOKING_PAGE } from '../../config/site';
+
+const money = (n: number) => `$${n.toLocaleString('en-US')}`;
+const defaultTier = 'hybrid';
+const priceLabel = (p: number | 'na' | 'nr') =>
+  typeof p === 'number' ? money(p) : p === 'nr' ? 'Not recommended' : 'Not offered';
+
+const data = {
+  tiers: tiers.map((t) => ({ id: t.id, name: t.name, tagline: t.tagline, detail: t.detail })),
+  services: packageServices.map((s) => ({
+    id: s.id,
+    tab: s.tab,
+    name: s.name,
+    prices: s.prices,
+    includes: s.includes,
+    note: s.note ?? null,
+  })),
+};
+const first = tiers.find((t) => t.id === defaultTier)!;
+---
+
+<section class="bg-brand-cream py-12 md:py-20" id="packages" aria-labelledby="packages-heading" data-pkg>
+  <div class="container-x">
+    <p class="eyebrow mb-3">Packages &amp; rates</p>
+    <h2
+      id="packages-heading"
+      class="max-w-3xl text-[1.85rem] font-extrabold leading-tight text-brand-green md:text-4xl"
+    >
+      Build your package. <span class="marker">See what’s included.</span>
+    </h2>
+
+    <!-- Style: one slim switch -->
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+      <div class="pkg-seg" role="radiogroup" aria-label="Production style">
+        {tiers.map((t) => (
+          <button
+            type="button"
+            role="radio"
+            data-pkg-tier={t.id}
+            aria-checked={t.id === defaultTier ? 'true' : 'false'}
+          >
+            {t.name}
+          </button>
+        ))}
+      </div>
+      <p class="text-sm text-brand-ink/70" data-pkg-tierinfo>
+        <strong class="text-brand-green">{first.tagline}.</strong> {first.detail}
+      </p>
+    </div>
+
+    <div class="mt-6 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <!-- Services -->
+      <div class="pkg-box">
+        <div class="pkg-tabs" role="tablist" aria-label="Service type">
+          {packageTabs.map((t, i) => (
+            <button type="button" role="tab" data-pkg-tab={t} aria-selected={i === 0 ? 'true' : 'false'}>
+              {t}
+              <span class="pkg-badge" data-pkg-badge={t} hidden></span>
+            </button>
+          ))}
+        </div>
+
+        {packageTabs.map((t, i) => (
+          <div role="tabpanel" data-pkg-panel={t} hidden={i !== 0}>
+            {[...new Set(packageServices.filter((s) => s.tab === t).map((s) => s.group))].map((g, gi, groups) => (
+              <div>
+                {groups.length > 1 && <p class="pkg-group">{g}</p>}
+                <ul>
+                  {packageServices
+                    .filter((s) => s.tab === t && s.group === g)
+                    .map((s) => (
+                      <li>
+                        <button
+                          type="button"
+                          role="checkbox"
+                          aria-checked="false"
+                          class="pkg-row"
+                          data-pkg-service={s.id}
+                          title={s.summary}
+                        >
+                          <span class="pkg-check" aria-hidden="true"></span>
+                          <span class="pkg-name">{s.name}</span>
+                          <span class="pkg-price" data-pkg-price>
+                            {priceLabel(s.prices[defaultTier])}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <!-- Phones: the total stays in reach while you scroll the list -->
+        <a href="#pkg-summary" class="pkg-bar" data-pkg-bar hidden>
+          <span data-pkg-barcount></span>
+          <span class="pkg-bar-total" data-pkg-bartotal></span>
+          <span class="pkg-bar-link">See breakdown ↓</span>
+        </a>
+      </div>
+
+      <!-- Breakdown -->
+      <aside id="pkg-summary" class="pkg-box pkg-summary lg:sticky lg:top-24" aria-labelledby="pkg-summary-heading">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="pkg-summary-heading" class="text-lg font-extrabold text-brand-green" data-pkg-title>
+              Hybrid
+            </h3>
+            <p class="text-sm text-brand-ink/60" data-pkg-count>
+              Nothing selected yet
+            </p>
+          </div>
+          <p class="font-display text-3xl font-extrabold leading-none text-brand-green" data-pkg-total>
+            $0
+          </p>
+        </div>
+
+        <p class="pkg-empty" data-pkg-empty>
+          Tick a service to see what it includes.
+        </p>
+        <div class="pkg-list" data-pkg-list></div>
+
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <a href={BOOKING_PAGE} class="btn-primary">
+            Talk to a Human
+          </a>
+          <button type="button" class="pkg-clear" data-pkg-clear hidden>
+            Clear all
+          </button>
+        </div>
+        <p class="mt-3 text-xs text-brand-ink/50">
+          Rates in USD. The final quote depends on your scope. Corrections are billed at $50 per hour.
+        </p>
+      </aside>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-pkg-status></p>
+    <script is:inline type="application/json" data-pkg-data set:html={JSON.stringify(data)} />
+  </div>
+</section>
+
+<style>
+  /* Style switch */
+  .pkg-seg {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(28 58 58 / 0.08);
+  }
+  .pkg-seg button {
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    color: var(--color-brand-green);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .pkg-seg button[aria-checked='true'] {
+    background: var(--color-brand-green);
+    color: var(--color-brand-yellow);
+  }
+
+  .pkg-box {
+    padding: 0.5rem;
+    border-radius: 1.5rem;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(28 58 58 / 0.08);
+  }
+  .pkg-summary {
+    padding: 1.25rem;
+  }
+
+  /* Tabs */
+  .pkg-tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 1rem;
+    background: var(--color-brand-cream);
+  }
+  .pkg-tabs button {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: rgb(28 58 58 / 0.65);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .pkg-tabs button[aria-selected='true'] {
+    background: #fff;
+    color: var(--color-brand-green);
+    box-shadow: 0 1px 3px rgb(28 58 58 / 0.15);
+  }
+  .pkg-badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--color-brand-orange);
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .pkg-group {
+    padding: 0.9rem 0.85rem 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(28 58 58 / 0.5);
+  }
+
+  /* One line per service */
+  .pkg-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.75rem;
+    text-align: left;
+    transition: background-color 0.12s ease;
+  }
+  .pkg-row:hover:not(:disabled) {
+    background: var(--color-brand-cream);
+  }
+  .pkg-row[aria-checked='true'] {
+    background: var(--color-brand-yellow-soft);
+  }
+  .pkg-row:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .pkg-check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.35rem;
+    border: 2px solid rgb(28 58 58 / 0.3);
+  }
+  .pkg-row[aria-checked='true'] .pkg-check {
+    background: var(--color-brand-green);
+    border-color: var(--color-brand-green);
+  }
+  .pkg-row[aria-checked='true'] .pkg-check::after {
+    content: '✓';
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-brand-yellow);
+  }
+  .pkg-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-brand-green);
+  }
+  .pkg-price {
+    flex: none;
+    font-weight: 800;
+    color: var(--color-brand-green);
+  }
+  .pkg-row:disabled .pkg-price {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Phone total bar */
+  .pkg-bar {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 1rem;
+    background: var(--color-brand-green);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .pkg-bar[hidden] {
+    display: none;
+  }
+  .pkg-bar-total {
+    color: var(--color-brand-yellow);
+  }
+  .pkg-bar-link {
+    margin-left: auto;
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+  @media (min-width: 1024px) {
+    .pkg-bar {
+      display: none !important;
+    }
+  }
+
+  /* Breakdown */
+  .pkg-empty {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.9rem;
+    border: 2px dashed rgb(28 58 58 / 0.18);
+    font-size: 0.9rem;
+    color: rgb(31 42 42 / 0.6);
+  }
+  .pkg-empty[hidden] {
+    display: none;
+  }
+  .pkg-list {
+    margin-top: 0.75rem;
+    max-height: 26rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .pkg-list:empty {
+    display: none;
+  }
+  .pkg-list :global(details) {
+    border-top: 1px solid rgb(28 58 58 / 0.12);
+  }
+  .pkg-list :global(details:first-child) {
+    border-top: 0;
+  }
+  .pkg-list :global(summary) {
+    display: flex;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0;
+    font-weight: 700;
+    color: var(--color-brand-green);
+  }
+  .pkg-list :global(summary::-webkit-details-marker) {
+    display: none;
+  }
+  .pkg-list :global(summary::before) {
+    content: '▸';
+    font-size: 0.8rem;
+    color: var(--color-brand-orange);
+  }
+  .pkg-list :global(details[open] summary::before) {
+    content: '▾';
+  }
+  .pkg-list :global(.pkg-sname) {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.25;
+  }
+  .pkg-list :global(.pkg-sprice) {
+    font-weight: 800;
+  }
+  .pkg-list :global(.pkg-x) {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: rgb(28 58 58 / 0.5);
+  }
+  .pkg-list :global(.pkg-x:hover) {
+    background: var(--color-brand-cream);
+    color: var(--color-brand-green);
+  }
+  .pkg-list :global(ul) {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0 0 0.85rem 1.4rem;
+  }
+  .pkg-list :global(li) {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: rgb(31 42 42 / 0.8);
+  }
+  .pkg-list :global(li::before) {
+    content: '✓';
+    flex: none;
+    font-weight: 800;
+    color: var(--color-brand-orange);
+  }
+  .pkg-list :global(.pkg-note) {
+    padding: 0 0 0.85rem 1.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-brand-orange);
+  }
+  .pkg-clear {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: rgb(28 58 58 / 0.6);
+  }
+  .pkg-clear[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  import '../../scripts/package-builder';
+</script>

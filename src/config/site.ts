@@ -20,3 +20,6 @@ export const SITE = {
   bookingUrl: '',
   sameAs: ['https://linkedin.com/company/shareitstudio'],
 } as const;
+
+/** Page every "Talk to a Human" / "Book a Call" button leads to (it embeds the Calendly event). */
+export const BOOKING_PAGE = '/book-a-call';

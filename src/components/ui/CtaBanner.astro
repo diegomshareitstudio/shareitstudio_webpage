@@ -1,5 +1,6 @@
 ---
 import Badge from './Badge.astro';
+import { BOOKING_PAGE } from '../../config/site';
 
 interface Props {
   title?: string;
@@ -21,7 +22,7 @@ const {
   title = 'Ready to turn more visitors into buyers?',
   text = 'Book a call to talk through your brand and the content you need.',
   ctaLabel = 'Book a Call',
-  ctaHref = '/book-a-call',
+  ctaHref = BOOKING_PAGE,
   altLabel,
   altHref,
   note,
@@ -33,11 +34,26 @@ const {
 <section class="container-x py-12 md:py-16">
   <div class="relative grid items-center gap-6 overflow-hidden rounded-[1.75rem] bg-brand-green p-6 sm:gap-8 sm:rounded-[2rem] sm:p-8 md:grid-cols-[1.5fr_1fr] md:p-14">
     {/* the yellow ring would sit behind a prominent button and compete with it */}
-    {!prominent && <div class="motion-float pointer-events-none absolute -bottom-20 -right-16 h-64 w-64 rounded-full border-[28px] border-brand-yellow/90"></div>}
+    {!prominent && (
+      <div class="motion-float pointer-events-none absolute -bottom-20 -right-16 h-64 w-64 rounded-full border-[28px] border-brand-yellow/90"></div>
+    )}
     <div class="motion-float pointer-events-none absolute right-40 top-8 h-6 w-6 rounded-full bg-brand-orange"></div>
-    <span class="star-spin pointer-events-none absolute left-[45%] top-6 text-4xl text-brand-yellow" aria-hidden="true">✦</span>
-    <span class="star-spin pointer-events-none absolute bottom-6 right-1/3 text-2xl text-brand-orange" aria-hidden="true">✦</span>
-    {badge && <Badge id="cta-badge" class="absolute right-6 top-6 hidden text-brand-yellow md:grid" text="Book a call • Book a call • " />}
+    <span class="star-spin pointer-events-none absolute left-[45%] top-6 text-4xl text-brand-yellow" aria-hidden="true">
+      ✦
+    </span>
+    <span
+      class="star-spin pointer-events-none absolute bottom-6 right-1/3 text-2xl text-brand-orange"
+      aria-hidden="true"
+    >
+      ✦
+    </span>
+    {badge && (
+      <Badge
+        id="cta-badge"
+        class="absolute right-6 top-6 hidden text-brand-yellow md:grid"
+        text="Book a call • Book a call • "
+      />
+    )}
     <div class="relative">
       <h2 class="text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">{title}</h2>
       <p class="mt-4 max-w-lg text-white/70">{text}</p>

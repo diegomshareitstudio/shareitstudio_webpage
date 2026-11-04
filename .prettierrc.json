@@ -2,5 +2,6 @@
   "plugins": ["prettier-plugin-astro"],
   "printWidth": 120,
   "singleQuote": true,
+  "endOfLine": "auto",
   "overrides": [{ "files": "*.astro", "options": { "parser": "astro" } }]
 }

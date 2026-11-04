@@ -336,7 +336,6 @@ html.home-ready .home-results {
   }
 }
 
-
 /* ---------- Motion (everything below is off for reduced-motion visitors) ---------- */
 @media all {
   @keyframes home-drift {

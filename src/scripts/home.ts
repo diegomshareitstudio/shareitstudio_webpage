@@ -162,7 +162,12 @@ function initHero() {
     put(spot, 'right', 'auto');
 
     // The head circle must reach the farthest corner; the oblique body then covers everything else.
-    const reach = Math.max(Math.hypot(cx, cy), Math.hypot(sw - cx, cy), Math.hypot(cx, sh - cy), Math.hypot(sw - cx, sh - cy));
+    const reach = Math.max(
+      Math.hypot(cx, cy),
+      Math.hypot(sw - cx, cy),
+      Math.hypot(cx, sh - cy),
+      Math.hypot(sw - cx, sh - cy),
+    );
     smax = (reach / (h0 * HEAD.r)) * HOME_MOTION.spot.overshoot;
   };
 
@@ -187,7 +192,11 @@ function initHero() {
     const inn = span(p, HOME_MOTION.sceneB.range);
     const inBlur = (1 - inn) * HOME_MOTION.sceneB.blur[mobile ? 1 : 0];
     put(sceneB, 'opacity', inn.toFixed(3));
-    put(sceneB, 'transform', inn < 1 ? `translate3d(0, ${((1 - inn) * HOME_MOTION.sceneB.drop).toFixed(1)}px, 0)` : 'none');
+    put(
+      sceneB,
+      'transform',
+      inn < 1 ? `translate3d(0, ${((1 - inn) * HOME_MOTION.sceneB.drop).toFixed(1)}px, 0)` : 'none',
+    );
     put(sceneB, 'filter', inBlur > 0.2 ? `blur(${inBlur.toFixed(1)}px)` : 'none');
     put(sceneB, 'visibility', inn <= 0 ? 'hidden' : 'visible');
   };

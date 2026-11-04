@@ -8,6 +8,7 @@ import CaseStudyList from '../../components/ui/CaseStudyList.astro';
 import FaqList from '../../components/ui/FaqList.astro';
 import { services, type ServiceItem } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 // The two main service lines have their own hand-built pages and no `page` data
 export function getStaticPaths() {
@@ -35,7 +36,7 @@ const schema = [
     highlight={page.highlight}
     subtitle={page.subtitle}
     ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
+    ctaHref={BOOKING_PAGE}
     secondaryLabel="See our work"
     secondaryHref={service.portfolio}
   >

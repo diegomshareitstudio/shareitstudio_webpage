@@ -30,7 +30,8 @@ const posters = new Map(
     }),
   ),
 );
-const ratio = (t: Testimonial) => (t.type === 'video' && t.video ? `${t.video.poster.width} / ${t.video.poster.height}` : undefined);
+const ratio = (t: Testimonial) =>
+  t.type === 'video' && t.video ? `${t.video.poster.width} / ${t.video.poster.height}` : undefined;
 const isWide = (t: Testimonial) => t.type === 'video' && !!t.video && t.video.poster.width > t.video.poster.height;
 
 const affiliation = (t: Testimonial) => (t.company ? `${t.role}, ${t.company}` : t.role);
@@ -38,88 +39,121 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
 ---
 
 <div class="tm-slider" data-tm-slider>
-<div class="tm-featured-list">
-  {featured.map((f, k) => (
-    <figure
-      class:list={['tm-featured', isWide(f) && 'tm-featured--wide', k % 2 === 1 && 'tm-featured--flip', k === 0 && 'is-active']}
-      style={ratio(f) && `--ar: ${ratio(f)}`}
-      data-tm-slide
-      aria-label={`Testimonial ${k + 1} of ${featured.length}`}
-    >
-      <div class="tm-frame tm-frame--featured">
-        {f.type === 'video' && f.video && !f.placeholder ? (
-          <div class="tm-player" data-tm-player>
-            <video
+  <div class="tm-featured-list">
+    {featured.map((f, k) => (
+      <figure
+        class:list={[
+          'tm-featured',
+          isWide(f) && 'tm-featured--wide',
+          k % 2 === 1 && 'tm-featured--flip',
+          k === 0 && 'is-active',
+        ]}
+        style={ratio(f) && `--ar: ${ratio(f)}`}
+        data-tm-slide
+        aria-label={`Testimonial ${k + 1} of ${featured.length}`}
+      >
+        <div class="tm-frame tm-frame--featured">
+          {f.type === 'video' && f.video && !f.placeholder ? (
+            <div class="tm-player" data-tm-player>
+              <video
+                class="tm-media"
+                style={`aspect-ratio: ${ratio(f)}`}
+                width={f.video.poster.width}
+                height={f.video.poster.height}
+                controls
+                playsinline
+                preload="none"
+                poster={posters.get(f)?.src}
+                aria-label={`Video testimonial from ${who(f)}`}
+              >
+                <source src={f.video.src} type="video/mp4" />
+                {f.video.captions && (
+                  <track kind="captions" src={f.video.captions} srclang="en" label="English" default />
+                )}
+              </video>
+              <button
+                type="button"
+                class="tm-play"
+                data-tm-play
+                aria-label={`Play video testimonial from ${who(f)}`}
+                hidden
+              ></button>
+            </div>
+          ) : f.type === 'photo' && f.image && !f.placeholder ? (
+            <Image
+              src={f.image.src}
+              alt={f.image.alt}
               class="tm-media"
-              style={`aspect-ratio: ${ratio(f)}`}
-              width={f.video.poster.width}
-              height={f.video.poster.height}
-              controls
-              playsinline
-              preload="none"
-              poster={posters.get(f)?.src}
-              aria-label={`Video testimonial from ${who(f)}`}
-            >
-              <source src={f.video.src} type="video/mp4" />
-              {f.video.captions && <track kind="captions" src={f.video.captions} srclang="en" label="English" default />}
-            </video>
-            <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(f)}`} hidden></button>
-          </div>
-        ) : f.type === 'photo' && f.image && !f.placeholder ? (
-          <Image src={f.image.src} alt={f.image.alt} class="tm-media" widths={[400, 800]} sizes="(min-width: 768px) 24rem, 100vw" />
-        ) : (
-          <div class="tm-media tm-empty" aria-hidden="true">
-            <Spotlight id={`tm-spot-featured-${k}`} class="tm-empty-spot" />
-            <span>{f.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
-          </div>
-        )}
-      </div>
-
-      <div class="tm-featured-body">
-        <p class="eyebrow">{f.service}</p>
-        <span class="tm-mark" aria-hidden="true">“</span>
-        <blockquote>
-          <p class="tm-quote font-display text-xl font-extrabold leading-snug text-brand-green md:text-[1.55rem]">
-            <span class="sr-only">{f.quote}</span>
-            <span aria-hidden="true" data-tm-type>{f.quote}</span>
-          </p>
-        </blockquote>
-        <figcaption class="mt-5 flex items-center gap-4">
-          {f.logo && (
-            <Image src={f.logo.src} alt={`${f.logo.alt} logo`} height={72} densities={[1, 2]} class="tm-logo" />
+              widths={[400, 800]}
+              sizes="(min-width: 768px) 24rem, 100vw"
+            />
+          ) : (
+            <div class="tm-media tm-empty" aria-hidden="true">
+              <Spotlight id={`tm-spot-featured-${k}`} class="tm-empty-spot" />
+              <span>{f.type === 'video' ? 'Video testimonial' : 'Client photo'}</span>
+            </div>
           )}
-          <span class:list={[f.logo && 'tm-who']}>
-            <span class="block text-lg font-extrabold text-brand-green">{f.name}</span>
-            <span class="text-sm text-brand-ink/60">{affiliation(f)}</span>
-          </span>
-        </figcaption>
-        {f.type === 'video' && f.transcript && !f.placeholder && (
-          <details class="tm-transcript mt-4 text-sm">
-            <summary>Read the transcript</summary>
-            <p class="mt-2 text-brand-ink/70">{f.transcript}</p>
-          </details>
-        )}
-        {f.href && !f.placeholder && (
-          <a href={f.href} class="btn-dark mt-6 self-start">See {f.company ?? f.name}’s case study</a>
-        )}
-      </div>
-    </figure>
-  ))}
-</div>
+        </div>
 
-{featured.length > 1 && (
-  <div class="tm-nav" data-tm-nav hidden>
-    <button type="button" class="tm-arrow tm-arrow--prev" data-tm-prev aria-label="Previous testimonial"></button>
-    <div class="tm-dots" role="group" aria-label="Choose a testimonial">
-      {featured.map((f, i) => (
-        <button type="button" class="tm-dot" data-tm-dot aria-label={`Show ${f.name}’s testimonial`} aria-current={i === 0 ? 'true' : undefined}></button>
-      ))}
-    </div>
-    <button type="button" class="tm-arrow tm-arrow--next" data-tm-next aria-label="Next testimonial"></button>
-    <span class="tm-count" aria-hidden="true"><span data-tm-current>01</span> / {String(featured.length).padStart(2, '0')}</span>
+        <div class="tm-featured-body">
+          <p class="eyebrow">{f.service}</p>
+          <span class="tm-mark" aria-hidden="true">
+            “
+          </span>
+          <blockquote>
+            <p class="tm-quote font-display text-xl font-extrabold leading-snug text-brand-green md:text-[1.55rem]">
+              <span class="sr-only">{f.quote}</span>
+              <span aria-hidden="true" data-tm-type>
+                {f.quote}
+              </span>
+            </p>
+          </blockquote>
+          <figcaption class="mt-5 flex items-center gap-4">
+            {f.logo && (
+              <Image src={f.logo.src} alt={`${f.logo.alt} logo`} height={72} densities={[1, 2]} class="tm-logo" />
+            )}
+            <span class:list={[f.logo && 'tm-who']}>
+              <span class="block text-lg font-extrabold text-brand-green">{f.name}</span>
+              <span class="text-sm text-brand-ink/60">{affiliation(f)}</span>
+            </span>
+          </figcaption>
+          {f.type === 'video' && f.transcript && !f.placeholder && (
+            <details class="tm-transcript mt-4 text-sm">
+              <summary>Read the transcript</summary>
+              <p class="mt-2 text-brand-ink/70">{f.transcript}</p>
+            </details>
+          )}
+          {f.href && !f.placeholder && (
+            <a href={f.href} class="btn-dark mt-6 self-start">
+              See {f.company ?? f.name}’s case study
+            </a>
+          )}
+        </div>
+      </figure>
+    ))}
   </div>
-)}
-<p class="sr-only" aria-live="polite" data-tm-status></p>
+
+  {featured.length > 1 && (
+    <div class="tm-nav" data-tm-nav hidden>
+      <button type="button" class="tm-arrow tm-arrow--prev" data-tm-prev aria-label="Previous testimonial"></button>
+      <div class="tm-dots" role="group" aria-label="Choose a testimonial">
+        {featured.map((f, i) => (
+          <button
+            type="button"
+            class="tm-dot"
+            data-tm-dot
+            aria-label={`Show ${f.name}’s testimonial`}
+            aria-current={i === 0 ? 'true' : undefined}
+          ></button>
+        ))}
+      </div>
+      <button type="button" class="tm-arrow tm-arrow--next" data-tm-next aria-label="Next testimonial"></button>
+      <span class="tm-count" aria-hidden="true">
+        <span data-tm-current>01</span> / {String(featured.length).padStart(2, '0')}
+      </span>
+    </div>
+  )}
+  <p class="sr-only" aria-live="polite" data-tm-status></p>
 </div>
 
 {rest.length > 0 && (
@@ -131,11 +165,26 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
           <figure class="tm-frame">
             {t.type === 'video' && t.video && !t.placeholder ? (
               <div class="tm-player" data-tm-player>
-                <video class="tm-media" controls playsinline preload="none" poster={posters.get(t)?.src} aria-label={`Video testimonial from ${who(t)}`}>
+                <video
+                  class="tm-media"
+                  controls
+                  playsinline
+                  preload="none"
+                  poster={posters.get(t)?.src}
+                  aria-label={`Video testimonial from ${who(t)}`}
+                >
                   <source src={t.video.src} type="video/mp4" />
-                  {t.video.captions && <track kind="captions" src={t.video.captions} srclang="en" label="English" default />}
+                  {t.video.captions && (
+                    <track kind="captions" src={t.video.captions} srclang="en" label="English" default />
+                  )}
                 </video>
-                <button type="button" class="tm-play" data-tm-play aria-label={`Play video testimonial from ${who(t)}`} hidden></button>
+                <button
+                  type="button"
+                  class="tm-play"
+                  data-tm-play
+                  aria-label={`Play video testimonial from ${who(t)}`}
+                  hidden
+                ></button>
               </div>
             ) : t.type === 'photo' && t.image && !t.placeholder ? (
               <Image src={t.image.src} alt={t.image.alt} class="tm-media" widths={[320, 640]} sizes="18rem" />
@@ -163,7 +212,9 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
             </details>
           )}
           {t.href && !t.placeholder && (
-            <a href={t.href} class="mt-3 inline-block text-sm font-semibold text-brand-green">See the case study →</a>
+            <a href={t.href} class="mt-3 inline-block text-sm font-semibold text-brand-green">
+              See the case study →
+            </a>
           )}
         </li>
       );
@@ -242,7 +293,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
       scale 0.35s ease,
       visibility 0s 0.35s;
   }
-    .tm-nav {
+  .tm-nav {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -602,7 +653,9 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
     // Horizontal swipes on touch screens
     let startX = 0;
     let startY = 0;
-    slider.addEventListener('touchstart', (e) => ([startX, startY] = [e.touches[0].clientX, e.touches[0].clientY]), { passive: true });
+    slider.addEventListener('touchstart', (e) => ([startX, startY] = [e.touches[0].clientX, e.touches[0].clientY]), {
+      passive: true,
+    });
     slider.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - startX;
       const dy = e.changedTouches[0].clientY - startY;

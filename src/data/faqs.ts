@@ -77,28 +77,3 @@ export const faqs: Faq[] = [
     a: 'Getting started is easy! Simply book a marketing consultation with us and one of our Amazon marketing specialists will jump on a call with you. During the consultation, we’ll discuss your specific needs and goals, and tailor a customized marketing strategy to meet your requirements.',
   },
 ];
-
-/**
- * Homepage FAQs (blueprint P01, section 09): which service applies, individual components,
- * brands outside Amazon and how booking works. No prices or timelines.
- * TODO: service owner to sign off the wording (blueprint D01).
- */
-export const homepageFaqs: Faq[] = [
-  {
-    q: 'Which service is right for my brand?',
-    a: 'Choose Amazon Listing Optimization if your Amazon product pages need clearer images, A+ Content, video or copy. Choose Social Media Management if you want ongoing content and a consistent social presence. Content Performance Pillars is for continued content improvement after launch, with scope agreed per project.',
-  },
-  {
-    q: 'Can I hire just listing images or A+ Content?',
-    a: 'Yes. Amazon listing components can be hired individually or combined into a custom proposal. They are quoted per project rather than sold as fixed packages.',
-  },
-  {
-    q: 'What happens after my listing goes live?',
-    a: 'Our core listing work covers research and creative production. Ongoing tracking and content updates after launch are a separate, scope-dependent service, confirmed in your proposal. We don’t guarantee specific results.',
-  },
-  {
-    q: 'Where do I book a consultation?',
-    a: 'Use the Book a Call page to choose a time. For support or general company questions, use the Contact page instead.',
-    link: { label: 'Book a Call', href: '/book-a-call' },
-  },
-];

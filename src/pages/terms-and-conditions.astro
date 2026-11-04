@@ -31,7 +31,8 @@ const sections = [
   {
     id: 'services-and-agreements',
     title: 'Service Information and Agreements',
-    covers: 'How the service descriptions on this site relate to proposals and signed project agreements, which take precedence.',
+    covers:
+      'How the service descriptions on this site relate to proposals and signed project agreements, which take precedence.',
   },
   {
     id: 'bookings-and-third-parties',
@@ -41,7 +42,8 @@ const sections = [
   {
     id: 'intellectual-property',
     title: 'Intellectual Property',
-    covers: 'Who owns the content on this site, what you may reuse, and how client work shown in our portfolio is treated.',
+    covers:
+      'Who owns the content on this site, what you may reuse, and how client work shown in our portfolio is treated.',
   },
   {
     id: 'disclaimers-and-liability',
@@ -81,7 +83,11 @@ const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions'
       <p class="mb-3 text-sm font-bold text-brand-green">Contents</p>
       <ul class="space-y-2 text-sm">
         {sections.map((s) => (
-          <li><a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">{s.title}</a></li>
+          <li>
+            <a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">
+              {s.title}
+            </a>
+          </li>
         ))}
       </ul>
     </nav>
@@ -90,21 +96,33 @@ const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions'
       {DRAFT && (
         <p class="rounded-2xl bg-brand-yellow-soft p-5 text-sm text-brand-green" role="note">
           <strong>Draft.</strong> This page shows the structure of our terms. The full text is being reviewed and will
-          be published here. For questions, please <a href="/contact-us" class="underline">contact us</a>.
+          be published here. For questions, please{' '}
+          <a href="/contact-us" class="underline">
+            contact us
+          </a>
+          .
         </p>
       )}
 
       {sections.map((s) => (
         <section id={s.id} class="scroll-mt-28" aria-labelledby={`${s.id}-heading`}>
-          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">{s.title}</h2>
+          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">
+            {s.title}
+          </h2>
           {/* TODO: replace with counsel-approved text (see TC-01…TC-30 in the blueprint) */}
           <p class="mt-3 text-brand-ink/70">{DRAFT ? `This section will cover: ${s.covers}` : ''}</p>
         </section>
       ))}
 
       <p class="border-t border-black/10 pt-6 text-sm text-brand-ink/60">
-        Related: <a href="/privacy-policy" class="underline">Privacy Policy</a> ·
-        <a href="/contact-us" class="underline">Contact Us</a>
+        Related:{' '}
+        <a href="/privacy-policy" class="underline">
+          Privacy Policy
+        </a>{' '}
+        ·
+        <a href="/contact-us" class="underline">
+          Contact Us
+        </a>
       </p>
     </div>
   </div>

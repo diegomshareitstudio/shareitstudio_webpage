@@ -41,7 +41,9 @@ if (!reduced) {
  * The frame loop only runs while the page is moving and stops once the belts have settled.
  */
 function marqueeVelocity() {
-  const tracks = $$('.marquee-track').map((el) => el.getAnimations()[0]).filter(Boolean);
+  const tracks = $$('.marquee-track')
+    .map((el) => el.getAnimations()[0])
+    .filter(Boolean);
   if (!tracks.length) return;
   const marquees = $$('.marquee');
   let rate = 1;
@@ -106,7 +108,11 @@ function popOnReveal() {
   inView(
     '.step-num',
     (el) => {
-      animate(el, { opacity: [0, 1], scale: [0.2, 1], rotate: [-25, 0] }, { type: 'spring', stiffness: 300, damping: 12 });
+      animate(
+        el,
+        { opacity: [0, 1], scale: [0.2, 1], rotate: [-25, 0] },
+        { type: 'spring', stiffness: 300, damping: 12 },
+      );
     },
     { amount: 0.8 },
   );
@@ -124,7 +130,11 @@ function countUp() {
     const decimals = raw.split('.')[1]?.length ?? 0;
     const grouped = raw.includes(',');
     const fmt = (n: number) =>
-      n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: grouped });
+      n.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+        useGrouping: grouped,
+      });
     const text = node.textContent!;
     const render = (n: number) => (node.textContent = text.replace(raw, fmt(n)));
     render(0);
@@ -154,15 +164,16 @@ function heroParallax() {
     window.addEventListener(
       'pointermove',
       (e) => {
-        if (!pointer) requestAnimationFrame(() => {
-          const x = (pointer!.clientX / innerWidth - 0.5) * 2;
-          const y = (pointer!.clientY / innerHeight - 0.5) * 2;
-          pointer = undefined;
-          layers.forEach((el, i) => {
-            const depth = Number(el.dataset.depth ?? 14 + (i % 3) * 10);
-            el.style.translate = `${-x * depth}px ${-y * depth}px`;
+        if (!pointer)
+          requestAnimationFrame(() => {
+            const x = (pointer!.clientX / innerWidth - 0.5) * 2;
+            const y = (pointer!.clientY / innerHeight - 0.5) * 2;
+            pointer = undefined;
+            layers.forEach((el, i) => {
+              const depth = Number(el.dataset.depth ?? 14 + (i % 3) * 10);
+              el.style.translate = `${-x * depth}px ${-y * depth}px`;
+            });
           });
-        });
         pointer = e;
       },
       { passive: true },

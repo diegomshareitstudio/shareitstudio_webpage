@@ -12,6 +12,7 @@ import SectionHeading from '../../components/ui/SectionHeading.astro';
 import CtaBanner from '../../components/ui/CtaBanner.astro';
 import { getPost, posts, postHref, type Post } from '../../data/posts';
 import { itemListSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 // 02 — editor-selected evergreen guides (templates, examples, image requirements)
 const featured = ['a-plus-content-templates', 'amazon-a-plus-content-examples', 'amazon-images-requirements'].map(
@@ -23,7 +24,10 @@ const topicOrder: Post['topic'][] = ['A+ Content', 'Listing Images', 'Storefront
 const topics = topicOrder
   .map((name) => ({
     name,
-    id: `topic-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '')}`,
+    id: `topic-${name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/-$/, '')}`,
     posts: posts.filter((p) => p.topic === name),
   }))
   .filter((t) => t.posts.length > 0);
@@ -81,7 +85,9 @@ const schema = [
   <!-- 03 — Explore by topic -->
   <section class="bg-brand-cream py-12" aria-labelledby="topics-heading">
     <div class="container-x">
-      <h2 id="topics-heading" class="text-2xl font-extrabold text-brand-green">Explore by Topic</h2>
+      <h2 id="topics-heading" class="text-2xl font-extrabold text-brand-green">
+        Explore by Topic
+      </h2>
       <ul class="mt-5 flex flex-wrap gap-2">
         {topics.map((t) => (
           <li>
@@ -126,15 +132,29 @@ const schema = [
   <!-- 05 — Related solutions / help -->
   <section class="bg-brand-cream py-12" aria-labelledby="help-heading">
     <div class="container-x">
-      <h2 id="help-heading" class="text-2xl font-extrabold text-brand-green">Need Help With Your Content?</h2>
+      <h2 id="help-heading" class="text-2xl font-extrabold text-brand-green">
+        Need Help With Your Content?
+      </h2>
       <p class="mt-2 max-w-2xl text-brand-ink/70">
         If you would rather have a team do the work, explore what we offer, see examples of our work or read how past
         projects went.
       </p>
       <ul class="mt-6 flex flex-wrap gap-3">
-        <li><a href="/services" class="btn-outline">Explore Services</a></li>
-        <li><a href="/our-work" class="btn-outline">View Portfolio</a></li>
-        <li><a href="/our-work" class="btn-outline">Case Studies</a></li>
+        <li>
+          <a href="/services" class="btn-outline">
+            Explore Services
+          </a>
+        </li>
+        <li>
+          <a href="/our-work" class="btn-outline">
+            View Portfolio
+          </a>
+        </li>
+        <li>
+          <a href="/our-work" class="btn-outline">
+            Case Studies
+          </a>
+        </li>
       </ul>
     </div>
   </section>
@@ -144,7 +164,7 @@ const schema = [
     title="Let’s Talk"
     text="If a guide isn’t enough for your question, book a call and we can talk through your brand’s content."
     ctaLabel="Book a Call"
-    ctaHref="/book-a-call"
+    ctaHref={BOOKING_PAGE}
     altLabel="Prefer to write to us? Contact Us"
     altHref="/contact-us"
   />

@@ -10,6 +10,7 @@ import CtaBanner from '../components/ui/CtaBanner.astro';
 import { articleSchema } from '../lib/schema';
 import { caseStudyHref, type CaseStudy } from '../data/caseStudies';
 import { postHref, type Post } from '../data/posts';
+import { BOOKING_PAGE } from '../config/site';
 
 interface Common {
   /** Visible <h1> */
@@ -129,7 +130,13 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
       <figure class="container-x -mb-6 pt-12">
         {cover ? (
           <div class="grid min-h-72 place-items-center rounded-[2rem] bg-brand-cream p-6 md:p-10">
-            <Image src={cover.src} alt={cover.alt} loading="eager" fetchpriority="high" class="max-h-96 w-auto rounded-[1.5rem]" />
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              loading="eager"
+              fetchpriority="high"
+              class="max-h-96 w-auto rounded-[1.5rem]"
+            />
           </div>
         ) : (
           <div class="placeholder aspect-[21/9]">Before / after listing visuals</div>
@@ -153,7 +160,7 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
               <span class="mt-1 block font-display font-extrabold text-brand-green">{service.label} →</span>
             </a>
           )}
-          <a href="/book-a-call" class="btn-dark mt-8">
+          <a href={BOOKING_PAGE} class="btn-dark mt-8">
             Book a Call
           </a>
         </div>

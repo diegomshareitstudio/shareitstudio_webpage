@@ -15,9 +15,9 @@ import ImageSlot from '../../components/ui/ImageSlot.astro';
 import TextMarquee from '../../components/ui/TextMarquee.astro';
 import { getService } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
+import { BOOKING_PAGE } from '../../config/site';
 
 const path = '/services/amazon-storefront-design';
-const bookHref = '/book-a-call'; // TODO: verified Calendly appointment URL
 const service = getService('amazon-storefront-design');
 const faqs = service.faqs!;
 
@@ -95,7 +95,12 @@ const schema = [
 ];
 ---
 
-<Layout title="Amazon Storefront Design Services | Share It Studio" description={description} breadcrumbs={breadcrumbs} schema={schema}>
+<Layout
+  title="Amazon Storefront Design Services | Share It Studio"
+  description={description}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
   <!-- 01 — Hero -->
   <PageHero
     eyebrow="Amazon Storefront design services"
@@ -103,16 +108,21 @@ const schema = [
     highlight="Easier to Explore"
     subtitle={`<strong class="block font-display text-xl font-extrabold leading-snug text-brand-green md:text-2xl">Your products belong together. Does your Amazon presence show it?</strong><span class="mt-4 block">Customers may discover one of your products without ever seeing the rest of your range. We design branded Amazon Stores with clear navigation, compelling visuals, and thoughtfully organized product collections — giving shoppers a place to explore more of what your brand offers.</span><span class="mt-3 block text-sm font-semibold text-brand-green">Need a new Brand Store or a redesign of your existing one? We can scope Storefront Design on its own, without requiring a full listing refresh.</span>`}
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     secondaryLabel="See Our Storefront Work"
     secondaryHref="#storefront-work"
   >
-    <p class="mt-4 text-sm text-brand-ink/60">Share your Amazon brand and tell us what you’d like shoppers to discover.</p>
+    <p class="mt-4 text-sm text-brand-ink/60">
+      Share your Amazon brand and tell us what you’d like shoppers to discover.
+    </p>
 
     <!-- TODO: a real, approved Brand Store on desktop with a matching mobile preview (not an Influencer storefront) -->
     <div slot="visual" class="relative pb-16 pl-6 pt-4 sm:pl-10" aria-hidden="true">
       <span class="motion-float absolute -top-2 right-8 h-16 w-16 rounded-full bg-brand-yellow" data-depth="24"></span>
-      <span class="motion-float absolute bottom-24 -right-3 h-9 w-9 rotate-12 rounded-xl bg-brand-orange" data-depth="16"></span>
+      <span
+        class="motion-float absolute bottom-24 -right-3 h-9 w-9 rotate-12 rounded-xl bg-brand-orange"
+        data-depth="16"
+      ></span>
       <span class="star-spin absolute left-0 top-6 text-4xl text-brand-orange">✦</span>
 
       <!-- Desktop Store in a browser window -->
@@ -121,12 +131,21 @@ const schema = [
           <span class="h-2.5 w-2.5 rounded-full bg-brand-orange/70"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-brand-yellow"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-brand-green/30"></span>
-          <span class="ml-3 flex-1 truncate rounded-full bg-brand-cream px-3 py-1 text-[0.65rem] text-brand-green/50">amazon.com/stores/your-brand</span>
+          <span class="ml-3 flex-1 truncate rounded-full bg-brand-cream px-3 py-1 text-[0.65rem] text-brand-green/50">
+            amazon.com/stores/your-brand
+          </span>
         </div>
         <ImageSlot label="Brand banner" tone="green" class="aspect-[16/5] rounded-none border-0 text-xs" />
         <div class="flex gap-1.5 overflow-hidden px-4 py-3">
           {['Home', 'Collections', 'Best sellers', 'About'].map((t, i) => (
-            <span class:list={['shrink-0 rounded-full px-3 py-1 text-[0.65rem] font-semibold', i === 1 ? 'bg-brand-yellow text-brand-green' : 'bg-brand-cream text-brand-green/60']}>{t}</span>
+            <span
+              class:list={[
+                'shrink-0 rounded-full px-3 py-1 text-[0.65rem] font-semibold',
+                i === 1 ? 'bg-brand-yellow text-brand-green' : 'bg-brand-cream text-brand-green/60',
+              ]}
+            >
+              {t}
+            </span>
           ))}
         </div>
         <div class="grid grid-cols-4 gap-2 px-4 pb-4">
@@ -140,12 +159,18 @@ const schema = [
       <div class="absolute bottom-0 left-0 w-[24%] max-w-[8rem] rotate-[-6deg] overflow-hidden rounded-[1.4rem] border-[5px] border-brand-green bg-white shadow-2xl">
         <div class="aspect-[16/9] bg-brand-green-light"></div>
         <div class="grid grid-cols-2 gap-1.5 p-2">
-          {Array.from({ length: 4 }, (_, i) => <div class:list={['aspect-square rounded-lg', i === 0 ? 'bg-brand-yellow-soft' : 'bg-brand-cream']}></div>)}
+          {Array.from({ length: 4 }, (_, i) => (
+            <div class:list={['aspect-square rounded-lg', i === 0 ? 'bg-brand-yellow-soft' : 'bg-brand-cream']}></div>
+          ))}
         </div>
       </div>
 
-      <span class="absolute -right-2 top-16 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">Product collections</span>
-      <span class="absolute bottom-3 right-6 -rotate-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-green shadow-lg ring-1 ring-brand-green/10">Desktop + mobile</span>
+      <span class="absolute -right-2 top-16 rotate-3 rounded-full bg-brand-yellow px-4 py-2 text-sm font-semibold text-brand-green shadow-lg">
+        Product collections
+      </span>
+      <span class="absolute bottom-3 right-6 -rotate-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-green shadow-lg ring-1 ring-brand-green/10">
+        Desktop + mobile
+      </span>
     </div>
   </PageHero>
 
@@ -164,14 +189,18 @@ const schema = [
         <ImageSlot label="Store homepage screenshot" class="h-full min-h-[18rem] sm:min-h-[24rem]" />
         <div class="absolute inset-x-3 bottom-3 rounded-2xl bg-white/95 p-4 shadow-lg backdrop-blur sm:inset-x-5 sm:bottom-5 sm:max-w-md sm:p-5">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-brand-orange">01 · {work.home.kind}</p>
-          <h3 class="mt-1 font-display text-lg font-extrabold leading-snug text-brand-green sm:text-xl">{work.home.problem}</h3>
+          <h3 class="mt-1 font-display text-lg font-extrabold leading-snug text-brand-green sm:text-xl">
+            {work.home.problem}
+          </h3>
         </div>
       </li>
       <li class="relative">
         <ImageSlot label="Collection page screenshot" tone="yellow" class="h-full min-h-[15rem]" />
         <div class="absolute inset-x-3 bottom-3 rounded-2xl bg-white/95 p-4 shadow-lg backdrop-blur">
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-brand-orange">02 · {work.collection.kind}</p>
-          <h3 class="mt-1 font-display text-base font-extrabold leading-snug text-brand-green">{work.collection.problem}</h3>
+          <h3 class="mt-1 font-display text-base font-extrabold leading-snug text-brand-green">
+            {work.collection.problem}
+          </h3>
         </div>
       </li>
       <li class="flex items-center gap-5 overflow-hidden rounded-[1.75rem] bg-brand-green p-5 sm:p-6">
@@ -180,11 +209,16 @@ const schema = [
         </div>
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-brand-yellow">03 · {work.mobile.kind}</p>
-          <h3 class="mt-1 font-display text-base font-extrabold leading-snug text-white sm:text-lg">{work.mobile.problem}</h3>
+          <h3 class="mt-1 font-display text-base font-extrabold leading-snug text-white sm:text-lg">
+            {work.mobile.problem}
+          </h3>
         </div>
       </li>
     </ul>
-    <a href={service.portfolio} class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange">
+    <a
+      href={service.portfolio}
+      class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
+    >
       Explore Our Amazon Creative Work →
     </a>
   </section>
@@ -192,18 +226,39 @@ const schema = [
   <!-- 03 — What we design: alternating image / text rows -->
   <section class="bg-brand-cream py-12 md:py-24" aria-labelledby="design-heading">
     <div class="container-x">
-      <SectionHeading eyebrow="What we design" id="design-heading" title="A place for shoppers to discover your whole brand." align="left" />
+      <SectionHeading
+        eyebrow="What we design"
+        id="design-heading"
+        title="A place for shoppers to discover your whole brand."
+        align="left"
+      />
       <ol class="space-y-12 md:space-y-20">
         {parts.map((p, i) => (
           <li class="grid items-center gap-6 md:grid-cols-2 md:gap-14">
             <div class:list={['relative', i % 2 === 1 && 'md:order-2']}>
-              <ImageSlot label={p.image} tone={i === 1 ? 'yellow' : 'white'} class:list={['aspect-[4/3] shadow-sm', i % 2 ? 'rotate-1' : '-rotate-1']} />
-              <span class:list={['absolute -top-3 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider shadow-md', i % 2 ? '-right-2 rotate-3 bg-brand-green text-brand-yellow' : '-left-2 -rotate-3 bg-brand-yellow text-brand-green']}>
+              <ImageSlot
+                label={p.image}
+                tone={i === 1 ? 'yellow' : 'white'}
+                class:list={['aspect-[4/3] shadow-sm', i % 2 ? 'rotate-1' : '-rotate-1']}
+              />
+              <span
+                class:list={[
+                  'absolute -top-3 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider shadow-md',
+                  i % 2
+                    ? '-right-2 rotate-3 bg-brand-green text-brand-yellow'
+                    : '-left-2 -rotate-3 bg-brand-yellow text-brand-green',
+                ]}
+              >
                 {p.tag}
               </span>
             </div>
             <div>
-              <span class="step-num font-display text-5xl font-extrabold leading-none text-brand-orange sm:text-6xl" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span
+                class="step-num font-display text-5xl font-extrabold leading-none text-brand-orange sm:text-6xl"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
               <h3 class="mt-3 text-2xl font-extrabold leading-tight text-brand-green sm:text-3xl">{p.t}</h3>
               <p class="mt-3 max-w-lg text-lg leading-relaxed text-brand-ink/70">{p.d}</p>
             </div>
@@ -215,7 +270,8 @@ const schema = [
           We recommend the number of pages and creative assets <span class="marker">your catalog actually needs.</span>
         </p>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-brand-ink/60">
-          A Storefront can be commissioned by itself; new photography, product videos, extra pages, and ongoing updates are scoped separately when needed.
+          A Storefront can be commissioned by itself; new photography, product videos, extra pages, and ongoing updates
+          are scoped separately when needed.
         </p>
       </div>
     </div>
@@ -223,19 +279,36 @@ const schema = [
 
   <!-- 04 — How we work: dark timeline -->
   <section class="relative overflow-hidden bg-brand-green py-12 md:py-24" aria-labelledby="process-heading">
-    <span class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border-[28px] border-brand-yellow/20" aria-hidden="true"></span>
-    <span class="star-spin pointer-events-none absolute bottom-10 left-[8%] text-4xl text-brand-orange/60" aria-hidden="true">✦</span>
+    <span
+      class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border-[28px] border-brand-yellow/20"
+      aria-hidden="true"
+    ></span>
+    <span
+      class="star-spin pointer-events-none absolute bottom-10 left-[8%] text-4xl text-brand-orange/60"
+      aria-hidden="true"
+    >
+      ✦
+    </span>
     <div class="container-x relative">
       <p class="eyebrow mb-4 text-brand-yellow">How we work</p>
-      <h2 id="process-heading" class="max-w-3xl text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-[2.6rem]">
+      <h2
+        id="process-heading"
+        class="max-w-3xl text-[1.7rem] font-extrabold leading-tight text-white sm:text-3xl md:text-[2.6rem]"
+      >
         Turn your product catalog into a clearer shopping experience.
       </h2>
       <div class="relative mt-10 md:mt-14">
-        <span class="absolute left-7 right-7 top-7 hidden border-t-2 border-dashed border-white/20 md:block" aria-hidden="true"></span>
+        <span
+          class="absolute left-7 right-7 top-7 hidden border-t-2 border-dashed border-white/20 md:block"
+          aria-hidden="true"
+        ></span>
         <ol class="relative grid gap-5 md:grid-cols-3 md:gap-6">
           {steps.map((s, i) => (
             <li>
-              <span class="step-num grid h-14 w-14 place-items-center rounded-full bg-brand-yellow font-display text-xl font-extrabold text-brand-green shadow-lg ring-8 ring-brand-green" aria-hidden="true">
+              <span
+                class="step-num grid h-14 w-14 place-items-center rounded-full bg-brand-yellow font-display text-xl font-extrabold text-brand-green shadow-lg ring-8 ring-brand-green"
+                aria-hidden="true"
+              >
                 {String(i + 1).padStart(2, '0')}
               </span>
               <h3 class="mt-5 text-xl font-extrabold text-white sm:text-2xl">{s.t}</h3>
@@ -245,11 +318,22 @@ const schema = [
         </ol>
       </div>
       <div class="mt-12 grid items-center gap-5 rounded-[1.5rem] bg-brand-yellow p-5 text-brand-green sm:grid-cols-[auto_1fr] sm:p-6 md:mt-16">
-        <span class="grid h-12 w-12 place-items-center rounded-full bg-brand-green text-xl text-brand-yellow" aria-hidden="true">✦</span>
+        <span
+          class="grid h-12 w-12 place-items-center rounded-full bg-brand-green text-xl text-brand-yellow"
+          aria-hidden="true"
+        >
+          ✦
+        </span>
         <p class="font-medium">
           Already have brand guidelines,{' '}
-          <a href="/services/amazon-listing-images" class="font-bold underline underline-offset-4">listing images</a>, or{' '}
-          <a href="/services/amazon-product-video-production" class="font-bold underline underline-offset-4">product videos</a>? We can work with approved assets rather than recreating everything from scratch.
+          <a href="/services/amazon-listing-images" class="font-bold underline underline-offset-4">
+            listing images
+          </a>
+          , or{' '}
+          <a href="/services/amazon-product-video-production" class="font-bold underline underline-offset-4">
+            product videos
+          </a>
+          ? We can work with approved assets rather than recreating everything from scratch.
         </p>
       </div>
     </div>
@@ -260,12 +344,16 @@ const schema = [
     <div class="container-x grid gap-8 py-12 md:grid-cols-[1fr_1.6fr] md:gap-12 md:py-24">
       <div class="md:sticky md:top-28 md:self-start">
         <p class="eyebrow mb-4">Frequently asked questions</p>
-        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">Questions About Amazon Storefront Design</h2>
+        <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">
+          Questions About Amazon Storefront Design
+        </h2>
         <!-- TODO: approved photo of the team reviewing a Store plan -->
         <ImageSlot label="Team planning a Store layout" tone="white" class="mt-8 hidden aspect-[4/3] md:flex" />
         <div class="mt-6 rounded-[1.5rem] bg-white p-5 shadow-sm">
           <p class="text-sm text-brand-ink/70">Choose a time to speak directly with our team.</p>
-          <a href={bookHref} class="btn-dark mt-4">Talk to a Human</a>
+          <a href={BOOKING_PAGE} class="btn-dark mt-4">
+            Talk to a Human
+          </a>
         </div>
       </div>
       <FaqList faqs={faqs} variant="card" />
@@ -274,7 +362,9 @@ const schema = [
 
   <!-- Related pages: parent offer, sibling services and guide -->
   <nav class="container-x pt-12 md:pt-16" aria-labelledby="related-heading">
-    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">Part of our Amazon Listing Optimization services</h2>
+    <h2 id="related-heading" class="mb-6 text-center text-xl font-bold text-brand-green">
+      Part of our Amazon Listing Optimization services
+    </h2>
     <ul class="flex flex-wrap justify-center gap-3">
       {related.map((r) => (
         <li>
@@ -299,7 +389,7 @@ const schema = [
     title="Your catalog deserves more than disconnected product pages."
     text="Show us your products and what you want shoppers to discover. We’ll help you explore a Brand Store that makes your collection feel connected and gives customers a clearer place to browse."
     ctaLabel="Talk to a Human"
-    ctaHref={bookHref}
+    ctaHref={BOOKING_PAGE}
     note="Choose a time to speak directly with our team."
     prominent
   />

@@ -260,7 +260,6 @@
   }
 }
 
-
 /* Footer row: arrows + dots, and the way to every case study */
 .wk-foot {
   display: flex;
@@ -375,4 +374,3 @@
   width: auto;
   opacity: 0.9;
 }
-

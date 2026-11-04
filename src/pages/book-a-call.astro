@@ -17,12 +17,17 @@ import { SITE } from '../config/site';
 
 const { email, bookingUrl } = SITE;
 const canBook = Boolean(bookingUrl);
-const embedUrl = canBook ? `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}embed_domain=${new URL(SITE.url).hostname}&embed_type=Inline` : '';
+const embedUrl = canBook
+  ? `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}embed_domain=${new URL(SITE.url).hostname}&embed_type=Inline`
+  : '';
 
 // 03 — only meeting expectations that don't depend on unapproved policy
 const expect = [
   { t: 'Select an available time', d: 'Pick a slot that works for you. The calendar shows times in your time zone.' },
-  { t: 'Share optional context', d: 'You can tell us about your brand, the challenge you’re facing and the service you’re considering. Please don’t share passwords or account access.' },
+  {
+    t: 'Share optional context',
+    d: 'You can tell us about your brand, the challenge you’re facing and the service you’re considering. Please don’t share passwords or account access.',
+  },
   { t: 'Receive your confirmation', d: 'After you book, you’ll get a confirmation with the meeting details.' },
 ];
 
@@ -49,24 +54,28 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
   <section id="book-a-call" class="container-x scroll-mt-24 py-16 md:py-20" aria-labelledby="choose-heading">
     <SectionHeading id="choose-heading" title="Choose a Time" align="left" />
     {canBook ? (
-      <div class="overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-black/10">
-        <iframe
-          src={embedUrl}
-          title="Schedule a call with Share It Studio"
-          class="block h-[720px] w-full border-0 md:h-[800px]"
-          loading="lazy"
-        ></iframe>
-      </div>
-      <p class="mt-4">
-        <a href={bookingUrl} target="_blank" rel="noopener" class="btn-outline">Open Booking Calendar</a>
-      </p>
+      <>
+        <div class="overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-black/10">
+          <iframe
+            src={embedUrl}
+            title="Schedule a call with Share It Studio"
+            class="block h-[720px] w-full border-0 md:h-[800px]"
+            loading="lazy"
+          ></iframe>
+        </div>
+        <p class="mt-4">
+          <a href={bookingUrl} target="_blank" rel="noopener" class="btn-outline">
+            Open Booking Calendar
+          </a>
+        </p>
+      </>
     ) : (
       <div class="rounded-[1.75rem] bg-brand-cream p-8" role="status">
         <p class="text-lg font-bold text-brand-green">Online scheduling isn’t available yet.</p>
-        <p class="mt-2 max-w-2xl text-brand-ink/70">
-          To arrange a call, email us and we’ll follow up with next steps.
-        </p>
-        <a href={`mailto:${email}`} class="btn-dark mt-6">Email {email}</a>
+        <p class="mt-2 max-w-2xl text-brand-ink/70">To arrange a call, email us and we’ll follow up with next steps.</p>
+        <a href={`mailto:${email}`} class="btn-dark mt-6">
+          Email {email}
+        </a>
       </div>
     )}
   </section>
@@ -78,7 +87,9 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
       <ol class="grid gap-4 md:grid-cols-3">
         {expect.map((s, i) => (
           <li class="flex gap-4 rounded-[1.75rem] bg-white p-6">
-            <span class="font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">{i + 1}</span>
+            <span class="font-display text-4xl font-extrabold text-brand-yellow" aria-hidden="true">
+              {i + 1}
+            </span>
             <div>
               <h3 class="text-lg font-extrabold text-brand-green">{s.t}</h3>
               <p class="mt-1 text-brand-ink/70">{s.d}</p>
@@ -86,31 +97,51 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
           </li>
         ))}
       </ol>
-      {canBook && <p class="mt-6"><a href="#book-a-call" class="btn-primary">See Available Times</a></p>}
+      {canBook && (
+        <p class="mt-6">
+          <a href="#book-a-call" class="btn-primary">
+            See Available Times
+          </a>
+        </p>
+      )}
     </div>
   </section>
 
   <!-- 04 — Scheduling and privacy -->
   <section class="container-x py-12" aria-labelledby="privacy-heading">
-    <h2 id="privacy-heading" class="text-2xl font-extrabold text-brand-green">Scheduling and Privacy</h2>
+    <h2 id="privacy-heading" class="text-2xl font-extrabold text-brand-green">
+      Scheduling and Privacy
+    </h2>
     {/* TODO: Legal-approved disclosure (L-10); reschedule/cancel details only once confirmed (L-09) */}
     <p class="mt-2 max-w-2xl text-brand-ink/70">
       {canBook ? 'Scheduling uses a third-party tool, Calendly. ' : ''}Read how we handle information in our
-      <a href="/privacy-policy" class="font-semibold text-brand-green underline underline-offset-4">Privacy Policy</a>.
+      <a href="/privacy-policy" class="font-semibold text-brand-green underline underline-offset-4">
+        Privacy Policy
+      </a>
+      .
     </p>
   </section>
 
   <!-- 05 — Fallback and separate support -->
   <section class="bg-brand-cream py-12" aria-labelledby="trouble-heading">
     <div class="container-x">
-      <h2 id="trouble-heading" class="text-2xl font-extrabold text-brand-green">Trouble Booking?</h2>
+      <h2 id="trouble-heading" class="text-2xl font-extrabold text-brand-green">
+        Trouble Booking?
+      </h2>
       <p class="mt-2 max-w-2xl text-brand-ink/70">
-        {canBook ? 'If the calendar doesn’t load, use the booking link above, or email us at ' : 'You can reach us by email at '}
-        <a href={`mailto:${email}`} class="font-semibold text-brand-green underline">{email}</a>.
+        {canBook
+          ? 'If the calendar doesn’t load, use the booking link above, or email us at '
+          : 'You can reach us by email at '}
+        <a href={`mailto:${email}`} class="font-semibold text-brand-green underline">
+          {email}
+        </a>
+        .
       </p>
       <p class="mt-3 text-brand-ink/70">
         Need help with an existing project?
-        <a href="/contact-us" class="font-semibold text-brand-green underline underline-offset-4">Contact Us</a>
+        <a href="/contact-us" class="font-semibold text-brand-green underline underline-offset-4">
+          Contact Us
+        </a>
       </p>
     </div>
   </section>

@@ -1,6 +1,7 @@
 ---
 import { footerNav, legalNav } from '../../data/navigation';
 import Logo from '../ui/Logo.astro';
+import { BOOKING_PAGE } from '../../config/site';
 
 const year = new Date().getFullYear();
 ---
@@ -13,7 +14,7 @@ const year = new Date().getFullYear();
         <p class="mt-5 max-w-xs text-sm leading-relaxed">
           Ecommerce creative & growth studio: Amazon listing optimization and done-for-you social media management.
         </p>
-        <a href="/book-a-call" class="btn-primary mt-6 text-sm">
+        <a href={BOOKING_PAGE} class="btn-primary mt-6 text-sm">
           Talk to a Human
         </a>
       </div>

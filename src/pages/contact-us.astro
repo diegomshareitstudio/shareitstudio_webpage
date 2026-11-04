@@ -13,6 +13,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { SITE } from '../config/site';
+import { BOOKING_PAGE } from '../config/site';
 
 const { email, phone, location } = SITE;
 
@@ -73,9 +74,13 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
           <h3 class="text-2xl font-extrabold">Email</h3>
           <p class="mt-2 text-white/75">For client questions, partnerships and general inquiries.</p>
           <p class="mt-4 break-all text-lg font-bold">
-            <a href={`mailto:${email}`} class="underline underline-offset-4">{email}</a>
+            <a href={`mailto:${email}`} class="underline underline-offset-4">
+              {email}
+            </a>
           </p>
-          <a href={`mailto:${email}`} class="btn-primary mt-6 self-start">Email Our Team</a>
+          <a href={`mailto:${email}`} class="btn-primary mt-6 self-start">
+            Email Our Team
+          </a>
         </article>
       </li>
       <li class="flex">
@@ -83,9 +88,13 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
           <h3 class="text-2xl font-extrabold text-brand-green">Phone</h3>
           <p class="mt-2 text-brand-ink/70">Call our business line.</p>
           <p class="mt-4 text-lg font-bold text-brand-green">
-            <a href={`tel:${phone.tel}`} class="underline underline-offset-4">{phone.display}</a>
+            <a href={`tel:${phone.tel}`} class="underline underline-offset-4">
+              {phone.display}
+            </a>
           </p>
-          <a href={`tel:${phone.tel}`} class="btn-dark mt-6 self-start">Call Our Team</a>
+          <a href={`tel:${phone.tel}`} class="btn-dark mt-6 self-start">
+            Call Our Team
+          </a>
         </article>
       </li>
     </ul>
@@ -107,9 +116,19 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
               <h3 class="text-lg font-extrabold text-brand-green">{t.q}</h3>
               <p class="mt-2 flex-1 text-brand-ink/70">{t.a}</p>
               <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
-                <a href={`mailto:${email}`} class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4">Email us</a>
+                <a
+                  href={`mailto:${email}`}
+                  class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4"
+                >
+                  Email us
+                </a>
                 {t.link && (
-                  <a href={t.link.href} class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4">{t.link.label}</a>
+                  <a
+                    href={t.link.href}
+                    class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4"
+                  >
+                    {t.link.label}
+                  </a>
                 )}
               </p>
             </article>
@@ -123,7 +142,9 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
   <section class="container-x py-16 md:py-20" aria-labelledby="include-heading">
     <div class="grid gap-10 md:grid-cols-2">
       <div>
-        <h2 id="include-heading" class="text-3xl font-extrabold text-brand-green md:text-4xl">What to Include</h2>
+        <h2 id="include-heading" class="text-3xl font-extrabold text-brand-green md:text-4xl">
+          What to Include
+        </h2>
         <p class="mt-4 text-brand-ink/70">
           A short message helps the team understand and route your request. None of this is required.
         </p>
@@ -133,9 +154,13 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
       </div>
       <div>
         <ul class="list-disc space-y-2 pl-5 text-brand-ink/80">
-          {checklist.map((c) => <li>{c}</li>)}
+          {checklist.map((c) => (
+            <li>{c}</li>
+          ))}
         </ul>
-        <a href={`mailto:${email}`} class="btn-dark mt-6">Write an Email</a>
+        <a href={`mailto:${email}`} class="btn-dark mt-6">
+          Write an Email
+        </a>
       </div>
     </div>
   </section>
@@ -144,7 +169,9 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
   <section class="bg-brand-cream py-12" aria-labelledby="company-heading">
     <div class="container-x grid gap-8 md:grid-cols-2">
       <div>
-        <h2 id="company-heading" class="text-2xl font-extrabold text-brand-green">Company Information</h2>
+        <h2 id="company-heading" class="text-2xl font-extrabold text-brand-green">
+          Company Information
+        </h2>
         <p class="mt-3 font-bold text-brand-green">{SITE.name}</p>
         <p class="text-brand-ink/70">{location}</p>
         <p class="text-brand-ink/70">shareitstudio.com</p>
@@ -152,9 +179,21 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
       <div>
         <p class="font-bold text-brand-green">Help and policies</p>
         <ul class="mt-3 flex flex-wrap gap-3">
-          <li><a href="/faqs" class="btn-outline">Frequently Asked Questions</a></li>
-          <li><a href="/privacy-policy" class="btn-outline">Privacy Policy</a></li>
-          <li><a href="/terms-and-conditions" class="btn-outline">Terms &amp; Conditions</a></li>
+          <li>
+            <a href="/faqs" class="btn-outline">
+              Frequently Asked Questions
+            </a>
+          </li>
+          <li>
+            <a href="/privacy-policy" class="btn-outline">
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a href="/terms-and-conditions" class="btn-outline">
+              Terms &amp; Conditions
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -162,10 +201,14 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
 
   <!-- 06 — Separate consultation path: small text link only -->
   <section class="container-x py-12" aria-labelledby="services-heading">
-    <h2 id="services-heading" class="text-2xl font-extrabold text-brand-green">Looking to Discuss Services?</h2>
+    <h2 id="services-heading" class="text-2xl font-extrabold text-brand-green">
+      Looking to Discuss Services?
+    </h2>
     <p class="mt-2 max-w-2xl text-brand-ink/70">
       Consultations about new projects are scheduled separately.
-      <a href="/book-a-call" class="font-semibold text-brand-green underline underline-offset-4">Book a Call</a>
+      <a href={BOOKING_PAGE} class="font-semibold text-brand-green underline underline-offset-4">
+        Book a Call
+      </a>
     </p>
   </section>
 </Layout>

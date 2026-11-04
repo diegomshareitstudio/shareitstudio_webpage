@@ -24,7 +24,8 @@ const sections = [
   {
     id: 'information-we-collect',
     title: 'Information We Collect',
-    covers: 'The categories of information collected and their sources: information you send us, scheduling details, and information collected automatically when you visit the site.',
+    covers:
+      'The categories of information collected and their sources: information you send us, scheduling details, and information collected automatically when you visit the site.',
   },
   {
     id: 'how-we-use-information',
@@ -80,7 +81,11 @@ const breadcrumbs = [{ name: 'Privacy Policy', path: '/privacy-policy' }];
       <p class="mb-3 text-sm font-bold text-brand-green">Contents</p>
       <ul class="space-y-2 text-sm">
         {sections.map((s) => (
-          <li><a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">{s.title}</a></li>
+          <li>
+            <a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">
+              {s.title}
+            </a>
+          </li>
         ))}
       </ul>
     </nav>
@@ -89,21 +94,33 @@ const breadcrumbs = [{ name: 'Privacy Policy', path: '/privacy-policy' }];
       {DRAFT && (
         <p class="rounded-2xl bg-brand-yellow-soft p-5 text-sm text-brand-green" role="note">
           <strong>Draft.</strong> This page shows the structure of our privacy policy. The full text is being reviewed
-          and will be published here. For general questions, please <a href="/contact-us" class="underline">contact us</a>.
+          and will be published here. For general questions, please{' '}
+          <a href="/contact-us" class="underline">
+            contact us
+          </a>
+          .
         </p>
       )}
 
       {sections.map((s) => (
         <section id={s.id} class="scroll-mt-28" aria-labelledby={`${s.id}-heading`}>
-          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">{s.title}</h2>
+          <h2 id={`${s.id}-heading`} class="text-2xl font-extrabold text-brand-green">
+            {s.title}
+          </h2>
           {/* TODO: replace with counsel-approved text (see PP-01…PP-26 in the blueprint) */}
           <p class="mt-3 text-brand-ink/70">{DRAFT ? `This section will cover: ${s.covers}` : ''}</p>
         </section>
       ))}
 
       <p class="border-t border-black/10 pt-6 text-sm text-brand-ink/60">
-        Related: <a href="/terms-and-conditions" class="underline">Terms and Conditions</a> ·
-        <a href="/contact-us" class="underline">Contact Us</a>
+        Related:{' '}
+        <a href="/terms-and-conditions" class="underline">
+          Terms and Conditions
+        </a>{' '}
+        ·
+        <a href="/contact-us" class="underline">
+          Contact Us
+        </a>
       </p>
     </div>
   </div>

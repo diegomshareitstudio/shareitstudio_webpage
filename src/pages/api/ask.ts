@@ -4,7 +4,7 @@ import { SYSTEM_PROMPT } from '../../data/companyKnowledge';
 import { faqs } from '../../data/faqs';
 import { services } from '../../data/services';
 
-/** Runs on the server on every request (needs an SSR adapter in production, see README of this feature). */
+/** Runs on the server on every request (needs the SSR adapter, see README). */
 export const prerender = false;
 
 const MODEL = 'claude-haiku-5-5'; // more capable, pricier: 'claude-opus-5-5'
@@ -81,7 +81,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return json({ answer: answer || 'I couldn’t put together an answer. Please book a call with our team.' });
   } catch (error) {
     console.error('[api/ask]', error);
-    if (error instanceof Anthropic.RateLimitError) return json({ error: 'The assistant is busy. Try again shortly.' }, 503);
+    if (error instanceof Anthropic.RateLimitError)
+      return json({ error: 'The assistant is busy. Try again shortly.' }, 503);
     return json({ error: 'Something went wrong. Please try again.' }, 500);
   }
 };
