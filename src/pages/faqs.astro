@@ -15,6 +15,7 @@ import FaqList from '../components/ui/FaqList.astro';
 import AskAi from '../components/ui/AskAi.astro';
 import type { Faq } from '../data/faqs';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 interface Group {
   id: string;
@@ -204,7 +205,7 @@ const breadcrumbs = [{ name: 'Frequently Asked Questions', path: '/faqs' }];
         {groups.map((g) => (
           <li>
             <a
-              href={`#${g.id}`}
+              href={withBase(`#${g.id}`)}
               class="inline-flex min-h-[44px] items-center rounded-full bg-white px-4 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
             >
               {g.title}

@@ -1,6 +1,7 @@
 ---
 /** Row list of case studies with their headline metric (homepage and service pages). */
 import { caseStudies, caseStudyHref, type CaseStudy } from '../../data/caseStudies';
+import { withBase } from '../../lib/url';
 
 interface Props {
   items?: CaseStudy[];
@@ -13,7 +14,7 @@ const { items = caseStudies } = Astro.props;
   {items.map((c) => (
     <li>
       <a
-        href={caseStudyHref(c)}
+        href={withBase(caseStudyHref(c))}
         class="group grid items-center gap-2 py-7 transition md:grid-cols-[1fr_2fr_auto] md:gap-8"
       >
         <h3 class="text-3xl font-extrabold text-brand-green transition group-hover:translate-x-2">{c.client}</h3>

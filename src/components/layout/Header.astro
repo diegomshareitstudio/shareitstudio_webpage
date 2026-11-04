@@ -2,8 +2,9 @@
 import { mainNav, servicesMenu, type NavLink } from '../../data/navigation';
 import Logo from '../ui/Logo.astro';
 import { BOOKING_PAGE } from '../../config/site';
+import { stripBase, withBase } from '../../lib/url';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = stripBase(Astro.url.pathname).replace(/\/$/, '') || '/';
 const isActive = (item: NavLink) =>
   [item.href, ...(item.children ?? []).map((c) => c.href)].some((href) => {
     const base = href.split('#')[0];
@@ -23,7 +24,7 @@ const isActive = (item: NavLink) =>
         {mainNav.map((item) => (
           <li class="group relative">
             <a
-              href={item.href}
+              href={withBase(item.href)}
               class:list={[
                 'flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition',
                 isActive(item)
@@ -51,7 +52,7 @@ const isActive = (item: NavLink) =>
                   {servicesMenu.map((s) => (
                     <li class="group/sub px-3">
                       <a
-                        href={s.href}
+                        href={withBase(s.href)}
                         class="flex items-center justify-between gap-2 rounded-2xl px-4 py-2.5 text-sm text-white/85 transition hover:bg-white/10 hover:text-brand-yellow group-hover/sub:bg-white/10 group-hover/sub:text-brand-yellow"
                       >
                         {s.label}
@@ -74,7 +75,7 @@ const isActive = (item: NavLink) =>
                             {s.children.map((child) => (
                               <li>
                                 <a
-                                  href={child.href}
+                                  href={withBase(child.href)}
                                   class="block rounded-2xl px-4 py-2.5 text-sm text-white/85 transition hover:bg-white/10 hover:text-brand-yellow"
                                 >
                                   {child.label}
@@ -100,7 +101,7 @@ const isActive = (item: NavLink) =>
                     {item.children.map((child) => (
                       <li>
                         <a
-                          href={child.href}
+                          href={withBase(child.href)}
                           class="block rounded-2xl px-4 py-2.5 text-sm text-white/85 transition hover:bg-white/10 hover:text-brand-yellow"
                         >
                           {child.label}
@@ -117,7 +118,7 @@ const isActive = (item: NavLink) =>
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href={BOOKING_PAGE} class="btn-dark hidden sm:inline-flex">
+      <a href={withBase(BOOKING_PAGE)} class="btn-dark hidden sm:inline-flex">
         Talk to a Human
       </a>
       <button
@@ -146,7 +147,10 @@ const isActive = (item: NavLink) =>
               <ul class="ml-4 border-l border-brand-yellow/50 pl-3">
                 {item.children.map((child) => (
                   <li>
-                    <a href={child.href} class="block px-3 py-1.5 text-sm text-white/75 hover:text-brand-yellow">
+                    <a
+                      href={withBase(child.href)}
+                      class="block px-3 py-1.5 text-sm text-white/75 hover:text-brand-yellow"
+                    >
                       {child.label}
                     </a>
                   </li>
@@ -154,14 +158,14 @@ const isActive = (item: NavLink) =>
               </ul>
             </details>
           ) : (
-            <a href={item.href} class="block rounded-2xl px-4 py-2.5 font-medium">
+            <a href={withBase(item.href)} class="block rounded-2xl px-4 py-2.5 font-medium">
               {item.label}
             </a>
           )}
         </li>
       ))}
       <li class="pt-2">
-        <a href={BOOKING_PAGE} class="btn-primary w-full">
+        <a href={withBase(BOOKING_PAGE)} class="btn-primary w-full">
           Talk to a Human
         </a>
       </li>

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/url';
 /** Page header with the page's only <h1>, optional CTAs and an optional `visual` slot. */
 interface Props {
   eyebrow?: string;
@@ -59,12 +60,12 @@ const hasVisual = Astro.slots.has('visual');
       {(ctaLabel || secondaryLabel) && (
         <div class="mt-7 flex flex-wrap items-center gap-3 sm:mt-9">
           {ctaLabel && (
-            <a href={ctaHref} class="btn-primary">
+            <a href={withBase(ctaHref)} class="btn-primary">
               {ctaLabel}
             </a>
           )}
           {secondaryLabel && (
-            <a href={secondaryHref} class="btn-outline">
+            <a href={withBase(secondaryHref)} class="btn-outline">
               {secondaryLabel}
             </a>
           )}

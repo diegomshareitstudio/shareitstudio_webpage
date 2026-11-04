@@ -5,6 +5,7 @@
  * Pair it with faqSchema() on the page for the FAQPage JSON-LD.
  */
 import type { Faq } from '../../data/faqs';
+import { withBase } from '../../lib/url';
 
 interface Props {
   faqs: Faq[];
@@ -59,7 +60,7 @@ const outline = variant === 'outline';
       <p class:list={['mt-3', outline ? 'text-brand-ink/75' : 'leading-relaxed text-brand-ink/70']}>{f.a}</p>
       {f.link && (
         <a
-          href={f.link.href}
+          href={withBase(f.link.href)}
           class="mt-3 inline-block text-sm font-semibold text-brand-green underline underline-offset-4"
         >
           {f.link.label} →

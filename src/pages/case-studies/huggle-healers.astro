@@ -1,0 +1,452 @@
+---
+/**
+ * Huggle Healers case study (copy V1): 15-second Amazon Sponsored TV commercial.
+ * The numbers are delivery and viewing metrics from a three-campaign dashboard (first two weeks), never sales:
+ * the copy keeps "viewable impressions" and "completions" apart from people, QR scans and revenue on purpose.
+ * TODO: confirm which listing assets were delivered (the wider content plan is described as "planned");
+ * captions/transcript for the video; no VideoObject markup until the video's upload date is known.
+ */
+import { Image } from 'astro:assets';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCaseStudy } from '../../data/caseStudies';
+import type { Faq } from '../../data/faqs';
+import aPlusModule from '../../assets/case-studies/huggle-healers/A+-Content-Huggie-Healers-(1)_03.png';
+import poster from '../../assets/case-studies/huggle-healers/frames/frame-02.jpg';
+import frame1 from '../../assets/case-studies/huggle-healers/frames/frame-01.jpg';
+import frame2 from '../../assets/case-studies/huggle-healers/frames/frame-02.jpg';
+import frame3 from '../../assets/case-studies/huggle-healers/frames/frame-03.jpg';
+import frame4 from '../../assets/case-studies/huggle-healers/frames/frame-04.jpg';
+import frame5 from '../../assets/case-studies/huggle-healers/frames/frame-05.jpg';
+import frame6 from '../../assets/case-studies/huggle-healers/frames/frame-06.jpg';
+import frame7 from '../../assets/case-studies/huggle-healers/frames/frame-07.jpg';
+import frame8 from '../../assets/case-studies/huggle-healers/frames/frame-08.jpg';
+import { withBase } from '../../lib/url';
+
+const cs = getCaseStudy('huggle-healers');
+
+const metaTitle = 'Huggle Healers: 117K Completed TV Views | Share It Studio';
+const description =
+  'How buyer research shaped a 15-second Amazon Sponsored TV ad for Huggle Healers: 118,131 viewable impressions and 117,606 video completions in two weeks.';
+
+const videoSrc = '/case-studies/huggle-healers/huggle-healers-sponsored-tv.mp4';
+
+const buyerThemes = [
+  { term: 'Weight distribution', text: 'Does the weight stay where a hug should feel supportive?' },
+  { term: 'Comfort and calm', text: 'Do buyers describe it as comforting or helpful at bedtime?' },
+  { term: 'The weight itself', text: 'Is the heaviness a feature rather than a drawback?' },
+  { term: 'The feeling of a hug', text: 'Do the arms help create a sense of being held?' },
+  { term: 'Huggable size', text: 'Is it a comfortable size to hold?' },
+  { term: 'Softness', text: 'Does the material look and feel inviting?' },
+];
+
+// Each frame is taken from the finished commercial, close to the middle of its time range.
+const timeline = [
+  {
+    time: '0–1.5s',
+    frame: frame1,
+    shows: 'The koala moves through a colorful child’s room.',
+    says: 'It is more than a static product on a shelf.',
+  },
+  {
+    time: '1.5–4s',
+    frame: frame2,
+    shows: 'A child hugs the koala with eyes closed.',
+    says: 'The emotional and physical idea of an embrace.',
+  },
+  {
+    time: '4–6s',
+    frame: frame3,
+    shows: 'The character collection appears together.',
+    says: 'There is a choice for different family members.',
+  },
+  {
+    time: '6–7s',
+    frame: frame4,
+    shows: 'A girl moves with the sloth’s arms wrapped around her.',
+    says: 'How the arms sit and hold in use.',
+  },
+  {
+    time: '7–9.5s',
+    frame: frame5,
+    shows: 'The characters appear one by one.',
+    says: 'Variety becomes part of the brand experience.',
+  },
+  { time: '9.5–10.5s', frame: frame6, shows: 'A hand moves across the fabric.', says: 'Visible softness and texture.' },
+  {
+    time: '10.5–13s',
+    frame: frame7,
+    shows: 'An adult hugs the axolotl; children appear with their characters.',
+    says: 'The product is pictured with adults and children.',
+  },
+  {
+    time: '13–15s',
+    frame: frame8,
+    shows: 'The family appears with the full line and brand logo.',
+    says: 'A unified brand close and an invitation to explore.',
+  },
+];
+
+const carried = [
+  {
+    term: 'The voice carried the feeling.',
+    text: 'A short, warm voiceover introduced Huggle Healers and framed the product as ready for an embrace.',
+  },
+  {
+    term: 'The pictures carried the product story.',
+    text: 'Weighted arms, softness, variety, and real people doing the hugging did much of the explaining without a long spoken feature list.',
+  },
+  {
+    term: 'The QR code carried the next step.',
+    text: 'A branded QR stayed in the corner throughout the spot, directing viewers to the Amazon listing for the details the ad did not have time to cover.',
+  },
+];
+
+const contentPlan = [
+  {
+    term: '13 planned listing images',
+    text: 'Five white-background hero images, four infographics covering materials, benefits, features, and what’s inside, and four lifestyle images featuring a parent and child in a home setting.',
+  },
+  {
+    term: '5 planned A+ Content modules',
+    text: 'A more detailed presentation of the product, including its “more than a toy” positioning and family-use context.',
+  },
+  { term: 'Brand Story', text: 'An introduction to the brand, its mission, and the character collection.' },
+  {
+    term: 'Additional product and listing videos',
+    text: 'A character-specific video concept for each animal, plus a listing video showcasing the full collection.',
+  },
+  {
+    term: 'Real-life production',
+    text: 'The source documents describe an organic photo and video shoot with real models in home settings.',
+  },
+];
+
+const campaigns = [
+  { name: 'Family frame', impressions: '44,314', completes: '44,126', rate: '99.6%' },
+  { name: 'Baby & child frame', impressions: '29,480', completes: '29,258', rate: '99.2%' },
+  { name: 'No-frame version', impressions: '44,337', completes: '44,222', rate: '99.7%' },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What did Share It Studio create for Huggle Healers?',
+    a: 'The documented work includes research, creative direction, and a 15-second Amazon Sponsored TV commercial. A wider content plan covered listing images, A+ Content, Brand Story, product videos, and real-model lifestyle production; confirm individual deliverables before labeling the complete plan as delivered.',
+  },
+  {
+    q: 'How did customer research influence the TV commercial?',
+    a: 'Reviews of a leading product in the category highlighted weight distribution, huggability, softness, comfort, size, and character variety. The storyboard translated those themes into specific moments viewers could understand quickly.',
+  },
+  {
+    q: 'Why was the QR code shown throughout the ad?',
+    a: 'The TV audience cannot tap a product link as they would on a phone. The QR gave viewers a persistent route from the screen to the Amazon listing. The source does not report scan counts.',
+  },
+  {
+    q: 'What were the early Sponsored TV results?',
+    a: 'During the first two weeks, three campaigns reported 118,131 viewable impressions, 117,606 video completions and a 99.6% completion-to-viewable-impression ratio.',
+  },
+  {
+    q: 'Does this case study show sales or return on ad spend?',
+    a: 'No. It documents a creative production approach and early viewing metrics. It does not provide attributed orders, sales, spending, or ROAS, and it does not establish who managed media buying.',
+  },
+];
+---
+
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="Huggle Healers: 117,606 Completed Views from a 15-Second TV Ad"
+  highlight="117,606 Completed Views"
+  lead="Six buyer questions. One memorable commercial. A direct path back to Amazon."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['Sponsored TV', 'First two weeks']}
+  service={{ label: 'Amazon Product Video Production', href: '/services/amazon-product-video-production' }}
+  faqs={faqs}
+  cta={{
+    title: 'Your product has a story shoppers cannot understand in one image.',
+    text: 'Whether you’re planning a product video, an Amazon Sponsored TV creative, or a connected listing-content refresh, start with the questions customers are already asking. Show us your product. We’ll help you explore the creative story worth telling — and the right format to tell it in.',
+    ctaLabel: 'Talk to a Human',
+    altLabel: 'Explore Amazon Product Video Production',
+    altHref: '/services/amazon-product-video-production',
+  }}
+>
+  <div slot="cover" class="overflow-hidden rounded-[2rem] bg-brand-green">
+    <video
+      class="aspect-video w-full"
+      width="1920"
+      height="1080"
+      controls
+      playsinline
+      preload="none"
+      poster={poster.src}
+      aria-label="Huggle Healers 15-second Amazon Sponsored TV commercial"
+    >
+      <source src={withBase(videoSrc)} type="video/mp4" />
+      Your browser can’t play this video. The scene-by-scene breakdown below describes the commercial.
+    </video>
+  </div>
+
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> A weighted stuffed animal is easy to see on a screen. What makes it different is
+        harder to show: the weight in its arms, the softness, and the feeling of a hug. Share It Studio turned real
+        category-buyer questions into a 15-second Amazon Sponsored TV commercial for Huggle Healers, designed for a
+        living-room screen, with a persistent QR code linking interested viewers to the product listing and a broader
+        Amazon content story behind it.
+      </p>
+      <p>
+        <strong>Early Sponsored TV results, first two weeks:</strong> <strong>117,606 completed video views</strong>
+        and <strong>118,131 viewable impressions</strong> across three campaigns, a <strong>99.6%</strong> reported
+        completion rate (video completes divided by viewable impressions, rounded).
+      </p>
+      <p class="text-sm italic">
+        These are delivery and viewing metrics, not unique viewers, QR scans, attributable purchases, or sales results.
+        The report does not provide those downstream outcomes.
+      </p>
+    </aside>
+
+    <section id="the-brand">
+      <h2>How do you communicate a hug to someone who cannot feel the product?</h2>
+      <p>
+        Huggle Healers sells 4.4 lb weighted stuffed animals: a koala, an axolotl, an elephant, and a sloth available in
+        grey and brown. The weighted arms and body are central to the product experience.
+      </p>
+      <p>
+        But in a thumbnail or on a television, a weighted plush can look like an ordinary stuffed animal. The brand
+        needed to communicate its defining qualities visually, without relying on unsubstantiated health or medical
+        promises.
+      </p>
+      <h3>A feeling that pictures must explain.</h3>
+      <p>
+        The difference is physical: where the weight sits, how the arms wrap around someone, and how the fabric looks
+        and feels.
+      </p>
+      <h3>An audience with different reasons to buy.</h3>
+      <p>
+        A parent might be choosing for a child; another shopper may be buying for themselves or several people in one
+        household. The creative needed to show the range without becoming a feature checklist.
+      </p>
+      <h3>A 15-second TV screen, not a shoppable phone feed.</h3>
+      <p>
+        On a television, viewers cannot simply tap the product. The ad had to make sense with sound on, be recognizable
+        in a family setting, and provide a next step off the screen.
+      </p>
+      <blockquote>
+        <p>
+          <strong>The challenge:</strong> Show the experience in seconds, then let the Amazon listing answer the
+          detailed questions that could not fit in the commercial.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="buyer-research">
+      <h2>We looked at what shoppers already valued — and what they still questioned.</h2>
+      <p>
+        Before writing the voiceover or building a storyboard, Share It Studio reviewed 4- and 5-star Amazon reviews for
+        a leading competing weighted plush product. The research surfaced six recurring buying themes:
+      </p>
+      <ol class="steps-list">
+        {buyerThemes.map((theme) => (
+          <li>
+            <h3>{theme.term}</h3>
+            <p>{theme.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p>
+        The reviews also raised concerns about weight shifting into the back or tail, suitability for younger users, and
+        whether the product could be washed or had a scent. Buyers also asked for more character choices.
+      </p>
+      <blockquote>
+        <p>
+          <strong>The useful insight:</strong> People were not looking for just another plush toy. They wanted to
+          understand the physical experience and choose a character that felt right for someone in their household.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="the-creative">
+      <h2>Every second had a question to answer.</h2>
+      <p>
+        The commercial moved from attention to emotion, from product details to family context — all while keeping a QR
+        code visible for the full 15 seconds. Each frame below comes from the finished commercial.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Scene-by-scene breakdown of the 15-second commercial</caption>
+          <thead>
+            <tr>
+              <th scope="col">Time</th>
+              <th scope="col">What appears on screen</th>
+              <th scope="col">What the moment communicates</th>
+            </tr>
+          </thead>
+          <tbody>
+            {timeline.map((row) => (
+              <tr>
+                <th scope="row">{row.time}</th>
+                <td>
+                  <Image
+                    src={row.frame}
+                    width={256}
+                    alt={`Commercial frame at ${row.time}: ${row.shows}`}
+                    class="photo mb-2"
+                    style="width:8rem"
+                  />
+                  {row.shows}
+                </td>
+                <td>{row.says}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {carried.map((c) => (
+        <p>
+          <strong>{c.term}</strong> {c.text}
+        </p>
+      ))}
+    </section>
+
+    <section id="beyond-the-commercial">
+      <h2>The TV spot was the invitation. The listing was built to continue the conversation.</h2>
+      <p>
+        The wider Huggle Healers creative plan extended beyond Sponsored TV to explain the product in greater depth
+        after someone reached Amazon. See how we approach{' '}
+        <a href={withBase('/services/amazon-listing-optimization')}>Amazon listing optimization</a> as one connected
+        story.
+      </p>
+      <dl>
+        {contentPlan.map((item) => (
+          <>
+            <dt>{item.term}</dt>
+            <dd class="text-base font-normal">{item.text}</dd>
+          </>
+        ))}
+      </dl>
+      <p>
+        <strong>Why it matters:</strong> The ad could show what a hug looks like. The listing could carry product
+        details — including weight, materials, cleaning information, and available brand documentation — without
+        crowding a 15-second commercial.
+      </p>
+      <p class="text-sm italic">
+        These items are documented as the wider content scope in the proposal, not as confirmed deliveries.
+      </p>
+      <figure>
+        <Image
+          src={aPlusModule}
+          widths={[480, 800, 1100]}
+          sizes="(min-width: 1024px) 48rem, 100vw"
+          alt="Huggle Healers A+ Content module"
+          class="photo"
+        />
+        <figcaption>A+ Content module from the Huggle Healers listing.</figcaption>
+      </figure>
+    </section>
+
+    <section id="early-results">
+      <h2>More than 117,000 completed video views across three campaigns.</h2>
+      <p>
+        The post-launch Sponsored TV dashboard, covering the first two weeks after launch, reported 118,131 viewable
+        impressions and 117,606 video completions for the three campaigns combined.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Amazon Sponsored TV results for three campaigns, first two weeks</caption>
+          <thead>
+            <tr>
+              <th scope="col">Campaign</th>
+              <th scope="col">Viewable impressions</th>
+              <th scope="col">Video completes</th>
+              <th scope="col">Reported completion rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {campaigns.map((c) => (
+              <tr>
+                <th scope="row">{c.name}</th>
+                <td>{c.impressions}</td>
+                <td>{c.completes}</td>
+                <td>{c.rate}</td>
+              </tr>
+            ))}
+            <tr>
+              <th scope="row">Total</th>
+              <td>118,131</td>
+              <td>117,606</td>
+              <td>99.6%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>118,131 viewable impressions</h3>
+      <p>
+        The spot appeared in viewable inventory across three campaigns during the first reported two weeks. This is an
+        impression count, not a count of distinct people reached.
+      </p>
+      <h3>117,606 video completions</h3>
+      <p>
+        The dashboard recorded completed video views at a level close to its reported viewable impressions. The overall
+        completion-to-viewable-impression ratio rounds to 99.6%.
+      </p>
+      <h3>A QR code on screen from start to finish</h3>
+      <p>
+        The creative gave interested viewers a way to continue from TV to the Amazon product listing, but the report
+        does not include QR scans, visits or sales attributed to that path.
+      </p>
+    </section>
+
+    <section id="reading-the-results">
+      <h2>A strong completion metric is a creative signal, not a sales figure.</h2>
+      <p>
+        The result is notable for its reported viewing behavior: across three campaigns, the dashboard recorded more
+        than 117,000 completed views of the 15-second ad.
+      </p>
+      <p>
+        But this does <strong>not</strong> establish that 99.6% of unique viewers watched the entire ad. The reported
+        rate compares video completions with viewable impressions, and the documents do not define an independently
+        deduplicated audience.
+      </p>
+      <p>
+        Nor do the documents report QR scans, attributed product-page visits, attributed orders, revenue, advertising
+        spend, ROAS, or a controlled test of the creative’s incremental impact.
+      </p>
+      <p>
+        <strong>What we can say:</strong> A research-led 15-second commercial was delivered for Amazon Sponsored TV, and
+        its first two weeks showed a high reported completion-to-viewable-impression ratio across three campaigns.
+      </p>
+      <p>
+        <strong>What we cannot say:</strong> That the commercial generated a specified number of sales, that the QR
+        caused purchases, or that all observed campaign performance was caused by Share It Studio’s creative alone.
+      </p>
+    </section>
+
+    <section id="takeaway">
+      <h2>Voice delivered emotion. Pictures showed the experience. Amazon carried the details.</h2>
+      <p>
+        Huggle Healers shows what happens when a commercial starts with real buyer concerns instead of a feature list.
+        Research informed the scenes. The TV format informed the pacing. A persistent QR connected the commercial with a
+        product page designed to continue the same story.
+      </p>
+      <p>
+        The result was a coherent creative concept with clearly documented early video-viewing metrics — not an
+        unsupported claim about revenue.
+      </p>
+    </section>
+
+    <section id="questions">
+      <h2>Questions about this project</h2>
+      {faqs.map((f) => (
+        <>
+          <h3>{f.q}</h3>
+          <p>{f.a}</p>
+        </>
+      ))}
+      <p>
+        Planning a product video? Explore our{' '}
+        <a href={withBase('/services/amazon-product-video-production')}>Amazon Product Video Production</a> service.
+      </p>
+    </section>
+  </div>
+</ArticleLayout>

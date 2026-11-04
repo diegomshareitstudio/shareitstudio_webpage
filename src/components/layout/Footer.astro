@@ -2,6 +2,7 @@
 import { footerNav, legalNav } from '../../data/navigation';
 import Logo from '../ui/Logo.astro';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const year = new Date().getFullYear();
 ---
@@ -14,7 +15,7 @@ const year = new Date().getFullYear();
         <p class="mt-5 max-w-xs text-sm leading-relaxed">
           Ecommerce creative & growth studio: Amazon listing optimization and done-for-you social media management.
         </p>
-        <a href={BOOKING_PAGE} class="btn-primary mt-6 text-sm">
+        <a href={withBase(BOOKING_PAGE)} class="btn-primary mt-6 text-sm">
           Talk to a Human
         </a>
       </div>
@@ -26,7 +27,7 @@ const year = new Date().getFullYear();
           <ul class="space-y-2 text-sm">
             {col.children!.map((link) => (
               <li>
-                <a href={link.href} class="transition hover:text-white">
+                <a href={withBase(link.href)} class="transition hover:text-white">
                   {link.label}
                 </a>
               </li>
@@ -49,7 +50,7 @@ const year = new Date().getFullYear();
         <ul class="flex flex-wrap items-center gap-x-5 gap-y-1">
           {legalNav.map((l) => (
             <li>
-              <a href={l.href} class="transition hover:text-white">
+              <a href={withBase(l.href)} class="transition hover:text-white">
                 {l.label}
               </a>
             </li>

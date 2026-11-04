@@ -17,6 +17,7 @@ import sampleBodyWash from '../../assets/samples/Body-Wash-Cleanser_A+-Content.p
 import sampleBasket from '../../assets/samples/A+ Content Jute Hanging Basket.jpg';
 import sampleCream from '../../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const path = '/services/amazon-a-plus-content';
 const service = getService('amazon-a-plus-content');
@@ -175,7 +176,7 @@ const schema = [
       ))}
     </ul>
     <a
-      href={service.portfolio}
+      href={withBase(service.portfolio)}
       class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
     >
       View More A+ Content Work →
@@ -257,12 +258,15 @@ const schema = [
     </ol>
     <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
       Already have good photography? We can build from approved assets. If new
-      <a href="/services/amazon-product-photography" class="font-bold text-brand-green underline underline-offset-4">
+      <a
+        href={withBase('/services/amazon-product-photography')}
+        class="font-bold text-brand-green underline underline-offset-4"
+      >
         product photography
       </a>
       or
       <a
-        href="/services/amazon-product-video-production"
+        href={withBase('/services/amazon-product-video-production')}
         class="font-bold text-brand-green underline underline-offset-4"
       >
         video
@@ -293,7 +297,7 @@ const schema = [
       {related.map((r) => (
         <li>
           <a
-            href={r.href}
+            href={withBase(r.href)}
             class:list={[
               'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
               r.primary

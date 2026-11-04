@@ -1,0 +1,71 @@
+---
+/**
+ * Before / after block for case studies: the original listing creative next to the redesigned one.
+ * - `before` and `after` take one or more pictures; leave `before` empty to show new creative on its own.
+ * - `stacked` puts "before" above "after" instead of side by side (use it for wide A+ Content banners).
+ * Images are optimized by Astro and load lazily; the alt text should describe what each picture shows.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Picture {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  /** Optional heading naming the placement, e.g. "Main image" */
+  title?: string;
+  before?: Picture[];
+  after: Picture[];
+  stacked?: boolean;
+}
+
+const { title, before = [], after, stacked = false } = Astro.props;
+
+const sideBySide = !stacked && before.length > 0;
+const sides = [
+  ...(before.length > 0 ? [{ label: 'Before', pictures: before, isAfter: false }] : []),
+  { label: 'After', pictures: after, isAfter: true },
+];
+
+/** Pictures per row inside one side: several small pictures share a row, a single one fills it */
+const columns = (count: number, alone: boolean) => {
+  if (stacked || count === 1) return 'grid-cols-1';
+  return alone || count >= 3 ? 'sm:grid-cols-2' : 'grid-cols-1';
+};
+const sizes = stacked
+  ? '(min-width: 1024px) 48rem, 100vw'
+  : sideBySide
+    ? '(min-width: 768px) 24rem, 100vw'
+    : '(min-width: 1024px) 48rem, 100vw';
+---
+
+<div class="my-10 rounded-[1.75rem] bg-brand-cream p-4 sm:p-6">
+  {title && <p class="mb-4 font-display text-lg font-extrabold text-brand-green">{title}</p>}
+  <div class:list={['grid gap-6', sideBySide && 'md:grid-cols-2 md:items-start']}>
+    {sides.map((side) => (
+      <div>
+        <span
+          class:list={[
+            'mb-3 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider',
+            side.isAfter ? 'bg-brand-yellow text-brand-green' : 'bg-white text-brand-ink/60',
+          ]}
+        >
+          {side.label}
+        </span>
+        <div class:list={['grid gap-3', columns(side.pictures.length, !sideBySide)]}>
+          {side.pictures.map((picture) => (
+            <Image
+              src={picture.src}
+              alt={picture.alt}
+              widths={[480, 800, 1100]}
+              sizes={sizes}
+              class:list={['photo bg-white', side.isAfter && 'ring-2 ring-brand-yellow']}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

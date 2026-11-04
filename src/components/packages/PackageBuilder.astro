@@ -7,6 +7,7 @@
  */
 import { tiers, packageServices, packageTabs } from '../../data/amazonPackages';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const money = (n: number) => `$${n.toLocaleString('en-US')}`;
 const defaultTier = 'hybrid';
@@ -130,7 +131,7 @@ const first = tiers.find((t) => t.id === defaultTier)!;
         <div class="pkg-list" data-pkg-list></div>
 
         <div class="mt-4 flex flex-wrap items-center gap-3">
-          <a href={BOOKING_PAGE} class="btn-primary">
+          <a href={withBase(BOOKING_PAGE)} class="btn-primary">
             Talk to a Human
           </a>
           <button type="button" class="pkg-clear" data-pkg-clear hidden>

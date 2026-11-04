@@ -14,6 +14,7 @@ import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { SITE } from '../config/site';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 const { email, phone, location } = SITE;
 
@@ -74,11 +75,11 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
           <h3 class="text-2xl font-extrabold">Email</h3>
           <p class="mt-2 text-white/75">For client questions, partnerships and general inquiries.</p>
           <p class="mt-4 break-all text-lg font-bold">
-            <a href={`mailto:${email}`} class="underline underline-offset-4">
+            <a href={withBase(`mailto:${email}`)} class="underline underline-offset-4">
               {email}
             </a>
           </p>
-          <a href={`mailto:${email}`} class="btn-primary mt-6 self-start">
+          <a href={withBase(`mailto:${email}`)} class="btn-primary mt-6 self-start">
             Email Our Team
           </a>
         </article>
@@ -88,11 +89,11 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
           <h3 class="text-2xl font-extrabold text-brand-green">Phone</h3>
           <p class="mt-2 text-brand-ink/70">Call our business line.</p>
           <p class="mt-4 text-lg font-bold text-brand-green">
-            <a href={`tel:${phone.tel}`} class="underline underline-offset-4">
+            <a href={withBase(`tel:${phone.tel}`)} class="underline underline-offset-4">
               {phone.display}
             </a>
           </p>
-          <a href={`tel:${phone.tel}`} class="btn-dark mt-6 self-start">
+          <a href={withBase(`tel:${phone.tel}`)} class="btn-dark mt-6 self-start">
             Call Our Team
           </a>
         </article>
@@ -117,14 +118,14 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
               <p class="mt-2 flex-1 text-brand-ink/70">{t.a}</p>
               <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
                 <a
-                  href={`mailto:${email}`}
+                  href={withBase(`mailto:${email}`)}
                   class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4"
                 >
                   Email us
                 </a>
                 {t.link && (
                   <a
-                    href={t.link.href}
+                    href={withBase(t.link.href)}
                     class="inline-flex min-h-[44px] items-center text-brand-green underline underline-offset-4"
                   >
                     {t.link.label}
@@ -158,7 +159,7 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
             <li>{c}</li>
           ))}
         </ul>
-        <a href={`mailto:${email}`} class="btn-dark mt-6">
+        <a href={withBase(`mailto:${email}`)} class="btn-dark mt-6">
           Write an Email
         </a>
       </div>
@@ -180,17 +181,17 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
         <p class="font-bold text-brand-green">Help and policies</p>
         <ul class="mt-3 flex flex-wrap gap-3">
           <li>
-            <a href="/faqs" class="btn-outline">
+            <a href={withBase('/faqs')} class="btn-outline">
               Frequently Asked Questions
             </a>
           </li>
           <li>
-            <a href="/privacy-policy" class="btn-outline">
+            <a href={withBase('/privacy-policy')} class="btn-outline">
               Privacy Policy
             </a>
           </li>
           <li>
-            <a href="/terms-and-conditions" class="btn-outline">
+            <a href={withBase('/terms-and-conditions')} class="btn-outline">
               Terms &amp; Conditions
             </a>
           </li>
@@ -206,7 +207,7 @@ const breadcrumbs = [{ name: 'Contact Us', path: '/contact-us' }];
     </h2>
     <p class="mt-2 max-w-2xl text-brand-ink/70">
       Consultations about new projects are scheduled separately.
-      <a href={BOOKING_PAGE} class="font-semibold text-brand-green underline underline-offset-4">
+      <a href={withBase(BOOKING_PAGE)} class="font-semibold text-brand-green underline underline-offset-4">
         Book a Call
       </a>
     </p>

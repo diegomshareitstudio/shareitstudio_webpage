@@ -1,6 +1,7 @@
 ---
 import Badge from './Badge.astro';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 interface Props {
   title?: string;
@@ -59,11 +60,14 @@ const {
       <p class="mt-4 max-w-lg text-white/70">{text}</p>
     </div>
     <div class:list={['relative', prominent ? 'md:justify-self-center md:text-center' : 'md:justify-self-start']}>
-      <a href={ctaHref} class:list={['btn-primary', prominent && 'cta-prominent']}>
+      <a href={withBase(ctaHref)} class:list={['btn-primary', prominent && 'cta-prominent']}>
         {ctaLabel}
       </a>
       {altLabel && (
-        <a href={altHref} class="mt-4 block text-sm font-semibold text-white underline-offset-4 hover:underline">
+        <a
+          href={withBase(altHref)}
+          class="mt-4 block text-sm font-semibold text-white underline-offset-4 hover:underline"
+        >
           {altLabel}
         </a>
       )}

@@ -10,13 +10,14 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
-import { getCaseStudy, caseStudyHref, listedCaseStudies } from '../data/caseStudies';
+import { getCaseStudy, caseStudyHref } from '../data/caseStudies';
 import { itemListSchema } from '../lib/schema';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 // super-ninja keeps its existing legacy slug
-const order = ['yungprime', 'pink-miracle', 'super-ninja', 'paper2eat'];
-const cases = order.map(getCaseStudy).filter((c) => listedCaseStudies.includes(c));
+const order = ['yungprime', 'pink-miracle', 'super-ninja', 'paper2eat', 'greatness-now', 'huggle-healers'];
+const cases = order.map(getCaseStudy);
 
 const formats = [
   { name: 'A+ Content', text: 'Desktop and mobile A+ modules for Amazon product pages.' },
@@ -64,7 +65,7 @@ const schema = [
       {cases.map((c) => (
         <li class="flex">
           <a
-            href={caseStudyHref(c)}
+            href={withBase(caseStudyHref(c))}
             class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3 transition hover:-translate-y-1 hover:shadow-xl"
           >
             {c.image ? (

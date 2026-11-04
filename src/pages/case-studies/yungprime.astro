@@ -1,173 +1,405 @@
 ---
+/**
+ * YUNGPRIME case study (copy V1): coordinated Amazon content system for slip-resistant work shoes, May → June 2026.
+ * Figures are observed Amazon US account metrics, not a controlled test of the creative. Decisions taken from the copy:
+ *  - total sales growth is shown as "+14.1% as reported", with no precise May total (the channel figures add up to
+ *    $39,165, i.e. +13.9%); May ACoS is derived from the June ACoS and its reported decrease;
+ *  - the Prime Day-adjusted comparisons are left out until their dates and method are validated;
+ *  - the CTR example is one secondary ASIN, never account-wide; Share It Studio's scope here is creative, not ads.
+ * TODO: confirm when the new creative actually went live (the source shows 2024 folder dates against 2026 data);
+ * before/after captures of the Brand Story, Storefront, copy and video.
+ */
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BarChart from '../../components/ui/BarChart.astro';
+import BeforeAfter from '../../components/ui/BeforeAfter.astro';
 import { getCaseStudy } from '../../data/caseStudies';
+import heroImage from '../../assets/case-studies/yungprime/YungPrime Black Slip-Resistant Work Shoes Hero Image_1 (1).jpg';
+import detailsImage from '../../assets/case-studies/yungprime/YungPrime Black Slip-Resistant Work Shoes Infographic_3.jpg';
+import lifestyleImage1 from '../../assets/case-studies/yungprime/YungPrime Black Slip-Resistant Work Shoes Lifestyle_2 (1).jpg';
+import lifestyleImage2 from '../../assets/case-studies/yungprime/YungPrime Black Slip-Resistant Work Shoes Lifestyle_3 (1).jpg';
+import aPlusImage from '../../assets/case-studies/yungprime/YungPrime-Premium-A+-Content_06.png';
+import beforeMainImage from '../../assets/case-studies/yungprime/before/Screenshot 2026-11-04 115922.png';
+import beforeDetailImage from '../../assets/case-studies/yungprime/before/Screenshot 2026-11-04 115945.png';
+import beforeAPlusImage from '../../assets/case-studies/yungprime/before/Screenshot 2026-11-04 120007.png';
+import { withBase } from '../../lib/url';
 
 const cs = getCaseStudy('yungprime');
 
-const metaTitle = 'YUNGPRIME Case Study: +28% Organic Sales | Share It Studio';
+const metaTitle = 'YUNGPRIME Amazon Case Study: +28.3% Organic Sales | Share It Studio';
 const description =
-  'How a unified Amazon content strategy for slip-resistant work shoes grew YUNGPRIME’s organic sales by 28.3% and ROAS to 2.81× while ad spend went down.';
+  'Explore YUNGPRIME’s Amazon content redesign across listing images, A+ Content, Storefront, video and copy. June organic sales rose 28.3% in the reported period.';
 
-const results = [
-  { metric: 'Organic sales', before: '$16,432', after: '$21,077', change: '+28.3%', highlight: true },
-  { metric: 'ROAS', before: '2.63×', after: '2.81×', change: '+6.8%' },
-  { metric: 'Ads CVR', before: '3.46%', after: '3.88%', change: '+0.42 pts' },
-  { metric: 'Organic CVR', before: '2.74%', after: '2.96%', change: '+0.22 pts' },
+const challenges = [
+  {
+    title: 'A fragmented product story.',
+    text: 'Listing images, A+ Content, Brand Story, and Storefront were not consistently reinforcing the same value proposition.',
+  },
+  {
+    title: 'Features without enough context.',
+    text: 'Important benefits competed for attention instead of addressing shopper questions and objections in a useful order.',
+  },
+  {
+    title: 'Too much dependence on paid reach.',
+    text: 'YUNGPRIME needed its Amazon experience to work harder for the traffic it already attracted, not just more ads to send additional visitors to the same disconnected content.',
+  },
+];
+
+const approach = [
+  { title: 'Review the market.', text: 'Examine competitor listings, category expectations, and visual gaps.' },
+  {
+    title: 'Listen to customer signals.',
+    text: 'Use reviews, recurring concerns, and purchasing objections to understand what shoppers still needed to know.',
+  },
+  {
+    title: 'Prioritize the message.',
+    text: 'Decide what should be understood first, second, and third — rather than giving every feature equal visual weight.',
+  },
+  {
+    title: 'Connect every touchpoint.',
+    text: 'Give listing images, A+ Content, Brand Story, Storefront, copy, and video a distinct role within one creative direction.',
+  },
+];
+
+const shopperQuestions = [
+  'What is it?',
+  'Why is it different?',
+  'Will it solve my problem?',
+  'Can I trust it?',
+  'Is it right for my use case?',
+];
+
+const deliverables = [
+  {
+    title: 'Main listing images',
+    text: 'Create a more focused first impression and clearer visual presentation of the product.',
+  },
+  {
+    title: 'Additional gallery images',
+    text: 'Use infographics and supporting visuals to address benefits, concerns, and real-world use cases in sequence.',
+  },
+  {
+    title: 'A+ Content',
+    text: 'Build a deeper explanation below the listing: reinforce the main benefit, address the leading objection, demonstrate quality, show use, and close with confidence.',
+  },
+  {
+    title: 'Brand Story',
+    text: 'Introduce YUNGPRIME’s positioning and product philosophy in a recognizable brand narrative.',
+  },
+  {
+    title: 'Amazon Storefront',
+    text: 'Organize the broader product range into a more consistent branded shopping destination.',
+  },
+  {
+    title: 'Titles and bullet points',
+    text: 'Replace generic, feature-led wording with clearer product benefits and search-relevant language aligned to shopper intent.',
+  },
+  {
+    title: 'Product video',
+    text: 'Demonstrate the shoes in use and make functional benefits easier to see than they would be in static imagery alone.',
+  },
+];
+
+// Original listing creative next to the redesign (Brand Story, Storefront, copy and video have no captures yet).
+const comparisons = [
+  {
+    title: 'Main image',
+    before: [
+      {
+        src: beforeMainImage,
+        alt: 'Original main image: a pair of black work clogs, top and sole, on a white background',
+      },
+    ],
+    after: [
+      {
+        src: heroImage,
+        alt: 'Redesigned main image: black slip-resistant work shoes showing the orange slip-resistant sole',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Product details',
+    before: [{ src: beforeDetailImage, alt: 'Original image: front view of a black work clog' }],
+    after: [
+      {
+        src: detailsImage,
+        alt: 'Redesigned image: “Designed with purpose, styled for professionals” exploded view of the shoe',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'A+ Content',
+    before: [
+      { src: beforeAPlusImage, alt: 'Original A+ Content banner: “Various color options” above a row of clogs' },
+    ],
+    after: [{ src: aPlusImage, alt: 'Redesigned Premium A+ Content for YUNGPRIME work shoes' }],
+    stacked: true,
+  },
+  {
+    title: 'More from the redesigned gallery',
+    before: [],
+    after: [
+      {
+        src: lifestyleImage1,
+        alt: 'Redesigned lifestyle image: “Premium EVA material”, a chef holding the shoe',
+      },
+      {
+        src: lifestyleImage2,
+        alt: 'Redesigned lifestyle image: “Superior waterproof and oilproof protection” with a water splash',
+      },
+    ],
+    stacked: false,
+  },
+];
+
+// Amazon US account, May vs. June 2026. Source: the organic performance report supplied by the client.
+const metrics = [
+  { metric: 'Organic sales', may: '$16,432', june: '$21,077', change: '+28.3%' },
+  { metric: 'Paid sales', may: '$22,733', june: '$23,516', change: '+3.4%' },
+  { metric: 'Total sales', may: '~$39.2K', june: '$44,593', change: '+14.1%*' },
+  { metric: 'Organic share of sales', may: '42.0%', june: '47.3%', change: '+5.3 pp' },
+  { metric: 'Return on ad spend (ROAS)', may: '2.63×', june: '2.81×', change: '+6.8%' },
+  { metric: 'Advertising cost of sales (ACoS)', may: '37.95%**', june: '35.65%', change: '−2.30 pp' },
+  { metric: 'Paid conversion rate', may: '3.46%', june: '3.88%', change: '+0.42 pp' },
+  { metric: 'Organic conversion rate', may: '2.74%', june: '2.96%', change: '+0.22 pp' },
+];
+
+const organicChart = [
+  { label: 'May 2026', value: 16432, text: '$16,432' },
+  { label: 'June 2026', value: 21077, text: '$21,077' },
+];
+const paidChart = [
+  { label: 'May 2026', value: 22733, text: '$22,733' },
+  { label: 'June 2026', value: 23516, text: '$23,516' },
+];
+const shareChart = [
+  { label: 'May 2026', value: 42.0, text: '42.0%' },
+  { label: 'June 2026', value: 47.3, text: '47.3%' },
 ];
 ---
 
 <ArticleLayout
   kind="case-study"
   caseStudy={cs}
-  title="How YUNGPRIME grew organic Amazon sales by 28.3% in one month"
-  highlight="28.3% in one month"
-  lead="A unified listing, A+ Content, Brand Story, Storefront and video for slip-resistant work shoes — more organic sales and a higher ROAS, with less ad spend."
+  title="YUNGPRIME: +28.3% Organic Amazon Sales in June"
+  highlight="+28.3% Organic Amazon Sales"
+  lead="One connected Amazon content system. A stronger month for organic growth."
   metaTitle={metaTitle}
   description={description}
-  tags={['May – Jun 2026']}
+  tags={['May – Jun 2026', 'Amazon US']}
   service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+  cta={{
+    title: 'Is your Amazon content telling one clear story?',
+    text: 'Your listing images, A+ Content, Brand Story, Storefront, video, and copy do not have to work in isolation. Show us your product and what shoppers may be missing; we’ll help you discuss the creative priorities worth addressing.',
+    ctaLabel: 'Talk to a Human',
+    altLabel: 'Explore Amazon Listing Optimization',
+    altHref: '/services/amazon-listing-optimization',
+  }}
 >
   <div class="article-body">
     <aside>
       <p>
-        <strong>In short:</strong> YUNGPRIME’s listing, A+ Content, Brand Story and Storefront lacked consistency and
-        clear differentiation. We rebuilt them around buyer research. From May to June 2026,{' '}
-        <strong>organic sales grew +28.3%</strong>, <strong>total sales +14.1%</strong> and{' '}
-        <strong>ROAS rose to 2.81×</strong> — while ad spend went down 2.85%.
+        <strong>In short:</strong> YUNGPRIME sells non-slip work shoes designed for demanding workdays. The product had
+        an established review base, but its Amazon visuals, product information, A+ Content, and brand experience were
+        not telling one clear story. Share It Studio developed a coordinated creative system — from listing images and
+        copy to A+ Content, video, Brand Story, and Storefront — to help shoppers understand the product’s value across
+        the Amazon buying journey.
+      </p>
+      <p>
+        <strong>Results reported for Amazon US, June vs. May 2026:</strong> <strong>+28.3%</strong> organic sales
+        ($16,432 → $21,077), <strong>+14.1%</strong> total sales as reported ($44,593 in June),{' '}
+        <strong>2.81× ROAS</strong> (up from 2.63×), and <strong>−2.85%</strong> advertising spend while sales
+        increased.
+      </p>
+      <p class="text-sm italic">
+        Performance data reflects YUNGPRIME’s Amazon US account in May–June 2026. These results occurred alongside the
+        creative work described below; the reports do not isolate the creative changes as the sole cause of growth.
       </p>
     </aside>
 
-    <section id="client-background">
-      <h2>Client Background</h2>
+    <section id="the-challenge">
+      <h2>The product was strong. The content was not doing enough.</h2>
       <p>
-        <strong>YUNGPRIME</strong> is an Amazon footwear brand specializing in{' '}
-        <strong>slip-resistant work shoes</strong> for professionals, including healthcare and food service workers.
-        With a competitive product and strong customer reviews, the brand had an opportunity to grow sales through more
-        effective Amazon content.
-      </p>
-    </section>
-
-    <section id="initial-challenge">
-      <h2>Initial Challenge</h2>
-      <p>
-        Despite a strong product, YUNGPRIME’s <strong>Amazon listing, A+ Content, Brand Story and Storefront</strong>{' '}
-        lacked consistency and clear product differentiation.
+        YUNGPRIME had a competitive product and a strong review base in a category where shoppers need practical
+        answers: How reliable is the traction? Will the shoes feel comfortable through a long shift? Are they easy to
+        clean? And what makes them worth choosing over similar-looking options?
       </p>
       <p>
-        The brand needed to communicate its benefits more effectively, address customer objections, improve conversions
-        and <strong>reduce its reliance on paid advertising</strong>.
+        <strong>The issue wasn’t a lack of Amazon content. It was how that content worked together.</strong>
       </p>
+      {challenges.map((item) => (
+        <p>
+          <strong>{item.title}</strong>
+          {item.text}
+        </p>
+      ))}
+      <blockquote>
+        <p>
+          <strong>The opportunity:</strong> Make the content a connected decision-making experience, not a collection of
+          unrelated assets.
+        </p>
+      </blockquote>
     </section>
 
     <section id="our-approach">
-      <h2>Our Approach</h2>
+      <h2>We started with buyer questions, not new graphics.</h2>
       <p>
-        We developed a research-driven Amazon content strategy focused on a consistent shopping experience across every
-        touchpoint.
+        Before building creative, the Share It Studio team worked through four connected steps. Read more about our
+        <a href={withBase('/services/amazon-listing-optimization')}>Amazon listing optimization</a> process.
       </p>
+      <ol class="steps-list">
+        {approach.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p>The listing’s image sequence was rebuilt around five shopper questions:</p>
       <p>
-        By analyzing competitors, customer reviews, purchasing concerns and product positioning, we set a{' '}
-        <strong>content hierarchy</strong> designed to guide shoppers from product discovery to purchase.
+        <strong>{shopperQuestions.join(' → ')}</strong>
       </p>
     </section>
 
-    <section id="implementation">
-      <h2>Implementation</h2>
+    <section id="creative-transformation">
+      <h2>Seven deliverable categories. One coherent product story.</h2>
       <ol class="steps-list">
-        <li>
-          <h3>Market research</h3>
-          <p>Analyzed competitor listings, customer reviews, objections and purchasing concerns.</p>
-        </li>
-        <li>
-          <h3>Listing optimization</h3>
-          <p>
-            Redesigned the main images, infographics and image sequence around product benefits and buyer questions.
-          </p>
-        </li>
-        <li>
-          <h3>A+ Content</h3>
-          <p>Created structured modules that highlight product advantages, address objections and build trust.</p>
-        </li>
-        <li>
-          <h3>Brand Story & Storefront</h3>
-          <p>Developed consistent brand messaging and organized the shopping experience around customer needs.</p>
-        </li>
-        <li>
-          <h3>Copywriting</h3>
-          <p>Optimized product titles and bullet points to emphasize relevant benefits and product differentiation.</p>
-        </li>
-        <li>
-          <h3>Product video</h3>
-          <p>Created demonstration content showing product features and real-world use.</p>
-        </li>
+        {deliverables.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
       </ol>
+      {comparisons.map((item) => (
+        <BeforeAfter title={item.title} before={item.before} after={item.after} stacked={item.stacked} />
+      ))}
+      <p>
+        See our <a href={withBase('/services/amazon-listing-images')}>listing image design</a>,
+        <a href={withBase('/services/amazon-a-plus-content')}>A+ Content design</a>,
+        <a href={withBase('/services/amazon-brand-story-design')}>Brand Story design</a> and
+        <a href={withBase('/services/amazon-storefront-design')}>Storefront design</a> services.
+      </p>
     </section>
 
     <section id="results">
-      <h2>Results</h2>
-      <p>May vs. June 2026:</p>
+      <h2>Organic sales grew faster than paid sales.</h2>
+      <p>
+        YUNGPRIME reported <strong>$21,077 in organic Amazon sales in June</strong>, up 28.3% from $16,432 in May. Paid
+        sales increased more modestly, from $22,733 to $23,516 (+3.4%), while advertising spend declined 2.85%.
+      </p>
+      <p>
+        The account recorded <strong>$44,593 in total June sales</strong>, with a 14.1% month-over-month increase as
+        reported. The organic share of sales grew from <strong>42.0% to 47.3%</strong> — a 5.3-percentage-point shift
+        toward organic revenue.
+      </p>
       <div class="table-wrap">
         <table>
+          <caption class="sr-only">Amazon US account metrics, May vs. June 2026</caption>
           <thead>
             <tr>
               <th scope="col">Metric</th>
-              <th scope="col">May</th>
-              <th scope="col">June</th>
-              <th scope="col">Change</th>
+              <th scope="col">May 2026</th>
+              <th scope="col">June 2026</th>
+              <th scope="col">Reported change</th>
             </tr>
           </thead>
           <tbody>
-            {results.map((r) => (
+            {metrics.map((row) => (
               <tr>
-                <th scope="row">{r.metric}</th>
-                <td>{r.before}</td>
-                <td>{r.after}</td>
-                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+                <th scope="row">{row.metric}</th>
+                <td>{row.may}</td>
+                <td>{row.june}</td>
+                <td>{row.change}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <h3>Sales, units and ad spend in June</h3>
-      <dl>
-        <dt>Total monthly sales</dt>
-        <dd>
-          $44,593 <strong>+14.1%</strong>
-        </dd>
-
-        <dt>Units sold</dt>
-        <dd>
-          1,048 <strong>+13.9%</strong>
-        </dd>
-
-        <dt>Advertising spend</dt>
-        <dd>−2.85%</dd>
-
-        <dt>Rest of the catalog (excluding the two main ASINs)</dt>
-        <dd>+13.6%</dd>
-      </dl>
-
-      <blockquote>
-        <p>
-          Organic sales grew <strong>+28.3%</strong> and ROAS improved — while spending <strong>less</strong> on ads.
-        </p>
-      </blockquote>
+      <p class="text-sm italic">
+        * The source report states +14.1% total sales growth. The displayed rounded and channel-level May figures do not
+        exactly reconcile to that percentage; confirm the authoritative unrounded baseline before publishing a precise
+        May total. ** The May ACoS is calculated from the reported June ACoS and 2.30-pp decrease.
+      </p>
+      <div class="my-8 grid gap-4 sm:grid-cols-3">
+        <BarChart title="Organic sales" bars={organicChart} />
+        <BarChart title="Paid sales" bars={paidChart} />
+        <BarChart title="Organic share of sales" bars={shareChart} />
+      </div>
+      <p>
+        <strong>1,048 units sold in June — up 13.9% from May.</strong>
+      </p>
+      <p class="text-sm italic">
+        These are observed account metrics, not an isolated experiment attributing all performance changes to creative
+        assets.
+      </p>
     </section>
 
-    <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
+    <section id="conversion-and-efficiency">
+      <h2>More of the traffic that arrived went on to buy.</h2>
+      <p>YUNGPRIME’s reported conversion rates improved in both channels:</p>
       <ul>
-        <li>A unified Amazon content strategy creates a more consistent customer journey.</li>
         <li>
-          Research-driven visuals and messaging help communicate product benefits and address purchasing objections.
+          <strong>Organic conversion rate:</strong> 2.74% → 2.96%
         </li>
-        <li>Stronger organic performance can support sales growth without increasing advertising spend.</li>
         <li>
-          Coordinated listing content, A+ Content, Brand Story, Storefront and video strengthen conversion across the
-          Amazon customer journey.
+          <strong>Ads conversion rate:</strong> 3.46% → 3.88%
         </li>
       </ul>
+      <p>
+        Advertising efficiency moved in the same favorable direction.{' '}
+        <strong>ROAS increased from 2.63× to 2.81×</strong>, while{' '}
+        <strong>ACoS declined by 2.30 percentage points to 35.65%</strong>. The Buy Box remained approximately 93%,
+        giving the team more confidence that the account had not simply lost control of the purchase experience.
+      </p>
+      <p>
+        <strong>Results also extended beyond the two featured ASINs.</strong> The rest of the catalog reported +13.6% in
+        sales, +17.6% in organic sales, and an ROAS increase from 2.91× to 3.13×. This suggests broader account
+        momentum; it does <strong>not</strong> mean that the featured creative assets caused gains across every product.
+      </p>
+    </section>
+
+    <section id="what-the-data-taught-us">
+      <h2>A lower click-through rate did not tell the whole story.</h2>
+      <p>
+        For one secondary ASIN, <strong>organic impressions rose 56.5%</strong> — from 119,128 to 186,407 — while
+        organic CTR fell from 5.95% to 4.74%. On that same ASIN, reported cart additions increased 183% and purchases
+        increased 167%.
+      </p>
+      <p>
+        The report’s diagnosis: the product was reaching a broader set of searches, including less-targeted impressions.
+        A softer CTR alongside stronger downstream activity was a reason to examine the full journey, not automatically
+        label the creative a failure.
+      </p>
+      <blockquote>
+        <p>
+          That is the same principle behind our approach to content:
+          <strong>
+            judge each asset by the question it answers and its place in the customer journey, not by appearance or one
+            isolated metric.
+          </strong>
+        </p>
+      </blockquote>
+      <p class="text-sm italic">These figures describe one secondary ASIN, not the whole account.</p>
+    </section>
+
+    <section id="takeaway">
+      <h2>The transformation was bigger than a new set of images.</h2>
+      <p>
+        YUNGPRIME’s project replaced disconnected creative with a coordinated Amazon content system: a clearer listing
+        sequence, a deeper A+ explanation, a more recognizable Brand Story, an organized Storefront, better-structured
+        copy, and product video with a defined purpose.
+      </p>
+      <p>
+        The May–June reporting period also showed stronger organic sales, improved conversion rates, and more efficient
+        advertising. The two developments are documented together; the data does not establish how much of the growth
+        came specifically from the creative work.
+      </p>
+      <p>
+        <strong>The principle:</strong> Make every Amazon touchpoint answer a different shopper question — and make all
+        of them tell the same story.
+      </p>
     </section>
   </div>
 </ArticleLayout>

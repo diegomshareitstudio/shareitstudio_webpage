@@ -9,6 +9,7 @@ import PackageBuilder from '../../components/packages/PackageBuilder.astro';
 import type { Faq } from '../../data/faqs';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const path = '/services/amazon-listing-optimization';
 const description =
@@ -215,7 +216,7 @@ const schema = [
       {services.map((s) => (
         <li class="flex">
           <a
-            href={s.href}
+            href={withBase(s.href)}
             class="w-full rounded-2xl bg-brand-cream p-3 transition hover:-translate-y-1 hover:shadow-lg sm:p-4"
           >
             <div class="placeholder aspect-[4/3] text-sm">Real {s.title} sample</div>
@@ -224,7 +225,7 @@ const schema = [
         </li>
       ))}
     </ul>
-    <a href="/our-work" class="btn-outline mt-10">
+    <a href={withBase('/our-work')} class="btn-outline mt-10">
       See our portfolio
     </a>
   </section>
@@ -252,7 +253,7 @@ const schema = [
           Client-reported organic Amazon sales: $16,432 to $21,077, May–June 2026. Other factors may have contributed;
           results are not guaranteed.
         </p>
-        <a href="/case-studies/yungprime" class="btn-primary mt-6">
+        <a href={withBase('/case-studies/yungprime')} class="btn-primary mt-6">
           See the YUNGPRIME Project
         </a>
       </div>
@@ -284,7 +285,7 @@ const schema = [
           </li>
         ))}
       </ol>
-      <a href={BOOKING_PAGE} class="btn-primary mt-10">
+      <a href={withBase(BOOKING_PAGE)} class="btn-primary mt-10">
         Talk Through Your Listing
       </a>
     </div>
@@ -294,7 +295,7 @@ const schema = [
     <SectionHeading eyebrow="FAQ" title="Questions before you invest in new Amazon content" align="left" />
     <FaqList faqs={faqs} variant="outline" />
     <p class="mt-6 text-center text-sm">
-      <a href="/faqs" class="font-bold text-brand-orange hover:underline">
+      <a href={withBase('/faqs')} class="font-bold text-brand-orange hover:underline">
         See all FAQs →
       </a>
     </p>

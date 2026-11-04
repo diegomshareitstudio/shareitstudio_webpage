@@ -14,9 +14,10 @@ import CtaBanner from '../../components/ui/CtaBanner.astro';
 import FaqList from '../../components/ui/FaqList.astro';
 import { getService } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
-import oldListing from '../../assets/case-studies/super-ninja/old-listing.png';
-import newListing from '../../assets/case-studies/super-ninja/new-listing.png';
+import beforeMainImage from '../../assets/case-studies/super-ninja/before/B0D5DJ7V4P.PT01.jpg';
+import afterMainImage from '../../assets/case-studies/super-ninja/Fruit Flies (US) Hero Image_2.png';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const path = '/services/amazon-listing-images';
 const service = getService('amazon-listing-images');
@@ -158,7 +159,7 @@ const schema = [
           From a generic image stack to a gallery that shows how the trap works, why it’s safe and how it compares.
         </p>
         <a
-          href="/case-studies/super-ninja"
+          href={withBase('/case-studies/super-ninja')}
           class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
         >
           Read the Super Ninja case study →
@@ -167,8 +168,8 @@ const schema = [
       <div class="grid grid-cols-2 items-center gap-4">
         <div>
           <Image
-            src={oldListing}
-            alt="Super Ninja Amazon listing images before the redesign"
+            src={beforeMainImage}
+            alt="Super Ninja main image before the redesign: four bottles in front of the fruit fly box"
             width={435}
             class="aspect-square w-full -rotate-2 rounded-[1.25rem] bg-white object-contain p-2 opacity-80"
           />
@@ -176,8 +177,8 @@ const schema = [
         </div>
         <div>
           <Image
-            src={newListing}
-            alt="Super Ninja Amazon listing images after the redesign"
+            src={afterMainImage}
+            alt="Super Ninja main image after the redesign: trap boxes and bottle with fruit and flies"
             width={436}
             class="aspect-square w-full rotate-2 rounded-[1.25rem] bg-white object-contain p-2 shadow-lg ring-2 ring-brand-yellow"
           />
@@ -187,7 +188,7 @@ const schema = [
     </figure>
 
     <a
-      href={service.portfolio}
+      href={withBase(service.portfolio)}
       class="mt-8 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
     >
       View More Amazon Image Work →
@@ -233,7 +234,10 @@ const schema = [
     </ol>
     <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
       Already have usable product photos? We can work from supplied assets. Need a new photo shoot? We can discuss
-      <a href="/services/amazon-product-photography" class="font-bold text-brand-green underline underline-offset-4">
+      <a
+        href={withBase('/services/amazon-product-photography')}
+        class="font-bold text-brand-green underline underline-offset-4"
+      >
         Amazon Product Photography
       </a>
       as a separate part of the quote. Real, hybrid, or AI-assisted creative approaches are selected according to the
@@ -263,7 +267,7 @@ const schema = [
       {related.map((r) => (
         <li>
           <a
-            href={r.href}
+            href={withBase(r.href)}
             class:list={[
               'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
               r.primary

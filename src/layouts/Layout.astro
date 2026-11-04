@@ -6,7 +6,6 @@ import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import { SITE } from '../config/site';
 import {
-  absoluteUrl,
   breadcrumbSchema,
   organizationSchema,
   webPageSchema,
@@ -15,8 +14,10 @@ import {
   type PageType,
   type Schema,
 } from '../lib/schema';
+import { absoluteUrl, stripBase } from '../lib/url';
 import { Font } from 'astro:assets';
 import '../styles/global.css';
+import { withBase } from '../lib/url';
 
 interface Props {
   title?: string;
@@ -47,7 +48,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const path = Astro.url.pathname;
+const path = stripBase(Astro.url.pathname);
 const canonical = absoluteUrl(path);
 const ogImage = image && absoluteUrl(image);
 const robots = noindex
@@ -73,11 +74,11 @@ const graph = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={withBase(canonical)} />
     <meta name="robots" content={robots} />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
     <!-- Both families ship as one variable file each; preload them so headings and body paint in the final font -->
     <Font cssVariable="--font-bricolage" preload />
     <Font cssVariable="--font-dm-sans" preload />

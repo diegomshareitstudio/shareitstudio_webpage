@@ -13,41 +13,45 @@ import '../styles/selector.css';
 import '../styles/home.css';
 import { slideOffset, slidePos, slideSide } from '../lib/selector';
 import { Image, getImage } from 'astro:assets';
-import superNinjaListing from '../assets/case-studies/super-ninja/new-listing.png';
+import superNinjaHero from '../assets/case-studies/super-ninja/Fruit Flies (US) Hero Image_2.png';
+import paper2eatHero from '../assets/case-studies/paper2eat/Paper2Eat Hero Image_4.jpg';
+import huggleHealersFrame from '../assets/case-studies/huggle-healers/frames/frame-02.jpg';
+import greatnessNowHero from '../assets/case-studies/greatness-now/Hero Image - Ring Toss Hook Game_01.jpg';
 // The logo's letters without its spotlight (made from brand/share-it-studio-logo.png); the spotlight is Spotlight.astro
 import wordmark from '../assets/brand/share-it-studio-wordmark.png';
-// TODO: sample A+ images standing in until each case has its own (the selector crops them to a square from the top)
-import sampleBasket from '../assets/samples/A+ Content Jute Hanging Basket.jpg';
-import sampleBodyWash from '../assets/samples/Body-Wash-Cleanser_A+-Content.png';
-import sampleCream from '../assets/samples/Copy of A+ Content Progesterone Cream.jpg';
+import yungprimeHero from '../assets/case-studies/yungprime/YungPrime Black Slip-Resistant Work Shoes Hero Image_1 (1).jpg';
+import pinkMiracleHero from '../assets/case-studies/pink-miracle/Pink Miracle Hero Image_2_1.jpg';
 import TextMarquee from '../components/ui/TextMarquee.astro';
 import Testimonials from '../components/ui/Testimonials.astro';
 import { testimonials } from '../data/testimonials';
 import { testimonialVideoSchema, type Schema } from '../lib/schema';
 import type { Faq } from '../data/faqs';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 const title = 'Share It Studio | Amazon Listing Optimization & Social Media Management';
 const description =
   'Amazon listing images, A+ Content, video and copy that help shoppers understand your product, plus social media management for ecommerce brands. Talk to our team.';
 
-// 02 — two proof points. Individual project results in different reporting periods.
+// 02 — proof points. Individual project results in different reporting periods.
 const results = [
-  {
-    label: 'Social Media | Organic Discovery',
-    stat: '3M+',
-    statLabel: 'organic views in 90 days',
-    detail: 'A new Instagram account · $0 in paid ads · Feb–May 2026',
-    cta: 'Explore the 90-Day Social Case',
-    href: '/our-work',
-  },
   {
     label: 'Amazon | YUNGPRIME',
     stat: '+28.3%',
     statLabel: 'organic Amazon sales',
     detail: '$16,432 → $21,077 · May to June',
+    text: 'A coordinated content transformation brought listing images, A+ Content, Brand Story, Storefront, video, and copy into a more consistent product story. The case study also documents this increase in reported monthly organic sales.',
     cta: 'See YUNGPRIME’s Transformation',
     href: '/case-studies/yungprime',
+  },
+  {
+    label: 'Amazon | Super Ninja',
+    stat: '+716.9%',
+    statLabel: 'reported product sales — US',
+    detail: 'April → August 2025 · +310.5% UK · +91.5% Germany · Source-reported figures',
+    text: 'Fruit fly trap listings adapted to what buyers ask in each market, with 15+ main-image concepts and 10+ A/B tests across Germany, the UK and the US.',
+    cta: 'See the Super Ninja Case',
+    href: '/case-studies/super-ninja',
   },
 ];
 
@@ -56,14 +60,16 @@ const services = [
   {
     label: 'Social Media Management',
     title: 'Build an audience before you need the sale.',
-    text: 'Strategy, scripts, production and publishing, every month. For ecommerce brands, on Amazon or beyond.',
+    text: 'Your audience needs a reason to pay attention—and another reason to come back. We turn customer interests, brand knowledge, and product stories into content people want to spend time with. Our monthly plans bring together strategy and creative execution, with scripting, production, editing, and publishing according to the plan you choose.',
+    note: 'For ecommerce brands, on Amazon or beyond.',
     cta: 'Explore Social Media Management',
     href: '/services/social-media-management',
   },
   {
     label: 'Amazon Listing Optimization',
     title: 'Your product might be better. Does your listing make that obvious?',
-    text: 'Images, A+ Content, video and copy built around what your buyers ask. One deliverable or the whole listing.',
+    text: 'Shoppers can’t ask your listing what they would ask a salesperson. We use product knowledge, buyer questions, reviews, and competitor research to decide what your images, infographics, A+ Content, Brand Story, videos, and copy should explain—and what deserves the most attention.',
+    note: 'Need one deliverable? Start there. Need several assets working together? We’ll build a custom scope around your product, goals, and budget.',
     cta: 'Explore Amazon Listing Optimization',
     href: '/services/amazon-listing-optimization',
   },
@@ -81,50 +87,76 @@ for (const [i, t] of testimonials.entries()) {
 // `before` renders as the starting point of `stat`.
 const work = [
   {
-    cat: 'Social Media | Organic Discovery',
-    title: 'Creating reasons to come back',
-    stat: '2.2M',
-    statLabel: 'accounts reached (approx.)',
-    detail: '3,057,772 organic views in 90 days · $0 reported paid ad spend',
-    text: 'Recurring themes built around audience interests, so new people kept finding the account.',
-    cta: 'Explore the 90-Day Social Case',
-    href: '/our-work',
-    image: { src: sampleBasket, alt: 'Sample A+ Content: jute hanging basket' },
-  },
-  {
     cat: 'Amazon | YUNGPRIME',
     title: 'One buying story across every listing touchpoint',
-    before: '2.74%',
-    stat: '2.96%',
-    statLabel: 'organic conversion rate',
-    detail: '+28.3% organic sales · $16,432 → $21,077 · May–June 2026',
+    stat: '+28.3%',
+    statLabel: 'organic Amazon sales',
+    detail: '$16,432 → $21,077 · May → June 2026 · Amazon US · Total sales +14.1% as reported',
     text: 'Images, A+ Content, Brand Story, Storefront, video and copy telling one clear buying story.',
     cta: 'See YUNGPRIME’s Transformation',
     href: '/case-studies/yungprime',
-    image: { src: sampleBodyWash, alt: 'Sample A+ Content: body wash cleanser' },
+    image: { src: yungprimeHero, alt: 'YUNGPRIME black slip-resistant work shoes main listing image' },
+  },
+  {
+    cat: 'Amazon | Paper2eat',
+    title: 'From separate assets to one recognizable Amazon experience',
+    before: '$184K',
+    stat: '$231K',
+    statLabel: 'in monthly Amazon sales',
+    detail: '+25.3% · January → June 2026 · $1.33M in total sales · Observed account results',
+    text: 'Listing images, A+ Content, video, Storefront and Spanish-language assets connected into one shopping experience.',
+    cta: 'See the Paper2eat Case',
+    href: '/case-studies/paper2eat',
+    image: { src: paper2eatHero, alt: 'Paper2eat edible frosting sheets main listing image' },
   },
   {
     cat: 'Amazon | Pink Miracle',
     title: 'Rethinking the creative for an established product',
     before: '$404K',
-    stat: '$606K',
+    stat: '$849K',
     statLabel: 'in reported monthly sales',
-    detail: 'July–August 2024 · Figures shown in the original case-study chart',
+    detail: '+109.98% · July 2024 → January 2025 · +49.94% in the first month · Observed account results',
     text: 'New creative, tested against customer preferences, for a product that was already selling.',
     cta: 'Explore Pink Miracle’s Before and After',
     href: '/case-studies/pink-miracle',
-    image: { src: sampleCream, alt: 'Sample A+ Content: progesterone cream' },
+    image: { src: pinkMiracleHero, alt: 'Pink Miracle shoe cleaner main listing image' },
   },
   {
     cat: 'Amazon | Super Ninja',
     title: 'One product category. Different markets. Different questions.',
-    stat: '+91.5%',
-    statLabel: 'reported product sales — Germany',
-    detail: 'Main ASIN · August 2024 vs. August 2025 · Case-study deck figure',
+    stat: '+716.9%',
+    statLabel: 'reported product sales — US',
+    detail:
+      '+310.5% UK · +91.5% Germany · US April → August 2025, UK and Germany August 2024 → August 2025 · Source-reported figures',
     text: 'Imagery and explanations adapted to what buyers ask in Germany, the UK and the US.',
     cta: 'See the Market-Specific Case',
     href: '/case-studies/super-ninja',
-    image: { src: superNinjaListing, alt: 'Super Ninja fruit fly trap Amazon listing images' },
+    image: { src: superNinjaHero, alt: 'Super Ninja fruit fly trap main image for the US Amazon listing' },
+  },
+  {
+    cat: 'Amazon | Greatness Now',
+    title: 'Showing how a party game is played, not just what it looks like',
+    before: '$238',
+    stat: '$5,948',
+    statLabel: 'reported product sales',
+    detail:
+      '+2,400% · Feb–Mar vs. Apr–May 2024 · One ASIN · Unit Session Percentage 0.79% → 7.85% · Ad spend also rose',
+    text: 'Listing images redesigned around how the ring toss game is played, assembled and shared.',
+    cta: 'See the Greatness Now Redesign',
+    href: '/case-studies/greatness-now',
+    image: { src: greatnessNowHero, alt: 'Greatness Now Ring Toss Hook Game main listing image' },
+  },
+  {
+    cat: 'Amazon | Huggle Healers',
+    title: 'Making a hug visible on a TV screen',
+    stat: '117,606',
+    statLabel: 'completed views of a 15-second TV ad',
+    detail:
+      'First two weeks · 3 Sponsored TV campaigns · 118,131 viewable impressions · 99.6% completions per viewable impression · Viewing metrics, not sales',
+    text: 'Real buyer questions about a weighted plush turned into one memorable commercial with a QR path back to Amazon.',
+    cta: 'Watch the Huggle Healers Case',
+    href: '/case-studies/huggle-healers',
+    image: { src: huggleHealersFrame, alt: 'A child hugging a Huggle Healers weighted plush' },
   },
 ] as {
   cat: string;
@@ -141,37 +173,49 @@ const work = [
 
 // 06 — how we work
 const steps = [
-  { t: 'Get clear on the goal', d: 'Your product, your audience, your priorities.' },
-  { t: 'Decide what matters', d: 'What needs explaining, and what needs proof.' },
-  { t: 'Bring it to life', d: 'Images, A+ Content, copy, video or social.' },
-  { t: 'Review and improve', d: 'Feedback and data shape the next round.' },
+  {
+    t: 'Get clear on the goal',
+    d: 'We align on your product, audience, existing content, priorities, and project scope. When research is part of the engagement, we dig into competitors, reviews, and buying questions.',
+  },
+  {
+    t: 'Decide what matters',
+    d: 'We identify which details need explaining, which benefits need proving, and what each piece of content needs to accomplish.',
+  },
+  {
+    t: 'Bring it to life',
+    d: 'Our team turns the direction into the right deliverables—Amazon images, A+ Content, copy, video, or recurring social content.',
+  },
+  {
+    t: 'Review, deliver, and improve',
+    d: 'We work through the agreed review and delivery process. For ongoing engagements, reporting and feedback can guide the next round of creative decisions.',
+  },
 ];
 
 // 08 — FAQ
 const faqs: Faq[] = [
   {
     q: 'Can I hire you for just A+ Content, listing images, or another Amazon deliverable?',
-    a: 'Yes. Hire one service, or combine several into a custom project.',
+    a: 'Yes. Amazon creative services can be hired individually or combined into a custom project based on your priorities and budget.',
   },
   {
     q: 'Do you manage social media for brands that don’t sell on Amazon?',
-    a: 'Yes. Channels and posting cadence depend on the monthly plan.',
+    a: 'Yes. We work with ecommerce brands beyond Amazon. Deliverables, channels, and publishing cadence depend on the monthly plan.',
   },
   {
     q: 'How is pricing structured?',
-    a: 'Amazon work is quoted per project. Social media runs on monthly plans.',
+    a: 'Amazon projects are quoted around the services and deliverables you need. Social Media Management is offered through monthly plans with different scopes.',
   },
   {
     q: 'Can you work alongside our existing marketing or PPC team?',
-    a: 'Yes, when it’s part of the project. Ads and account management aren’t included in listing creative.',
+    a: 'We can coordinate creative direction with existing partners when it’s part of the project. Amazon advertising or account operations aren’t automatically included in listing creative work.',
   },
   {
     q: 'Is everything created with AI?',
-    a: 'No. Real photography, video, your own assets or AI-assisted work, always directed and reviewed by people.',
+    a: 'No. The production approach depends on the product and the agreed scope. It may involve real photography, video, existing brand assets, or AI-assisted techniques, with human creative direction and review.',
   },
   {
     q: 'How do you evaluate whether the content is working?',
-    a: 'With the data available: reach and engagement on social; CTR, conversion and sales on Amazon.',
+    a: 'It depends on the engagement and the data available. Reach, engagement, and traffic can inform social media decisions; on Amazon, CTR, conversion, and sales can provide context. We look at the relevant signals without assuming every change was caused by creative alone.',
   },
 ];
 ---
@@ -180,7 +224,8 @@ const faqs: Faq[] = [
   <!-- Pick the pinned hero layout before the first paint, so it never swaps in later (CLS). Mirrors the checks in
        scripts/home.ts, which has the final word: reduced motion and very short viewports keep the stacked layout. -->
   <script is:inline>
-    if (innerHeight >= 480) document.documentElement.classList.add('home-ready');
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && innerHeight >= 480)
+      document.documentElement.classList.add('home-ready');
   </script>
   <!-- 01 — Hero (scene A) + the heading of 02 (scene B). Pinned briefly on desktop/mobile while the spotlight expands. -->
   <div class="home-intro" data-home-intro>
@@ -211,15 +256,20 @@ const faqs: Faq[] = [
           <h1 id="hero-heading" class="home-title">
             Amazon listings that <span class="marker">show the difference</span>. Social content worth following.
           </h1>
-          <p class="home-lead">Images, A+ Content, video and copy for Amazon. Social media for ecommerce brands.</p>
+          <p class="home-lead">
+            We create Amazon listing images, A+ Content, video, and copy that help shoppers understand what makes your
+            product worth choosing. We also plan, produce, and manage social media for ecommerce brands—whether they
+            sell on Amazon or not.
+          </p>
           <div class="home-ctas flex flex-wrap items-center justify-center gap-3">
-            <a href={BOOKING_PAGE} class="btn-primary">
+            <a href={withBase(BOOKING_PAGE)} class="btn-primary">
               Talk to a Human
             </a>
-            <a href="/our-work" class="btn-outline">
+            <a href={withBase('/our-work')} class="btn-outline">
               See Our Work
             </a>
           </div>
+          <p class="mt-4 text-sm text-brand-ink/60">Choose a time to speak directly with our team.</p>
         </div>
       </section>
 
@@ -237,12 +287,12 @@ const faqs: Faq[] = [
   <!-- 02 — Results, up front (heading lives in scene B above): two big numbers straight on the surface, no boxes -->
   <section class="home-results" aria-labelledby="results-heading">
     <div class="container-x">
-      <ul class="grid gap-10 text-brand-green md:grid-cols-2 md:gap-0">
+      <ul class:list={['grid gap-10 text-brand-green', results.length > 1 && 'md:grid-cols-2 md:gap-0']}>
         {results.map((r, i) => (
           <li
             class:list={[
               'flex flex-col',
-              i === 0 ? 'md:border-r md:border-brand-green/20 md:pr-12' : 'md:pl-12 md:pt-16',
+              results.length > 1 && (i === 0 ? 'md:border-r md:border-brand-green/20 md:pr-12' : 'md:pl-12 md:pt-16'),
             ]}
           >
             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green/60">{r.label}</p>
@@ -254,13 +304,17 @@ const faqs: Faq[] = [
             </p>
             <p class="mt-3 text-xl font-extrabold sm:text-2xl">{r.statLabel}</p>
             <p class="mt-1 text-sm font-semibold text-brand-green/60">{r.detail}</p>
-            <a href={r.href} class="btn-dark mt-6 self-start">
+            <p class="mt-5 max-w-md text-brand-ink/70">{r.text}</p>
+            <a href={withBase(r.href)} class="btn-dark mt-6 self-start">
               {r.cta}
             </a>
           </li>
         ))}
       </ul>
-      <p class="mt-10 text-xs text-brand-ink/50">Individual results from different periods. Not a guarantee.</p>
+      <p class="mt-10 text-xs text-brand-ink/50">
+        Individual project results in different reporting periods. Performance can be influenced by factors beyond
+        creative work.
+      </p>
     </div>
   </section>
 
@@ -274,7 +328,7 @@ const faqs: Faq[] = [
       <SectionHeading
         eyebrow="Two ways we help"
         id="services-heading"
-        title="Two ways to grow your brand."
+        title="Different needs. Creative built around the people you’re trying to reach."
         align="left"
       />
       <!-- Two loose columns, the second set lower: a big number, the promise as the headline, one line, a link -->
@@ -292,7 +346,8 @@ const faqs: Faq[] = [
               {s.title}
             </h3>
             <p class="relative mt-4 max-w-md text-brand-ink/65">{s.text}</p>
-            <a href={s.href} class="btn-dark relative mt-6">
+            <p class="relative mt-3 max-w-md text-sm font-semibold text-brand-green">{s.note}</p>
+            <a href={withBase(s.href)} class="btn-dark relative mt-6">
               {s.cta}
             </a>
           </li>
@@ -314,7 +369,7 @@ const faqs: Faq[] = [
       <SectionHeading
         eyebrow="Client testimonials"
         id="testimonials-heading"
-        title="What our clients say."
+        title="What ecommerce brands say about working with us."
         align="left"
       />
       <Testimonials testimonials={testimonials} />
@@ -356,7 +411,12 @@ const faqs: Faq[] = [
               aria-label={`${i + 1} of ${work.length}: ${w.cat}`}
               aria-hidden={o === 0 ? undefined : 'true'}
             >
-              <a href={w.href} class="wk-media" tabindex={o === 0 ? undefined : -1} aria-label={`${w.cat}: ${w.cta}`}>
+              <a
+                href={withBase(w.href)}
+                class="wk-media"
+                tabindex={o === 0 ? undefined : -1}
+                aria-label={`${w.cat}: ${w.cta}`}
+              >
                 {w.image ? (
                   <Image
                     src={w.image.src}
@@ -394,7 +454,7 @@ const faqs: Faq[] = [
                   <p class="wk-stat-note">{w.detail}</p>
                 </div>
                 <p class="wk-text">{w.text}</p>
-                <a href={w.href} class="wk-cta">
+                <a href={withBase(w.href)} class="wk-cta">
                   {w.cta} →
                 </a>
               </div>
@@ -425,7 +485,7 @@ const faqs: Faq[] = [
             </div>
             <button type="button" class="wk-arrow wk-arrow--next" data-wk-next aria-label="Next case study"></button>
           </div>
-          <a href="/our-work" class="btn-outline wk-all">
+          <a href={withBase('/our-work')} class="btn-outline wk-all">
             Explore All Case Studies
           </a>
         </div>
@@ -445,6 +505,9 @@ const faqs: Faq[] = [
       >
         From the right question to the <span class="marker">right creative.</span>
       </h2>
+      <p class="scrub-text mt-5 max-w-2xl text-lg text-brand-ink/65">
+        You know what we’re creating, why it belongs in the project, and what to expect from the agreed scope.
+      </p>
       <ol class="mt-10 grid gap-8 sm:grid-cols-2 md:mt-14 lg:grid-cols-4 lg:gap-6">
         {steps.map((s, i) => (
           <li class="border-t-2 border-dashed border-brand-green/20 pt-5">
@@ -471,7 +534,7 @@ const faqs: Faq[] = [
       <div>
         <p class="eyebrow mb-4">FAQ</p>
         <h2 id="faq-heading" class="text-[1.85rem] font-extrabold leading-tight text-brand-green sm:text-4xl">
-          Good to know before we talk.
+          A few things worth knowing before we talk.
         </h2>
       </div>
       <div class="space-y-8">
@@ -481,10 +544,11 @@ const faqs: Faq[] = [
     </div>
   </section>
 
-  <!-- 10 — Final CTA -->
+  <!-- 09 — Final CTA -->
   <CtaBanner
     title="Tell us what you’re working on."
-    text="A launch, a listing that could explain more, or social that needs direction. Let’s talk."
+    text="A product launch. An Amazon listing that could explain more. A social presence ready for a clearer direction. Whatever your starting point, let’s talk through the creative work that makes sense for your brand."
+    note="Choose a time to speak directly with our team."
     ctaLabel="Talk to a Human"
     ctaHref={BOOKING_PAGE}
     badge={false}

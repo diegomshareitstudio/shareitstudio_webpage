@@ -13,6 +13,7 @@ import CtaBanner from '../../components/ui/CtaBanner.astro';
 import { getPost, posts, postHref, type Post } from '../../data/posts';
 import { itemListSchema } from '../../lib/schema';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 // 02 — editor-selected evergreen guides (templates, examples, image requirements)
 const featured = ['a-plus-content-templates', 'amazon-a-plus-content-examples', 'amazon-images-requirements'].map(
@@ -66,7 +67,7 @@ const schema = [
       {featured.map((p) => (
         <li class="flex">
           <a
-            href={postHref(p)}
+            href={withBase(postHref(p))}
             class="group flex w-full flex-col rounded-[2rem] bg-brand-cream p-3 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
           >
             <div class="placeholder aspect-[16/10] rounded-[1.6rem] bg-white">Guide image</div>
@@ -92,7 +93,7 @@ const schema = [
         {topics.map((t) => (
           <li>
             <a
-              href={`#${t.id}`}
+              href={withBase(`#${t.id}`)}
               class="inline-flex min-h-[44px] items-center rounded-full bg-white px-5 text-sm font-semibold text-brand-green transition hover:bg-brand-yellow"
             >
               {t.name} ({t.posts.length})
@@ -114,7 +115,7 @@ const schema = [
             {t.posts.map((p) => (
               <li class="flex">
                 <a
-                  href={postHref(p)}
+                  href={withBase(postHref(p))}
                   class="group flex w-full flex-col rounded-[1.75rem] bg-brand-cream p-6 transition hover:-translate-y-1 hover:bg-brand-yellow-soft"
                 >
                   <h3 class="text-xl font-extrabold leading-snug text-brand-green">{p.title}</h3>
@@ -141,17 +142,17 @@ const schema = [
       </p>
       <ul class="mt-6 flex flex-wrap gap-3">
         <li>
-          <a href="/services" class="btn-outline">
+          <a href={withBase('/services')} class="btn-outline">
             Explore Services
           </a>
         </li>
         <li>
-          <a href="/our-work" class="btn-outline">
+          <a href={withBase('/our-work')} class="btn-outline">
             View Portfolio
           </a>
         </li>
         <li>
-          <a href="/our-work" class="btn-outline">
+          <a href={withBase('/our-work')} class="btn-outline">
             Case Studies
           </a>
         </li>

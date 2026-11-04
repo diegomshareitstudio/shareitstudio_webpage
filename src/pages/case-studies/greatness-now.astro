@@ -1,0 +1,385 @@
+---
+/**
+ * Greatness Now case study (copy V1): Amazon Ring Toss Hook Game, listing image redesign.
+ * The results are period comparisons for one ASIN, not a controlled test; the copy says so on purpose.
+ * TODO: reconcile the two PPC tables before quoting any ad spend, ACoS or ROAS.
+ */
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BarChart from '../../components/ui/BarChart.astro';
+import BeforeAfter from '../../components/ui/BeforeAfter.astro';
+import { getCaseStudy } from '../../data/caseStudies';
+import type { Faq } from '../../data/faqs';
+import { BOOKING_PAGE } from '../../config/site';
+import heroImage from '../../assets/case-studies/greatness-now/Hero Image - Ring Toss Hook Game_01.jpg';
+import qualityImage from '../../assets/case-studies/greatness-now/Infographic - Ring Toss Hook Game_01.jpg';
+import assemblyImage from '../../assets/case-studies/greatness-now/Infographic - Ring Toss Hook Game_02.jpg';
+import howToPlayImage from '../../assets/case-studies/greatness-now/Ring Toss Hook Game_Infographic_03_1.jpg';
+import lifestyleImage from '../../assets/case-studies/greatness-now/Lifestyle - Ring Toss Hook Game_01.jpg';
+import beforeMainImage from '../../assets/case-studies/greatness-now/before/Screenshot 2026-11-04 123000.png';
+import beforeLifestyleImage from '../../assets/case-studies/greatness-now/before/Screenshot 2026-11-04 123203.png';
+import beforeDetailsImage from '../../assets/case-studies/greatness-now/before/Screenshot 2026-11-04 123217.png';
+import { withBase } from '../../lib/url';
+
+const cs = getCaseStudy('greatness-now');
+
+const metaTitle = 'Greatness Now Amazon Case Study: 25× Sales | Share It Studio';
+const description =
+  'See how Share It Studio redesigned Greatness Now’s Amazon ring toss game images. Product sales rose from $238 to $5,948 across two 2024 periods; review the full context.';
+
+const approach = [
+  {
+    title: 'Clarify the product.',
+    text: 'Lead with a recognizable, accurate product visual instead of making shoppers decode the image.',
+  },
+  {
+    title: 'Explain the experience.',
+    text: 'Show the gameplay, assembly points, and what people can do with the game.',
+  },
+  {
+    title: 'Make group play tangible.',
+    text: 'Use social-use scenes to help buyers picture the game at home or with friends.',
+  },
+  {
+    title: 'Review search-language opportunities.',
+    text: 'Identify gaps in product naming, feature coverage, title and bullet messaging, and relevant marketplace search queries.',
+  },
+];
+
+// Each placement: the copy that introduces it, the original listing image (when we have one) and the redesign.
+const transformation = [
+  {
+    heading: 'Main Product Presentation — Show the game clearly.',
+    text: 'The refreshed hero treatment gave the ring toss set a cleaner, more direct product presentation.',
+    before: [
+      { src: beforeMainImage, alt: 'Original main image: the wooden ring toss game on a plain white background' },
+    ],
+    after: [{ src: heroImage, alt: 'Redesigned main image: the ring toss game in motion, with a hand pulling a ring' }],
+  },
+  {
+    heading: 'How-to-Play Creative — Make the next step obvious.',
+    text: 'A bold, high-contrast visual explained the ring toss game and helped frame the activity before purchase.',
+    before: [],
+    after: [
+      {
+        src: howToPlayImage,
+        alt: 'Redesigned “Play the new way” image explaining how the ring toss game is played',
+      },
+    ],
+  },
+  {
+    heading: 'Assembly & Features — Address practical hesitation.',
+    text: 'Supporting images illustrated key parts and positioned assembly as approachable, using visual callouts rather than crowded instructions.',
+    before: [
+      {
+        src: beforeDetailsImage,
+        alt: 'Original image: the game with its dimensions and the headline “Modern wood color to fit your decor”',
+      },
+    ],
+    after: [
+      {
+        src: qualityImage,
+        alt: 'Redesigned image: “Quality in every detail” callouts on the wood finish, grip pads and base',
+      },
+      { src: assemblyImage, alt: 'Redesigned image: “Child-friendly assembly” callouts showing the parts' },
+    ],
+  },
+  {
+    heading: 'Lifestyle Images — Sell the social occasion.',
+    text: 'Group-play imagery made the product’s intended use easier to imagine: a shared activity rather than an isolated wooden game on a white background.',
+    before: [
+      {
+        src: beforeLifestyleImage,
+        alt: 'Original lifestyle image: a family playing, with the headline “The whole family involved”',
+      },
+    ],
+    after: [
+      {
+        src: lifestyleImage,
+        alt: 'Redesigned lifestyle image: friends playing the ring toss game together, “More laughter and more fun”',
+      },
+    ],
+  },
+];
+
+// Three consecutive reporting windows, one ASIN (B0BJMHY2YC). Source: Amazon report supplied by the client.
+const windows = ['Feb 28–Mar 27', 'Mar 28–Apr 27', 'Apr 28–May 27'];
+const metrics = [
+  { name: 'Ordered product sales', values: ['$237.93', '$1,291.62', '$5,948.25'] },
+  { name: 'Units ordered', values: ['7', '38', '177'] },
+  { name: 'Sessions', values: ['889', '641', '2,254'] },
+  { name: 'Unit Session Percentage', values: ['0.79%', '5.93%', '7.85%'] },
+  { name: 'Reported conversion rate', values: ['0.79%', '5.30%', '7.54%'] },
+];
+
+// One chart per unit: dollars and percentages never share an axis.
+const toBars = (values: number[], texts: string[]) =>
+  windows.map((label, i) => ({ label, value: values[i], text: texts[i] }));
+const charts = [
+  { title: 'Ordered product sales', bars: toBars([237.93, 1291.62, 5948.25], ['$237.93', '$1,291.62', '$5,948.25']) },
+  { title: 'Unit Session Percentage', bars: toBars([0.79, 5.93, 7.85], ['0.79%', '5.93%', '7.85%']) },
+];
+
+const takeaways = [
+  { term: 'Clarity', text: 'Shoppers can see the product without decoding a busy layout.' },
+  { term: 'Understanding', text: 'Supporting images make gameplay and setup easier to picture.' },
+  { term: 'Context', text: 'Lifestyle imagery shows why the game may belong at a gathering.' },
+  {
+    term: 'Relevance',
+    text: 'A supporting SEO audit surfaces opportunities to improve how the product is described and discovered.',
+  },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What did Share It Studio change for Greatness Now?',
+    a: 'The project deck shows redesigned Amazon listing images for the Ring Toss Hook Game: a clearer hero product image, gameplay and assembly callouts, and social-use imagery. It also documents an audit of listing title, bullet, backend-keyword and competitor-search opportunities; completion of new copy is not independently verified.',
+  },
+  {
+    q: 'What results did the Amazon report show?',
+    a: 'For ASIN B0BJMHY2YC, the compared windows show sales growing from $237.93 (Feb 28–Mar 27, 2024) to $5,948.25 (Apr 28–May 27, 2024), with Unit Session Percentage changing from 0.79% to 7.85%.',
+  },
+  {
+    q: 'Does the 25× result mean sales were higher than the year before?',
+    a: 'No. That comparison uses two periods within 2024 and begins from a low baseline. The report’s same-date 2023 comparison shows higher sales than in the corresponding 2024 window.',
+  },
+  {
+    q: 'Did the creative redesign alone generate the growth?',
+    a: 'The documents don’t prove that. Paid advertising also changed, and the file doesn’t include a controlled test isolating the new images’ incremental sales impact.',
+  },
+  {
+    q: 'Did the project improve organic keyword rankings?',
+    a: 'The presentation includes keyword and listing-copy analysis, but no before-and-after organic ranking report demonstrating a ranking lift.',
+  },
+];
+---
+
+<ArticleLayout
+  kind="case-study"
+  caseStudy={cs}
+  title="Greatness Now: From $238 to $5,948 in Amazon Product Sales"
+  highlight="$238 to $5,948"
+  lead="One ring toss game. A clearer way to show the fun. Stronger reported listing performance."
+  metaTitle={metaTitle}
+  description={description}
+  tags={['Amazon Listing Images', 'Feb – May 2024']}
+  service={{ label: 'Amazon Listing Images', href: '/services/amazon-listing-images' }}
+  faqs={faqs}
+  cta={{
+    title: 'Does your Amazon listing show what makes your product fun, useful, or different?',
+    text: 'Your customers shouldn’t have to imagine every step on their own. Show us your product, and we’ll help you identify which images or explanations are worth improving first.',
+    ctaLabel: 'Talk to a Human',
+  }}
+>
+  <div class="article-body">
+    <aside>
+      <p>
+        <strong>In short:</strong> Greatness Now’s wooden Ring Toss Hook Game was designed for social play, but its
+        original Amazon image gallery made shoppers work to understand the setup, how to play, and why the game could
+        bring people together. Share It Studio redesigned the creative presentation around clearer play instructions,
+        assembly details, and real-life group use. The project also included an audit of listing copy and keyword
+        opportunities.
+      </p>
+      <p>
+        <strong>Reported results, Feb 28–Mar 27 vs. Apr 28–May 27, 2024:</strong> product sales rose{' '}
+        <strong>25×</strong> ($237.93 to $5,948.25, +2,400%), Unit Session Percentage went from 0.79% to{' '}
+        <strong>7.85%</strong>, units ordered from 7 to <strong>177</strong>, and sessions grew <strong>+153.5%</strong>{' '}
+        (889 to 2,254).
+      </p>
+      <p class="text-sm italic">
+        Results are for one reported Amazon ASIN (B0BJMHY2YC). The baseline was unusually low, advertising spend
+        increased, and the documents do not isolate the effect of creative work from other factors.
+      </p>
+    </aside>
+
+    <section id="the-challenge">
+      <h2>A game built for togetherness needed a listing that showed how it worked.</h2>
+      <p>
+        The product was a wooden ring toss hook game for tabletop and group play. In Amazon’s crowded game category,
+        shoppers needed to understand the product quickly: what comes with it, how to set it up, how the ring toss
+        works, and what kind of occasion it fits.
+      </p>
+      <p>
+        The previous listing images showed the physical product, but left opportunities to make its use and experience
+        clearer.
+      </p>
+      <h3>The product was visible. The experience was harder to picture.</h3>
+      <p>
+        The original gallery emphasized isolated product views and dense instructional graphics. It did less to show the
+        game in an approachable social setting.
+      </p>
+      <h3>Assembly details competed with the main message.</h3>
+      <p>
+        How-to-play steps and parts were present, but the creative hierarchy could do more to distinguish essential
+        information from secondary details.
+      </p>
+      <h3>The listing needed to communicate more than specifications.</h3>
+      <p>The value of a party game is not only what it looks like — it’s how people play together.</p>
+      <blockquote>
+        <p>
+          <strong>The opportunity:</strong> Give shoppers an immediate product impression, clearer assembly cues, and an
+          easy-to-imagine group-use scenario.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="our-approach">
+      <h2>Make the next shopper question easier to answer.</h2>
+      <p>
+        The project combined an image-gallery refresh with an Amazon listing audit. The source deck shows a review of
+        search-query opportunities, the product title, bullet points, and backend search terms; those are documented as{' '}
+        <strong>analysis and recommendations</strong>, not verified completed copy changes. Learn more about our{' '}
+        <a href={withBase('/services/amazon-listing-images')}>Amazon listing image design</a> and{' '}
+        <a href={withBase('/services/amazon-listing-optimization')}>Amazon listing optimization</a> services.
+      </p>
+      <ol class="steps-list">
+        {approach.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p>
+        <strong>The goal wasn’t to make more images. It was to give each image a clearer job.</strong>
+      </p>
+    </section>
+
+    <section id="creative-transformation">
+      <h2>From a product-only gallery to a story about playing together.</h2>
+      {transformation.map((item) => (
+        <>
+          <h3>{item.heading}</h3>
+          <p>{item.text}</p>
+          <BeforeAfter before={item.before} after={item.after} />
+        </>
+      ))}
+      <p>
+        <strong>The difference:</strong> The original listing showed what the product was. The redesigned gallery aimed
+        to show what shoppers could do with it.
+      </p>
+    </section>
+
+    <section id="results">
+      <h2>A low starting point. A stronger unit session rate. More orders.</h2>
+      <p>
+        The table records three consecutive reporting windows for the same ASIN. These are{' '}
+        <strong>period comparisons</strong>, not an isolated A/B test of the new images.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Amazon metrics for ASIN B0BJMHY2YC across three reporting windows in 2024</caption>
+          <thead>
+            <tr>
+              <th scope="col">Amazon metric</th>
+              {windows.map((w) => (
+                <th scope="col">{w}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {metrics.map((m) => (
+              <tr>
+                <th scope="row">{m.name}</th>
+                {m.values.map((v) => (
+                  <td>{v}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="my-8 grid gap-4 sm:grid-cols-2">
+        {charts.map((chart) => (
+          <BarChart title={chart.title} bars={chart.bars} />
+        ))}
+      </div>
+
+      <h3>25× sales across the selected endpoints.</h3>
+      <p>
+        Sales increased from $237.93 in the pre-project reporting window to $5,948.25 in the last window shown — an
+        increase of $5,710.32, or 2,400% relative to the low baseline.
+      </p>
+      <h3>Unit Session Percentage: 0.79% → 7.85%.</h3>
+      <p>
+        The percentage of ordered units relative to sessions rose by 7.06 percentage points between those windows. The
+        report separately labels its order-based “Conversion Rate” as 7.54% in the last window; these two measures
+        should not be confused.
+      </p>
+      <h3>177 units ordered in the final window.</h3>
+      <p>The number of units rose from 7 to 177 as the reported sessions increased from 889 to 2,254.</p>
+      <p class="text-sm italic">
+        These figures describe a changing account context, not the incremental effect of any single new image. They
+        should not be presented as a controlled conversion lift caused by Share It Studio.
+      </p>
+    </section>
+
+    <section id="context">
+      <h2>Better reported conversion — with an important traffic and advertising caveat.</h2>
+      <p>
+        The visible results are strong relative to March 2024. But there are two context checks worth keeping in the
+        story.
+      </p>
+      <h3>Advertising investment rose.</h3>
+      <p>
+        The primary period table reports a substantial increase in PPC spend between the baseline and final window.
+        Another table in the same document contains different PPC values for overlapping dates, so exact advertising
+        spend and efficiency comparisons need reconciliation. The source files do <strong>not</strong> provide
+        sufficient consistent ad-attributed sales to calculate or claim an ACoS or ROAS improvement.
+      </p>
+      <h3>The same period a year earlier had higher sales.</h3>
+      <p>
+        For April 28–May 27, 2023, the historical table lists $7,749.72 in product sales. For April 28–May 27, 2024, the
+        value was $5,948.25 — approximately <strong>23.2% lower year over year</strong>, even though Unit Session
+        Percentage increased from 4.65% to 7.85% (+3.20 percentage points).
+      </p>
+      <p>
+        <strong>The opportunity:</strong> Continue improving qualified discovery and overall sales volume while
+        protecting the stronger reported unit session performance.
+      </p>
+      <p class="text-sm italic">
+        The before/after creative is real and the reported 2024 period comparisons are real. The evidence does not
+        establish that the redesign alone caused them or that the product exceeded its prior-year sales level.
+      </p>
+    </section>
+
+    <section id="takeaway">
+      <h2>Show the activity, not just the object.</h2>
+      <p>
+        Greatness Now’s Ring Toss Hook Game is a useful example of what a focused Amazon image refresh can communicate:
+      </p>
+      <ul>
+        {takeaways.map((t) => (
+          <li>
+            <strong>{t.term}:</strong> {t.text}
+          </li>
+        ))}
+      </ul>
+      <p>
+        During the periods shown, the listing also recorded stronger Unit Session Percentage and higher sales relative
+        to a very low pre-project month, alongside higher advertising activity.
+      </p>
+      <blockquote>
+        <p>
+          <strong>The lesson:</strong> Better product content begins by answering the questions that stop buyers from
+          imagining the product in their lives — and its business impact needs to be evaluated alongside traffic and
+          advertising.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="questions">
+      <h2>Questions about this project</h2>
+      {faqs.map((f) => (
+        <>
+          <h3>{f.q}</h3>
+          <p>{f.a}</p>
+        </>
+      ))}
+      <p>
+        Want a project like this for your listing? <a href={withBase(BOOKING_PAGE)}>Talk to a human</a> or explore{' '}
+        <a href={withBase('/services/amazon-listing-images')}>Amazon Listing Images</a>.
+      </p>
+    </section>
+  </div>
+</ArticleLayout>

@@ -7,10 +7,12 @@
 import { Image } from 'astro:assets';
 import Layout from './Layout.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
-import { articleSchema } from '../lib/schema';
+import { articleSchema, faqSchema } from '../lib/schema';
 import { caseStudyHref, type CaseStudy } from '../data/caseStudies';
 import { postHref, type Post } from '../data/posts';
+import type { Faq } from '../data/faqs';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 interface Common {
   /** Visible <h1> */
@@ -22,6 +24,10 @@ interface Common {
   metaTitle: string;
   /** Extra tag pills after the defaults */
   tags?: string[];
+  /** Questions answered in the article body: adds FAQPage JSON-LD. Render the same questions as visible text. */
+  faqs?: Faq[];
+  /** Closing banner; defaults to the generic "Book a call" one */
+  cta?: { title: string; text: string; ctaLabel: string; altLabel?: string; altHref?: string };
 }
 
 type Props = Common &
@@ -31,7 +37,7 @@ type Props = Common &
   );
 
 const props = Astro.props;
-const { title, highlight, lead, metaTitle, tags = [] } = props;
+const { title, highlight, lead, metaTitle, tags = [], faqs, cta } = props;
 
 const isCase = props.kind === 'case-study';
 const cs = isCase ? props.caseStudy : undefined;
@@ -56,6 +62,7 @@ const schema = [
     image: cover?.src.src,
     about: cs?.client,
   }),
+  ...(faqs ? [faqSchema(path, faqs)] : []),
 ];
 
 const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
@@ -73,7 +80,7 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
     <header class="bg-brand-cream">
       <div class="container-x pb-14 pt-8 md:pb-20">
         <a
-          href={parent.path}
+          href={withBase(parent.path)}
           class="inline-flex items-center gap-2 text-sm font-medium text-brand-green/60 transition hover:text-brand-green"
         >
           ← All {parent.name.toLowerCase()}
@@ -128,7 +135,9 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
 
     {isCase && (
       <figure class="container-x -mb-6 pt-12">
-        {cover ? (
+        {Astro.slots.has('cover') ? (
+          <slot name="cover" />
+        ) : cover ? (
           <div class="grid min-h-72 place-items-center rounded-[2rem] bg-brand-cream p-6 md:p-10">
             <Image
               src={cover.src}
@@ -153,14 +162,14 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
           </nav>
           {service && (
             <a
-              href={service.href}
+              href={withBase(service.href)}
               class="mt-8 block rounded-[1.5rem] bg-brand-cream p-5 transition hover:bg-brand-yellow-soft"
             >
               <span class="text-xs font-semibold uppercase tracking-wider text-brand-orange">Need help with this?</span>
               <span class="mt-1 block font-display font-extrabold text-brand-green">{service.label} →</span>
             </a>
           )}
-          <a href={BOOKING_PAGE} class="btn-dark mt-8">
+          <a href={withBase(BOOKING_PAGE)} class="btn-dark mt-8">
             Book a Call
           </a>
         </div>
@@ -172,7 +181,7 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
         </div>
         {service && (
           <a
-            href={service.href}
+            href={withBase(service.href)}
             class="group mt-12 flex flex-col gap-4 rounded-[2rem] bg-brand-green p-8 text-white transition hover:-translate-y-1 sm:flex-row sm:items-center sm:justify-between"
           >
             <span>
@@ -191,7 +200,7 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
     </div>
   </article>
 
-  <CtaBanner />
+  <CtaBanner {...cta} />
 </Layout>
 
 <script>

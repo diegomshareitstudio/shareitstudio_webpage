@@ -1,0 +1,42 @@
+---
+/**
+ * Small horizontal bar chart for case-study results (CSS only, no script). Bar widths are relative to the largest
+ * value, so one chart should hold one unit (dollars or percentages, never both). The numbers are read out through
+ * the aria-label; pair it with a data table for the full picture.
+ */
+interface Bar {
+  label: string;
+  value: number;
+  /** Text printed next to the bar, e.g. "$5,948.25" */
+  text: string;
+  /** Optional short annotation under the label, e.g. "Peak month" */
+  note?: string;
+}
+
+interface Props {
+  title: string;
+  bars: Bar[];
+}
+
+const { title, bars } = Astro.props;
+const largest = Math.max(...bars.map((bar) => bar.value));
+const summary = `${title}: ${bars.map((bar) => `${bar.label} ${bar.text}`).join('; ')}`;
+---
+
+<figure class="my-0 rounded-[1.5rem] bg-brand-cream p-5">
+  <figcaption class="mb-4 mt-0 text-sm font-semibold text-brand-green">{title}</figcaption>
+  <div class="space-y-3" role="img" aria-label={summary}>
+    {bars.map((bar) => (
+      <div aria-hidden="true">
+        <p class="mb-1 text-xs text-brand-ink/60">
+          {bar.label}
+          {bar.note && <span class="font-semibold text-brand-orange"> · {bar.note}</span>}
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="h-4 rounded-full bg-brand-yellow" style={`width:${Math.max(2, (bar.value / largest) * 100)}%`} />
+          <span class="text-sm font-bold text-brand-green">{bar.text}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</figure>

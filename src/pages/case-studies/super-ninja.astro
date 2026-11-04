@@ -1,210 +1,410 @@
 ---
-import { Image } from 'astro:assets';
+/**
+ * Super Ninja case study (copy V1): fruit fly trap listings localized for Amazon Germany, the UK and the US.
+ * Only the German figure reconciles to the sales amounts shown in the source deck. The UK and US percentages are
+ * published exactly as "source-reported; reconciliation pending" and must never be averaged or called verified.
+ * TODO: reconcile UK and US with dated Seller Central exports (same ASIN set, currency, windows) and then update
+ * the status column; real examples of A/B tests; market-by-market creative; dashboard screenshots; confirm whether
+ * "15+ concepts" and "10+ tests" cover only the fruit fly traps.
+ */
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BarChart from '../../components/ui/BarChart.astro';
+import BeforeAfter from '../../components/ui/BeforeAfter.astro';
 import { getCaseStudy } from '../../data/caseStudies';
-import salesChart from '../../assets/case-studies/super-ninja/sales-before-after-by-asin.png';
-import oldListing from '../../assets/case-studies/super-ninja/old-listing.png';
-import newListing from '../../assets/case-studies/super-ninja/new-listing.png';
+import type { Faq } from '../../data/faqs';
+import heroImage from '../../assets/case-studies/super-ninja/Fruit Flies (US) Hero Image_2.png';
+import closeUpImage from '../../assets/case-studies/super-ninja/Fruit Flies (US) Hero Image_5.png';
+import lifestyleImage from '../../assets/case-studies/super-ninja/Fruit Flies (US) Lifestyle_3.png';
+import aPlusImage from '../../assets/case-studies/super-ninja/Fruit-Flies-A+-Content_01 (1).png';
+import beforeMainImage from '../../assets/case-studies/super-ninja/before/B0D5DJ7V4P.PT01.jpg';
+import beforeGalleryImage from '../../assets/case-studies/super-ninja/before/B0D5DJ7V4P.PT02.jpg';
+import beforeUseImage from '../../assets/case-studies/super-ninja/before/Screenshot 2026-11-04 121227.png';
+import { withBase } from '../../lib/url';
 
 const cs = getCaseStudy('super-ninja');
 
-const metaTitle = 'Super Ninja Amazon Case Study: +716% US Sales | Share It Studio';
+const metaTitle = 'Super Ninja Amazon Listing Case Study | Share It Studio';
 const description =
-  'How localized Amazon listing optimization grew Super Ninja’s fruit fly trap sales by +716.9% in the US, +310.5% in the UK and +91.5% in Germany.';
+  'See how Super Ninja’s Amazon fruit fly trap listings were adapted for Germany, the UK and US, with 15+ image concepts, 10+ A/B tests and reported sales growth.';
 
-const results = [
-  { metric: 'Product sales growth', de: '+91.5%', uk: '+310.5%', us: '+716.9%', highlight: true },
-  { metric: 'CTR growth', de: '+59.19%', uk: '+41.76%', us: '+83.84%' },
-  { metric: 'CVR growth', de: '+44.11%', uk: '+46.29%', us: '+77.96%' },
+const challenges = [
+  {
+    title: 'One message for different buyers.',
+    text: 'Regional expectations differed, but the listings did not fully adapt their visuals and explanations.',
+  },
+  {
+    title: 'Product benefits were easy to overlook.',
+    text: 'Without the right hierarchy, shoppers had to work harder to understand why this fruit fly trap might fit their needs.',
+  },
+  {
+    title: 'More competition than context.',
+    text: 'In crowded results, an undifferentiated listing made it harder for the brand to communicate its value quickly.',
+  },
+];
+
+const markets = [
+  {
+    title: 'Germany — Understand local priorities.',
+    text: 'The research identified interest in environmentally considerate solutions among the themes to address. Creative messaging was adapted around relevant buyer concerns, subject to the product’s supported claims.',
+  },
+  {
+    title: 'United Kingdom — Build for the UK buyer.',
+    text: 'The team reviewed UK competitors and customer questions rather than simply copying the German or US listing. The source materials do not document one specific leading UK pain point, so we do not invent one.',
+  },
+  {
+    title: 'United States — Explain the right use case.',
+    text: 'The team considered shoppers seeking natural household pest-control approaches and developed visuals intended to make the product’s use and benefits easier to understand.',
+  },
+];
+
+// Original US listing creative next to the redesign. The A+ Content has no "before" to compare with.
+const comparisons = [
+  {
+    title: 'Main image · US',
+    before: [
+      {
+        src: beforeMainImage,
+        alt: 'Original main image: four Super Ninja bottles in front of the fruit fly box, with fruit and flies',
+      },
+    ],
+    after: [
+      {
+        src: heroImage,
+        alt: 'Redesigned main image: Super Ninja fruit fly trap boxes and bottle with fruit and flies',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Gallery image · US',
+    before: [
+      {
+        src: beforeGalleryImage,
+        alt: 'Original image: “Fruit fly trap” with durable, non-toxic and very effective icons and four traps',
+      },
+    ],
+    after: [
+      {
+        src: closeUpImage,
+        alt: 'Redesigned image: close-up of the Super Ninja trap bottle with its yellow funnel and a fly',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Use and placement · US',
+    before: [
+      {
+        src: beforeUseImage,
+        alt: 'Original image: “Easy to use” four-step guide: shake, open, dry yellow funnel, place',
+      },
+    ],
+    after: [
+      {
+        src: lifestyleImage,
+        alt: 'Redesigned lifestyle image: “Small, powerful and invisible”, a woman placing the trap in her kitchen',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'A+ Content',
+    before: [],
+    after: [
+      {
+        src: aPlusImage,
+        alt: 'Redesigned A+ Content: “Fruit fly trap: effectively eliminates fruit flies quickly and safely”',
+      },
+    ],
+    stacked: true,
+  },
+];
+
+// Germany: sum of the four selected-product rows shown in the source deck (August 2024 and August 2025).
+const germanyBars = [
+  { label: 'August 2024', value: 332653.95, text: '€332,654' },
+  { label: 'August 2025', value: 637022.04, text: '€637,022' },
+];
+
+const marketResults = [
+  {
+    market: 'Germany',
+    window: 'August 2024 → August 2025',
+    change: '+91.5%',
+    status: 'Reconciled to the displayed sales amounts',
+  },
+  {
+    market: 'United Kingdom',
+    window: 'August 2024 → August 2025',
+    change: '+310.3%',
+    status: 'Source-reported (+310.5% on another slide); reconciliation pending',
+  },
+  {
+    market: 'United States',
+    window: 'April 2025 → August 2025',
+    change: '+716.9%',
+    status: 'Source-reported; reconciliation pending',
+  },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What did Share It Studio do for Super Ninja?',
+    a: 'The team researched three Amazon marketplaces, developed local buyer perspectives, redesigned fruit fly trap listing images, created 15+ main-image concepts, and reported running more than 10 A/B tests involving visuals, copy, and product messaging.',
+  },
+  {
+    q: 'Which markets were included?',
+    a: 'Amazon Germany, Amazon United Kingdom, and Amazon United States. The team investigated local competitor messaging, reviews, questions, and imagery rather than assuming one listing would fit all three audiences.',
+  },
+  {
+    q: 'Did every marketplace use the same content?',
+    a: 'No. The source project describes a coordinated brand approach with creative adapted to regional buyer concerns and preferences.',
+  },
+  {
+    q: 'What sales results were reported?',
+    a: 'The source presentation reports +91.5% for Germany (August 2024–August 2025), +310.3% or +310.5% for the UK (August 2024–August 2025), and +716.9% for the US (April–August 2025). The German figure matches the visible sales amounts; the UK and US percentages require reconciliation before being treated as final verified figures.',
+  },
+  {
+    q: 'Does this prove listing optimization caused those sales increases?',
+    a: 'No. The documents show work performed and sales observed over time, but they do not isolate listing changes from other commercial factors. Results will differ by product and marketplace.',
+  },
 ];
 ---
 
 <ArticleLayout
   kind="case-study"
   caseStudy={cs}
-  title="How Super Ninja grew Amazon sales across three marketplaces"
-  highlight="three marketplaces"
-  lead="Localized listing images and messaging for Germany, the UK and the US — tested and refined every week — lifted product sales by up to 716.9%."
+  title="Super Ninja: An Amazon Listing Transformation Across 3 Markets"
+  highlight="Across 3 Markets"
+  lead="Localized creative. 15+ image concepts. More than 10 A/B tests."
   metaTitle={metaTitle}
   description={description}
-  tags={['Amazon DE · UK · US']}
+  tags={['Germany · UK · US']}
   service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+  faqs={faqs}
+  cta={{
+    title: 'Your product may be ready for a new market. Is your listing?',
+    text: 'Whether you’re entering a new Amazon marketplace or improving an established listing, start by understanding what your customers need to see. Show us your product and the markets you want to reach. We’ll help you discuss the Amazon content worth improving first.',
+    ctaLabel: 'Talk to a Human',
+    altLabel: 'Explore Amazon Listing Optimization',
+    altHref: '/services/amazon-listing-optimization',
+  }}
 >
   <div class="article-body">
     <aside>
       <p>
-        <strong>In short:</strong> Super Ninja used the same generic listing in every Amazon marketplace. We rebuilt its
-        images and messaging for each market from customer research, then A/B tested and monitored them weekly. Product
-        sales grew <strong>+716.9% in the US</strong>, <strong>+310.5% in the UK</strong> and{' '}
-        <strong>+91.5% in Germany</strong>.
+        <strong>In short:</strong> Super Ninja was already a recognized pest-control brand in Europe. But as it worked
+        to grow across Amazon Germany, the UK, and the US, its product pages looked too similar from one market to the
+        next — even though buyers in each country had different questions and expectations. Share It Studio researched
+        those differences, redesigned the fruit fly trap listings, and tested new creative approaches to make the
+        product’s benefits easier for shoppers to understand.
+      </p>
+      <p>
+        <strong>The project at a glance:</strong> <strong>3 marketplaces</strong> (Germany, United Kingdom, United
+        States), <strong>15+ main-image concepts</strong>, <strong>10+ A/B tests</strong> across imagery, copy, and
+        product messaging, and <strong>+91.5% reported German product sales growth</strong> (August 2024 versus August
+        2025), which reconciles to the selected-product sales amounts visible in the presentation.
+      </p>
+      <p class="text-sm italic">
+        Additional market results in the source deck are +310.3% UK and +716.9% US, reported but pending numerical
+        reconciliation. The comparison windows differ between markets; these are not equivalent year-over-year figures.
+        The source presentation reports growth alongside the project. It does not isolate the effect of listing
+        optimization from changes in traffic, assortment, demand, advertising, or other factors.
       </p>
     </aside>
 
-    <section id="client-background">
-      <h2>Client Background</h2>
+    <section id="the-challenge">
+      <h2>A strong European product. An Amazon story that did not travel well.</h2>
       <p>
-        <strong>Super Ninja</strong> is an established European pest control brand with a loyal customer base and a
-        strong retail presence. As the brand expanded into the US, it needed to strengthen its Amazon performance across{' '}
-        <strong>Germany, the UK and the US</strong>.
-      </p>
-    </section>
-
-    <section id="initial-challenge">
-      <h2>Initial Challenge</h2>
-      <p>
-        Despite offering high-quality products, Super Ninja used generic Amazon listing content across different
-        markets. Its images and messaging didn’t address local buyer preferences, which made it hard to stand out from
-        competitors.
+        Super Ninja had an established online presence in Europe, loyal customers, and recognition in physical retail.
+        The opportunity was to bring that strength to more Amazon shoppers — especially in the US — without assuming
+        that one listing message would work everywhere.
       </p>
       <p>
-        The goal was to increase <strong>visibility, clicks, conversions and sales</strong> through market-specific
-        listing optimization.
+        The fruit fly trap listings were relatively static and similar across Germany, the UK, and the US. The same
+        creative approach did not always reflect what local shoppers wanted to know about household pest control.
       </p>
+      {challenges.map((item) => (
+        <p>
+          <strong>{item.title}</strong>
+          {item.text}
+        </p>
+      ))}
       <blockquote>
         <p>
-          <strong>$2M+</strong> in estimated potential sales were at risk without optimization.
+          <strong>The challenge:</strong> Turn a familiar product into a clearer, more relevant Amazon buying experience
+          in each market.
         </p>
       </blockquote>
     </section>
 
-    <section id="our-approach">
-      <h2>Our Approach</h2>
+    <section id="our-strategy">
+      <h2>Three marketplaces. Three sets of buyer expectations.</h2>
       <p>
-        We developed a localized content strategy based on marketplace research, competitor analysis, customer reviews,
-        FAQs and buyer personas.
+        Share It Studio did not begin by replacing visuals at random. The team reviewed competitor listings, customer
+        reviews, FAQs, and product images in each marketplace to understand how shoppers evaluated fruit fly control
+        products.
       </p>
-      <p>
-        The research showed that each market buys for different reasons. These insights guided the messaging and visual
-        content for each marketplace:
-      </p>
-      <ul>
-        <li>
-          <strong>Germany:</strong> eco-friendliness.
-        </li>
-        <li>
-          <strong>US:</strong> natural pest control solutions.
-        </li>
-      </ul>
-    </section>
-
-    <section id="implementation">
-      <h2>Implementation</h2>
       <ol class="steps-list">
-        <li>
-          <h3>Market research</h3>
-          <p>
-            Analyzed competitors, customer reviews, FAQs and purchasing preferences across Germany, the UK and the US.
-          </p>
-        </li>
-        <li>
-          <h3>Buyer personas</h3>
-          <p>Identified customer pain points and motivations for each marketplace.</p>
-        </li>
-        <li>
-          <h3>Content optimization</h3>
-          <p>Redesigned the Amazon listing images and messaging to communicate product benefits more effectively.</p>
-        </li>
-        <li>
-          <h3>A/B testing</h3>
-          <p>
-            Created <strong>15+ main image variations</strong> and ran <strong>10+ tests</strong> on images, copy and
-            product features.
-          </p>
-        </li>
-        <li>
-          <h3>Performance monitoring</h3>
-          <p>Reviewed CTR, CVR, sessions, ROAS and ACOS every week to guide continuous improvements.</p>
-        </li>
+        {markets.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
       </ol>
+      <p>
+        The objective was not three different brands. It was
+        <strong>one recognizable product, explained with the context each audience needed</strong>.
+      </p>
     </section>
 
-    <section id="before-and-after">
-      <h2>Before and After</h2>
+    <section id="creative-transformation">
+      <h2>From a static image gallery to product content with a clearer job.</h2>
       <p>
-        From a generic image stack to a listing that shows how the trap works, why it’s safe and how it compares with
-        other brands.
+        The team redesigned Amazon listing imagery to make the fruit fly trap easier to recognize, understand, and
+        evaluate in everyday household situations. Learn more about our
+        <a href={withBase('/services/amazon-listing-images')}>Amazon listing image design</a>.
       </p>
-      <div class="my-8 grid gap-4 sm:grid-cols-2">
-        <figure class="my-0">
-          <span class="mb-3 inline-block rounded-full bg-brand-cream px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-ink/60">
-            Before
-          </span>
-          <Image
-            src={oldListing}
-            widths={[480, 800, 1100]}
-            sizes="(min-width: 768px) 34rem, 100vw"
-            alt="Old Super Ninja Amazon listing images: product packaging, fruit, family scene and a non-toxic claim"
-            class="photo"
-          />
-          <figcaption>The original listing: generic images with the same message for every market.</figcaption>
-        </figure>
-        <figure class="my-0">
-          <span class="mb-3 inline-block rounded-full bg-brand-yellow px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-green">
-            After
-          </span>
-          <Image
-            src={newListing}
-            widths={[480, 800, 1100]}
-            sizes="(min-width: 768px) 34rem, 100vw"
-            alt="New Super Ninja Amazon listing images: 4-pack main image, strong adhesive, lab-tested results catching over 90% of fruit flies in 24 hours and a comparison with other brands"
-            class="photo ring-4 ring-brand-yellow"
-          />
-          <figcaption>
-            The optimized listing: lab-tested results, ease of use and a comparison with other brands.
-          </figcaption>
-        </figure>
-      </div>
+      <p>
+        <strong>Before: The product was present, but the story was generic.</strong> Similar-looking layouts and
+        repeated benefits offered limited differentiation across marketplaces.
+      </p>
+      <p>
+        <strong>After: The gallery emphasized the shopper’s decision.</strong> New creative gave more attention to
+        product recognition, the intended environment of use, key benefits, and the questions shoppers were likely to
+        ask before buying.
+      </p>
+      <p>
+        The work produced <strong>more than 15 main-image concepts</strong>, giving the team different approaches to
+        evaluate rather than treating the first design as the final answer.
+      </p>
+      {comparisons.map((item) => (
+        <BeforeAfter title={item.title} before={item.before} after={item.after} stacked={item.stacked} />
+      ))}
+    </section>
+
+    <section id="testing-and-execution">
+      <h2>More than 10 A/B tests shaped the optimization process.</h2>
+      <p>
+        Share It Studio reports conducting <strong>10+ A/B tests</strong> involving main images, copy, and
+        product-feature messaging. The team used feedback from those experiments to keep refining its creative
+        decisions.
+      </p>
+      <p>
+        Once the updated content was live, performance monitoring covered
+        <strong>
+          click-through rate (CTR), conversion rate (CVR), sessions, return on ad spend (ROAS), and advertising cost of
+          sales (ACoS)
+        </strong>
+        . The project materials describe weekly reviews of those signals.
+      </p>
+      <p class="text-sm italic">
+        The source files confirm the number of tests at a high level, but they do not include a complete
+        experiment-by-experiment table with test durations, sample sizes, winning variants, or incremental lift. We
+        therefore do not assign a specific sales increase to any one A/B test.
+      </p>
     </section>
 
     <section id="results">
-      <h2>Results</h2>
-      <p>Growth on each marketplace’s main ASIN after the optimization:</p>
+      <h2>Stronger reported product sales across the three markets — with different baselines.</h2>
+      <p>
+        The source presentation highlights substantial growth in selected-product sales across Super Ninja’s Amazon
+        marketplaces. These comparisons use different dates, and the UK/US percentages need reconciliation with the
+        displayed dashboard totals.
+      </p>
       <div class="table-wrap">
         <table>
+          <caption class="sr-only">Reported change in selected-product sales by Amazon marketplace</caption>
           <thead>
             <tr>
-              <th scope="col">Metric</th>
-              <th scope="col">Germany</th>
-              <th scope="col">UK</th>
-              <th scope="col">US</th>
+              <th scope="col">Marketplace</th>
+              <th scope="col">Comparison window</th>
+              <th scope="col">Reported change</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
-            {results.map((r) => (
+            {marketResults.map((row) => (
               <tr>
-                <th scope="row">{r.metric}</th>
-                <td class:list={{ highlight: r.highlight }}>{r.de}</td>
-                <td class:list={{ highlight: r.highlight }}>{r.uk}</td>
-                <td class:list={{ highlight: r.highlight }}>{r.us}</td>
+                <th scope="row">{row.market}</th>
+                <td>{row.window}</td>
+                <td>{row.change}</td>
+                <td>{row.status}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="text-sm text-brand-ink/55">
-        Sales: August 2024 vs. August 2025 (Germany and UK); April 2025 vs. August 2025 (US). CTR and CVR: September
-        2024 vs. September 2025. Results from each marketplace’s main ASIN.
+
+      <h3>Germany — +91.5% (reconciled from the displayed figures)</h3>
+      <p>
+        <strong>August 2024 → August 2025.</strong> Selected-product sales shown in the presentation rose from
+        approximately €332,654 to €637,022. The +91.5% result is consistent with those displayed amounts.
+      </p>
+      <div class="my-8">
+        <BarChart title="Germany: selected-product sales, August" bars={germanyBars} />
+      </div>
+      <p>
+        The supporting screenshots also show larger basket-add and purchase counts and higher conversion rates for
+        featured rows. Those row-level changes should not be treated as controlled A/B-test effects.
       </p>
 
-      <figure>
-        <Image
-          src={salesChart}
-          widths={[640, 1000, 1400]}
-          sizes="(min-width: 1024px) 64rem, 100vw"
-          alt="Bar chart comparing Super Ninja ASIN performance before and after the listing optimization"
-          class="photo bg-brand-cream"
-        />
-        <figcaption>Before (yellow) vs. after (orange) the optimization, across four Super Ninja ASINs.</figcaption>
-      </figure>
+      <h3>United Kingdom — +310.3% (source-reported; reconciliation pending)</h3>
+      <p>
+        <strong>August 2024 → August 2025.</strong> The presentation reports growth of +310.3% on one slide and +310.5%
+        on another. The visible selected-product rows total approximately £1.235 million in August 2025, but the
+        displayed before/after row totals imply a different growth rate. Confirm the comparable ASIN set and calculation
+        before using the percentage as a final public claim.
+      </p>
+
+      <h3>United States — +716.9% (source-reported; reconciliation pending)</h3>
+      <p>
+        <strong>April 2025 → August 2025.</strong> The presentation reports +716.9% growth for the US comparison. The
+        displayed August selected-product rows total approximately $343,922; however, the visible April and August
+        amounts imply a different percentage. Confirm the exact ASIN cohort and data export before publication.
+      </p>
+
+      <blockquote>
+        <p>
+          <strong>Important context:</strong> Germany and the UK use year-over-year August comparisons; the US uses an
+          April-to-August comparison. They should not be combined into one average growth rate or portrayed as
+          equivalent time windows.
+        </p>
+      </blockquote>
     </section>
 
-    <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
-      <ul>
-        <li>Localized content helps brands connect with buyers across different Amazon marketplaces.</li>
-        <li>Research-driven images and messaging communicate product value more effectively.</li>
-        <li>Continuous A/B testing and performance monitoring support stronger conversions and sales growth.</li>
-      </ul>
+    <section id="takeaway">
+      <h2>Localization is more than translation. Testing is more than picking the prettiest image.</h2>
+      <p>
+        Super Ninja’s work demonstrates a repeatable creative principle:
+        <strong>
+          start with the buyer, build content for the market, and evaluate what happens after the creative goes live
+        </strong>
+        .
+      </p>
+      <p>
+        The project replaced a largely uniform cross-market approach with audience research, redesigned product imagery,
+        and iterative tests across three Amazon storefronts.
+      </p>
+      <p>
+        The performance materials report significant sales increases over their comparison periods. Those observations
+        are useful business context, but they cannot establish that the creative work alone caused all of the growth.
+      </p>
+      <p>
+        <strong>The lesson:</strong> A listing should help the <em>right shopper</em> understand why a product is
+        relevant — not simply show the same visuals in every country.
+      </p>
+    </section>
+
+    <section id="questions">
+      <h2>Questions about this project</h2>
+      {faqs.map((item) => (
+        <>
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </>
+      ))}
     </section>
   </div>
 </ArticleLayout>

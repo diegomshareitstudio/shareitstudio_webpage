@@ -16,6 +16,7 @@ import type { Faq } from '../../data/faqs';
 import { socialPackages } from '../../data/socialPackages';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const path = '/services/social-media-management';
 
@@ -209,7 +210,7 @@ const schema = [
           ))}
         </ul>
         <a
-          href="/our-work"
+          href={withBase('/our-work')}
           class="mt-7 inline-flex min-h-11 items-center sm:mt-14 font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
         >
           See Social Content We’ve Created →
@@ -233,7 +234,7 @@ const schema = [
         process, platform access, and advertising budget will be clarified in your proposal. Ads management does not
         include media spend unless expressly agreed.
       </p>
-      <a href={BOOKING_PAGE} class="btn-dark mt-6">
+      <a href={withBase(BOOKING_PAGE)} class="btn-dark mt-6">
         Talk Through the Right Plan
       </a>
 

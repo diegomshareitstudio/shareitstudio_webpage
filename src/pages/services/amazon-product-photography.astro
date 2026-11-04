@@ -14,6 +14,7 @@ import FaqList from '../../components/ui/FaqList.astro';
 import { getService } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 const path = '/services/amazon-product-photography';
 const service = getService('amazon-product-photography');
@@ -149,7 +150,7 @@ const schema = [
       <span class="marker">not just a picture that looks polished.</span>
     </p>
     <a
-      href={service.portfolio}
+      href={withBase(service.portfolio)}
       class="mt-6 inline-flex min-h-11 items-center font-semibold text-brand-green underline decoration-brand-yellow decoration-2 underline-offset-4 hover:decoration-brand-orange"
     >
       View More Product Photography Work →
@@ -201,7 +202,10 @@ const schema = [
     </ol>
     <p class="mt-10 max-w-3xl rounded-[1.5rem] bg-brand-yellow-soft p-5 text-brand-ink/80 sm:p-6 md:mt-14">
       Need finished infographics or an Amazon image gallery designed around the photos? We can add
-      <a href="/services/amazon-listing-images" class="font-bold text-brand-green underline underline-offset-4">
+      <a
+        href={withBase('/services/amazon-listing-images')}
+        class="font-bold text-brand-green underline underline-offset-4"
+      >
         Amazon Listing Images
       </a>
       as a separate service rather than assuming every photography project includes graphic design.
@@ -230,7 +234,7 @@ const schema = [
       {related.map((r) => (
         <li>
           <a
-            href={r.href}
+            href={withBase(r.href)}
             class:list={[
               'inline-block rounded-full px-4 py-2 text-sm font-medium transition',
               r.primary

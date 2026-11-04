@@ -52,6 +52,9 @@ astro.config.mjs         Site URL, fonts, sitemap, Vercel adapter and 301 redire
   (`data/companyKnowledge.ts`), so a copy change updates the site and the assistant together.
 - **SEO and AEO**: every page goes through `Layout.astro` (title, description, canonical, Open Graph) and adds
   JSON-LD from `lib/schema.ts`. FAQ answers are real text in the page, and `faqSchema()` mirrors only what is visible.
+- **Base path**: the site is served under `shareitstudio.com/v2/` (`base` in `astro.config.mjs`; locally
+  `http://localhost:4321/v2/`). Write internal paths without the base (`/services`) and render them with
+  `withBase()` from `lib/url.ts`; use `absoluteUrl()` for canonical and JSON-LD URLs. Page URLs end in a slash.
 - **Booking**: all booking buttons use `BOOKING_PAGE` from `config/site.ts`. Set `SITE.bookingUrl` once the Calendly
   event is approved.
 - **Pending content** is marked with `TODO` comments (client permissions, approved images, legal text).

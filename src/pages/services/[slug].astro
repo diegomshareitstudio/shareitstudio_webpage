@@ -9,6 +9,7 @@ import FaqList from '../../components/ui/FaqList.astro';
 import { services, type ServiceItem } from '../../data/services';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 // The two main service lines have their own hand-built pages and no `page` data
 export function getStaticPaths() {
@@ -83,7 +84,7 @@ const schema = [
           </li>
         ))}
       </ul>
-      <a href={service.portfolio} class="btn-outline mt-10">
+      <a href={withBase(service.portfolio)} class="btn-outline mt-10">
         See examples in our portfolio
       </a>
     </div>
@@ -110,7 +111,7 @@ const schema = [
     <ul class="flex flex-wrap justify-center gap-3">
       <li>
         <a
-          href="/services/amazon-listing-optimization"
+          href={withBase('/services/amazon-listing-optimization')}
           class="inline-block rounded-full bg-brand-green px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-yellow hover:text-brand-green"
         >
           Amazon Listing Optimization
@@ -119,7 +120,7 @@ const schema = [
       {related.map((s) => (
         <li>
           <a
-            href={s.href}
+            href={withBase(s.href)}
             class="inline-block rounded-full border border-brand-green/20 px-4 py-2 text-sm font-medium text-brand-green transition hover:border-brand-yellow hover:bg-brand-yellow"
           >
             {s.title}

@@ -4,6 +4,7 @@
  * Every node has an @id so they reference each other inside one @graph.
  */
 import { SITE } from '../config/site';
+import { absoluteUrl } from './url';
 import type { Faq } from '../data/faqs';
 
 export type Schema = Record<string, unknown>;
@@ -15,10 +16,8 @@ export interface Crumb {
 
 export type PageType = 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
 
-export const absoluteUrl = (path = '/') => new URL(path, `${SITE.url}/`).href;
-
-const ORGANIZATION_ID = `${SITE.url}/#organization`;
-const WEBSITE_ID = `${SITE.url}/#website`;
+const ORGANIZATION_ID = `${absoluteUrl('/')}#organization`;
+const WEBSITE_ID = `${absoluteUrl('/')}#website`;
 const pageId = (path: string, fragment: string) => `${absoluteUrl(path)}#${fragment}`;
 const organizationRef = { '@id': ORGANIZATION_ID };
 

@@ -12,6 +12,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import { getService } from '../data/services';
 import { BOOKING_PAGE } from '../config/site';
+import { withBase } from '../lib/url';
 
 // 03 — two service families; links only, no pricing or plan detail
 const families = [
@@ -80,14 +81,14 @@ const breadcrumbs = [{ name: 'About Us', path: '/about-us' }];
               {f.who}
             </p>
             <p class:list={['mt-3 flex-1', i === 0 ? 'text-white/75' : 'text-brand-ink/70']}>{f.text}</p>
-            <a href={f.service.href} class:list={['mt-6 self-start', i === 0 ? 'btn-primary' : 'btn-dark']}>
+            <a href={withBase(f.service.href)} class:list={['mt-6 self-start', i === 0 ? 'btn-primary' : 'btn-dark']}>
               {f.cta}
             </a>
           </article>
         </li>
       ))}
     </ul>
-    <a href="/services" class="btn-outline mt-8">
+    <a href={withBase('/services')} class="btn-outline mt-8">
       Explore Our Services
     </a>
   </section>
@@ -142,12 +143,12 @@ const breadcrumbs = [{ name: 'About Us', path: '/about-us' }];
       </p>
       <ul class="mt-6 flex flex-wrap gap-3">
         <li>
-          <a href="/our-work" class="btn-outline">
+          <a href={withBase('/our-work')} class="btn-outline">
             See Case Studies
           </a>
         </li>
         <li>
-          <a href="/our-work" class="btn-outline">
+          <a href={withBase('/our-work')} class="btn-outline">
             Explore Our Work
           </a>
         </li>

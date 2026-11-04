@@ -13,6 +13,7 @@
  */
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
+import { withBase } from '../lib/url';
 
 const DRAFT = true;
 const lastUpdated = 'Pending legal review';
@@ -84,7 +85,7 @@ const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions'
       <ul class="space-y-2 text-sm">
         {sections.map((s) => (
           <li>
-            <a href={`#${s.id}`} class="text-brand-green underline underline-offset-4">
+            <a href={withBase(`#${s.id}`)} class="text-brand-green underline underline-offset-4">
               {s.title}
             </a>
           </li>
@@ -97,7 +98,7 @@ const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions'
         <p class="rounded-2xl bg-brand-yellow-soft p-5 text-sm text-brand-green" role="note">
           <strong>Draft.</strong> This page shows the structure of our terms. The full text is being reviewed and will
           be published here. For questions, please{' '}
-          <a href="/contact-us" class="underline">
+          <a href={withBase('/contact-us')} class="underline">
             contact us
           </a>
           .
@@ -116,11 +117,11 @@ const breadcrumbs = [{ name: 'Terms & Conditions', path: '/terms-and-conditions'
 
       <p class="border-t border-black/10 pt-6 text-sm text-brand-ink/60">
         Related:{' '}
-        <a href="/privacy-policy" class="underline">
+        <a href={withBase('/privacy-policy')} class="underline">
           Privacy Policy
         </a>{' '}
         ·
-        <a href="/contact-us" class="underline">
+        <a href={withBase('/contact-us')} class="underline">
           Contact Us
         </a>
       </p>

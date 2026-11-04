@@ -9,6 +9,7 @@
 import { Image, getImage } from 'astro:assets';
 import Spotlight from './Spotlight.astro';
 import type { Testimonial } from '../../data/testimonials';
+import { withBase } from '../../lib/url';
 
 interface Props {
   testimonials: Testimonial[];
@@ -66,9 +67,9 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
                 poster={posters.get(f)?.src}
                 aria-label={`Video testimonial from ${who(f)}`}
               >
-                <source src={f.video.src} type="video/mp4" />
+                <source src={withBase(f.video.src)} type="video/mp4" />
                 {f.video.captions && (
-                  <track kind="captions" src={f.video.captions} srclang="en" label="English" default />
+                  <track kind="captions" src={withBase(f.video.captions)} srclang="en" label="English" default />
                 )}
               </video>
               <button
@@ -124,7 +125,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
             </details>
           )}
           {f.href && !f.placeholder && (
-            <a href={f.href} class="btn-dark mt-6 self-start">
+            <a href={withBase(f.href)} class="btn-dark mt-6 self-start">
               See {f.company ?? f.name}’s case study
             </a>
           )}
@@ -173,9 +174,9 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
                   poster={posters.get(t)?.src}
                   aria-label={`Video testimonial from ${who(t)}`}
                 >
-                  <source src={t.video.src} type="video/mp4" />
+                  <source src={withBase(t.video.src)} type="video/mp4" />
                   {t.video.captions && (
-                    <track kind="captions" src={t.video.captions} srclang="en" label="English" default />
+                    <track kind="captions" src={withBase(t.video.captions)} srclang="en" label="English" default />
                   )}
                 </video>
                 <button
@@ -212,7 +213,7 @@ const who = (t: Testimonial) => `${t.name}, ${t.company ? `${t.role} at ${t.comp
             </details>
           )}
           {t.href && !t.placeholder && (
-            <a href={t.href} class="mt-3 inline-block text-sm font-semibold text-brand-green">
+            <a href={withBase(t.href)} class="mt-3 inline-block text-sm font-semibold text-brand-green">
               See the case study →
             </a>
           )}

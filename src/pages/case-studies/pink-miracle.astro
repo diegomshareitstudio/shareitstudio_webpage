@@ -1,154 +1,466 @@
 ---
+/**
+ * Pink Miracle case study (copy V1): refreshing an established, top-ranked Amazon listing.
+ * All numbers are observed account results, not a controlled test. Reconciliation decisions taken from the copy:
+ *  - the one-month figure is +49.94%, computed from the printed dollar amounts ($404,480.30 → $606,494.63);
+ *  - unit session rates are labelled "reported" (they do not recompute exactly from sessions and units);
+ *  - the 51% result is a shopper-poll share, never a sales or conversion lift;
+ *  - the modeled "incremental revenue" and "left behind" figures are not shown.
+ * TODO: Intellivy/PickFu screenshots, the CTR image comparison and the weekly
+ * review workflow visual; an authoritative Seller Central export for the sales and unit session series.
+ */
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BarChart from '../../components/ui/BarChart.astro';
+import BeforeAfter from '../../components/ui/BeforeAfter.astro';
 import { getCaseStudy } from '../../data/caseStudies';
+import type { Faq } from '../../data/faqs';
+import heroImage from '../../assets/case-studies/pink-miracle/Pink Miracle Hero Image_2_1.jpg';
+import beforeAfterImage from '../../assets/case-studies/pink-miracle/IMAGE #2.jpg';
+import fabricsImage from '../../assets/case-studies/pink-miracle/IMAGE #4.jpg';
+import lifestyleImage from '../../assets/case-studies/pink-miracle/Pink Miracle Lifestyle_1.jpg';
+import hundredPairsImage from '../../assets/case-studies/pink-miracle/Pink Miracle Lifestyle_Extra.jpg';
+import aPlusImage from '../../assets/case-studies/pink-miracle/Pink-Miracle_PremiumA+-Content_01.png';
+import beforeMainImage from '../../assets/case-studies/pink-miracle/before/71xyVDJaU7L._AC_SL1500_.jpg';
+import beforeSneakerImage from '../../assets/case-studies/pink-miracle/before/810rLNbamXL._AC_SL1500_.jpg';
+import beforeCleaningImage from '../../assets/case-studies/pink-miracle/before/81djg7kr7cL._AC_SL1500_.jpg';
+import beforeHoldingImage from '../../assets/case-studies/pink-miracle/before/916E-XvEZrL._AC_SL1500_.jpg';
+import beforeGolfImage from '../../assets/case-studies/pink-miracle/before/918YaG7IafL._AC_SL1500_.jpg';
+import { withBase } from '../../lib/url';
 
 const cs = getCaseStudy('pink-miracle');
 
-const metaTitle = 'Pink Miracle Case Study: +110% Amazon Sales | Share It Studio';
+const metaTitle = 'Pink Miracle Amazon Case Study: +49.9% Sales | Share It Studio';
 const description =
-  'How data-driven listing optimization and A/B testing took Pink Miracle, a #1-ranked shoe cleaner, from $404K to $849K in monthly Amazon sales.';
+  'How Share It Studio updated Pink Miracle’s Amazon listing content, tested images, and monitored results. Monthly sales grew 49.9% from July to August 2024.';
 
-const results = [
-  { metric: 'Monthly sales', before: '$404,480', after: '$606,494', change: '+51.94%', highlight: true },
-  { metric: 'Units ordered', before: '20,234', after: '30,038', change: '+48.5%' },
-  { metric: 'Sessions', before: '92,548', after: '121,808', change: '+31.6%' },
-  { metric: 'Unit session percentage', before: '21.59%', after: '24.44%', change: '+2.85 pts' },
-  { metric: 'Main image CTR (tested)', before: '2.03%', after: '2.48%', change: '+22.2%' },
+const challenges = [
+  {
+    title: 'The competition was catching up.',
+    text: 'A recognized product could no longer rely on reputation alone to communicate its advantages in a crowded search result.',
+  },
+  {
+    title: 'The listing wasn’t making the most of its story.',
+    text: 'Existing images did not consistently connect the product to shoppers’ intended use, its distinctive benefits, or the value of choosing it.',
+  },
+];
+
+const approach = [
+  {
+    title: 'Review business performance.',
+    text: 'Examine sales, PPC performance, and the customer journey to understand what the listing was already doing well — and where there might be room for improvement.',
+  },
+  {
+    title: 'Understand how shoppers decide.',
+    text: 'Consider search intent, product messaging, and the role of visuals in explaining why the cleaner belongs in a shopper’s routine.',
+  },
+  {
+    title: 'Build creative around recognizable benefits.',
+    text: 'Make the product, its use cases, and its differentiation clearer through refreshed images, explanations, and supporting content.',
+  },
+  {
+    title: 'Test before assuming.',
+    text: 'Compare image concepts and listing treatments through shopper-preference research, then monitor real Amazon indicators after content changes went live.',
+  },
+];
+
+const deliverables = [
+  {
+    term: 'Main listing images.',
+    text: 'Multiple hero-image concepts combined the Pink Miracle bottle with shoe-cleaning context, helping shoppers recognize both the product and the use case.',
+  },
+  {
+    term: 'Infographics and lifestyle visuals.',
+    text: 'The refreshed image stack emphasized what the product does, who it is for, and how it fits into real shoe-care situations, using stronger message hierarchy and visual demonstration.',
+  },
+  {
+    term: 'Basic and Premium A+ Content.',
+    text: 'Additional modules and enhanced visual storytelling provided more room to explain the product beyond the image gallery, with Premium features depending on account eligibility and the approved deliverables.',
+  },
+  {
+    term: 'Brand Story, video, and Amazon Posts.',
+    text: 'The creative system extended into other Amazon content placements documented by the project, helping maintain a recognizable presentation across touchpoints.',
+  },
+];
+
+// Original listing creative next to the redesign. The Premium A+ Content has no "before" to compare with.
+const comparisons = [
+  {
+    title: 'Main image',
+    before: [
+      { src: beforeMainImage, alt: 'Original main image: the Pink Miracle bottle and brush on a white background' },
+    ],
+    after: [
+      {
+        src: heroImage,
+        alt: 'Redesigned main image: the Pink Miracle bottle, a hand scrubbing a sneaker and a “Safe on all washable materials” tag',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Infographics',
+    before: [
+      {
+        src: beforeGolfImage,
+        alt: 'Original image: a golf shoe, dirty on the left and clean on the right, labelled before and after',
+      },
+    ],
+    after: [
+      {
+        src: beforeAfterImage,
+        alt: 'Redesigned image: a dirty sneaker labelled before next to a clean one labelled after, with the bottle and brush',
+      },
+      {
+        src: fabricsImage,
+        alt: 'Redesigned image: “Safe for all washable fabrics” over mesh, nubuck, leather and suede',
+      },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Lifestyle and use',
+    before: [
+      { src: beforeSneakerImage, alt: 'Original image: the bottle and brush in front of a red and white sneaker' },
+      { src: beforeCleaningImage, alt: 'Original image: a hand scrubbing a sneaker with the brush' },
+      { src: beforeHoldingImage, alt: 'Original image: a person holding a small Pink Miracle bottle and a sneaker' },
+    ],
+    after: [
+      {
+        src: lifestyleImage,
+        alt: 'Redesigned lifestyle image: “Bring back your sneakers to looking new out of the box”',
+      },
+      { src: hundredPairsImage, alt: 'Redesigned image: “One bottle cleans up to 100 pairs of shoes”' },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'Premium A+ Content',
+    before: [],
+    after: [{ src: aPlusImage, alt: 'Redesigned Premium A+ Content modules for Pink Miracle' }],
+    stacked: true,
+  },
+];
+
+// Reported monthly Amazon sales. Source: the project's sales series supplied by the client.
+const months = [
+  { label: 'July 2024', value: 404480.3, text: '$404,480.30', note: 'Baseline' },
+  { label: 'August 2024', value: 606494.63, text: '$606,494.63' },
+  { label: 'September 2024', value: 663911.92, text: '$663,911.92' },
+  { label: 'October 2024', value: 689081.14, text: '$689,081.14' },
+  { label: 'November 2024', value: 780041.48, text: '$780,041.48' },
+  { label: 'December 2024', value: 678381.42, text: '$678,381.42', note: 'Inventory shortage noted' },
+  { label: 'January 2025', value: 849312.33, text: '$849,312.33' },
+];
+
+const indicators = [
+  { metric: 'Sessions', before: '92,548', after: '121,808', change: '+31.62%' },
+  { metric: 'Units sold', before: '20,234', after: '30,038', change: '+48.45%' },
+  { metric: 'Reported unit session percentage', before: '21.59%', after: '24.44%', change: '+2.85 pp' },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What was the main problem with Pink Miracle’s Amazon listing?',
+    a: 'The brand had an established listing and strong recognition, but its older creative wasn’t clearly communicating the product’s advantages as competitors evolved. The team sought improvements without unnecessarily disrupting what was already familiar to customers.',
+  },
+  {
+    q: 'What did Share It Studio create?',
+    a: 'The documented work included main listing images, infographics, lifestyle images, Basic and Premium A+ Content, Brand Story, videos, and Amazon Posts. The team also evaluated creative alternatives through shopper-preference tests and ongoing performance analysis.',
+  },
+  {
+    q: 'How much did Pink Miracle’s Amazon sales grow?',
+    a: 'Reported monthly Amazon sales grew 49.94% from July to August 2024 ($404,480.30 to $606,494.63). January 2025 sales were $849,312.33, approximately 109.98% above July 2024. These are separate comparisons with different time windows.',
+  },
+  {
+    q: 'What does the 51% result in the image test mean?',
+    a: 'In one four-option Intellivy main-image poll, concept D received 51% of the reported preferences. That is a shopper-poll share, not a 51% increase in Amazon conversion or sales.',
+  },
+  {
+    q: 'Did design alone cause the sales growth?',
+    a: 'The materials don’t demonstrate that. The creative project included testing and performance monitoring alongside broader business activity. The results are observational, not a measure of the isolated impact of new imagery or A+ Content.',
+  },
 ];
 ---
 
 <ArticleLayout
   kind="case-study"
   caseStudy={cs}
-  title="How Pink Miracle grew a #1 Amazon listing to $849K in monthly sales"
-  highlight="$849K in monthly sales"
-  lead="Pink Miracle already ranked #1 in its category. Data-driven creative, A/B testing and weekly optimization still added +51.94% in sales in one month."
+  title="Pink Miracle: +49.9% Amazon Sales in One Month"
+  highlight="+49.9% Amazon Sales"
+  lead="Already a category leader. Still room to grow."
   metaTitle={metaTitle}
   description={description}
-  tags={['Amazon US']}
+  tags={['Jul 2024 – Jan 2025']}
   service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+  faqs={faqs}
+  cta={{
+    title: 'Your Amazon listing may be working. Could it be working harder?',
+    text: 'If your product has an established presence, the answer isn’t always a complete redesign. It may be one clearer image, a more useful gallery, better A+ Content, or a testing plan that shows where change is justified. Show us your listing. We’ll help you explore which creative improvements are worth discussing first.',
+    ctaLabel: 'Talk to a Human',
+    altLabel: 'Explore Amazon Listing Optimization',
+    altHref: '/services/amazon-listing-optimization',
+  }}
 >
   <div class="article-body">
     <aside>
       <p>
-        <strong>In short:</strong> Pink Miracle’s #1-ranked listing had outdated images and messaging. We redesigned its
-        visual content, A/B tested it and optimized it every week together with the brand’s PPC manager. Monthly sales
-        grew from <strong>$404,480 to $606,494 (+51.94%) in one month</strong>, and reached{' '}
-        <strong>$849,312 six months later</strong>.
+        <strong>In short:</strong> Pink Miracle’s original shoe cleaner had brand recognition, an established Amazon
+        presence, and a listing that had worked for years. The problem wasn’t that shoppers had never heard of the
+        product. It was that its aging creative wasn’t keeping pace with the competition — and the brand was
+        understandably cautious about changing a proven listing. Share It Studio combined stronger Amazon product
+        content with shopper-preference testing, PPC and sales analysis, and ongoing creative iteration.
+      </p>
+      <p>
+        <strong>Reported results:</strong> monthly sales rose <strong>+49.94%</strong> from $404,480 in July 2024 to
+        $606,495 in August, and reached <strong>$849,312</strong> in January 2025 (+109.98% versus July). Units sold
+        grew
+        <strong>+48.45%</strong> from July 2024 to January 2025, and the reported unit session rate went from 21.59% to
+        24.44% (+2.85 percentage points).
+      </p>
+      <p class="text-sm italic">
+        These are observed Amazon account results during the period described. The reports do not establish that
+        creative changes alone caused the increases.
       </p>
     </aside>
 
-    <section id="client-background">
-      <h2>Client Background</h2>
+    <section id="the-challenge">
+      <h2>When a listing is already winning, change feels risky.</h2>
       <p>
-        <strong>Pink Miracle</strong> is an established shoe cleaner brand with a strong reputation and a top-ranking
-        position on Amazon. Despite its success, the brand had significant untapped sales potential because of outdated
-        listing content.
-      </p>
-    </section>
-
-    <section id="initial-challenge">
-      <h2>Initial Challenge</h2>
-      <p>
-        Although Pink Miracle already ranked <strong>#1 in its category</strong>, its Amazon listing lacked engaging
-        visuals, clear product messaging and competitive differentiation.
+        Pink Miracle was described in the project materials as a top-ranked shoe-cleaning brand with a strong
+        reputation. Yet much of its Amazon listing content still reflected an earlier era of ecommerce — the case study
+        describes it as dating back to around 2017.
       </p>
       <p>
-        With approximately <strong>$404K in monthly sales</strong>, the challenge was to improve an already successful
-        listing and unlock additional revenue — without disrupting its existing performance.
+        The team faced an unusual challenge:
+        <strong>improve a successful listing without treating everything familiar about it as a problem.</strong> The
+        brand’s owners had good reason to ask why they should change creative that appeared to be working.
       </p>
+      {challenges.map((item) => (
+        <p>
+          <strong>{item.title}</strong>
+          {item.text}
+        </p>
+      ))}
+      <p>
+        <strong>A redesign without evidence would introduce risk.</strong> The goal wasn’t to chase a trend. It was to
+        find out which changes shoppers actually preferred, and monitor what happened after publication.
+      </p>
+      <blockquote>
+        <p>
+          <strong>The opportunity:</strong> Keep the brand recognizable while making the product’s value easier to see
+          and giving creative decisions a measurable feedback loop.
+        </p>
+      </blockquote>
     </section>
 
     <section id="our-approach">
-      <h2>Our Approach</h2>
+      <h2>The starting point was data, not a blank design file.</h2>
       <p>
-        We developed a data-driven Amazon marketing strategy focused on improving click-through rate, conversion and
-        sales through content optimization and continuous testing.
+        The work combined commercial analysis with a review of the content a buyer actually encounters. See how we
+        approach <a href={withBase('/services/amazon-listing-optimization')}>Amazon listing optimization</a> for
+        established listings.
       </p>
+      <ol class="steps-list">
+        {approach.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ol>
       <p>
-        The strategy combined{' '}
-        <strong>PPC analysis, sales data, keyword targeting, customer-focused creative and A/B testing</strong> to find
-        where the listing could improve.
+        <strong>The principle:</strong> An established listing doesn’t necessarily need more content. It needs the right
+        content, backed by reasons to create it.
       </p>
     </section>
 
-    <section id="implementation">
-      <h2>Implementation</h2>
-      <ol class="steps-list">
-        <li>
-          <h3>Performance analysis</h3>
-          <p>Analyzed PPC metrics, sales and customer behavior to identify optimization opportunities.</p>
-        </li>
-        <li>
-          <h3>Content optimization</h3>
-          <p>
-            Redesigned the main image, infographics, lifestyle images, A+ Content, Premium A+, Brand Story and videos.
-          </p>
-        </li>
-        <li>
-          <h3>A/B testing</h3>
-          <p>
-            Tested main images, image stacks, product messaging and competitor comparisons with <strong>PickFu</strong>{' '}
-            and <strong>Intellivy</strong>.
-          </p>
-        </li>
-        <li>
-          <h3>Continuous optimization</h3>
-          <p>Monitored CTR, CVR, sessions, units, ROAS and ACOS to guide weekly improvements.</p>
-        </li>
-        <li>
-          <h3>Performance monitoring</h3>
-          <p>
-            Dedicated <strong>24 hours per month</strong> to data reviews, content adjustments and coordination with the
-            PPC manager.
-          </p>
-        </li>
-      </ol>
+    <section id="creative-transformation">
+      <h2>From product shots to a more persuasive product story.</h2>
+      <p>
+        The case study documents a broad set of Amazon creative work. Rather than giving every asset the same job, the
+        team developed visuals and content for different stages of the shopping decision.
+      </p>
+      {deliverables.map((item) => (
+        <p>
+          <strong>{item.term}</strong>
+          {item.text}
+        </p>
+      ))}
+      {comparisons.map((item) => (
+        <BeforeAfter title={item.title} before={item.before} after={item.after} stacked={item.stacked} />
+      ))}
+      <p>
+        The difference is visible in the before-and-after image comparison: the previous visuals concentrated more on
+        isolated shots, while the refreshed set emphasized use, product benefits, and a more connected visual identity.
+        Explore our <a href={withBase('/services/amazon-listing-images')}>listing image design</a> and
+        <a href={withBase('/services/amazon-a-plus-content')}>A+ Content design</a> services.
+      </p>
+    </section>
+
+    <section id="testing-the-creative">
+      <h2>A creative concept wasn’t finished when the team liked it.</h2>
+      <p>
+        The case study shows image and image-stack comparisons using <strong>Intellivy</strong> and
+        <strong>PickFu</strong>, including tests against alternative concepts and competing products.
+      </p>
+      <p>
+        In one four-option Intellivy main-image poll,
+        <strong>concept D received 51% of the reported preferences</strong>, compared with 23%, 13%, and 13% for the
+        other concepts. A PickFu comparison shown alongside it also identified a winning concept, providing another
+        source of directional feedback.
+      </p>
+      <p>
+        Other comparisons covered full image stacks, before-and-after demonstrations, and safety-focused messaging —
+        helping the team evaluate which explanations and visuals shoppers found more persuasive.
+      </p>
+      <blockquote>
+        <p>
+          <strong>
+            51% preference share is a result of that shopper poll, not a 51% increase in Amazon conversion or sales.
+          </strong>
+        </p>
+      </blockquote>
+      <p class="text-sm italic">
+        The source deck does not provide complete sample-size and experiment details for every test, so these findings
+        are best presented as creative research signals.
+      </p>
+      <!-- TODO: original Intellivy poll screenshot, captioned "Concept D: 51% preference in the reported Intellivy poll" -->
     </section>
 
     <section id="results">
-      <h2>Results</h2>
-      <p>Performance one month after the new content went live, compared with the starting baseline:</p>
+      <h2>Sales rose quickly — and the business reached a higher monthly level.</h2>
+      <p>
+        <strong>The first monthly comparison was already significant.</strong> Reported Amazon sales increased from
+        <strong>$404,480.30 in July 2024</strong> to <strong>$606,494.63 in August 2024</strong>: an increase of
+        $202,014.33, or <strong>49.94%</strong>.
+      </p>
+      <p>
+        The following months continued above the July baseline. Sales reached $780,041 in November, dipped in December
+        when the source presentation notes an <strong>inventory shortage</strong>, and rose to
+        <strong>$849,312 in January 2025</strong> — approximately <strong>110% higher than July</strong>, six months
+        after the baseline.
+      </p>
       <div class="table-wrap">
         <table>
+          <caption class="sr-only">Reported monthly Amazon sales, July 2024 to January 2025</caption>
           <thead>
             <tr>
-              <th scope="col">Metric</th>
-              <th scope="col">Before</th>
-              <th scope="col">After</th>
-              <th scope="col">Change</th>
+              <th scope="col">Month</th>
+              <th scope="col">Reported monthly Amazon sales</th>
             </tr>
           </thead>
           <tbody>
-            {results.map((r) => (
+            {months.map((month) => (
               <tr>
-                <th scope="row">{r.metric}</th>
-                <td>{r.before}</td>
-                <td>{r.after}</td>
-                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+                <th scope="row">{month.label}</th>
+                <td>{month.text}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="text-sm text-brand-ink/55">Main image CTR comes from a tested main image variation.</p>
+      <div class="my-8">
+        <BarChart title="Reported monthly Amazon sales" bars={months} />
+      </div>
 
-      <blockquote>
-        <p>
-          Six months later, monthly sales reached <strong>$849,312</strong> — about <strong>110% above</strong> the
-          initial baseline.
-        </p>
-      </blockquote>
+      <h3>More sessions. More units. A higher reported unit session rate.</h3>
+      <p>The project’s July 2024 and January 2025 snapshots also show changes beyond revenue:</p>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">
+            Sessions, units and reported unit session percentage, July 2024 vs. January 2025
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Metric</th>
+              <th scope="col">July 2024</th>
+              <th scope="col">January 2025</th>
+              <th scope="col">Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {indicators.map((row) => (
+              <tr>
+                <th scope="row">{row.metric}</th>
+                <td>{row.before}</td>
+                <td>{row.after}</td>
+                <td>{row.change}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm italic">
+        These indicators describe how the reported account performed over the period. Product mix, pricing, advertising,
+        inventory, and other commercial factors may also have influenced the results.
+      </p>
     </section>
 
-    <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
+    <section id="optimization-loop">
+      <h2>The ongoing reviews mattered as much as the initial redesign.</h2>
+      <p>
+        The project didn’t stop at delivering images and A+ Content. The source materials describe
+        <strong>
+          six hours per week — approximately 24 hours per month — spent reviewing performance and refining content
+        </strong>
+        .
+      </p>
+      <p>The team tracked two complementary sets of signals:</p>
       <ul>
-        <li>Even top-ranking Amazon products can have significant untapped revenue potential.</li>
-        <li>Data-driven creative and A/B testing help improve listing performance.</li>
-        <li>Continuous monitoring and strategic content adjustments can generate measurable sales growth.</li>
-        <li>High-quality visuals, supported by PPC and customer insights, strengthen conversion opportunities.</li>
+        <li>
+          <strong>Advertising:</strong> Conversion rate, ACoS, and ROAS — in coordination with the existing PPC manager.
+        </li>
+        <li>
+          <strong>Organic and listing performance:</strong> CTR, unit session rate, sessions, units ordered, and total
+          sales.
+        </li>
       </ul>
+      <p>
+        The process included weekly internal discussions, weekly coordination with the PPC manager, and selective
+        content adjustments informed by the data.
+      </p>
+      <p>
+        One example in the case study shows a main-image comparison with <strong>CTR rising from 2.03% to 2.48%</strong>{' '}
+        — a 0.45-percentage-point improvement (about 22.2% relative). The deck shows the old and new image, but not a
+        full controlled-test methodology for that result; it should be interpreted as a reported performance comparison,
+        not proof of a single image’s isolated causal effect.
+      </p>
+      <blockquote>
+        <p>
+          <strong>The lesson:</strong> A listing update creates an opportunity to learn. Monitoring and iteration help
+          determine what deserves to stay, change, or be tested again.
+        </p>
+      </blockquote>
+      <!-- TODO: old/new main image CTR comparison (label "Reported comparison") and the weekly review workflow -->
+    </section>
+
+    <section id="takeaway">
+      <h2>Being a category leader doesn’t mean the creative has finished its job.</h2>
+      <p>
+        Pink Miracle’s case illustrates a specific approach: respect what’s already working, identify where shoppers
+        need more clarity, test meaningful variations, and keep watching the data after launch.
+      </p>
+      <p>
+        The observed sales trajectory was strong. Monthly sales rose 49.94% from July to August 2024 and reached
+        $849,312 by January 2025. Reported sessions, units sold, and unit session percentage were also higher in January
+        than in July.
+      </p>
+      <p>
+        <strong>
+          The work and the business results are documented together, but they are not a controlled attribution study.
+        </strong>
+        The data doesn’t isolate how much of the growth came from the creative changes versus other drivers.
+      </p>
+    </section>
+
+    <section id="questions">
+      <h2>Questions about Pink Miracle’s project</h2>
+      {faqs.map((item) => (
+        <>
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </>
+      ))}
     </section>
   </div>
 </ArticleLayout>

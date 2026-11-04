@@ -17,12 +17,13 @@ import '../../styles/selector.css';
 import { getService, services } from '../../data/services';
 import { itemListSchema } from '../../lib/schema';
 import { slideOffset, slidePos, slideSide } from '../../lib/selector';
-import oldListing from '../../assets/case-studies/super-ninja/old-listing.png';
-import newListing from '../../assets/case-studies/super-ninja/new-listing.png';
+import beforeMainImage from '../../assets/case-studies/super-ninja/before/B0D5DJ7V4P.PT01.jpg';
+import afterMainImage from '../../assets/case-studies/super-ninja/Fruit Flies (US) Hero Image_2.png';
 import amarantoLogo from '../../assets/testimonials/logos/amaranto.png';
 import yungprimeLogo from '../../assets/testimonials/logos/yungprime.png';
 import giftest from '../../assets//giftest.gif';
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 // 02 — the two service lines
 const lines = [
@@ -177,13 +178,17 @@ const schema = [
                 {l.title}
               </h3>
               <p class="relative mt-4 max-w-lg text-brand-ink/65">{l.text}</p>
-              <a href={l.href} class:list={[i === 0 ? 'btn-primary' : 'btn-dark', 'relative mt-6']}>
+              <a href={withBase(l.href)} class:list={[i === 0 ? 'btn-primary' : 'btn-dark', 'relative mt-6']}>
                 {l.cta}
               </a>
             </div>
 
             {social ? (
-              <a href={l.portfolio} class="group block" aria-label="See social media work: Reels and carousels">
+              <a
+                href={withBase(l.portfolio)}
+                class="group block"
+                aria-label="See social media work: Reels and carousels"
+              >
                 <ul class="flex items-end justify-center gap-3 sm:gap-4">
                   {socialPreview.map((item, k) => (
                     <li
@@ -203,12 +208,16 @@ const schema = [
                 </span>
               </a>
             ) : (
-              <a href={l.portfolio} class="group block lg:order-1" aria-label="See Amazon listing transformations">
+              <a
+                href={withBase(l.portfolio)}
+                class="group block lg:order-1"
+                aria-label="See Amazon listing transformations"
+              >
                 <div class="grid grid-cols-2 items-center gap-4">
                   <figure class="-rotate-3">
                     <Image
-                      src={oldListing}
-                      alt="Super Ninja Amazon listing images before the redesign"
+                      src={beforeMainImage}
+                      alt="Super Ninja main image before the redesign: four bottles in front of the fruit fly box"
                       width={435}
                       class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2 opacity-80"
                     />
@@ -218,8 +227,8 @@ const schema = [
                   </figure>
                   <figure class="rotate-2">
                     <Image
-                      src={newListing}
-                      alt="Super Ninja Amazon listing images after the redesign"
+                      src={afterMainImage}
+                      alt="Super Ninja main image after the redesign: trap boxes and bottle with fruit and flies"
                       width={436}
                       class="aspect-square w-full rounded-[1.25rem] bg-white object-contain p-2 shadow-lg ring-2 ring-brand-yellow transition group-hover:-translate-y-1"
                     />
@@ -277,7 +286,12 @@ const schema = [
               aria-label={`${i + 1} of ${creative.length}: ${c.service.title}`}
               aria-hidden={o === 0 ? undefined : 'true'}
             >
-              <a href={c.service.href} class="wk-media" tabindex={o === 0 ? undefined : -1} aria-label={c.cta}>
+              <a
+                href={withBase(c.service.href)}
+                class="wk-media"
+                tabindex={o === 0 ? undefined : -1}
+                aria-label={c.cta}
+              >
                 {c.image ? (
                   <Image
                     src={c.image.src}
@@ -304,7 +318,7 @@ const schema = [
                 <p class="wk-text svc-text">{c.bestWhen}</p>
                 <p class="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-green/60">What you get</p>
                 <p class="wk-text svc-text">{c.get}</p>
-                <a href={c.service.href} class="wk-cta">
+                <a href={withBase(c.service.href)} class="wk-cta">
                   {c.cta} →
                 </a>
               </div>
@@ -339,7 +353,7 @@ const schema = [
                 Tell us about your product. We’ll point you to the right one.
               </p>
             </div>
-            <a href={BOOKING_PAGE} class="btn-dark">
+            <a href={withBase(BOOKING_PAGE)} class="btn-dark">
               Talk to a Human
             </a>
           </aside>

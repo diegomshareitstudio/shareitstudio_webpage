@@ -1,5 +1,6 @@
 ---
 import { BOOKING_PAGE } from '../../config/site';
+import { withBase } from '../../lib/url';
 
 /**
  * "Ask your own question" box for the FAQs page. Posts to /api/ask, which answers with Claude
@@ -43,7 +44,7 @@ import { BOOKING_PAGE } from '../../config/site';
   ></div>
   <p class="mt-4 text-xs text-white/60">
     Answers are AI-generated and may contain mistakes. For anything important,{' '}
-    <a href={BOOKING_PAGE} class="underline">
+    <a href={withBase(BOOKING_PAGE)} class="underline">
       book a call
     </a>
     .
@@ -51,6 +52,8 @@ import { BOOKING_PAGE } from '../../config/site';
 </section>
 
 <script>
+  import { withBase } from '../../lib/url';
+
   const form = document.getElementById('ask-form') as HTMLFormElement;
   const input = document.getElementById('ask-input') as HTMLTextAreaElement;
   const submit = document.getElementById('ask-submit') as HTMLButtonElement;
@@ -64,7 +67,7 @@ import { BOOKING_PAGE } from '../../config/site';
     out.textContent = '';
 
     try {
-      const res = await fetch('/api/ask', {
+      const res = await fetch(withBase('/api/ask'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: input.value }),

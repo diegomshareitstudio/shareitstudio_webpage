@@ -14,6 +14,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { SITE } from '../config/site';
+import { withBase } from '../lib/url';
 
 const { email, bookingUrl } = SITE;
 const canBook = Boolean(bookingUrl);
@@ -64,7 +65,7 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
           ></iframe>
         </div>
         <p class="mt-4">
-          <a href={bookingUrl} target="_blank" rel="noopener" class="btn-outline">
+          <a href={withBase(bookingUrl)} target="_blank" rel="noopener" class="btn-outline">
             Open Booking Calendar
           </a>
         </p>
@@ -73,7 +74,7 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
       <div class="rounded-[1.75rem] bg-brand-cream p-8" role="status">
         <p class="text-lg font-bold text-brand-green">Online scheduling isn’t available yet.</p>
         <p class="mt-2 max-w-2xl text-brand-ink/70">To arrange a call, email us and we’ll follow up with next steps.</p>
-        <a href={`mailto:${email}`} class="btn-dark mt-6">
+        <a href={withBase(`mailto:${email}`)} class="btn-dark mt-6">
           Email {email}
         </a>
       </div>
@@ -115,7 +116,7 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
     {/* TODO: Legal-approved disclosure (L-10); reschedule/cancel details only once confirmed (L-09) */}
     <p class="mt-2 max-w-2xl text-brand-ink/70">
       {canBook ? 'Scheduling uses a third-party tool, Calendly. ' : ''}Read how we handle information in our
-      <a href="/privacy-policy" class="font-semibold text-brand-green underline underline-offset-4">
+      <a href={withBase('/privacy-policy')} class="font-semibold text-brand-green underline underline-offset-4">
         Privacy Policy
       </a>
       .
@@ -132,14 +133,14 @@ const breadcrumbs = [{ name: 'Book a Call', path: '/book-a-call' }];
         {canBook
           ? 'If the calendar doesn’t load, use the booking link above, or email us at '
           : 'You can reach us by email at '}
-        <a href={`mailto:${email}`} class="font-semibold text-brand-green underline">
+        <a href={withBase(`mailto:${email}`)} class="font-semibold text-brand-green underline">
           {email}
         </a>
         .
       </p>
       <p class="mt-3 text-brand-ink/70">
         Need help with an existing project?
-        <a href="/contact-us" class="font-semibold text-brand-green underline underline-offset-4">
+        <a href={withBase('/contact-us')} class="font-semibold text-brand-green underline underline-offset-4">
           Contact Us
         </a>
       </p>

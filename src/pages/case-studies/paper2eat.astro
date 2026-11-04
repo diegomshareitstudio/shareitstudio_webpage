@@ -1,166 +1,404 @@
 ---
+/**
+ * Paper2eat case study (copy V1): coordinated Amazon creative, January–June 2026.
+ * The figures are observed account sales, not an isolated effect of the creative: the copy says so, and it keeps
+ * CTR/CVR (which fell) and the unresolved May ad data in view on purpose. Do not quote the "6.87× ROAS" average.
+ * TODO: product-video and Storefront captures (before and after); Spanish asset pairs; confirm rollout dates and which Spanish assets are live.
+ */
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BarChart from '../../components/ui/BarChart.astro';
+import BeforeAfter from '../../components/ui/BeforeAfter.astro';
 import { getCaseStudy } from '../../data/caseStudies';
+import type { Faq } from '../../data/faqs';
+import heroImage from '../../assets/case-studies/paper2eat/Paper2Eat Hero Image_4.jpg';
+import lifestyleImage from '../../assets/case-studies/paper2eat/Paper2Eat Lifestyle_4_1.jpg';
+import aPlusImage1 from '../../assets/case-studies/paper2eat/Paper2Eat-A+-Content_01.png';
+import aPlusImage2 from '../../assets/case-studies/paper2eat/Paper2Eat-A+-Content_02.png';
+import beforeSheetsImage from '../../assets/case-studies/paper2eat/before/Screenshot 2026-08-07 084245.png';
+import beforeIngredientsImage from '../../assets/case-studies/paper2eat/before/Screenshot 2026-08-07 084259.png';
+import beforeArtImage from '../../assets/case-studies/paper2eat/before/Screenshot 2026-08-07 084322.png';
+import beforeShapesImage from '../../assets/case-studies/paper2eat/before/Screenshot 2026-08-07 084336.png';
+import beforeAPlusImage from '../../assets/case-studies/paper2eat/before/Screenshot 2026-08-07 090314.png';
+import { withBase } from '../../lib/url';
 
 const cs = getCaseStudy('paper2eat');
 
-const metaTitle = 'Paper2eat Case Study: $1.33M in Amazon Sales | Share It Studio';
+const metaTitle = 'Paper2eat Amazon Case Study: $1.33M in 6 Months | Share It Studio';
 const description =
-  'How an integrated Amazon content strategy — listing images, A+ Content, video, Storefront and Spanish localization — grew Paper2eat’s monthly sales by 25.3%.';
+  'See Paper2eat’s $1.33M in six-month Amazon sales alongside a coordinated refresh of listing images, A+ Content, video, Storefront and Spanish-language assets.';
 
-const results = [
-  { metric: 'Monthly sales (June)', before: '$184,569', after: '$231,257', change: '+25.3%', highlight: true },
-  { metric: 'Peak monthly sales (May)', before: '$184,569', after: '$258,265', change: '+39.9%' },
+const challenges = [
+  {
+    title: 'Make the product easier to understand.',
+    text: 'Present its uses and benefits clearly, so shoppers can quickly understand the product and imagine the finished result.',
+  },
+  {
+    title: 'Make the content feel connected.',
+    text: 'Align the story across listing images, A+ Content, product video, and the branded Storefront rather than treating each placement as a separate piece.',
+  },
+  {
+    title: 'Address questions before purchase.',
+    text: 'Use the available creative space to explain product features and applications that matter to shoppers’ decisions.',
+  },
+  {
+    title: 'Keep performance in view.',
+    text: 'Review sales and advertising signals while improving the content, without assuming a new design automatically means a better conversion rate.',
+  },
+];
+
+const approach = [
+  {
+    title: 'Analyze the starting point.',
+    text: 'Review account sales trends, available shopper behavior, and the existing Amazon experience to identify where the content could work harder.',
+  },
+  {
+    title: 'Prioritize buyer questions.',
+    text: 'Decide which product explanations and use cases customers need first — and which belong deeper in the journey.',
+  },
+  {
+    title: 'Build the connected experience.',
+    text: 'Bring the listing images, A+ Content, product video, and Storefront into one consistent creative direction.',
+  },
+  {
+    title: 'Review the signals.',
+    text: 'Use reported performance changes to inform the next creative questions and opportunities for improvement.',
+  },
+];
+
+// Each touchpoint with the real creative we have for it. Video and Storefront have no capture yet.
+const transformation = [
+  {
+    term: 'Listing Images — Make the value visible.',
+    text: 'The updated gallery brought product benefits, practical applications, and visual consistency into the images shoppers encounter while evaluating the listing.',
+  },
+  {
+    term: 'A+ Content — Explain the product in greater depth.',
+    text: 'Reworked modules used a coordinated visual language to show features, use cases, and the product experience beyond the standard gallery.',
+  },
+  {
+    term: 'Product Video — Show it in action.',
+    text: 'Updated video creative helped demonstrate how the product is used instead of relying on static explanations alone.',
+  },
+  {
+    term: 'Amazon Storefront — Connect the wider catalog.',
+    text: 'A refreshed Storefront organized the brand experience and made related products easier to explore in one place.',
+  },
+];
+
+// Original listing creative next to the redesign. Product video and Storefront have no captures yet.
+const comparisons = [
+  {
+    title: 'Listing images',
+    before: [
+      { src: beforeSheetsImage, alt: 'Original listing image: 25 frosting sheets with printable area and thickness' },
+      {
+        src: beforeIngredientsImage,
+        alt: 'Original listing image: ingredients, potato starch, water and sunflower oil',
+      },
+      { src: beforeArtImage, alt: 'Original listing image: “Make amazing edible art” with a decorated cake' },
+      { src: beforeShapesImage, alt: 'Original listing image: “Easily create custom shapes” with a decorated cake' },
+    ],
+    after: [
+      {
+        src: heroImage,
+        alt: 'Redesigned main image: a 24-pack of Paper2eat frosting sheets with a “Boy or Girl” cake',
+      },
+      { src: lifestyleImage, alt: 'Redesigned lifestyle image: a woman placing a printed frosting sheet on a cake' },
+    ],
+    stacked: false,
+  },
+  {
+    title: 'A+ Content',
+    before: [
+      { src: beforeAPlusImage, alt: 'Original A+ Content banner: the Paper2eat logo above a row of decorated cakes' },
+    ],
+    after: [
+      { src: aPlusImage1, alt: 'Redesigned A+ Content: “Premium frosting sheets for professional results”' },
+      { src: aPlusImage2, alt: 'Redesigned A+ Content: “Bring your sweetest ideas to life”' },
+    ],
+    stacked: true,
+  },
+];
+
+const spanishAssets = [
+  { term: 'Spanish listing content', text: 'product information and creative adapted for the language experience.' },
+  { term: 'Spanish A+ Content', text: 'enhanced modules carrying the product explanation into Spanish.' },
+  { term: 'Spanish Storefront', text: 'branded pages and visuals aligned with the broader content system.' },
+];
+
+// Total Amazon sales per month, all ASINs. Source: Amazon account report supplied by the client.
+const months = [
+  { label: 'January 2026', value: 184569.1, text: '$184,569.10', growth: 'Baseline', note: 'Baseline' },
+  { label: 'February 2026', value: 206480.57, text: '$206,480.57', growth: '+11.9%' },
+  { label: 'March 2026', value: 224835.02, text: '$224,835.02', growth: '+21.8%' },
+  { label: 'April 2026', value: 228839.04, text: '$228,839.04', growth: '+24.0%' },
+  { label: 'May 2026', value: 258265.32, text: '$258,265.32', growth: '+39.9%', note: 'Peak' },
+  { label: 'June 2026', value: 231257.21, text: '$231,257.21', growth: '+25.3%', note: 'Closing month' },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What did Share It Studio produce for Paper2eat?',
+    a: 'Coordinated Amazon creative across the listing images, A+ Content, product video, and Storefront, plus Spanish-language listing content, A+ Content, and Storefront. Confirm delivered scope and live dates before treating every item as published.',
+  },
+  {
+    q: 'How much did Paper2eat sell during the project period?',
+    a: 'The supplied Amazon account report shows $1,334,246.26 in total sales from January through June 2026.',
+  },
+  {
+    q: 'Did sales increase every month?',
+    a: 'Not every month. Sales increased from January through May, then decreased in June. Every month from February through June still exceeded the January baseline.',
+  },
+  {
+    q: 'Did the listing’s click-through and conversion rates improve?',
+    a: 'No. Both reported CTR and CVR were lower in June than in January. The report presents them as opportunities for continued work.',
+  },
+  {
+    q: 'Was Spanish-language content produced?',
+    a: 'The documents describe Spanish listing content, A+ Content, and Storefront work. They do not provide separate Spanish-language traffic, conversion, or sales results.',
+  },
+  {
+    q: 'Can the reported sales growth be attributed entirely to Share It Studio’s creative?',
+    a: 'No. The reports document creative work and account results in the same period, but do not isolate the effects of creative changes from advertising, traffic, demand, pricing, or other factors.',
+  },
 ];
 ---
 
 <ArticleLayout
   kind="case-study"
   caseStudy={cs}
-  title="How Paper2eat reached $1.33M in Amazon sales in six months"
-  highlight="$1.33M in Amazon sales"
-  lead="By connecting listing images, A+ Content, video and Storefront into one shopping experience — and localizing it into Spanish — Paper2eat grew monthly sales by 25.3% while keeping a 6.87× ROAS."
+  title="Paper2eat: $1.33M in Amazon Sales Across Six Months"
+  highlight="$1.33M in Amazon Sales"
+  lead="From $184K to $231K in monthly sales — with a more connected Amazon shopping experience."
   metaTitle={metaTitle}
   description={description}
   tags={['Jan – Jun 2026']}
   service={{ label: 'Amazon Listing Optimization', href: '/services/amazon-listing-optimization' }}
+  faqs={faqs}
+  cta={{
+    title: 'Does your Amazon content tell one clear product story?',
+    text: 'Show us your listing and what customers may be missing. We’ll help you explore the creative priorities worth addressing — whether that’s one asset or a connected content refresh.',
+    ctaLabel: 'Talk to a Human',
+    altLabel: 'Explore Amazon Listing Optimization',
+    altHref: '/services/amazon-listing-optimization',
+  }}
 >
   <div class="article-body">
     <aside>
       <p>
-        <strong>In short:</strong> Paper2eat’s listing images, A+ Content, videos and Storefront didn’t tell one
-        consistent story. We aligned every Amazon touchpoint and added Spanish content. From January to June 2026,
-        monthly sales grew from <strong>$184,569 to $231,257 (+25.3%)</strong>, with{' '}
-        <strong>$1.33M in total sales</strong> and an average <strong>6.87× ROAS</strong>.
+        <strong>In short:</strong> Paper2eat sells edible frosting sheets and cake-decorating products. The brand
+        already had meaningful Amazon sales, but its listing images, A+ Content, video, and Storefront were not yet
+        working as one clear product story. Share It Studio developed coordinated creative across those touchpoints and
+        Spanish-language assets to help customers understand the product and explore the brand more easily.
+      </p>
+      <p>
+        <strong>January–June 2026:</strong> <strong>$1,334,246</strong> in total Amazon sales, monthly sales{' '}
+        <strong>+25.3%</strong> ($184,569 in January to $231,257 in June), a <strong>$258,265</strong> peak in May
+        (about +39.9% versus January), and five consecutive months above January’s baseline.
+      </p>
+      <p class="text-sm italic">
+        These figures describe observed Amazon account performance. The documents do not establish that the creative
+        work alone caused the sales changes.
       </p>
     </aside>
 
-    <section id="client-background">
-      <h2>Client Background</h2>
+    <section id="the-starting-point">
+      <h2>A growing Amazon brand — but not yet one connected content experience.</h2>
       <p>
-        <strong>Paper2eat</strong> is an established Amazon brand with consistent sales. In January 2026 it generated{' '}
-        <strong>$184,569 in monthly revenue</strong>, a strong foundation for further growth.
+        Paper2eat entered January 2026 with <strong>$184,569 in total Amazon sales</strong>. This was not a product with
+        no traction. It was a business with a proven sales foundation and more to communicate to customers.
       </p>
+      <p>
+        For edible printing and cake decoration products, buyers need to see what the product is, what they can make
+        with it, and how it fits into an occasion or project.
+      </p>
+      <p>
+        The original listing gallery, A+ Content, and video existed — but the project’s starting-point review found an
+        opportunity to align their message, visual direction, and sequence across Amazon.
+      </p>
+      <blockquote>
+        <p>
+          The goal wasn’t to add more content for its own sake. It was to make the existing shopping journey easier to
+          follow.
+        </p>
+      </blockquote>
+      <!-- TODO: original product video, from verified original files -->
     </section>
 
-    <section id="initial-challenge">
-      <h2>Initial Challenge</h2>
-      <p>
-        Despite its sales performance, Paper2eat needed a more cohesive Amazon content strategy. Its{' '}
-        <strong>listing images, A+ Content, videos and Storefront</strong> were not aligned, so shoppers didn’t get a
-        consistent experience.
-      </p>
-      <p>
-        The goal was to improve product communication, address customer objections, support conversions and increase
-        sales — while maintaining advertising efficiency.
-      </p>
-    </section>
-
-    <section id="our-approach">
-      <h2>Our Approach</h2>
-      <p>
-        We developed an integrated Amazon growth strategy that combined performance analysis, content optimization and
-        continuous monitoring.
-      </p>
-      <p>
-        The focus was to <strong>connect every Amazon touchpoint</strong>, creating a clearer customer journey from
-        product discovery to purchase.
-      </p>
-    </section>
-
-    <section id="implementation">
-      <h2>Implementation</h2>
+    <section id="the-challenge">
+      <h2>Give customers a clearer reason to choose — across every touchpoint.</h2>
       <ol class="steps-list">
-        <li>
-          <h3>Performance analysis</h3>
-          <p>Analyzed sales trends, account data and shopper behavior to identify growth opportunities.</p>
-        </li>
-        <li>
-          <h3>Listing optimization</h3>
-          <p>Improved product images and messaging to communicate product benefits and address customer concerns.</p>
-        </li>
-        <li>
-          <h3>A+ Content & video</h3>
-          <p>Updated visual content to strengthen product storytelling and the shopping experience.</p>
-        </li>
-        <li>
-          <h3>Storefront optimization</h3>
-          <p>Aligned brand messaging and visuals across the Amazon Storefront.</p>
-        </li>
-        <li>
-          <h3>Spanish localization</h3>
-          <p>Developed Spanish listing content, A+ Content and Storefront assets.</p>
-        </li>
-        <li>
-          <h3>Continuous optimization</h3>
-          <p>Monitored sales and performance metrics to find opportunities for further improvement.</p>
-        </li>
+        {challenges.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
       </ol>
     </section>
 
+    <section id="our-approach">
+      <h2>Analyze. Prioritize. Create. Refine.</h2>
+      <p>
+        One product story across multiple Amazon touchpoints. Read more about our
+        <a href={withBase('/services/amazon-listing-optimization')}>Amazon listing optimization</a> work.
+      </p>
+      <ol class="steps-list">
+        {approach.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p>
+        <strong>The idea:</strong> Each asset has a different job, but all of them should help shoppers understand the
+        same product.
+      </p>
+    </section>
+
+    <section id="creative-transformation">
+      <h2>From separate assets to a more recognizable Amazon experience.</h2>
+      {transformation.map((item) => (
+        <>
+          <h3>{item.term}</h3>
+          <p>{item.text}</p>
+        </>
+      ))}
+      {comparisons.map((item) => (
+        <BeforeAfter title={item.title} before={item.before} after={item.after} stacked={item.stacked} />
+      ))}
+      <p>
+        <strong>
+          The change wasn’t just visual consistency. It was a clearer path from product discovery to understanding.
+        </strong>
+        Explore our <a href={withBase('/services/amazon-listing-images')}>listing image design</a> and
+        <a href={withBase('/services/amazon-a-plus-content')}>A+ Content design</a> services.
+      </p>
+      <!-- TODO: before/after captures of the product video and the Storefront -->
+    </section>
+
+    <section id="spanish-language-content">
+      <h2>A clearer product story for Spanish-speaking shoppers, too.</h2>
+      <p>
+        Alongside the main creative work, Share It Studio developed Spanish-language Amazon content so the brand could
+        communicate more consistently with Spanish-speaking customers. The documented work covered three touchpoints:
+      </p>
+      <ul>
+        {spanishAssets.map((item) => (
+          <li>
+            <strong>{item.term}</strong> — {item.text}
+          </li>
+        ))}
+      </ul>
+      <p>
+        This was not simply another design variation. It extended the same brand message across another
+        customer-language experience.
+      </p>
+      <p class="text-sm italic">
+        The documents describe this work but do not provide separate Spanish-language traffic, conversion, or sales
+        results.
+      </p>
+      <!-- TODO: real English/Spanish asset pairs -->
+    </section>
+
     <section id="results">
-      <h2>Results</h2>
-      <p>Monthly sales compared with the January 2026 baseline:</p>
+      <h2>More than $1.33M in sales — and five months above the starting baseline.</h2>
+      <p>
+        Paper2eat generated <strong>$1,334,246.26</strong> in reported Amazon sales during the first six months of 2026.
+        Monthly sales rose from <strong>$184,569.10 in January to $231,257.21 in June</strong> — an increase of
+        $46,688.11, or 25.3%.
+      </p>
+      <p>
+        May was the strongest month at $258,265.32, nearly <strong>39.9% above January</strong>. June came in below May,
+        but still finished <strong>25.3% above the January starting point</strong>.
+      </p>
       <div class="table-wrap">
         <table>
+          <caption class="sr-only">Total Amazon sales by month, January to June 2026</caption>
           <thead>
             <tr>
-              <th scope="col">Metric</th>
-              <th scope="col">January</th>
-              <th scope="col">After</th>
-              <th scope="col">Change</th>
+              <th scope="col">Month</th>
+              <th scope="col">Total Amazon sales</th>
+              <th scope="col">Growth vs. January</th>
             </tr>
           </thead>
           <tbody>
-            {results.map((r) => (
+            {months.map((month) => (
               <tr>
-                <th scope="row">{r.metric}</th>
-                <td>{r.before}</td>
-                <td>{r.after}</td>
-                <td class:list={{ highlight: r.highlight }}>{r.change}</td>
+                <th scope="row">{month.label}</th>
+                <td>{month.text}</td>
+                <td>{month.growth}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <h3>Six-month totals (January – June 2026)</h3>
-      <dl>
-        <dt>Total sales</dt>
-        <dd>$1,334,246</dd>
-
-        <dt>Ad-attributed sales</dt>
-        <dd>$426.9K</dd>
-
-        <dt>Average ROAS</dt>
-        <dd>6.87×</dd>
-
-        <dt>Months above the January baseline</dt>
-        <dd>
-          5 <strong>Feb – Jun, in a row</strong>
-        </dd>
-      </dl>
-    </section>
-
-    <section id="next-opportunities">
-      <h2>Next Opportunities</h2>
+      <div class="my-8">
+        <BarChart
+          title="Total Amazon sales by month, 2026"
+          bars={months.map((month) => ({
+            label: month.label,
+            value: month.value,
+            text: month.text,
+            note: month.note,
+          }))}
+        />
+      </div>
       <p>
-        Not every metric moved up. CTR went from <strong>0.978% to 0.748%</strong> and CVR from{' '}
-        <strong>15.05% to 13.80%</strong>. These signals point to traffic quality and conversion rate as the next areas
-        to optimize.
+        <strong>Five consecutive months exceeded January’s sales level.</strong> The pattern shows sustained sales above
+        the starting month, not uninterrupted month-over-month growth.
       </p>
     </section>
 
-    <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
-      <ul>
-        <li>
-          Connecting listing images, A+ Content, videos and Storefront creates a more consistent shopping experience.
-        </li>
-        <li>Combining content strategy with performance analysis helps identify growth opportunities.</li>
-        <li>Spanish localization extends the brand experience to Spanish-speaking customers.</li>
-        <li>Continuous monitoring is essential to find the areas that still need improvement.</li>
-      </ul>
+    <section id="what-the-data-shows">
+      <h2>Revenue grew. Click-through and conversion still needed attention.</h2>
+      <p>
+        The revenue figures are compelling, but the complete reporting tells a more useful story than a growth headline
+        alone.
+      </p>
+      <p>
+        <strong>Reported CTR:</strong> 0.978% in January → 0.748% in June.
+      </p>
+      <p>
+        <strong>Reported CVR:</strong> 15.054% in January → 13.802% in June.
+      </p>
+      <p>
+        Both percentages declined over the comparison period. The documents identify traffic quality, click-through
+        strength, and listing conversion as areas for further optimization —
+        <strong>not as results that had already improved</strong>.
+      </p>
+      <p>
+        The paid-advertising data also needs care: May shows zero recorded ad spend and ad-attributed sales in the
+        summary report. That is not enough evidence to claim Paper2eat made its May sales without advertising.
+      </p>
+    </section>
+
+    <section id="questions">
+      <h2>Questions behind the results</h2>
+      {faqs.map((item) => (
+        <>
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </>
+      ))}
+      <p>
+        <strong>What the case demonstrates:</strong> Connected creative can make a customer’s buying journey clearer;
+        account results still need to be measured honestly, including the metrics that leave room for improvement.
+      </p>
+    </section>
+
+    <section id="takeaway">
+      <h2>More connected content. A stronger reported sales baseline. More to optimize.</h2>
+      <p>
+        Paper2eat’s Amazon creative went beyond updating one image. The work connected the gallery, A+ Content, product
+        video, Storefront, and Spanish-language assets around a more consistent shopping experience.
+      </p>
+      <p>
+        During the six-month reporting period, the account recorded <strong>$1.33M in sales</strong> and ended June
+        <strong>25.3% above January’s monthly sales baseline</strong>. The next opportunity was equally clear: improve
+        click-through and conversion as the brand continued to grow.
+      </p>
     </section>
   </div>
 </ArticleLayout>

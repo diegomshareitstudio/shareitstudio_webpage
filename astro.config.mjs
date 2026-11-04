@@ -7,7 +7,10 @@ import sitemap from '@astrojs/sitemap';
 
 import vercel from '@astrojs/vercel';
 
-/** Old route → new sitemap route (301) */
+/** The site is served under shareitstudio.com/v2/ (also in the dev server: http://localhost:4321/v2/) */
+const base = '/v2/';
+
+/** Old route → new sitemap route (301). Paths are written without the base; it is added below. */
 const moved = {
   '/servicess': '/services',
   '/services/listing-optimization': '/services/amazon-listing-optimization',
@@ -34,6 +37,8 @@ const moved = {
   '/portfolio/videos/ugc-videos': '/our-work',
   '/portfolio/videos/social-media-videos': '/our-work',
   '/case-studies': '/our-work',
+  '/case-studies/rossm': '/our-work',
+  '/case-studies/vizayo': '/our-work',
 
   '/blog/amazon-storefront-complete-guide': '/blog/amazon-storefront',
 
@@ -46,14 +51,19 @@ const moved = {
 // https://astro.build/config
 export default defineConfig({
   // Required by @astrojs/sitemap to build absolute URLs
-  site: 'https://shareitstudio2.com',
+  site: 'https://shareitstudio.com',
+
+  base,
 
   redirects: Object.fromEntries(
-    Object.entries(moved).map(([from, destination]) => [from, { status: 301, destination }]),
+    Object.entries(moved).map(([from, destination]) => [
+      from,
+      { status: 301, destination: `${base.slice(0, -1)}${destination}/` },
+    ]),
   ),
 
-  // URLs without a trailing slash: /services, /contact-us
-  trailingSlash: 'never',
+  // Every page URL ends in a slash: /v2/services/
+  trailingSlash: 'always',
 
   vite: {
     plugins: [tailwindcss()],

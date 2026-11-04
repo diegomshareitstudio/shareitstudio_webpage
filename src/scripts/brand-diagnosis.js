@@ -708,12 +708,12 @@ export function initBrandDiagnosis(root) {
       {
         stat: '2x',
         cap: "Love Play's conversion rate, after we rebuilt the listing",
-        copy: "Love Play <b>doubled its conversion rate</b>. Vizayo's fire pit <b>converted 107% more</b>.",
+        copy: 'Love Play <b>doubled its conversion rate</b>.',
       },
       {
-        stat: '260%',
-        cap: "Pink Miracle's sales growth after we rebuilt the listing",
-        copy: "Pink Miracle had a great product and a listing that wasn't telling its story. After we rebuilt it, <b>sales grew 260%</b> and monthly revenue went from about $400K to <b>$600K+</b>.",
+        stat: '+49.9%',
+        cap: "Pink Miracle's monthly sales growth in one month, after we refreshed the listing",
+        copy: "Pink Miracle had a great product and a listing that wasn't telling its story. After we refreshed it, <b>monthly sales grew 49.9% in one month</b>, from about $404K to <b>$606K</b>.",
       },
     ],
     B: [
