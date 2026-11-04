@@ -5,6 +5,8 @@
  * Imported only by components/forms/BrandDiagnosis.astro.
  */
 import { dialCodes } from '../data/dialCodes';
+import { BOOKING_PAGE } from '../config/site';
+import { absoluteUrl } from '../lib/url';
 
 // Flag images for the phone country picker (flag emoji don't render on Windows)
 const flagSrc = (iso) => `https://flagcdn.com/${iso}.svg`;
@@ -14,7 +16,8 @@ export function initBrandDiagnosis(root) {
   const PHASES = ['Welcome', 'The problem', 'Your brand', 'What you have', 'Your plan'];
   const CARD = 'Credit card';
   const FEE_NOTE = 'with a 3.4% processing fee.';
-  const CALL_URL = 'https://shareitstudio.com/call/';
+  // The site's own booking page, with the base path (https://shareitstudio.com/v2/book-a-call/ while on /v2/)
+  const CALL_URL = absoluteUrl(BOOKING_PAGE);
   // Lead source list, shared by A9.1 and the client details field (Paths B and C).
   const SOURCES = [
     "Abdallah Hesham's Course",

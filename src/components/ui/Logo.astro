@@ -8,8 +8,10 @@ const { variant = 'dark' } = Astro.props;
 const light = variant === 'light';
 ---
 
-<a href={withBase('/')} class="group inline-flex items-center gap-2.5" aria-label="Share It Studio home">
+<!-- The link's name is its visible text ("share it studio"); the "s" badge is decorative -->
+<a href={withBase('/')} class="group inline-flex items-center gap-2.5" data-logo>
   <span
+    aria-hidden="true"
     class:list={[
       'relative grid h-10 w-10 place-items-center rounded-2xl font-display text-xl font-extrabold transition group-hover:rotate-6',
       light ? 'bg-brand-yellow text-brand-green' : 'bg-brand-green text-brand-yellow',

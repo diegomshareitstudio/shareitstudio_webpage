@@ -13,9 +13,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.3.0",
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.18",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "lenis": "^1.3.27",
@@ -23,6 +21,8 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
+    "esbuild": "^0.28.2",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1"
   }

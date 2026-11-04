@@ -17,9 +17,16 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
 const idle = (fn: () => void) =>
   'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200);
 
+/** Browsers without CSS scroll-driven animations (Firefox, Safari before 26) get the same effects from JS.
+ * In development, add ?scroll-fallback to the URL to try that path in Chrome. */
+const needsScrollFallback =
+  !CSS.supports('animation-timeline: view()') ||
+  (import.meta.env.DEV && new URLSearchParams(location.search).has('scroll-fallback'));
+
 if (!reduced) {
   // Smooth wheel scrolling only matters with a mouse/trackpad; touch screens keep native scrolling and skip the download
   if (finePointer) import('lenis').then(({ default: Lenis }) => new Lenis({ autoRaf: true, anchors: true }));
+  if (needsScrollFallback) import('./scroll-fallback').then(({ startScrollFallback }) => startScrollFallback());
   hideHeaderOnScroll();
   splitHeadings();
   countUp();

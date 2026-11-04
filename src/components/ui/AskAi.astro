@@ -3,7 +3,7 @@ import { BOOKING_PAGE } from '../../config/site';
 import { withBase } from '../../lib/url';
 
 /**
- * "Ask your own question" box for the FAQs page. Posts to /api/ask, which answers with Claude
+ * "Ask your own question" box for the FAQs page. Posts to api/ask.php (built from lib/assistant.ts), which answers with Claude
  * using the company information in src/data/companyKnowledge.ts.
  */
 ---
@@ -67,7 +67,7 @@ import { withBase } from '../../lib/url';
     out.textContent = '';
 
     try {
-      const res = await fetch(withBase('/api/ask'), {
+      const res = await fetch(withBase('/api/ask.php'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: input.value }),

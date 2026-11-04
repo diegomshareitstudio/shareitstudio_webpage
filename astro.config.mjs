@@ -5,7 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
 
-import vercel from '@astrojs/vercel';
+import { loadEnv } from 'vite';
+import hostArmada from './integrations/hostarmada.mjs';
+import assistantDevServer from './integrations/assistant-dev-server.mjs';
 
 /** The site is served under shareitstudio.com/v2/ (also in the dev server: http://localhost:4321/v2/) */
 const base = '/v2/';
@@ -48,6 +50,9 @@ const moved = {
   '/partners': '/about-us',
 };
 
+/** Build settings from the environment (GitHub Actions secrets/variables) or a local .env file */
+const env = { ...loadEnv('production', process.cwd(), ''), ...process.env };
+
 // https://astro.build/config
 export default defineConfig({
   // Required by @astrojs/sitemap to build absolute URLs
@@ -66,7 +71,13 @@ export default defineConfig({
   trailingSlash: 'always',
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), assistantDevServer(base)],
+    build: {
+      // Lightning CSS (the default minifier) folds `animation-timeline: view()` into the `animation` shorthand,
+      // which browsers reject, so every scroll-driven animation vanished from the production build.
+      // esbuild keeps the declarations as written.
+      cssMinify: 'esbuild',
+    },
   },
 
   // Self-hosted fonts: no request to Google at runtime, preloaded, with size-matched fallbacks (no layout shift on swap)
@@ -94,8 +105,10 @@ export default defineConfig({
   // Links are fetched on hover/touch, so the next page is usually ready before the click lands
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 
-  // Generated on build only: /sitemap-index.xml → /sitemap-0.xml
-  integrations: [sitemap()],
-
-  adapter: vercel(),
+  integrations: [
+    // Generated on build only: /v2/sitemap-index.xml → /v2/sitemap-0.xml
+    sitemap(),
+    // .htaccess for the host: redirects, password protection, caching (see integrations/hostarmada.mjs)
+    hostArmada({ base, redirects: moved, authUserFile: env.HTACCESS_AUTH_USERFILE }),
+  ],
 });

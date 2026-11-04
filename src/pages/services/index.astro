@@ -184,11 +184,7 @@ const schema = [
             </div>
 
             {social ? (
-              <a
-                href={withBase(l.portfolio)}
-                class="group block"
-                aria-label="See social media work: Reels and carousels"
-              >
+              <a href={withBase(l.portfolio)} class="group block">
                 <ul class="flex items-end justify-center gap-3 sm:gap-4">
                   {socialPreview.map((item, k) => (
                     <li
@@ -208,11 +204,7 @@ const schema = [
                 </span>
               </a>
             ) : (
-              <a
-                href={withBase(l.portfolio)}
-                class="group block lg:order-1"
-                aria-label="See Amazon listing transformations"
-              >
+              <a href={withBase(l.portfolio)} class="group block lg:order-1">
                 <div class="grid grid-cols-2 items-center gap-4">
                   <figure class="-rotate-3">
                     <Image
@@ -290,7 +282,7 @@ const schema = [
                 href={withBase(c.service.href)}
                 class="wk-media"
                 tabindex={o === 0 ? undefined : -1}
-                aria-label={c.cta}
+                aria-label={`${c.service.title}: ${c.cta}`}
               >
                 {c.image ? (
                   <Image

@@ -115,6 +115,7 @@ export const socialPackages: SocialPackage[] = [
     features: [
       'Strategy & Deep Research',
       'Avatar Creation',
+      'Scripting',
       'Repurposing Content',
       'AI-Enhanced Content',
       'Filming Real Content',

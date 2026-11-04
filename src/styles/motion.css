@@ -433,7 +433,7 @@ html.lenis body {
     animation: wiggle 5s 2.5s ease-in-out infinite;
   }
   /* Logo wobbles on hover */
-  header a[aria-label$='home']:hover > span:first-child {
+  header a[data-logo]:hover > span:first-child {
     animation: wiggle 0.6s ease-in-out;
   }
   .step-num {
